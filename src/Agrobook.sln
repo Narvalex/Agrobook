@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26020.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Kml", "Agrobook.Kml\Agrobook.Kml.csproj", "{90103FBD-25A4-4B9E-A4B9-A058CC3934EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Kml.Tests", "Agrobook.Kml.Tests\Agrobook.Kml.Tests.csproj", "{6DD8E73B-4550-4A9A-8F35-7E0031B15EC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Core", "Agrobook.Core\Agrobook.Core.csproj", "{EE8E15CB-89BA-44E8-AAF1-330B185BEC57}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90103FBD-25A4-4B9E-A4B9-A058CC3934EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90103FBD-25A4-4B9E-A4B9-A058CC3934EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90103FBD-25A4-4B9E-A4B9-A058CC3934EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90103FBD-25A4-4B9E-A4B9-A058CC3934EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DD8E73B-4550-4A9A-8F35-7E0031B15EC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DD8E73B-4550-4A9A-8F35-7E0031B15EC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DD8E73B-4550-4A9A-8F35-7E0031B15EC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DD8E73B-4550-4A9A-8F35-7E0031B15EC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE8E15CB-89BA-44E8-AAF1-330B185BEC57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE8E15CB-89BA-44E8-AAF1-330B185BEC57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE8E15CB-89BA-44E8-AAF1-330B185BEC57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE8E15CB-89BA-44E8-AAF1-330B185BEC57}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
