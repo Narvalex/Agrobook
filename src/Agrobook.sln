@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Kml.Tests", "Agrob
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Core", "Agrobook.Core\Agrobook.Core.csproj", "{EE8E15CB-89BA-44E8-AAF1-330B185BEC57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Server", "Agrobook.Server\Agrobook.Server.csproj", "{6B68ACFE-67B3-4AE4-9C2E-B723FCDC4DE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{EE8E15CB-89BA-44E8-AAF1-330B185BEC57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE8E15CB-89BA-44E8-AAF1-330B185BEC57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE8E15CB-89BA-44E8-AAF1-330B185BEC57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B68ACFE-67B3-4AE4-9C2E-B723FCDC4DE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B68ACFE-67B3-4AE4-9C2E-B723FCDC4DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B68ACFE-67B3-4AE4-9C2E-B723FCDC4DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B68ACFE-67B3-4AE4-9C2E-B723FCDC4DE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
