@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Agrobook.Kml")]
+[assembly: AssemblyTitle("Agrobook.Infrastructure")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Agrobook.Kml")]
+[assembly: AssemblyProduct("Agrobook.Infrastructure")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("90103fbd-25a4-4b9e-a4b9-a058cc3934eb")]
+[assembly: Guid("8194b76b-7583-48a8-a610-01efaded7417")]
 
 // Version information for an assembly consists of the following four values:
 //

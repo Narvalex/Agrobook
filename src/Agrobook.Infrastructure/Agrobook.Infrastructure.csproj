@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EE8E15CB-89BA-44E8-AAF1-330B185BEC57}</ProjectGuid>
+    <ProjectGuid>{8194B76B-7583-48A8-A610-01EFADED7417}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Agrobook.Core</RootNamespace>
-    <AssemblyName>Agrobook.Core</AssemblyName>
+    <RootNamespace>Agrobook.Infrastructure</RootNamespace>
+    <AssemblyName>Agrobook.Infrastructure</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -43,9 +43,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Accounts\" />
     <Folder Include="Kml\" />
-    <Folder Include="Profile\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
