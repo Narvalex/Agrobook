@@ -1,0 +1,20 @@
+{
+  "name": "angular-material-install",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Alexis Narvaez"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Narvalex/Agrobook",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-material": "^1.1.1"
+  }
+}
