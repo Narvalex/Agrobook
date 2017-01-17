@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Desktop", "Agroboo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{2773D51A-B4E8-4180-B403-A566314E72D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.CLI", "Agrobook.CLI\Agrobook.CLI.csproj", "{1427506A-1548-4A66-8099-5D46D953C92E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{7461B967-5FD5-4BCF-BD16-9932585F1318}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7461B967-5FD5-4BCF-BD16-9932585F1318}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7461B967-5FD5-4BCF-BD16-9932585F1318}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1427506A-1548-4A66-8099-5D46D953C92E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1427506A-1548-4A66-8099-5D46D953C92E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1427506A-1548-4A66-8099-5D46D953C92E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1427506A-1548-4A66-8099-5D46D953C92E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +60,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0FCE4C99-B7C4-489C-B994-A0EA68E8D2DC} = {2773D51A-B4E8-4180-B403-A566314E72D9}
 		{7461B967-5FD5-4BCF-BD16-9932585F1318} = {2773D51A-B4E8-4180-B403-A566314E72D9}
+		{1427506A-1548-4A66-8099-5D46D953C92E} = {2773D51A-B4E8-4180-B403-A566314E72D9}
 	EndGlobalSection
 EndGlobal
