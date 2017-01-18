@@ -1,3 +1,6 @@
 /// <reference path="_all.ts" />
-var a = [1, 2, 3, 4, 5, 6];
+var ContactManagerApp;
+(function (ContactManagerApp) {
+    angular.module("contactManagerApp", ['ngMaterial']);
+})(ContactManagerApp || (ContactManagerApp = {}));
 //# sourceMappingURL=boot.js.map

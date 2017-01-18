@@ -1,9 +1,10 @@
 {
   "dependencies": {
-    "angular": "registry:dt/angular#1.6.0+20170114005055",
+    "angular": "registry:dt/angular#1.6.0+20170117142612",
     "angular-material": "registry:dt/angular-material#1.1.0+20170112174021"
   },
   "globalDependencies": {
+    "angularjs/legacy/angular": "registry:dt/angularjs/legacy/angular#1.4.0+20160724063439",
     "jquery": "registry:dt/jquery#1.10.0+20170104155652"
   }
 }
