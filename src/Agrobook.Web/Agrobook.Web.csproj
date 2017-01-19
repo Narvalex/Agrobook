@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.2\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.2\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" />
@@ -551,6 +552,9 @@
     <Content Include="app\bower_components\angular\angular.min.js" />
     <Content Include="app\bower_components\angular\index.js" />
     <Content Include="app\dist\boot.js" />
+    <Content Include="app\dist\controllers\mainController.js" />
+    <Content Include="app\dist\models.js" />
+    <Content Include="app\dist\services\userService.js" />
     <Content Include="app\dist\_all.js" />
     <Content Include="app\index.html" />
     <Content Include="packages.config" />
@@ -642,6 +646,10 @@
     <Content Include="typings.json" />
     <Content Include="typings\globals\jquery\typings.json" />
     <Content Include="typings\modules\angular-material\typings.json" />
+    <Content Include="typings\globals\angularjs\legacy\angular\typings.json" />
+    <Content Include="app\dist\controllers\mainController.js.map" />
+    <Content Include="app\dist\services\userService.js.map" />
+    <Content Include="app\dist\models.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -657,7 +665,11 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\src\boot.ts" />
+    <TypeScriptCompile Include="app\src\controllers\mainController.ts" />
+    <TypeScriptCompile Include="app\src\models.ts" />
+    <TypeScriptCompile Include="app\src\services\userService.ts" />
     <TypeScriptCompile Include="app\src\_all.ts" />
+    <TypeScriptCompile Include="typings\globals\angularjs\legacy\angular\index.d.ts" />
     <TypeScriptCompile Include="typings\globals\jquery\index.d.ts" />
     <TypeScriptCompile Include="typings\index.d.ts" />
     <TypeScriptCompile Include="typings\modules\angular-material\index.d.ts" />
