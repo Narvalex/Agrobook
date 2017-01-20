@@ -4,7 +4,9 @@ module ContactManagerApp {
     export class MainController {
         static $inject = ['userService'];
 
-        constructor(private userService: IUserService) {
+        constructor(
+            private userService: IUserService,
+            private $mdSidenav: any) {
             var self = this;
 
             this.userService
@@ -17,5 +19,9 @@ module ContactManagerApp {
 
         users: User[] = [];
         message: string = "Hello from our controller";
+
+        toggleSideNav(): void {
+
+        }
     }
 }

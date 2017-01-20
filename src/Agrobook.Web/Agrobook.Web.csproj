@@ -555,6 +555,8 @@
     <Content Include="app\dist\controllers\mainController.js" />
     <Content Include="app\dist\models.js" />
     <Content Include="app\dist\services\userService.js" />
+    <Content Include="app\dist\view\sidenav.html" />
+    <Content Include="app\dist\view\toolbar-header.html" />
     <Content Include="app\dist\_all.js" />
     <Content Include="app\index.html" />
     <Content Include="packages.config" />
@@ -645,7 +647,6 @@
     <Content Include="bower.json" />
     <Content Include="typings.json" />
     <Content Include="typings\globals\jquery\typings.json" />
-    <Content Include="typings\modules\angular-material\typings.json" />
     <Content Include="typings\globals\angularjs\legacy\angular\typings.json" />
     <Content Include="app\dist\controllers\mainController.js.map" />
     <Content Include="app\dist\services\userService.js.map" />
@@ -672,10 +673,12 @@
     <TypeScriptCompile Include="typings\globals\angularjs\legacy\angular\index.d.ts" />
     <TypeScriptCompile Include="typings\globals\jquery\index.d.ts" />
     <TypeScriptCompile Include="typings\index.d.ts" />
-    <TypeScriptCompile Include="typings\modules\angular-material\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="typings\modules\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
