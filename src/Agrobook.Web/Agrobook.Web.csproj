@@ -68,12 +68,25 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\assets\app.css" />
+    <Content Include="app\assets\svg\avatars.svg" />
+    <Content Include="app\assets\svg\google_plus.svg" />
+    <Content Include="app\assets\svg\hangouts.svg" />
+    <Content Include="app\assets\svg\menu.svg" />
+    <Content Include="app\assets\svg\phone.svg" />
+    <Content Include="app\assets\svg\twitter.svg" />
     <Content Include="app\bower_components\angular-animate\angular-animate.js" />
     <Content Include="app\bower_components\angular-animate\angular-animate.min.js" />
     <Content Include="app\bower_components\angular-animate\index.js" />
     <Content Include="app\bower_components\angular-aria\angular-aria.js" />
     <Content Include="app\bower_components\angular-aria\angular-aria.min.js" />
     <Content Include="app\bower_components\angular-aria\index.js" />
+    <Content Include="app\bower_components\angular-material-icons\angular-material-icons.css" />
+    <Content Include="app\bower_components\angular-material-icons\angular-material-icons.js" />
+    <Content Include="app\bower_components\angular-material-icons\angular-material-icons.min.js" />
+    <Content Include="app\bower_components\angular-material-icons\demo.js" />
+    <Content Include="app\bower_components\angular-material-icons\gulpfile.js" />
+    <Content Include="app\bower_components\angular-material-icons\index.html" />
+    <Content Include="app\bower_components\angular-material-icons\index.js" />
     <Content Include="app\bower_components\angular-material\.gitignore" />
     <Content Include="app\bower_components\angular-material\angular-material-mocks.js" />
     <Content Include="app\bower_components\angular-material\angular-material.css" />
@@ -652,6 +665,11 @@
     <Content Include="app\dist\services\userService.js.map" />
     <Content Include="app\dist\models.js.map" />
     <Content Include="typings\modules\angular-material\typings.json" />
+    <Content Include="app\bower_components\angular-material-icons\.bower.json" />
+    <Content Include="app\bower_components\angular-material-icons\bower.json" />
+    <Content Include="app\bower_components\angular-material-icons\LICENSE" />
+    <Content Include="app\bower_components\angular-material-icons\package.json" />
+    <Content Include="app\bower_components\angular-material-icons\README.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
