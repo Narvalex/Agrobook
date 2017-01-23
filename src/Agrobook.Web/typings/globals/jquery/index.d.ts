@@ -1464,7 +1464,7 @@ interface JQuery {
      * @param value A value to set for the attribute. If this is `null`, the attribute will be deleted.
      * @see {@link https://api.jquery.com/attr/#attr-attributeName-value}
      */
-    attr(attributeName: string, value: string|number|null): JQuery;
+    attr(attributeName: string, value: any): JQuery;
     /**
      * Set one or more attributes for the set of matched elements.
      *

@@ -16,10 +16,11 @@ var ContactManagerApp;
             });
         }
         MainController.prototype.toggleSideNav = function () {
+            this.$mdSidenav('left').toggle();
         };
         return MainController;
     }());
-    MainController.$inject = ['userService'];
+    MainController.$inject = ['userService', '$mdSidenav'];
     ContactManagerApp.MainController = MainController;
 })(ContactManagerApp || (ContactManagerApp = {}));
 //# sourceMappingURL=mainController.js.map

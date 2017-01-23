@@ -2,11 +2,11 @@
 
 module ContactManagerApp {
     export class MainController {
-        static $inject = ['userService'];
+        static $inject = ['userService', '$mdSidenav'];
 
         constructor(
             private userService: IUserService,
-            private $mdSidenav: any) {
+            private $mdSidenav: angular.material.ISidenavService) {
             var self = this;
 
             this.userService
@@ -21,7 +21,7 @@ module ContactManagerApp {
         message: string = "Hello from our controller";
 
         toggleSideNav(): void {
-
+            this.$mdSidenav('left').toggle();
         }
     }
 }
