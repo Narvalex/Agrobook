@@ -568,6 +568,7 @@
     <Content Include="app\dist\controllers\mainController.js" />
     <Content Include="app\dist\models.js" />
     <Content Include="app\dist\services\userService.js" />
+    <Content Include="app\dist\view\main-content.html" />
     <Content Include="app\dist\view\sidenav.html" />
     <Content Include="app\dist\view\toolbar-header.html" />
     <Content Include="app\dist\_all.js" />

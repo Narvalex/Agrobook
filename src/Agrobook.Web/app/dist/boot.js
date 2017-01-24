@@ -5,7 +5,9 @@ var ContactManagerApp;
         .service('userService', ContactManagerApp.UserService)
         .controller("mainController", ContactManagerApp.MainController)
         .config(function ($mdIconProvider, $mdThemingProvider) {
-        $mdIconProvider.icon('menu', './assets/svg/menu.svg', 24);
+        $mdIconProvider
+            .defaultIconSet('./assets/svg/avatars.svg', 128)
+            .icon('menu', './assets/svg/menu.svg', 24);
         $mdThemingProvider.theme('default')
             .primaryPalette('blue')
             .accentPalette('red');

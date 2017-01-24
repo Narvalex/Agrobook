@@ -17,8 +17,43 @@ md-toolbar .md-toolbar-tools h1 {
     font-weight: 400;
 }
 
+md-list .md-button {
+    color: inherit;
+    font-weight: 500;
+    text-align: left;
+    width: 100%;
+}
+
+md-list .md-button.selected {
+    color: #03a9f4;
+}
+
+md-sidenav md-list {
+    padding: 0, 0, 8px, 0;
+}
+
 #content {
     padding-left: 40px;
     padding-right: 40px;
     padding-top: 5px;
+}
+
+#content md-icon.avatar {
+    margin-top: 10px;
+}
+
+.avatar {
+    position: relative;
+    width: 128px;
+    height: 128px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    display: inline-block;
+    overflow: hidden;
+    margin: 0;
+    vertical-align: middle;
+    zoom: 0.70;
+    transform: translateZ(0);
+    -webkit-transform: scale(0.70);
+    -moz-transform: scale(0.70);
 }
