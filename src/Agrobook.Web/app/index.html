@@ -25,6 +25,17 @@
         <div ng-include="'dist/view/toolbar-header.html'"></div>
         <md-content flex id="content">
             <div ng-include="'dist/view/main-content.html'"></div>
+            
+            <md-tabs md-selected="vm.tabIndex"
+                     md-dynamic-height=""
+                     md-stretch-tabs="always">
+                <md-tab label="Bio">
+                    <div ng-include="'dist/view/tab-bio.html'"></div>
+                </md-tab>
+                <md-tab label="Notes">
+                    <div ng-include="'dist/view/tab-notes.html'"></div>
+                </md-tab>
+            </md-tabs>
         </md-content>
     </div>
 

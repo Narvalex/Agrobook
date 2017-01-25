@@ -30,7 +30,7 @@ namespace Agrobook.CLI
             bool errorOccurred = false;
             try
             {
-                tokenDictionary = await provider.GetTokenDictionary("sampleuser", "password");
+                tokenDictionary = await provider.GetTokenDictionary("sampleuser", "ssword");
                 accessToken = tokenDictionary["access_token"];
             }
             catch (AggregateException ex)
