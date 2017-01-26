@@ -57,3 +57,12 @@ md-sidenav md-list {
     -webkit-transform: scale(0.70);
     -moz-transform: scale(0.70);
 }
+
+.scrollable-nav-content {
+    position: absolute;
+    top: 136px;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    overflow: auto;
+}

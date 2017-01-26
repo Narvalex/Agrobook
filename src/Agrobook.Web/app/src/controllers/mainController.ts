@@ -2,12 +2,14 @@
 
 module ContactManagerApp {
     export class MainController {
-        static $inject = ['userService', '$mdSidenav', '$mdToast'];
+        static $inject = ['userService', '$mdSidenav', '$mdToast', '$mdDialog', '$mdMedia'];
 
         constructor(
             private userService: IUserService,
             private $mdSidenav: angular.material.ISidenavService,
-            private $mdToast: angular.material.IToastService) {
+            private $mdToast: angular.material.IToastService,
+            private $mdDialog: angular.material.IDialogService,
+            private $mdMedia: angular.material.IMedia) {
             var self = this;
 
             this.userService
@@ -38,6 +40,34 @@ module ContactManagerApp {
             }
 
             this.tabIndex = 0;
+        }
+
+        addUser($event) {
+            var self = this;
+            var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+
+            this.$mdDialog.show({
+                templateUrl: './dist/view/newUserDialog.html',
+            }).then((user: User) => {
+                self.openToast('User added');
+            }, () => {
+                console.log('You cancelled the dialog.');
+            });;
+        }
+
+        clearNotes($event: MouseEvent) {
+            var confirm = this.$mdDialog.confirm()
+                .title('Are your sure your vant to delete all notes?')
+                .textContent('All notes will be deleted, you can\'t undo this action.')
+                .targetEvent($event)
+                .ok('Yes')
+                .cancel('No');
+
+            var self = this;
+            this.$mdDialog.show(confirm).then(() => {
+                self.selected.notes = [];
+                self.openToast('Cleared notes');
+            });
         }
 
         removeNote(note: Note): void {
