@@ -2,14 +2,22 @@
 
 module ContactManagerApp {
     export class MainController {
-        static $inject = ['userService', '$mdSidenav', '$mdToast', '$mdDialog', '$mdMedia'];
+        static $inject = [
+            'userService',
+            '$mdSidenav',
+            '$mdToast',
+            '$mdDialog',
+            '$mdMedia',
+            '$mdBottomSheet'
+        ];
 
         constructor(
             private userService: IUserService,
             private $mdSidenav: angular.material.ISidenavService,
             private $mdToast: angular.material.IToastService,
             private $mdDialog: angular.material.IDialogService,
-            private $mdMedia: angular.material.IMedia) {
+            private $mdMedia: angular.material.IMedia,
+            private $mdBottomSheet: angular.material.IBottomSheetService) {
             var self = this;
 
             this.userService
@@ -17,6 +25,8 @@ module ContactManagerApp {
                 .then((users: User[]) => {
                     self.users = users;
                     self.selected = users[0];
+                    self.userService.selectedUser = self.selected;
+
                     console.log(self.users);
                 });
         }
@@ -33,6 +43,7 @@ module ContactManagerApp {
 
         selectUser(user: User): void {
             this.selected = user;
+            this.userService.selectedUser = user;
 
             var sideNav = this.$mdSidenav('left');
             if (sideNav.isOpen) {
@@ -40,6 +51,10 @@ module ContactManagerApp {
             }
 
             this.tabIndex = 0;
+        }
+
+        showContactOptions($event) {
+
         }
 
         addUser($event) {

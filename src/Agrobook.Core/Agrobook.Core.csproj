@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8194B76B-7583-48A8-A610-01EFADED7417}</ProjectGuid>
+    <ProjectGuid>{02F6C2B8-C3EB-4107-8D43-113A0258992F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Agrobook.Infrastructure</RootNamespace>
-    <AssemblyName>Agrobook.Infrastructure</AssemblyName>
+    <RootNamespace>Agrobook.Core</RootNamespace>
+    <AssemblyName>Agrobook.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,16 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aggregate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Kml\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Agrobook.Core\Agrobook.Core.csproj">
-      <Project>{02f6c2b8-c3eb-4107-8d43-113a0258992f}</Project>
-      <Name>Agrobook.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -19,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.CLI", "Agrobook.CLI\Agrobook.CLI.csproj", "{1427506A-1548-4A66-8099-5D46D953C92E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Domain.Tests", "Agrobook.Domain.Tests\Agrobook.Domain.Tests.csproj", "{E07D41A5-55DE-4251-ABF2-C22992075DC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Core", "Agrobook.Core\Agrobook.Core.csproj", "{02F6C2B8-C3EB-4107-8D43-113A0258992F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +57,14 @@ Global
 		{1427506A-1548-4A66-8099-5D46D953C92E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1427506A-1548-4A66-8099-5D46D953C92E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1427506A-1548-4A66-8099-5D46D953C92E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E07D41A5-55DE-4251-ABF2-C22992075DC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E07D41A5-55DE-4251-ABF2-C22992075DC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E07D41A5-55DE-4251-ABF2-C22992075DC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E07D41A5-55DE-4251-ABF2-C22992075DC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02F6C2B8-C3EB-4107-8D43-113A0258992F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02F6C2B8-C3EB-4107-8D43-113A0258992F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02F6C2B8-C3EB-4107-8D43-113A0258992F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02F6C2B8-C3EB-4107-8D43-113A0258992F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

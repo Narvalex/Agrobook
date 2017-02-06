@@ -2,12 +2,13 @@
 var ContactManagerApp;
 (function (ContactManagerApp) {
     var MainController = (function () {
-        function MainController(userService, $mdSidenav, $mdToast, $mdDialog, $mdMedia) {
+        function MainController(userService, $mdSidenav, $mdToast, $mdDialog, $mdMedia, $mdBottomSheet) {
             this.userService = userService;
             this.$mdSidenav = $mdSidenav;
             this.$mdToast = $mdToast;
             this.$mdDialog = $mdDialog;
             this.$mdMedia = $mdMedia;
+            this.$mdBottomSheet = $mdBottomSheet;
             this.tabIndex = 0;
             this.searchText = '';
             this.users = [];
@@ -19,6 +20,7 @@ var ContactManagerApp;
                 .then(function (users) {
                 self.users = users;
                 self.selected = users[0];
+                self.userService.selectedUser = self.selected;
                 console.log(self.users);
             });
         }
@@ -27,11 +29,14 @@ var ContactManagerApp;
         };
         MainController.prototype.selectUser = function (user) {
             this.selected = user;
+            this.userService.selectedUser = user;
             var sideNav = this.$mdSidenav('left');
             if (sideNav.isOpen) {
                 sideNav.close();
             }
             this.tabIndex = 0;
+        };
+        MainController.prototype.showContactOptions = function ($event) {
         };
         MainController.prototype.addUser = function ($event) {
             var self = this;
@@ -71,7 +76,14 @@ var ContactManagerApp;
         };
         return MainController;
     }());
-    MainController.$inject = ['userService', '$mdSidenav', '$mdToast', '$mdDialog', '$mdMedia'];
+    MainController.$inject = [
+        'userService',
+        '$mdSidenav',
+        '$mdToast',
+        '$mdDialog',
+        '$mdMedia',
+        '$mdBottomSheet'
+    ];
     ContactManagerApp.MainController = MainController;
 })(ContactManagerApp || (ContactManagerApp = {}));
 //# sourceMappingURL=mainController.js.map

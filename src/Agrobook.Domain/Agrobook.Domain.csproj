@@ -41,6 +41,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Usuarios\GrupoDeUsuarios.cs" />
+    <Compile Include="Usuarios\GrupoDeUsuariosCommands.cs" />
+    <Compile Include="Usuarios\GrupoDeUsuariosEvents.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Agrobook.Core\Agrobook.Core.csproj">
+      <Project>{02f6c2b8-c3eb-4107-8d43-113a0258992f}</Project>
+      <Name>Agrobook.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
