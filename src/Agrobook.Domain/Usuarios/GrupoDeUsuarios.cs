@@ -2,7 +2,11 @@
 
 namespace Agrobook.Domain.Usuarios
 {
-    public class GrupoDeUsuarios : Aggregate
+    public class GrupoDeUsuarios : EventSourced
     {
+        public GrupoDeUsuarios()
+        {
+            this.On<NuevoGrupoCreado>(e => this.StreamName = e.IdGrupo);
+        }
     }
 }

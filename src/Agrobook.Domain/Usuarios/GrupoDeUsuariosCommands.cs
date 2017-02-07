@@ -9,4 +9,16 @@
 
         public string IdGrupo { get; }
     }
+
+    public class AgregarUsuarioAGrupo
+    {
+        public AgregarUsuarioAGrupo(string idGrupo, string idUsuario)
+        {
+            this.IdGrupo = idGrupo;
+            this.IdUsuario = idUsuario;
+        }
+
+        public string IdGrupo { get; }
+        public string IdUsuario { get; }
+    }
 }
