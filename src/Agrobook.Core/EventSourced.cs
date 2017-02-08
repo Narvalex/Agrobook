@@ -7,7 +7,8 @@ namespace Agrobook.Core
     {
         string StreamName { get; }
         long Version { get; }
-        void Update(object e);
+        void Update(object @event);
+        void Emit(object @event);
         ICollection<object> NewEvents { get; }
         ISnapshot TakeSnapshot();
     }
@@ -43,7 +44,7 @@ namespace Agrobook.Core
 
         protected void On<T>(Action<T> handler) => this.handlers[typeof(T)] = e => handler((T)e);
 
-        public void Update(object @event)
+        void IEventSourced.Update(object @event)
         {
             var eventType = @event.GetType();
             if (this.handlers.TryGetValue(eventType, out Action<object> handler))
@@ -51,6 +52,12 @@ namespace Agrobook.Core
             // Happily ignoring event handler not found
 
             this.Version++;
+        }
+
+        public void Emit(object @event)
+        {
+            ((IEventSourced)this).Update(@event);
+            this.newEvents.Add(@event);
         }
 
         public virtual void Rehydrate(ISnapshot snapshot)

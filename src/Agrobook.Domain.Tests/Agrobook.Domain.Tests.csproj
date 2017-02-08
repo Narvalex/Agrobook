@@ -49,9 +49,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Utils\TestableCommandHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Usuarios\GrupoDeUsuariosTests.cs" />
+    <Compile Include="Usuarios\UsuariosTests.cs" />
+    <Compile Include="Utils\TestableEventSourcedService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

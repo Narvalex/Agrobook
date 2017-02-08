@@ -42,10 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Usuarios\GrupoDeUsuariosService.cs" />
+    <Compile Include="Usuarios\UsuariosCommands.cs" />
+    <Compile Include="Usuarios\UsuariosEvents.cs" />
+    <Compile Include="Usuarios\UsuariosYGruposService.cs" />
     <Compile Include="Usuarios\GrupoDeUsuariosCommands.cs" />
     <Compile Include="Usuarios\GrupoDeUsuariosEvents.cs" />
     <Compile Include="Usuarios\GrupoDeUsuarios.cs" />
+    <Compile Include="Usuarios\Usuario.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
