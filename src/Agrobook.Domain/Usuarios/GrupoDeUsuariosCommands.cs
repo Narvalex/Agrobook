@@ -1,8 +1,11 @@
-﻿namespace Agrobook.Domain.Usuarios
+﻿using Agrobook.Domain.Common;
+
+namespace Agrobook.Domain.Usuarios
 {
-    public class CrearGrupo
+    public class CrearGrupo : MensajeAuditable
     {
-        public CrearGrupo(string idGrupo)
+        public CrearGrupo(string idGrupo, Metadatos metadatos)
+            : base(metadatos)
         {
             this.IdGrupo = idGrupo;
         }
@@ -10,9 +13,10 @@
         public string IdGrupo { get; }
     }
 
-    public class AgregarUsuarioAGrupo
+    public class AgregarUsuarioAGrupo : MensajeAuditable
     {
-        public AgregarUsuarioAGrupo(string idGrupo, string idUsuario)
+        public AgregarUsuarioAGrupo(string idGrupo, string idUsuario, Metadatos metadatos)
+            : base(metadatos)
         {
             this.IdGrupo = idGrupo;
             this.IdUsuario = idUsuario;

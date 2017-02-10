@@ -29,7 +29,7 @@ namespace Agrobook.Server
         {
             var OAuthOptions = new OAuthAuthorizationServerOptions
             {
-                TokenEndpointPath = new PathString("/Token"),
+                TokenEndpointPath = new PathString("/token"),
                 Provider = new ApplicationOAuthServerProvider(),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
 

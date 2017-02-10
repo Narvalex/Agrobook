@@ -38,7 +38,7 @@ namespace Agrobook.Core
 
         public ICollection<object> NewEvents => this.newEvents;
 
-        public long Version { get; private set; } = -1;
+        public long Version { get; private set; } = ExpectedVersion.NoStream; // Empty/NoExistent stream, in Event Store
 
         public string StreamName { get; protected set; }
 

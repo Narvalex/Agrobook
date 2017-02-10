@@ -1,9 +1,5 @@
 ﻿using Microsoft.Owin.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Agrobook.Server
 {
@@ -11,6 +7,10 @@ namespace Agrobook.Server
     {
         static void Main(string[] args)
         {
+
+            Console.WriteLine("Loading EventStore...");
+            EventStoreLoader.Load();
+
             var baseUri = "http://localhost:8080";
 
             Console.WriteLine("Starting web server...");

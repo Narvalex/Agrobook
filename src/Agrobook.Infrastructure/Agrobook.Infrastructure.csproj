@@ -43,9 +43,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Kml\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Agrobook.Core\Agrobook.Core.csproj">
       <Project>{02f6c2b8-c3eb-4107-8d43-113a0258992f}</Project>

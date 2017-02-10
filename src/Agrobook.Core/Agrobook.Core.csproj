@@ -41,8 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandHandler.cs" />
+    <Compile Include="EventSourcedService.cs" />
     <Compile Include="Ensure.cs" />
+    <Compile Include="ExpectedVersion.cs" />
     <Compile Include="IEventSourcedRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EventSourced.cs" />

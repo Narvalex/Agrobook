@@ -1,4 +1,3 @@
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System.Xml;
@@ -12,7 +11,7 @@ namespace Agrobook.Kml.Tests
         public void CanConvertKmlFromXmlFormatToJsonFormatBackAndForth()
         {
             var originalDoc = new XmlDocument();
-            originalDoc.LoadXml(base.kmlSample);
+            originalDoc.LoadXml(this.kmlSample);
 
             // Converting from Xml to Json
             var json = JsonConvert.SerializeXmlNode(originalDoc);

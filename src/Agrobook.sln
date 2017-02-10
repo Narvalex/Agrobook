@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26020.0
+VisualStudioVersion = 15.0.26206.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Server", "Agrobook.Server\Agrobook.Server.csproj", "{6B68ACFE-67B3-4AE4-9C2E-B723FCDC4DE5}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Domain.Tests", "Agrobook.Domain.Tests\Agrobook.Domain.Tests.csproj", "{E07D41A5-55DE-4251-ABF2-C22992075DC7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Core", "Agrobook.Core\Agrobook.Core.csproj", "{02F6C2B8-C3EB-4107-8D43-113A0258992F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Client", "Agrobook.Client\Agrobook.Client.csproj", "{28D58658-F70E-4F16-9AFE-CCBAE661A992}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{02F6C2B8-C3EB-4107-8D43-113A0258992F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02F6C2B8-C3EB-4107-8D43-113A0258992F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02F6C2B8-C3EB-4107-8D43-113A0258992F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28D58658-F70E-4F16-9AFE-CCBAE661A992}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28D58658-F70E-4F16-9AFE-CCBAE661A992}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28D58658-F70E-4F16-9AFE-CCBAE661A992}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28D58658-F70E-4F16-9AFE-CCBAE661A992}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,5 +79,6 @@ Global
 		{0FCE4C99-B7C4-489C-B994-A0EA68E8D2DC} = {2773D51A-B4E8-4180-B403-A566314E72D9}
 		{7461B967-5FD5-4BCF-BD16-9932585F1318} = {2773D51A-B4E8-4180-B403-A566314E72D9}
 		{1427506A-1548-4A66-8099-5D46D953C92E} = {2773D51A-B4E8-4180-B403-A566314E72D9}
+		{28D58658-F70E-4F16-9AFE-CCBAE661A992} = {2773D51A-B4E8-4180-B403-A566314E72D9}
 	EndGlobalSection
 EndGlobal

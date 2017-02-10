@@ -75,10 +75,16 @@ namespace Agrobook.Domain.Tests.Utils
             return state;
         }
 
-        public void Save<T>(T updatedState) where T : class, IEventSourced, new()
+        public void Save<T>(T eventSourced) where T : class, IEventSourced, new()
         {
-            this.NewEventsCommitted = updatedState.NewEvents;
-            this.Snapshot = updatedState.TakeSnapshot();
+            // Concurrency check
+            var expectedVersion = eventSourced.Version - eventSourced.NewEvents.Count;
+            if (expectedVersion == ExpectedVersion.NoStream
+                && this.eventStore.ContainsKey(eventSourced.StreamName))
+                throw new UniqueConstraintViolationException(eventSourced.StreamName);
+
+            this.NewEventsCommitted = eventSourced.NewEvents;
+            this.Snapshot = eventSourced.TakeSnapshot();
         }
     }
 

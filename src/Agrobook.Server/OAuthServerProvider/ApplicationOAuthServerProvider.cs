@@ -19,12 +19,12 @@ namespace Agrobook.Server.OAuthServerProvider
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             // DEMO ONLY: Pretend we are doing some sort of REAL checking here:
-            if (context.Password != "password")
-            {
-                context.SetError("invalid_grant", "The user name or password is incorrect.");
-                context.Rejected();
-                return;
-            }
+            //if (context.Password != "password")
+            //{
+            //    context.SetError("invalid_grant", "The user name or password is incorrect.");
+            //    context.Rejected();
+            //    return;
+            //}
 
             // Create o retrieve a ClaimsIdentity to represent the 
             // Authenticated user:

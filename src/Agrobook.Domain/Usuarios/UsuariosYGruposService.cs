@@ -8,10 +8,17 @@ namespace Agrobook.Domain.Usuarios
             : base(repository)
         { }
 
+        public void Handle(CrearNuevoUsuario cmd)
+        {
+            var state = new Usuario();
+            state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario));
+            this.repository.Save(state);
+        }
+
         public void Handle(CrearGrupo cmd)
         {
             var state = new GrupoDeUsuarios();
-            state.Emit(new NuevoGrupoCreado(cmd.IdGrupo));
+            state.Emit(new NuevoGrupoCreado(cmd.Metadatos, cmd.IdGrupo));
             this.repository.Save(state);
         }
 
@@ -21,7 +28,7 @@ namespace Agrobook.Domain.Usuarios
             if (state.YaPerteneceUsuarioAlGrupo(cmd.IdUsuario))
                 return;
 
-            state.Emit(new UsuarioAgregadoAGrupo(cmd.IdGrupo, cmd.IdUsuario));
+            state.Emit(new UsuarioAgregadoAGrupo(cmd.Metadatos, cmd.IdGrupo, cmd.IdUsuario));
             this.repository.Save(state);
         }
     }

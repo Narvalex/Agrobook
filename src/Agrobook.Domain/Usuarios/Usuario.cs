@@ -1,6 +1,12 @@
-﻿namespace Agrobook.Domain.Usuarios
+﻿using Agrobook.Core;
+
+namespace Agrobook.Domain.Usuarios
 {
-    public class Usuario
+    public class Usuario : EventSourced
     {
+        public Usuario()
+        {
+            this.On<NuevoUsuarioCreado>(e => this.StreamName = e.Usuario);
+        }
     }
 }
