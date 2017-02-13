@@ -25,7 +25,6 @@ namespace Agrobook.Server.OAuthServerProvider
             //    context.Rejected();
             //    return;
             //}
-
             // Create o retrieve a ClaimsIdentity to represent the 
             // Authenticated user:
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);

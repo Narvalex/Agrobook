@@ -7,7 +7,6 @@ namespace Agrobook.Server
     {
         static void Main(string[] args)
         {
-
             Console.WriteLine("Loading EventStore...");
             EventStoreLoader.Load();
 

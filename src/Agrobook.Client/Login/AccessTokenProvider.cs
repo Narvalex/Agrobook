@@ -18,6 +18,8 @@ namespace Agrobook.Client.Login
             this.hostUri = hostUri;
         }
 
+        public string Token { get; private set; }
+
         public async Task<Dictionary<string, string>> TryGetTokenDictionary(string userName, string password)
         {
             var pairs = new List<KeyValuePair<string, string>>
@@ -41,6 +43,7 @@ namespace Agrobook.Client.Login
                 throw new Exception($"Error on login attempt: {responseContent}");
 
             var deserialized = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseContent);
+            this.Token = deserialized["access_token"];
             return deserialized;
         }
     }
