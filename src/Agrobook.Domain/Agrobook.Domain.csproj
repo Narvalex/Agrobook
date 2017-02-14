@@ -50,6 +50,7 @@
     <Compile Include="Usuarios\GrupoDeUsuariosEvents.cs" />
     <Compile Include="Usuarios\GrupoDeUsuarios.cs" />
     <Compile Include="Usuarios\Usuario.cs" />
+    <Compile Include="Usuarios\UsuariosYGruposServiceResults.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

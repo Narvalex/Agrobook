@@ -7,12 +7,12 @@ namespace Agrobook.CLI.Controllers
     public class LoginController
     {
         private readonly LoginView view;
-        private readonly AccessTokenProvider tokenProvider;
+        private readonly LoginClient loginClient;
 
-        public LoginController(LoginView view, AccessTokenProvider tokenProvider)
+        public LoginController(LoginView view, LoginClient tokenProvider)
         {
             this.view = view;
-            this.tokenProvider = tokenProvider;
+            this.loginClient = tokenProvider;
         }
 
         public void StartLoginCommandLoop()
@@ -43,11 +43,7 @@ namespace Agrobook.CLI.Controllers
                 break;
             } while (true);
 
-            var tokenDictionary = this.tokenProvider.TryGetTokenDictionary(userName, password).Result;
-            foreach (var item in tokenDictionary)
-            {
-                Console.WriteLine($"{item.Key}: {item.Value}");
-            }
+            this.loginClient.TryLogin(userName, password).Wait();
         }
     }
 }

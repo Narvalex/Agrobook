@@ -2,6 +2,7 @@
 using Agrobook.Domain.Tests.Utils;
 using Agrobook.Domain.Usuarios;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 
 namespace Agrobook.Domain.Tests.Usuarios
@@ -17,15 +18,17 @@ namespace Agrobook.Domain.Tests.Usuarios
                 r => new UsuariosYGruposService(r));
         }
 
+        #region ABM Usuarios
         [TestMethod]
         public void SePuedeCrearUsuarioNuevo()
         {
             this.sut.Given()
-                    .When(s => s.Handle(new CrearNuevoUsuario(TestMeta.New, "Admin")))
+                    .When(s => s.Handle(new CrearNuevoUsuario(TestMeta.New, "Admin", "123")))
                     .Then(e =>
                     {
                         Assert.AreEqual(1, e.Count);
                         Assert.AreEqual("Admin", e.OfType<NuevoUsuarioCreado>().Single().Usuario);
+                        Assert.AreEqual("123", e.OfType<NuevoUsuarioCreado>().Single().Password);
                     })
                     .And<Snapshot>(s =>
                     {
@@ -37,16 +40,18 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void CuandoElUsuarioYaExisteEntoncesNoSePuedeAgregarOtroIgual()
         {
             var usuario = "user1";
-            this.sut.Given(usuario, new NuevoUsuarioCreado(TestMeta.New, "user1"))
+            this.sut.Given(usuario, new NuevoUsuarioCreado(TestMeta.New, "user1", "123"))
                     .When(s =>
                     {
                         Assert.ThrowsException<UniqueConstraintViolationException>(() =>
                         {
-                            s.Handle(new CrearNuevoUsuario(TestMeta.New, "user1"));
+                            s.Handle(new CrearNuevoUsuario(TestMeta.New, "user1", "123"));
                         });
                     });
         }
+        #endregion
 
+        #region ABM Grupos
         [TestMethod]
         public void SePuedeCrearNuevoGrupo()
         {
@@ -85,5 +90,36 @@ namespace Agrobook.Domain.Tests.Usuarios
                         Assert.AreEqual("user1", s.Usuarios[0]);
                     });
         }
+        #endregion
+
+        #region Login
+        [TestMethod]
+        public void NoSePuedeIniciarSesionDeUsuarioQueNoExiste()
+        {
+            var now = DateTime.Now;
+            this.sut
+                .Given()
+                .When(s =>
+                {
+                    var result = s.Handle(new IniciarSesion("non-existent-user", "fakepass", now));
+
+                    Assert.IsFalse(result.LoginExitoso);
+                });
+        }
+
+        [TestMethod]
+        public void SiElUsuarioExisteYLasCredencialesSonValidasSePuedeIniciarSesion()
+        {
+            var now = DateTime.Now;
+            this.sut
+                .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", "123"))
+                .When(s =>
+                {
+                    var result = s.Handle(new IniciarSesion("user1", "123", now));
+
+                    Assert.IsTrue(result.LoginExitoso);
+                });
+        }
+        #endregion
     }
 }

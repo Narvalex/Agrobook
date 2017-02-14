@@ -9,7 +9,7 @@ namespace Agrobook.CLI
 
         static void Main(string[] args)
         {
-            var accessTokenProvider = new AccessTokenProvider("http://localhost:8080");
+            var accessTokenProvider = new LoginClient("http://localhost:8080");
 
             var loginController = new LoginController(new Views.LoginView(), accessTokenProvider);
 

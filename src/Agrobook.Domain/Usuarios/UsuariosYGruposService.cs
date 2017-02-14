@@ -11,7 +11,7 @@ namespace Agrobook.Domain.Usuarios
         public void Handle(CrearNuevoUsuario cmd)
         {
             var state = new Usuario();
-            state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario));
+            state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario, cmd.Password));
             this.repository.Save(state);
         }
 
@@ -30,6 +30,14 @@ namespace Agrobook.Domain.Usuarios
 
             state.Emit(new UsuarioAgregadoAGrupo(cmd.Metadatos, cmd.IdGrupo, cmd.IdUsuario));
             this.repository.Save(state);
+        }
+
+        public LoginResult Handle(IniciarSesion cmd)
+        {
+            var state = this.repository.Get<Usuario>(cmd.Usuario);
+            if (state is null) return new LoginResult(false);
+
+            throw new System.NotImplementedException();
         }
     }
 }

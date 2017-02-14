@@ -1,6 +1,4 @@
-﻿using Agrobook.Server.OAuthServerProvider;
-using Microsoft.Owin;
-using Microsoft.Owin.Security.OAuth;
+﻿using Microsoft.Owin.BuilderProperties;
 using Owin;
 using System;
 using System.Web.Http;
@@ -12,32 +10,19 @@ namespace Agrobook.Server
     /// </summary>
     public class Startup
     {
+        internal static Action OnAppDisposing { get; set; }
+
         /// <summary>
         /// Required by Katana
         /// </summary>
         public void Configuration(IAppBuilder app)
         {
-            this.ConfigureAuth(app);
+            new AppProperties(app.Properties).OnAppDisposing.Register(OnAppDisposing);
 
             var webApiConfiguration = this.GetConfiguration();
 
             // Using the extension method provided by the WebApi.Owin library
             app.UseWebApi(webApiConfiguration);
-        }
-
-        private void ConfigureAuth(IAppBuilder app)
-        {
-            var OAuthOptions = new OAuthAuthorizationServerOptions
-            {
-                TokenEndpointPath = new PathString("/token"),
-                Provider = new ApplicationOAuthServerProvider(),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
-
-                // Only do this for demo!!
-                AllowInsecureHttp = true
-            };
-            app.UseOAuthAuthorizationServer(OAuthOptions);
-            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
         }
 
         private HttpConfiguration GetConfiguration()
