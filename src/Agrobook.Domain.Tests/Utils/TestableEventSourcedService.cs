@@ -50,7 +50,7 @@ namespace Agrobook.Domain.Tests.Utils
     {
         private readonly IDictionary<string, object[]> eventStore = new Dictionary<string, object[]>();
 
-        internal ICollection<object> NewEventsCommitted { get; private set; }
+        internal ICollection<object> NewEventsCommitted { get; private set; } = new List<object>();
         internal ISnapshot Snapshot { get; private set; }
 
         public void PreloadStream(string streamName, params object[] @events)

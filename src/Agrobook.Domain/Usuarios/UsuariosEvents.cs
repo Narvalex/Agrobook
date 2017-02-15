@@ -14,4 +14,11 @@ namespace Agrobook.Domain.Usuarios
         public string Usuario { get; }
         public string Password { get; }
     }
+
+    public class UsuarioInicioSesion : MensajeAuditable
+    {
+        public UsuarioInicioSesion(Metadatos metadatos)
+            : base(metadatos)
+        { }
+    }
 }

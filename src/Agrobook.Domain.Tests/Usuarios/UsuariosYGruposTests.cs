@@ -15,10 +15,37 @@ namespace Agrobook.Domain.Tests.Usuarios
         public UsuariosYGruposTests()
         {
             this.sut = new TestableEventSourcedService<UsuariosYGruposService>(
-                r => new UsuariosYGruposService(r));
+                r => new UsuariosYGruposService(r, new SimpleDateTimeProvider()));
         }
 
         #region ABM Usuarios
+        [TestMethod]
+        public void SiPuedeDetectarQueNoExisteTodaviaElUsuarioAdmin()
+        {
+            this.sut
+                .Given()
+                .When(s =>
+                {
+                    Assert.IsFalse(s.ExisteUsuarioAdmin);
+                });
+        }
+
+        [TestMethod]
+        public void SePuedeCrearElUsuarioAdminSiNoExiste()
+        {
+            this.sut
+                .Given()
+                .When(s =>
+                {
+                    s.CrearUsuarioAdmin();
+                })
+                .Then(e =>
+                {
+                    Assert.AreEqual(1, e.Count);
+                    Assert.AreEqual("changeit", e.OfType<NuevoUsuarioCreado>().Single().Password);
+                });
+        }
+
         [TestMethod]
         public void SePuedeCrearUsuarioNuevo()
         {
@@ -104,6 +131,10 @@ namespace Agrobook.Domain.Tests.Usuarios
                     var result = s.Handle(new IniciarSesion("non-existent-user", "fakepass", now));
 
                     Assert.IsFalse(result.LoginExitoso);
+                })
+                .Then(e =>
+                {
+                    Assert.AreEqual(0, e.Count());
                 });
         }
 
@@ -118,6 +149,27 @@ namespace Agrobook.Domain.Tests.Usuarios
                     var result = s.Handle(new IniciarSesion("user1", "123", now));
 
                     Assert.IsTrue(result.LoginExitoso);
+                })
+                .Then(e =>
+                {
+                    Assert.AreEqual(1, e.OfType<UsuarioInicioSesion>().Count());
+                });
+        }
+
+        [TestMethod]
+        public void SiElUsuarioExisteYLasCredencialesNoSonValidasEntoncesNoSePuedeIniciarSesion()
+        {
+            this.sut
+                .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", "123"))
+                .When(s =>
+                {
+                    var result = s.Handle(new IniciarSesion("user1", "wrongPassword", DateTime.Now));
+
+                    Assert.IsFalse(result.LoginExitoso);
+                })
+                .Then(e =>
+                {
+                    Assert.AreEqual(0, e.Count());
                 });
         }
         #endregion
