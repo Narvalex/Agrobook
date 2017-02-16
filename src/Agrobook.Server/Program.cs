@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin.Hosting;
+﻿using Agrobook.Infrastructure.EventSourcing;
+using Microsoft.Owin.Hosting;
 using System;
 using System.Runtime.InteropServices;
 
@@ -24,7 +25,7 @@ namespace Agrobook.Server
         {
             // Event Store
             Console.WriteLine("Loading EventStore");
-            EventStoreLoader.Load();
+            EventStoreManager.InitializeDb();
             Console.WriteLine("EventStore is starting");
 
             SetConsoleCtrlHandler(
@@ -44,17 +45,17 @@ namespace Agrobook.Server
 
             Console.WriteLine("Starting web server...");
 
-            Startup.OnAppDisposing = EventStoreLoader.TearDown;
+            Startup.OnAppDisposing = EventStoreManager.TearDown;
             WebApp.Start<Startup>(baseUri);
             Console.WriteLine($"Server running at {baseUri} - press Enter to quit");
 
             Console.ReadLine();
-            EventStoreLoader.TearDown();
+            EventStoreManager.TearDown();
         }
 
         static void OnExit()
         {
-            EventStoreLoader.TearDown();
+            EventStoreManager.TearDown();
         }
 
         static void BeforeStartingWebServer()
