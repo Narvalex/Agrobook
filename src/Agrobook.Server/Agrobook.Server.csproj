@@ -95,6 +95,7 @@
     <Compile Include="Login\LoginController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceLocator.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Usuarios\UsuariosController.cs" />
   </ItemGroup>
@@ -132,7 +133,20 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Agrobook.Core\Agrobook.Core.csproj">
+      <Project>{02F6C2B8-C3EB-4107-8D43-113A0258992F}</Project>
+      <Name>Agrobook.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Agrobook.Domain\Agrobook.Domain.csproj">
+      <Project>{6B9AD205-891C-491A-9166-9B7996821C5D}</Project>
+      <Name>Agrobook.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Agrobook.Infrastructure\Agrobook.Infrastructure.csproj">
+      <Project>{8194B76B-7583-48A8-A610-01EFADED7417}</Project>
+      <Name>Agrobook.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="EventStore\clusternode-web\apple-touch-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

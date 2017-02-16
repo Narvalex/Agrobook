@@ -59,7 +59,7 @@ namespace Agrobook.Server
 
         static void BeforeStartingWebServer()
         {
-
+            ServiceLocator.Initialize();
         }
     }
 }
