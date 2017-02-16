@@ -6,7 +6,6 @@ namespace Agrobook.Server
 {
     class Program
     {
-        // This is for cleaning up
         // Source: http://stackoverflow.com/questions/474679/capture-console-exit-c-sharp
         [DllImport("Kernel32")]
         private static extern bool SetConsoleCtrlHandler(ExtConsoleHandler handler, bool add);
@@ -24,19 +23,21 @@ namespace Agrobook.Server
         static void Main(string[] args)
         {
             // Event Store
-            Console.WriteLine("Loading EventStore...");
+            Console.WriteLine("Loading EventStore");
             EventStoreLoader.Load();
+            Console.WriteLine("EventStore is starting");
 
             SetConsoleCtrlHandler(
                 add: true,
                 handler: signal =>
                 {
-                    EventStoreLoader.TearDown();
-
+                    OnExit();
                     // Shutdown right away
                     Environment.Exit(-1);
                     return true;
                 });
+
+            BeforeStartingWebServer();
 
             // Web Api
             var baseUri = "http://localhost:8080";
@@ -49,6 +50,16 @@ namespace Agrobook.Server
 
             Console.ReadLine();
             EventStoreLoader.TearDown();
+        }
+
+        static void OnExit()
+        {
+            EventStoreLoader.TearDown();
+        }
+
+        static void BeforeStartingWebServer()
+        {
+
         }
     }
 }

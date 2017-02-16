@@ -53,12 +53,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IoC\SimpleContainerTests.cs" />
     <Compile Include="Kml\GivenAKmlStringInMemory.cs" />
     <Compile Include="Kml\XmlAndJsonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Agrobook.Core\Agrobook.Core.csproj">
+      <Project>{02F6C2B8-C3EB-4107-8D43-113A0258992F}</Project>
+      <Name>Agrobook.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Agrobook.Infrastructure\Agrobook.Infrastructure.csproj">
+      <Project>{8194B76B-7583-48A8-A610-01EFADED7417}</Project>
+      <Name>Agrobook.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
