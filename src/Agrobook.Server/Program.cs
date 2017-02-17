@@ -7,6 +7,8 @@ namespace Agrobook.Server
 {
     class Program
     {
+        private static EventStoreManager esManager;
+
         // Source: http://stackoverflow.com/questions/474679/capture-console-exit-c-sharp
         [DllImport("Kernel32")]
         private static extern bool SetConsoleCtrlHandler(ExtConsoleHandler handler, bool add);
@@ -25,7 +27,8 @@ namespace Agrobook.Server
         {
             // Event Store
             Console.WriteLine("Loading EventStore");
-            EventStoreManager.InitializeDb();
+            esManager = new EventStoreManager();
+            esManager.InitializeDb();
             Console.WriteLine("EventStore is starting");
 
             SetConsoleCtrlHandler(
@@ -45,17 +48,17 @@ namespace Agrobook.Server
 
             Console.WriteLine("Starting web server...");
 
-            Startup.OnAppDisposing = EventStoreManager.TearDown;
+            Startup.OnAppDisposing = () => esManager.TearDown();
             WebApp.Start<Startup>(baseUri);
             Console.WriteLine($"Server running at {baseUri} - press Enter to quit");
 
             Console.ReadLine();
-            EventStoreManager.TearDown();
+            esManager.TearDown();
         }
 
         static void OnExit()
         {
-            EventStoreManager.TearDown();
+            esManager.TearDown();
         }
 
         static void BeforeStartingWebServer()
