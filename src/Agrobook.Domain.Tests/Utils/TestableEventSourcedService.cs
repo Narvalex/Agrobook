@@ -1,6 +1,7 @@
 ﻿using Agrobook.Core;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Tests.Utils
 {
@@ -60,7 +61,7 @@ namespace Agrobook.Domain.Tests.Utils
             this.eventStore[streamName] = @events;
         }
 
-        public T Get<T>(string streamName) where T : class, IEventSourced, new()
+        public async Task<T> GetAsync<T>(string streamName) where T : class, IEventSourced, new()
         {
             if (!this.eventStore.ContainsKey(streamName))
                 return null;
@@ -72,10 +73,10 @@ namespace Agrobook.Domain.Tests.Utils
             for (int i = 0; i < stream.Length; i++)
                 state.Update(stream[i]);
 
-            return state;
+            return await Task.FromResult(state);
         }
 
-        public void Save<T>(T eventSourced) where T : class, IEventSourced, new()
+        public async Task SaveAsync<T>(T eventSourced) where T : class, IEventSourced, new()
         {
             // Concurrency check
             var expectedVersion = eventSourced.Version - eventSourced.NewEvents.Count;
@@ -83,7 +84,7 @@ namespace Agrobook.Domain.Tests.Utils
                 && this.eventStore.ContainsKey(eventSourced.StreamName))
                 throw new UniqueConstraintViolationException(eventSourced.StreamName);
 
-            this.NewEventsCommitted = eventSourced.NewEvents;
+            this.NewEventsCommitted = await Task.FromResult(eventSourced.NewEvents);
             this.Snapshot = eventSourced.TakeSnapshot();
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Common;
+using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Usuarios
 {
@@ -15,45 +16,45 @@ namespace Agrobook.Domain.Usuarios
         {
             get
             {
-                var usuarioAdmin = this.repository.Get<Usuario>(UsuarioAdmin);
+                var usuarioAdmin = this.repository.GetAsync<Usuario>(UsuarioAdmin).Result;
                 return usuarioAdmin != null;
             }
         }
 
-        public void CrearUsuarioAdmin()
+        public async Task CrearUsuarioAdminAsync()
         {
             var admin = new Usuario();
             admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), "system", "changeit"));
-            this.repository.Save(admin);
+            await this.repository.SaveAsync(admin);
         }
 
-        public void Handle(CrearNuevoUsuario cmd)
+        public async Task HandleAsync(CrearNuevoUsuario cmd)
         {
             var state = new Usuario();
             state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario, cmd.Password));
-            this.repository.Save(state);
+            await this.repository.SaveAsync(state);
         }
 
-        public void Handle(CrearGrupo cmd)
+        public async Task HandleAsync(CrearGrupo cmd)
         {
             var state = new GrupoDeUsuarios();
             state.Emit(new NuevoGrupoCreado(cmd.Metadatos, cmd.IdGrupo));
-            this.repository.Save(state);
+            await this.repository.SaveAsync(state);
         }
 
-        public void Handle(AgregarUsuarioAGrupo cmd)
+        public async Task HandleAsync(AgregarUsuarioAGrupo cmd)
         {
-            var state = this.repository.Get<GrupoDeUsuarios>(cmd.IdGrupo);
+            var state = await this.repository.GetAsync<GrupoDeUsuarios>(cmd.IdGrupo);
             if (state.YaPerteneceUsuarioAlGrupo(cmd.IdUsuario))
                 return;
 
             state.Emit(new UsuarioAgregadoAGrupo(cmd.Metadatos, cmd.IdGrupo, cmd.IdUsuario));
-            this.repository.Save(state);
+            await this.repository.SaveAsync(state);
         }
 
-        public LoginResult Handle(IniciarSesion cmd)
+        public async Task<LoginResult> HandleAsync(IniciarSesion cmd)
         {
-            var usuario = this.repository.Get<Usuario>(cmd.Usuario);
+            var usuario = await this.repository.GetAsync<Usuario>(cmd.Usuario);
             if (usuario is null) return new LoginResult(false);
 
             if (usuario.Password == cmd.Password)
@@ -61,7 +62,7 @@ namespace Agrobook.Domain.Usuarios
             else
                 return new LoginResult(false);
 
-            this.repository.Save(usuario);
+            await this.repository.SaveAsync(usuario);
             return new LoginResult(true);
         }
     }

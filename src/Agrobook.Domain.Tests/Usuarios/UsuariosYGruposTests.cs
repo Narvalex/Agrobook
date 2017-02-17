@@ -4,6 +4,7 @@ using Agrobook.Domain.Usuarios;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Tests.Usuarios
 {
@@ -37,7 +38,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                 .Given()
                 .When(s =>
                 {
-                    s.CrearUsuarioAdmin();
+                    s.CrearUsuarioAdminAsync();
                 })
                 .Then(e =>
                 {
@@ -50,7 +51,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void SePuedeCrearUsuarioNuevo()
         {
             this.sut.Given()
-                    .When(s => s.Handle(new CrearNuevoUsuario(TestMeta.New, "Admin", "123")))
+                    .When(s => s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "Admin", "123")))
                     .Then(e =>
                     {
                         Assert.AreEqual(1, e.Count);
@@ -72,7 +73,14 @@ namespace Agrobook.Domain.Tests.Usuarios
                     {
                         Assert.ThrowsException<UniqueConstraintViolationException>(() =>
                         {
-                            s.Handle(new CrearNuevoUsuario(TestMeta.New, "user1", "123"));
+                            try
+                            {
+                                s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "user1", "123")).Wait();
+                            }
+                            catch (AggregateException ex)
+                            {
+                                throw ex.InnerException;
+                            }
                         });
                     });
         }
@@ -83,7 +91,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void SePuedeCrearNuevoGrupo()
         {
             this.sut.Given()
-                    .When(s => s.Handle(new CrearGrupo("nuevoGrupo", TestMeta.New)))
+                    .When(s => s.HandleAsync(new CrearGrupo("nuevoGrupo", TestMeta.New)).Wait())
                     .Then(e =>
                     {
                         Assert.IsTrue(e.Count == 1);
@@ -96,13 +104,13 @@ namespace Agrobook.Domain.Tests.Usuarios
         }
 
         [TestMethod]
-        public void SePuedeAgregarUsuarioAUnGrupo()
+        public async Task SePuedeAgregarUsuarioAUnGrupo()
         {
             var streamName = "grupoCreado";
             this.sut.Given(streamName, new NuevoGrupoCreado(TestMeta.New, streamName))
-                    .When(s =>
+                    .When(async s =>
                     {
-                        s.Handle(new AgregarUsuarioAGrupo(streamName, "user1", TestMeta.New));
+                        await s.HandleAsync(new AgregarUsuarioAGrupo(streamName, "user1", TestMeta.New));
                     })
                     .Then(e =>
                     {
@@ -121,14 +129,14 @@ namespace Agrobook.Domain.Tests.Usuarios
 
         #region Login
         [TestMethod]
-        public void NoSePuedeIniciarSesionDeUsuarioQueNoExiste()
+        public async Task NoSePuedeIniciarSesionDeUsuarioQueNoExiste()
         {
             var now = DateTime.Now;
             this.sut
                 .Given()
-                .When(s =>
+                .When(async s =>
                 {
-                    var result = s.Handle(new IniciarSesion("non-existent-user", "fakepass", now));
+                    var result = await s.HandleAsync(new IniciarSesion("non-existent-user", "fakepass", now));
 
                     Assert.IsFalse(result.LoginExitoso);
                 })
@@ -146,7 +154,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                 .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", "123"))
                 .When(s =>
                 {
-                    var result = s.Handle(new IniciarSesion("user1", "123", now));
+                    var result = s.HandleAsync(new IniciarSesion("user1", "123", now)).Result;
 
                     Assert.IsTrue(result.LoginExitoso);
                 })
@@ -163,7 +171,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                 .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", "123"))
                 .When(s =>
                 {
-                    var result = s.Handle(new IniciarSesion("user1", "wrongPassword", DateTime.Now));
+                    var result = s.HandleAsync(new IniciarSesion("user1", "wrongPassword", DateTime.Now)).Result;
 
                     Assert.IsFalse(result.LoginExitoso);
                 })

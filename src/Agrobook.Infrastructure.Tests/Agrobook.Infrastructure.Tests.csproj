@@ -56,11 +56,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventSourcing\EventSourcedRepositoryTests.cs" />
     <Compile Include="EventSourcing\EventStoreManagerTests.cs" />
+    <Compile Include="EventSourcing\Fakes\AggregateWithSimpleSnapshot.cs" />
     <Compile Include="IoC\SimpleContainerTests.cs" />
     <Compile Include="Kml\GivenAKmlStringInMemory.cs" />
     <Compile Include="Kml\XmlAndJsonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\JsonSerializerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

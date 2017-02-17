@@ -17,10 +17,13 @@ namespace Agrobook.Infrastructure.EventSourcing
         private readonly UserCredentials userCredentials;
         private readonly IPEndPoint ipEndPoint;
 
+        private bool failFastConnectionWasEstablished = false;
+        private bool resilientConnectionWasEstablished = false;
+
         private IEventStoreConnection failFastConnection = null;
         private IEventStoreConnection resilientConnection = null;
 
-        private object connectionPoolLock = new object();
+        private readonly object resilientConnectionLock = new object();
 
         public EventStoreManager(
             string defaultUserName = "admin",
@@ -55,25 +58,32 @@ namespace Agrobook.Infrastructure.EventSourcing
             this.process.Start();
         }
 
-        public IEventStoreConnection FailFastConnection
+        public async Task<IEventStoreConnection> GetFailFastConnection()
         {
-            get
+            if (!this.failFastConnectionWasEstablished)
             {
-                if (this.failFastConnection is null)
-                    lock (this.connectionPoolLock)
-                        this.EstablishFailFastConnectionAsync().Wait();
-
-                return this.failFastConnection;
+                await this.EstablishFailFastConnectionAsync();
+                this.failFastConnectionWasEstablished = true;
             }
+
+            return this.failFastConnection;
         }
 
         public IEventStoreConnection ResilientConnection
         {
             get
             {
-                if (this.resilientConnection is null)
-                    lock (this.connectionPoolLock)
-                        this.EstablishResilientConnectionAsync().Wait();
+                if (!this.resilientConnectionWasEstablished)
+                {
+                    lock (this.resilientConnectionLock)
+                    {
+                        if (!this.resilientConnectionWasEstablished)
+                        {
+                            this.EstablishResilientConnectionAsync().Wait();
+                            this.resilientConnectionWasEstablished = true;
+                        }
+                    }
+                }
 
                 return this.resilientConnection;
             }
@@ -89,7 +99,7 @@ namespace Agrobook.Infrastructure.EventSourcing
                 .Build();
 
             this.failFastConnection = EventStoreConnection.Create(settings, this.ipEndPoint);
-            this.failFastConnection.Closed += (s, e) => this.EstablishFailFastConnectionAsync().Wait();
+            this.failFastConnection.Closed += async (s, e) => await this.EstablishFailFastConnectionAsync();
 
             await this.failFastConnection.ConnectAsync();
         }
@@ -111,14 +121,11 @@ namespace Agrobook.Infrastructure.EventSourcing
 
         public void TearDown(bool deleteAll = false)
         {
-            lock (this.connectionPoolLock)
-            {
-                if (this.failFastConnection != null)
-                    this.failFastConnection.Close();
+            if (this.failFastConnectionWasEstablished)
+                this.failFastConnection.Close();
 
-                if (this.resilientConnection != null)
-                    this.resilientConnection.Close();
-            }
+            if (this.resilientConnectionWasEstablished)
+                this.resilientConnection.Close();
 
             if (this.process == null || this.process.HasExited) return;
 

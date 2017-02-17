@@ -14,5 +14,11 @@ namespace Agrobook.Core
             if (string.IsNullOrWhiteSpace(text))
                 throw new ArgumentException($"The text of '{argumentName}' should not be null or white space.");
         }
+
+        public static void Positive(int number, string argumentName)
+        {
+            if (number <= 0)
+                throw new ArgumentOutOfRangeException(argumentName, $"{argumentName} should be positive.");
+        }
     }
 }

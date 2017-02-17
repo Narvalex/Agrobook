@@ -18,7 +18,7 @@ namespace Agrobook.Infrastructure.Tests.EventSourcing
         [TestMethod]
         public void CanMakeAFailFastConnection()
         {
-            var connection = this.sut.FailFastConnection;
+            var connection = this.sut.GetFailFastConnection();
 
             Assert.IsNotNull(connection);
         }
