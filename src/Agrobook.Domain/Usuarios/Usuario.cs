@@ -31,7 +31,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class UsuarioSnapshot : Snapshot
     {
-        public UsuarioSnapshot(string streamName, long version, string password) : base(streamName, version)
+        public UsuarioSnapshot(string streamName, int version, string password) : base(streamName, version)
         {
             this.Password = password;
         }

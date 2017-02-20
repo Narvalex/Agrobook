@@ -6,7 +6,7 @@ namespace Agrobook.Core
     public interface IEventSourced
     {
         string StreamName { get; }
-        long Version { get; }
+        int Version { get; }
         void Update(object @event);
         void Emit(object @event);
         ICollection<object> NewEvents { get; }
@@ -16,19 +16,19 @@ namespace Agrobook.Core
     public interface ISnapshot
     {
         string StreamName { get; }
-        long Version { get; }
+        int Version { get; }
     }
 
     public class Snapshot : ISnapshot
     {
-        public Snapshot(string streamName, long version)
+        public Snapshot(string streamName, int version)
         {
             this.StreamName = streamName;
             this.Version = version;
         }
 
         public string StreamName { get; }
-        public long Version { get; }
+        public int Version { get; }
     }
 
     public abstract class EventSourced : IEventSourced
@@ -38,7 +38,7 @@ namespace Agrobook.Core
 
         public ICollection<object> NewEvents => this.newEvents;
 
-        public long Version { get; private set; } = ExpectedVersion.NoStream; // Empty/NoExistent stream, in Event Store
+        public int Version { get; private set; } = ExpectedVersion.NoStream; // Empty/NoExistent stream, in Event Store
 
         public string StreamName { get; protected set; }
 

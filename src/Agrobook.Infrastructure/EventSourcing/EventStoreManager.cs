@@ -127,10 +127,11 @@ namespace Agrobook.Infrastructure.EventSourcing
             if (this.resilientConnectionWasEstablished)
                 this.resilientConnection.Close();
 
-            if (this.process == null || this.process.HasExited) return;
-
-            this.process.Kill();
-            this.process.WaitForExit();
+            if (this.process != null && !this.process.HasExited)
+            {
+                this.process.Kill();
+                this.process.WaitForExit();
+            }
 
             if (deleteAll)
                 Directory.Delete(@".\ESData", true);

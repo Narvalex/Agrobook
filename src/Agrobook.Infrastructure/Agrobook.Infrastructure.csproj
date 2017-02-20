@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,6 +52,8 @@
   <ItemGroup>
     <Compile Include="EventSourcing\EventSourcedRepository.cs" />
     <Compile Include="EventSourcing\EventStoreManager.cs" />
+    <Compile Include="EventSourcing\IRealTimeSnapshotter.cs" />
+    <Compile Include="EventSourcing\RealTimeSnapshotter.cs" />
     <Compile Include="IoC\SimpleContainer.cs" />
     <Compile Include="Login\TokenManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

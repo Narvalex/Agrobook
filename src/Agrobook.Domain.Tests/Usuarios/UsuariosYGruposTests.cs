@@ -38,7 +38,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                 .Given()
                 .When(s =>
                 {
-                    s.CrearUsuarioAdminAsync();
+                    s.CrearUsuarioAdminAsync().Wait();
                 })
                 .Then(e =>
                 {
@@ -51,7 +51,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void SePuedeCrearUsuarioNuevo()
         {
             this.sut.Given()
-                    .When(s => s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "Admin", "123")))
+                    .When(s => s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "Admin", "123")).Wait())
                     .Then(e =>
                     {
                         Assert.AreEqual(1, e.Count);
@@ -104,13 +104,13 @@ namespace Agrobook.Domain.Tests.Usuarios
         }
 
         [TestMethod]
-        public async Task SePuedeAgregarUsuarioAUnGrupo()
+        public void SePuedeAgregarUsuarioAUnGrupo()
         {
             var streamName = "grupoCreado";
             this.sut.Given(streamName, new NuevoGrupoCreado(TestMeta.New, streamName))
-                    .When(async s =>
+                    .When(s =>
                     {
-                        await s.HandleAsync(new AgregarUsuarioAGrupo(streamName, "user1", TestMeta.New));
+                        s.HandleAsync(new AgregarUsuarioAGrupo(streamName, "user1", TestMeta.New)).Wait();
                     })
                     .Then(e =>
                     {
@@ -129,14 +129,14 @@ namespace Agrobook.Domain.Tests.Usuarios
 
         #region Login
         [TestMethod]
-        public async Task NoSePuedeIniciarSesionDeUsuarioQueNoExiste()
+        public void NoSePuedeIniciarSesionDeUsuarioQueNoExiste()
         {
             var now = DateTime.Now;
             this.sut
                 .Given()
-                .When(async s =>
+                .When(s =>
                 {
-                    var result = await s.HandleAsync(new IniciarSesion("non-existent-user", "fakepass", now));
+                    var result = s.HandleAsync(new IniciarSesion("non-existent-user", "fakepass", now)).Result;
 
                     Assert.IsFalse(result.LoginExitoso);
                 })

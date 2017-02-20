@@ -2,6 +2,8 @@
 using Agrobook.Infrastructure.Serialization;
 using EventStore.ClientAPI;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +13,7 @@ namespace Agrobook.Infrastructure.EventSourcing
     {
         private readonly Func<Task<IEventStoreConnection>> connectionFactory;
         private readonly IJsonSerializer serializer;
+        private readonly IRealTimeSnapshotter realTimeSnapshotter;
 
         private readonly int readPageSize;
         private readonly int writePageSize;
@@ -18,23 +21,26 @@ namespace Agrobook.Infrastructure.EventSourcing
         public EventSourcedRepository(
             Func<Task<IEventStoreConnection>> connectionFactory,
             IJsonSerializer serializer,
+            IRealTimeSnapshotter realTimeSnapshotter,
             int readPageSize = 500,
             int writePageSize = 500)
         {
             Ensure.NotNull(connectionFactory, nameof(connectionFactory));
             Ensure.NotNull(serializer, nameof(serializer));
+            Ensure.NotNull(realTimeSnapshotter, nameof(realTimeSnapshotter));
             Ensure.Positive(readPageSize, nameof(readPageSize));
             Ensure.Positive(writePageSize, nameof(writePageSize));
 
             this.connectionFactory = connectionFactory;
             this.serializer = serializer;
+            this.realTimeSnapshotter = realTimeSnapshotter;
             this.readPageSize = readPageSize;
             this.writePageSize = writePageSize;
         }
 
         public async Task<T> GetAsync<T>(string streamName) where T : class, IEventSourced, new()
         {
-            var state = new T();
+            var eventSourced = new T();
 
             var connection = await this.connectionFactory.Invoke();
 
@@ -53,6 +59,7 @@ namespace Agrobook.Infrastructure.EventSourcing
                         foreach (var e in currentSlice.Events)
                         {
                             var deserialized = this.Deserialize(e);
+                            eventSourced.Update(deserialized);
                         }
                         break;
 
@@ -60,27 +67,70 @@ namespace Agrobook.Infrastructure.EventSourcing
                         return null;
 
                     case SliceReadStatus.StreamDeleted:
-                        break;
+                        throw new InvalidOperationException($"The stream {streamName} was deleted");
 
                     default:
-                        break;
+                        throw new NotSupportedException($"The status of type {currentSlice.Status} is not supported");
                 }
 
-            } while (true);
+            } while (!currentSlice.IsEndOfStream);
 
-            throw new InvalidOperationException();
-
+            return eventSourced;
         }
 
-        public Task SaveAsync<T>(T updatedState) where T : class, IEventSourced, new()
+        public async Task SaveAsync<T>(T eventSourced) where T : class, IEventSourced, new()
         {
-            throw new NotImplementedException();
+            var newEvents = eventSourced.NewEvents;
+            if (newEvents.Count < 1)
+                return;
+
+            var connection = await this.connectionFactory.Invoke();
+            var commitId = Guid.NewGuid();
+            var newBuiltEvents = newEvents.Select(e => this.BuildEventData(commitId, e)).ToArray();
+            var expectedVersion = eventSourced.Version - newBuiltEvents.Length;
+
+            if (newBuiltEvents.Length <= this.writePageSize)
+                await connection.AppendToStreamAsync(eventSourced.StreamName, expectedVersion, newBuiltEvents);
+            else
+            {
+                var transaction = await connection.StartTransactionAsync(eventSourced.StreamName, expectedVersion);
+
+                var position = 0;
+                while (position < newBuiltEvents.Length)
+                {
+                    var pageEvents = newBuiltEvents.Skip(position).Take(this.writePageSize);
+                    await transaction.WriteAsync(pageEvents);
+                    position += this.writePageSize;
+                }
+
+                await transaction.CommitAsync();
+            }
+
+            this.realTimeSnapshotter.Cache(eventSourced.TakeSnapshot());
         }
 
         private object Deserialize(ResolvedEvent e)
         {
             var serialized = Encoding.UTF8.GetString(e.Event.Data);
             return this.serializer.Deserialize(serialized);
+        }
+
+        private EventData BuildEventData(Guid commitId, object @event)
+        {
+            var eventId = Guid.NewGuid();
+
+            var eventHeaders = new KeyValuePair<string, string>[]
+            {
+                new KeyValuePair<string, string>("commitId", commitId.ToString()),
+                new KeyValuePair<string, string>("eventId", eventId.ToString())
+            };
+
+            var metadataBytes = Encoding.UTF8.GetBytes(this.serializer.Serialize(eventHeaders));
+            var dataBytes = Encoding.UTF8.GetBytes(this.serializer.Serialize(@event));
+
+            var eventType = @event.GetType().Name.ToLowerCamelCase();
+
+            return new EventData(eventId, eventType, true, dataBytes, metadataBytes);
         }
     }
 }

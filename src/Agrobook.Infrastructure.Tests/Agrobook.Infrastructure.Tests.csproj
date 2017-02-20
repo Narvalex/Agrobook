@@ -56,9 +56,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventSourcing\EventSourcedRepositoryTests.cs" />
+    <Compile Include="EventSourcing\EventSourcedRepositoryIntegrationTests.cs" />
     <Compile Include="EventSourcing\EventStoreManagerTests.cs" />
-    <Compile Include="EventSourcing\Fakes\AggregateWithSimpleSnapshot.cs" />
+    <Compile Include="EventSourcing\Fakes\ComplexAggregate.cs" />
+    <Compile Include="EventSourcing\Fakes\TestableRealTimeSnapshotters.cs" />
     <Compile Include="IoC\SimpleContainerTests.cs" />
     <Compile Include="Kml\GivenAKmlStringInMemory.cs" />
     <Compile Include="Kml\XmlAndJsonTests.cs" />

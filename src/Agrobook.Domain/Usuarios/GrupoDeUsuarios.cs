@@ -30,7 +30,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class GrupoDeUsuariosSnapshot : Snapshot
     {
-        public GrupoDeUsuariosSnapshot(string streamName, long version,
+        public GrupoDeUsuariosSnapshot(string streamName, int version,
             string[] usuarios) : base(streamName, version)
         {
             this.Usuarios = usuarios;
