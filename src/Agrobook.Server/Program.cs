@@ -1,14 +1,18 @@
-﻿using Agrobook.Infrastructure.EventSourcing;
+﻿using Agrobook.Core;
+using Agrobook.Domain.Usuarios;
+using Agrobook.Infrastructure.EventSourcing;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace Agrobook.Server
 {
     class Program
     {
-        private static EventStoreManager esManager;
+        private static ISimpleContainer container;
 
+        #region Extern References
         // Source: http://stackoverflow.com/questions/474679/capture-console-exit-c-sharp
         [DllImport("Kernel32")]
         private static extern bool SetConsoleCtrlHandler(ExtConsoleHandler handler, bool add);
@@ -22,14 +26,19 @@ namespace Agrobook.Server
             CTRL_LOGOFF_EVENT = 5,
             CTRL_SHUTDOWN_EVENT = 6
         }
+        #endregion
 
         static void Main(string[] args)
         {
-            // Event Store
-            Console.WriteLine("Loading EventStore");
-            esManager = new EventStoreManager();
-            esManager.InitializeDb();
-            Console.WriteLine("EventStore is starting");
+            Console.Write("Resolving dependencies...");
+            ServiceLocator.Initialize();
+            container = ServiceLocator.Container;
+            Console.WriteLine("Done");
+
+            Console.Write("Initializing EventStore...");
+            var es = ServiceLocator.Container.ResolveSingleton<EventStoreManager>();
+            es.InitializeDb();
+            Console.WriteLine("Done");
 
             SetConsoleCtrlHandler(
                 add: true,
@@ -41,29 +50,66 @@ namespace Agrobook.Server
                     return true;
                 });
 
-            BeforeStartingWebServer();
-
             // Web Api
             var baseUri = "http://localhost:8080";
 
-            Console.WriteLine("Starting web server...");
+            OnEventStoreStarted();
 
-            Startup.OnAppDisposing = () => esManager.TearDown();
-            WebApp.Start<Startup>(baseUri);
+            Console.Write("Starting web server...");
+
+            WebApiStartup.OnAppDisposing = () => OnExit();
+            WebApp.Start<WebApiStartup>(baseUri);
+            Console.WriteLine("Done");
             Console.WriteLine($"Server running at {baseUri} - press Enter to quit");
 
-            Console.ReadLine();
-            esManager.TearDown();
+            string line;
+            do
+            {
+                Console.WriteLine("Type exit to shut down");
+                line = Console.ReadLine();
+            }
+            while (!line.Equals("exit", StringComparison.InvariantCultureIgnoreCase));
+
+            OnExit();
         }
 
-        static void OnExit()
+        private static void OnExit()
         {
-            esManager.TearDown();
+            container
+                .ResolveSingleton<EventStoreManager>()
+                .TearDown();
         }
 
-        static void BeforeStartingWebServer()
+        private static void OnEventStoreStarted()
         {
-            ServiceLocator.Initialize();
+            var userService = container.ResolveSingleton<UsuariosYGruposService>();
+            var intentos = 0;
+            var maxRetries = 3;
+            try
+            {
+                CrearUsuarioAdminSiHaceFalta(userService);
+            }
+            catch (Exception ex)
+            {
+                intentos++;
+                Console.WriteLine("Error al verificar usuario admin");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine($"Intento {intentos}/{maxRetries}");
+                if (intentos >= maxRetries)
+                    throw;
+                Thread.Sleep(1500);
+                CrearUsuarioAdminSiHaceFalta(userService);
+            }
+        }
+
+        private static void CrearUsuarioAdminSiHaceFalta(UsuariosYGruposService userService)
+        {
+            if (!userService.ExisteUsuarioAdmin)
+            {
+                Console.Write("Se detectó la ausencia del usuario admin. Creando uno...");
+                userService.CrearUsuarioAdminAsync().Wait();
+                Console.WriteLine("Listo!");
+            }
         }
     }
 }

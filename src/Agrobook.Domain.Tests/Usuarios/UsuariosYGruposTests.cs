@@ -4,7 +4,6 @@ using Agrobook.Domain.Usuarios;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Tests.Usuarios
 {
@@ -43,7 +42,19 @@ namespace Agrobook.Domain.Tests.Usuarios
                 .Then(e =>
                 {
                     Assert.AreEqual(1, e.Count);
+                    Assert.AreEqual("admin", e.OfType<NuevoUsuarioCreado>().Single().Usuario);
                     Assert.AreEqual("changeit", e.OfType<NuevoUsuarioCreado>().Single().Password);
+                });
+        }
+
+        [TestMethod]
+        public void SePuedeDetectarQueSiExisteElUsuarioAdminUnaVezCreado()
+        {
+            this.sut
+                .Given("admin", new NuevoUsuarioCreado(TestMeta.New, "admin", "password"))
+                .When(s =>
+                {
+                    Assert.IsTrue(s.ExisteUsuarioAdmin);
                 });
         }
 

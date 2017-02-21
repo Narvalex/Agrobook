@@ -24,7 +24,7 @@ namespace Agrobook.Domain.Usuarios
         public async Task CrearUsuarioAdminAsync()
         {
             var admin = new Usuario();
-            admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), "system", "changeit"));
+            admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), "admin", "changeit"));
             await this.repository.SaveAsync(admin);
         }
 

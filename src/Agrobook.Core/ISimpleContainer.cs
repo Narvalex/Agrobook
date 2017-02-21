@@ -5,13 +5,13 @@ namespace Agrobook.Core
     public interface ISimpleContainer
     {
         /// <summary>
-        /// Resolves the unique instance of <typeparamref name="T"/>. If the the dependency is not 
+        /// Resolves the unique instance of the specified object. If the the dependency is not 
         /// found then throws <see cref="DependencyNotFoundException"/>.
         /// </summary>
         T ResolveSingleton<T>();
 
         /// <summary>
-        /// Resolves a new instance of <typeparamref name="T"/>, as configured. If the factory method is 
+        /// Resolves a new instance of T, as configured. If the factory method is 
         /// not found then throws <see cref="FactoryMethodNotFoundException"/>.
         /// </summary>
         T ResolveNewOf<T>();
@@ -19,7 +19,7 @@ namespace Agrobook.Core
         /// <summary>
         /// Registers an instance in the container as a singleton. If it already exists an instance of that type, 
         /// the old instance will be replaced.
-        /// </summary>tance.</param>
+        /// </summary>
         void Register<T>(T instance);
 
         /// <summary>

@@ -21,19 +21,19 @@ namespace Agrobook.Infrastructure.EventSourcing
         public EventSourcedRepository(
             Func<Task<IEventStoreConnection>> connectionFactory,
             IJsonSerializer serializer,
-            ISnapshotCache realTimeSnapshotter,
+            ISnapshotCache snapshotCache,
             int readPageSize = 500,
             int writePageSize = 500)
         {
             Ensure.NotNull(connectionFactory, nameof(connectionFactory));
             Ensure.NotNull(serializer, nameof(serializer));
-            Ensure.NotNull(realTimeSnapshotter, nameof(realTimeSnapshotter));
+            Ensure.NotNull(snapshotCache, nameof(snapshotCache));
             Ensure.Positive(readPageSize, nameof(readPageSize));
             Ensure.Positive(writePageSize, nameof(writePageSize));
 
             this.connectionFactory = connectionFactory;
             this.serializer = serializer;
-            this.snapshotCache = realTimeSnapshotter;
+            this.snapshotCache = snapshotCache;
             this.readPageSize = readPageSize;
             this.writePageSize = writePageSize;
         }
