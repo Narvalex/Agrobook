@@ -52,8 +52,8 @@
   <ItemGroup>
     <Compile Include="EventSourcing\EventSourcedRepository.cs" />
     <Compile Include="EventSourcing\EventStoreManager.cs" />
-    <Compile Include="EventSourcing\IRealTimeSnapshotter.cs" />
-    <Compile Include="EventSourcing\RealTimeSnapshotter.cs" />
+    <Compile Include="EventSourcing\ISnapshotCache.cs" />
+    <Compile Include="EventSourcing\SnapshotCache.cs" />
     <Compile Include="IoC\SimpleContainer.cs" />
     <Compile Include="Login\TokenManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

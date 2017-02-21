@@ -13,7 +13,7 @@ namespace Agrobook.Core
         /// <summary>
         /// Saves all new events emmited by the event sourced object. If no new events, then no-op. 
         /// </summary>
-        Task SaveAsync<T>(T eventSourced) where T : class, IEventSourced, new();
+        Task SaveAsync(IEventSourced eventSourced);
     }
 
     public class UniqueConstraintViolationException : Exception

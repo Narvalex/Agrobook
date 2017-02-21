@@ -7,6 +7,7 @@ namespace Agrobook.Core
     {
         string StreamName { get; }
         int Version { get; }
+        void Rehydrate(ISnapshot snapshot);
         void Update(object @event);
         void Emit(object @event);
         ICollection<object> NewEvents { get; }
@@ -58,6 +59,11 @@ namespace Agrobook.Core
         {
             ((IEventSourced)this).Update(@event);
             this.newEvents.Add(@event);
+        }
+
+        void IEventSourced.Rehydrate(ISnapshot snapshot)
+        {
+            this.Rehydrate(snapshot);
         }
 
         public virtual void Rehydrate(ISnapshot snapshot)

@@ -17,7 +17,13 @@ namespace Agrobook.Core
 
         public static void Positive(int number, string argumentName)
         {
-            if (number <= 0)
+            if (number < 0)
+                throw new ArgumentOutOfRangeException(argumentName, $"{argumentName} should be positive.");
+        }
+
+        public static void Positive(double number, string argumentName)
+        {
+            if (number < 0)
                 throw new ArgumentOutOfRangeException(argumentName, $"{argumentName} should be positive.");
         }
     }

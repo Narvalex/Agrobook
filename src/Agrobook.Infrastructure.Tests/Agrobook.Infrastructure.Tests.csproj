@@ -53,13 +53,15 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventSourcing\EventSourcedRepositoryIntegrationTests.cs" />
     <Compile Include="EventSourcing\EventStoreManagerTests.cs" />
     <Compile Include="EventSourcing\Fakes\ComplexAggregate.cs" />
-    <Compile Include="EventSourcing\Fakes\TestableRealTimeSnapshotters.cs" />
+    <Compile Include="EventSourcing\Fakes\TestableSnapshotCache.cs" />
+    <Compile Include="EventSourcing\SnapshotCacheTests.cs" />
     <Compile Include="IoC\SimpleContainerTests.cs" />
     <Compile Include="Kml\GivenAKmlStringInMemory.cs" />
     <Compile Include="Kml\XmlAndJsonTests.cs" />

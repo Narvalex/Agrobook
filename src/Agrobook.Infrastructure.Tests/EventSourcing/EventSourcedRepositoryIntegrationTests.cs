@@ -45,7 +45,8 @@ namespace Agrobook.Infrastructure.Tests.EventSourcing
 
             // Snapshotter
             this.t7_SnapshotterIsCalledOnSave();
-            this.t8_GivenNoSnapshotWhenSnapshotterIsCalledOnGetThenGoesToDb();
+            this.t8_GivenNoSnapshotAndNoStreamWhenSnapshotterIsCalledOnGetThenGoesToDbButReturnsNull();
+            this.t9_GivenSnapshotWhenRetrievingThenInmediatelyReturnsTheInMemoryState();
         }
 
         public void t1_GivenNoStreamWhenTryingToGetThenReturnsNull()
@@ -156,11 +157,26 @@ namespace Agrobook.Infrastructure.Tests.EventSourcing
             Assert.AreEqual(beforeCount + 1, this.snapshotter.ToCacheCallCount);
         }
 
-        private void t8_GivenNoSnapshotWhenSnapshotterIsCalledOnGetThenGoesToDb()
+        private void t8_GivenNoSnapshotAndNoStreamWhenSnapshotterIsCalledOnGetThenGoesToDbButReturnsNull()
         {
             var beforeCount = this.snapshotter.ToRehydrateCallCount;
-            var aggregate = this.sut.GetAsync<ComplexAggregate>("no-snapshot");
+            var aggregate = this.sut.GetAsync<ComplexAggregate>("no-snapshot-no-stream").Result;
             Assert.AreEqual(beforeCount + 1, this.snapshotter.ToRehydrateCallCount);
+            Assert.IsNull(aggregate);
+        }
+
+        private void t9_GivenSnapshotWhenRetrievingThenInmediatelyReturnsTheInMemoryState()
+        {
+            var beforeCount = this.snapshotter.ToRehydrateCallCount;
+
+            this.snapshotter.SetSnapshot(new ComplexAggregateSnapshot("t9", 10, 11));
+            var aggregate = this.sut.GetAsync<ComplexAggregate>("t9").Result;
+
+            Assert.AreEqual(beforeCount + 1, this.snapshotter.ToRehydrateCallCount);
+            Assert.IsNotNull(aggregate);
+            Assert.AreEqual("t9", aggregate.StreamName);
+            Assert.AreEqual(10, aggregate.Version);
+            Assert.AreEqual(11, aggregate.StuffHappenedCount);
         }
 
         [TestCleanup]

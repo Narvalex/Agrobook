@@ -13,7 +13,7 @@ namespace Agrobook.Infrastructure.EventSourcing
     {
         private readonly Func<Task<IEventStoreConnection>> connectionFactory;
         private readonly IJsonSerializer serializer;
-        private readonly IRealTimeSnapshotter realTimeSnapshotter;
+        private readonly ISnapshotCache realTimeSnapshotter;
 
         private readonly int readPageSize;
         private readonly int writePageSize;
@@ -21,7 +21,7 @@ namespace Agrobook.Infrastructure.EventSourcing
         public EventSourcedRepository(
             Func<Task<IEventStoreConnection>> connectionFactory,
             IJsonSerializer serializer,
-            IRealTimeSnapshotter realTimeSnapshotter,
+            ISnapshotCache realTimeSnapshotter,
             int readPageSize = 500,
             int writePageSize = 500)
         {
@@ -41,6 +41,11 @@ namespace Agrobook.Infrastructure.EventSourcing
         public async Task<T> GetAsync<T>(string streamName) where T : class, IEventSourced, new()
         {
             var eventSourced = new T();
+            if (this.realTimeSnapshotter.TryGet(streamName, out var snapshot))
+            {
+                eventSourced.Rehydrate(snapshot);
+                return eventSourced;
+            }
 
             var connection = await this.connectionFactory.Invoke();
 
@@ -78,7 +83,7 @@ namespace Agrobook.Infrastructure.EventSourcing
             return eventSourced;
         }
 
-        public async Task SaveAsync<T>(T eventSourced) where T : class, IEventSourced, new()
+        public async Task SaveAsync(IEventSourced eventSourced)
         {
             var newEvents = eventSourced.NewEvents;
             if (newEvents.Count < 1)

@@ -76,7 +76,7 @@ namespace Agrobook.Domain.Tests.Utils
             return await Task.FromResult(state);
         }
 
-        public async Task SaveAsync<T>(T eventSourced) where T : class, IEventSourced, new()
+        public async Task SaveAsync(IEventSourced eventSourced)
         {
             // Concurrency check
             var expectedVersion = eventSourced.Version - eventSourced.NewEvents.Count;
