@@ -52,6 +52,14 @@
       <Project>{02f6c2b8-c3eb-4107-8d43-113a0258992f}</Project>
       <Name>Agrobook.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Agrobook.Domain\Agrobook.Domain.csproj">
+      <Project>{6B9AD205-891C-491A-9166-9B7996821C5D}</Project>
+      <Name>Agrobook.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Agrobook.Infrastructure\Agrobook.Infrastructure.csproj">
+      <Project>{8194B76B-7583-48A8-A610-01EFADED7417}</Project>
+      <Name>Agrobook.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

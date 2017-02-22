@@ -19,7 +19,7 @@ namespace Agrobook.Server
 
             var dateTimeProvider = new SimpleDateTimeProvider();
 
-            var jsonSerializer = new JsonSerializer();
+            var jsonSerializer = new JsonTextSerializer();
 
             var snapshotCache = new SnapshotCache();
 
@@ -27,6 +27,7 @@ namespace Agrobook.Server
 
             var usuariosService = new UsuariosYGruposService(eventSourcedRepository, dateTimeProvider);
 
+            container.Register<IDateTimeProvider>(dateTimeProvider);
             container.Register<EventStoreManager>(es);
             container.Register<UsuariosYGruposService>(usuariosService);
         }

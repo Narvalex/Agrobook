@@ -1,4 +1,6 @@
 ﻿using Agrobook.Core;
+using Agrobook.Domain.Usuarios;
+using Agrobook.Infrastructure.Serialization;
 using System;
 using System.Net.Http;
 using System.Text;
@@ -9,15 +11,18 @@ namespace Agrobook.Client.Login
     public class LoginClient
     {
         private readonly string hostUri;
+        private readonly IJsonSerializer serializer;
 
-        public LoginClient(string hostUri)
+        public LoginClient(string hostUri, IJsonSerializer serializer)
         {
             Ensure.NotNullOrWhiteSpace(hostUri, nameof(hostUri));
+            Ensure.NotNull(serializer, nameof(serializer));
 
             this.hostUri = hostUri;
+            this.serializer = serializer;
         }
 
-        public async Task TryLogin(string userName, string password)
+        public async Task<LoginResult> TryLogin(string userName, string password)
         {
             HttpResponseMessage response;
             using (var client = new HttpClient())
@@ -27,9 +32,12 @@ namespace Agrobook.Client.Login
                 response = await client.PostAsync(tokenEndpoint, stringContent);
             }
 
-            var responseContent = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
-                throw new Exception($"Error on login attempt: {responseContent}");
+                throw new Exception($"Error on login. Status Code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = this.serializer.Deserialize<LoginResult>(responseContent);
+            return result;
         }
     }
 }

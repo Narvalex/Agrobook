@@ -22,10 +22,10 @@ namespace Agrobook.Infrastructure.Tests.EventSourcing
             this.esManager = new EventStoreManager();
             this.TearDown(); // Cleans trash if remained...
             this.esManager.InitializeDb();
-            Thread.Sleep(TimeSpan.FromSeconds(3)); // Warmingup the Db
+            Thread.Sleep(TimeSpan.FromSeconds(4)); // Warmingup the Db
 
             this.snapshotter = new TestableRealTimeSnapshotter();
-            this.sut = new EventSourcedRepository(this.esManager.GetFailFastConnection, new JsonSerializer(), this.snapshotter);
+            this.sut = new EventSourcedRepository(this.esManager.GetFailFastConnection, new JsonTextSerializer(), this.snapshotter);
         }
 
         [TestMethod]
@@ -121,7 +121,7 @@ namespace Agrobook.Infrastructure.Tests.EventSourcing
         {
             this.sut = new EventSourcedRepository(
                 this.esManager.GetFailFastConnection,
-                new JsonSerializer(),
+                new JsonTextSerializer(),
                 this.snapshotter,
                 2, 2);
 

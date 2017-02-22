@@ -1,5 +1,7 @@
-﻿using Agrobook.CLI.Views;
+﻿using Agrobook.CLI.Utils;
+using Agrobook.CLI.Views;
 using Agrobook.Client.Login;
+using Agrobook.Domain.Usuarios;
 using System;
 
 namespace Agrobook.CLI.Controllers
@@ -43,7 +45,21 @@ namespace Agrobook.CLI.Controllers
                 break;
             } while (true);
 
-            this.loginClient.TryLogin(userName, password).Wait();
+            LoginResult result;
+            try
+            {
+                result = this.loginClient.TryLogin(userName, password).Result;
+                if (result.LoginExitoso)
+                    this.view.PrintLoginSuccessfully();
+                else
+                    this.view.PrintLoginError("Credenciales inválidas");
+            }
+            catch (Exception ex)
+            {
+                this.view.PrintLoginError(ex.GetAllMessages());
+            }
+
+            Console.ReadLine();
         }
     }
 }

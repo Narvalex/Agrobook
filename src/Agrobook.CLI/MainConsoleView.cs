@@ -2,7 +2,7 @@
 
 namespace Agrobook.CLI
 {
-    public class ConsoleView
+    public class MainConsoleView
     {
         public void Readraw()
         {

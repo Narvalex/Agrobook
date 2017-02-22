@@ -7,14 +7,14 @@ namespace Agrobook.Infrastructure.Tests.Serialization
     [TestClass]
     public class JsonSerializerTests
     {
-        private JsonSerializer sut;
+        private JsonTextSerializer sut;
 
         private readonly SimplePoco simplePoco = new SimplePoco("user", 18);
         private const string _serializedSimplePoco = "{\"$type\":\"Agrobook.Infrastructure.Tests.Serialization.SimplePoco, Agrobook.Infrastructure.Tests\",\"name\":\"user\",\"age\":18}";
 
         public JsonSerializerTests()
         {
-            this.sut = new JsonSerializer();
+            this.sut = new JsonTextSerializer();
         }
 
         [TestMethod]

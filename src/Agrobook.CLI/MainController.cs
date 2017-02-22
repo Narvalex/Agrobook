@@ -3,12 +3,12 @@ using System;
 
 namespace Agrobook.CLI
 {
-    public class Controller
+    public class MainController
     {
-        private readonly ConsoleView view;
+        private readonly MainConsoleView view;
         private readonly LoginController loginController;
 
-        public Controller(ConsoleView view, LoginController loginController)
+        public MainController(MainConsoleView view, LoginController loginController)
         {
             this.view = view;
             this.loginController = loginController;
@@ -16,9 +16,9 @@ namespace Agrobook.CLI
 
         public void StartCommandLoop()
         {
-            this.view.Readraw();
             do
             {
+                this.view.Readraw();
                 var cmd = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(cmd))
                 {

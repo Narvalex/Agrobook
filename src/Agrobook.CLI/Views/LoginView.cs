@@ -32,11 +32,12 @@ namespace Agrobook.CLI.Views
         public void PrintLoginError(string errorMessage = "")
         {
             Console.WriteLine($"Login error. {errorMessage}");
+            Console.WriteLine("Press enter to continue");
         }
 
         public void PrintLoginSuccessfully()
         {
-            Console.WriteLine("You are now sucessfully logged in");
+            Console.WriteLine("You are now sucessfully logged in. Press enter to continue.");
         }
     }
 }

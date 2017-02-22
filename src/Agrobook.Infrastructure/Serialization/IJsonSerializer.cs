@@ -5,5 +5,7 @@
         string Serialize(object value);
 
         object Deserialize(string value);
+
+        T Deserialize<T>(string value);
     }
 }

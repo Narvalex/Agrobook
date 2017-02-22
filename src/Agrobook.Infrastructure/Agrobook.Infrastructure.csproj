@@ -54,11 +54,12 @@
     <Compile Include="EventSourcing\EventStoreManager.cs" />
     <Compile Include="EventSourcing\ISnapshotCache.cs" />
     <Compile Include="EventSourcing\SnapshotCache.cs" />
+    <Compile Include="Http\HttpClientExtensions.cs" />
     <Compile Include="IoC\SimpleContainer.cs" />
     <Compile Include="Login\TokenManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\IJsonSerializer.cs" />
-    <Compile Include="Serialization\JsonSerializer.cs" />
+    <Compile Include="Serialization\JsonTextSerializer.cs" />
     <Compile Include="SimpleDateTimeProvider.cs" />
   </ItemGroup>
   <ItemGroup>
