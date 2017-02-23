@@ -1,8 +1,7 @@
-/// <reference path="_all.ts" />
-var Home;
-(function (Home) {
-    angular.module("app", ['ngMaterial', 'ngMdIcons'])
-        .controller('toolbar-headerController', Home.ToolbarHeaderController)
+/// <reference path="../_all.ts" />
+var geoArea;
+(function (geoArea) {
+    angular.module("geoArea", ['ngMaterial', 'ngMdIcons'])
         .config(function ($mdIconProvider, $mdThemingProvider) {
         $mdIconProvider
             .defaultIconSet('./app/assets/svg/avatars.svg', 128)
@@ -11,5 +10,5 @@ var Home;
             .primaryPalette('green')
             .accentPalette('blue');
     });
-})(Home || (Home = {}));
-//# sourceMappingURL=boot.js.map
+})(geoArea || (geoArea = {}));
+//# sourceMappingURL=geoArea.js.map

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Owin.BuilderProperties;
+using Newtonsoft.Json.Serialization;
 using Owin;
 using System;
 using System.Web.Http;
@@ -36,6 +37,8 @@ namespace Agrobook.Server
 
             // supporting attributed routes :D
             config.MapHttpAttributeRoutes();
+
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
             return config;
         }

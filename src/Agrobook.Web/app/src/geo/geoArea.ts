@@ -1,8 +1,7 @@
-﻿/// <reference path="_all.ts" />
+﻿/// <reference path="../_all.ts" />
 
-module Home {
-    angular.module("app", ['ngMaterial', 'ngMdIcons'])
-        .controller('toolbar-headerController', ToolbarHeaderController)
+module geoArea {
+    angular.module("geoArea", ['ngMaterial', 'ngMdIcons'])
         .config((
             $mdIconProvider: angular.material.IIconProvider,
             $mdThemingProvider: angular.material.IThemingProvider) => {

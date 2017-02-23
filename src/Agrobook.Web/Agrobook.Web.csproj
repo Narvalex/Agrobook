@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\assets\app.css" />
+    <Content Include="app\assets\home.css" />
     <Content Include="app\assets\svg\avatars.svg" />
     <Content Include="app\assets\svg\google_plus.svg" />
     <Content Include="app\assets\svg\hangouts.svg" />
@@ -566,16 +567,13 @@
     <Content Include="app\bower_components\angular\angular.min.js" />
     <Content Include="app\bower_components\angular\index.js" />
     <Content Include="app\dist\boot.js" />
-    <Content Include="app\dist\controllers\mainController.js" />
-    <Content Include="app\dist\models.js" />
-    <Content Include="app\dist\services\userService.js" />
-    <Content Include="app\dist\view\main-content.html" />
-    <Content Include="app\dist\view\sidenav.html" />
-    <Content Include="app\dist\view\tab-bio.html" />
-    <Content Include="app\dist\view\tab-notes.html" />
-    <Content Include="app\dist\view\toolbar-header.html" />
+    <Content Include="app\dist\geo\geoArea.js" />
+    <Content Include="app\dist\home\main-content.html" />
+    <Content Include="app\dist\home\toolbar-header.html" />
+    <Content Include="app\dist\home\toolbar-headerController.js" />
     <Content Include="app\dist\_all.js" />
-    <Content Include="app\index.html" />
+    <Content Include="areas\geo.html" />
+    <Content Include="index.html" />
     <Content Include="packages.config" />
     <Content Include=".bowerrc" />
     <Content Include="app\bower_components\angular-animate\.bower.json" />
@@ -658,16 +656,11 @@
     <Content Include="app\bower_components\angular\LICENSE.md" />
     <Content Include="app\bower_components\angular\package.json" />
     <Content Include="app\bower_components\angular\README.md" />
-    <Content Include="app\dist\boot.js.map" />
-    <Content Include="app\dist\_all.js.map" />
     <Content Include="app\src\tsconfig.json" />
     <Content Include="bower.json" />
     <Content Include="typings.json" />
     <Content Include="typings\globals\jquery\typings.json" />
     <Content Include="typings\globals\angularjs\legacy\angular\typings.json" />
-    <Content Include="app\dist\controllers\mainController.js.map" />
-    <Content Include="app\dist\services\userService.js.map" />
-    <Content Include="app\dist\models.js.map" />
     <Content Include="typings\modules\angular-material\typings.json" />
     <Content Include="app\bower_components\angular-material-icons\.bower.json" />
     <Content Include="app\bower_components\angular-material-icons\bower.json" />
@@ -682,16 +675,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\src\boot.ts" />
-    <TypeScriptCompile Include="app\src\controllers\mainController.ts" />
-    <TypeScriptCompile Include="app\src\models.ts" />
-    <TypeScriptCompile Include="app\src\services\userService.ts" />
+    <TypeScriptCompile Include="app\src\geo\geoArea.ts" />
+    <TypeScriptCompile Include="app\src\home\toolbar-headerController.ts" />
     <TypeScriptCompile Include="app\src\_all.ts" />
     <TypeScriptCompile Include="typings\globals\angularjs\legacy\angular\index.d.ts" />
     <TypeScriptCompile Include="typings\globals\jquery\index.d.ts" />
