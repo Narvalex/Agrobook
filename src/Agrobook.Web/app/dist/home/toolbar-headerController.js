@@ -5,7 +5,7 @@ var Home;
         function ToolbarHeaderController() {
         }
         ToolbarHeaderController.prototype.login = function () {
-            location.href = "areas/geo.html";
+            location.href = "areas/maps.html";
         };
         return ToolbarHeaderController;
     }());

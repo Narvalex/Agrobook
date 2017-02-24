@@ -64,7 +64,7 @@ namespace Agrobook.Infrastructure.EventSourcing
                         foreach (var e in currentSlice.Events)
                         {
                             var deserialized = this.Deserialize(e);
-                            eventSourced.Update(deserialized);
+                            eventSourced.Apply(deserialized);
                         }
                         break;
 
@@ -112,6 +112,7 @@ namespace Agrobook.Infrastructure.EventSourcing
             }
 
             this.snapshotCache.Cache(eventSourced.TakeSnapshot());
+            eventSourced.MarkAsCommited();
         }
 
         private object Deserialize(ResolvedEvent e)

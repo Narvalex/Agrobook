@@ -71,7 +71,7 @@ namespace Agrobook.Domain.Tests.Utils
             var state = new T();
 
             for (int i = 0; i < stream.Length; i++)
-                state.Update(stream[i]);
+                state.Apply(stream[i]);
 
             return await Task.FromResult(state);
         }
@@ -86,6 +86,7 @@ namespace Agrobook.Domain.Tests.Utils
 
             this.NewEventsCommitted = await Task.FromResult(eventSourced.NewEvents);
             this.Snapshot = eventSourced.TakeSnapshot();
+            eventSourced.MarkAsCommited();
         }
     }
 

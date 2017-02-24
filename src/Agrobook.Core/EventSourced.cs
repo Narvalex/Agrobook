@@ -8,9 +8,10 @@ namespace Agrobook.Core
         string StreamName { get; }
         int Version { get; }
         void Rehydrate(ISnapshot snapshot);
-        void Update(object @event);
+        void Apply(object @event);
         void Emit(object @event);
         ICollection<object> NewEvents { get; }
+        void MarkAsCommited();
         ISnapshot TakeSnapshot();
     }
 
@@ -43,9 +44,15 @@ namespace Agrobook.Core
 
         public string StreamName { get; protected set; }
 
+        string IEventSourced.StreamName => throw new NotImplementedException();
+
+        int IEventSourced.Version => throw new NotImplementedException();
+
+        ICollection<object> IEventSourced.NewEvents => throw new NotImplementedException();
+
         protected void On<T>(Action<T> handler) => this.handlers[typeof(T)] = e => handler((T)e);
 
-        void IEventSourced.Update(object @event)
+        void IEventSourced.Apply(object @event)
         {
             var eventType = @event.GetType();
             if (this.handlers.TryGetValue(eventType, out Action<object> handler))
@@ -57,21 +64,23 @@ namespace Agrobook.Core
 
         public void Emit(object @event)
         {
-            ((IEventSourced)this).Update(@event);
+            ((IEventSourced)this).Apply(@event);
             this.newEvents.Add(@event);
         }
 
-        void IEventSourced.Rehydrate(ISnapshot snapshot)
-        {
-            this.Rehydrate(snapshot);
-        }
+        void IEventSourced.Rehydrate(ISnapshot snapshot) => this.Rehydrate(snapshot);
 
-        public virtual void Rehydrate(ISnapshot snapshot)
+        protected virtual void Rehydrate(ISnapshot snapshot)
         {
             this.StreamName = snapshot.StreamName;
             this.Version = snapshot.Version;
         }
 
-        public virtual ISnapshot TakeSnapshot() => new Snapshot(this.StreamName, this.Version);
+        ISnapshot IEventSourced.TakeSnapshot() => this.TakeSnapshot();
+
+
+        protected virtual ISnapshot TakeSnapshot() => new Snapshot(this.StreamName, this.Version);
+
+        void IEventSourced.MarkAsCommited() => this.newEvents.Clear();
     }
 }

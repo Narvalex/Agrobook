@@ -567,12 +567,17 @@
     <Content Include="app\bower_components\angular\angular.min.js" />
     <Content Include="app\bower_components\angular\index.js" />
     <Content Include="app\dist\boot.js" />
-    <Content Include="app\dist\geo\geoArea.js" />
+    <Content Include="app\dist\maps\main-content.html" />
+    <Content Include="app\dist\maps\main-contentController.js" />
+    <Content Include="app\dist\maps\mapsArea.js" />
+    <Content Include="app\dist\maps\sidenav.html" />
+    <Content Include="app\dist\maps\toolbar-header.html" />
     <Content Include="app\dist\home\main-content.html" />
     <Content Include="app\dist\home\toolbar-header.html" />
     <Content Include="app\dist\home\toolbar-headerController.js" />
+    <Content Include="app\dist\maps\toolbar-headerController.js" />
     <Content Include="app\dist\_all.js" />
-    <Content Include="areas\geo.html" />
+    <Content Include="areas\maps.html" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
     <Content Include=".bowerrc" />
@@ -684,8 +689,10 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\src\boot.ts" />
-    <TypeScriptCompile Include="app\src\geo\geoArea.ts" />
+    <TypeScriptCompile Include="app\src\maps\main-contentController.ts" />
+    <TypeScriptCompile Include="app\src\maps\mapsArea.ts" />
     <TypeScriptCompile Include="app\src\home\toolbar-headerController.ts" />
+    <TypeScriptCompile Include="app\src\maps\toolbar-headerController.ts" />
     <TypeScriptCompile Include="app\src\_all.ts" />
     <TypeScriptCompile Include="typings\globals\angularjs\legacy\angular\index.d.ts" />
     <TypeScriptCompile Include="typings\globals\jquery\index.d.ts" />
