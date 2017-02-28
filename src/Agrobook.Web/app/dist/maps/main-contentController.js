@@ -12,7 +12,7 @@ var MapsArea;
             });
             var ctaLayer = new google.maps.KmlLayer({
                 map: map,
-                url: 'efasdf'
+                url: 'https://raw.githubusercontent.com/Narvalex/Agrobook/realease-v1.0.0/samples/sommer.kml'
             });
         };
         return MainContentController;
