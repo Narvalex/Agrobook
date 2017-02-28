@@ -10,8 +10,13 @@ module MapsArea {
 
         initMap(): void {
             var map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: -34.397, lng: 150.644 },
-                zoom: 8
+                zoom: 11,
+                center: { lat: -25.34578, lng: -55.64516 }
+            });
+
+            var ctaLayer = new google.maps.KmlLayer({
+                map: map,
+                url: 'efasdf'
             });
         }
     }

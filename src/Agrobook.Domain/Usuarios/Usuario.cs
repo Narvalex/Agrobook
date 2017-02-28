@@ -13,7 +13,7 @@ namespace Agrobook.Domain.Usuarios
             });
         }
 
-        public override void Rehydrate(ISnapshot snapshot)
+        protected override void Rehydrate(ISnapshot snapshot)
         {
             base.Rehydrate(snapshot);
 
@@ -21,7 +21,7 @@ namespace Agrobook.Domain.Usuarios
             this.Password = state.Password;
         }
 
-        public override ISnapshot TakeSnapshot()
+        protected override ISnapshot TakeSnapshot()
         {
             return new UsuarioSnapshot(this.StreamName, this.Version, this.Password);
         }

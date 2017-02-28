@@ -14,7 +14,7 @@ namespace Agrobook.Domain.Usuarios
             this.On<UsuarioAgregadoAGrupo>(e => this.usuarios.Add(e.IdUsuario));
         }
 
-        public override void Rehydrate(ISnapshot snapshot)
+        protected override void Rehydrate(ISnapshot snapshot)
         {
             base.Rehydrate(snapshot);
 
@@ -22,7 +22,7 @@ namespace Agrobook.Domain.Usuarios
             this.usuarios = new HashSet<string>(state.Usuarios);
         }
 
-        public override ISnapshot TakeSnapshot() =>
+        protected override ISnapshot TakeSnapshot() =>
             new GrupoDeUsuariosSnapshot(this.StreamName, this.Version, this.usuarios.ToArray());
 
         public bool YaPerteneceUsuarioAlGrupo(string usuario) => this.usuarios.Contains(usuario);

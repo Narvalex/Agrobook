@@ -11,7 +11,7 @@ namespace Agrobook.Infrastructure.Tests.EventSourcing.Fakes
             this.On<TwoStuffHappened>(e => this.StuffHappenedCount += 2);
         }
 
-        public override void Rehydrate(ISnapshot snapshot)
+        protected override void Rehydrate(ISnapshot snapshot)
         {
             base.Rehydrate(snapshot);
 
@@ -19,7 +19,7 @@ namespace Agrobook.Infrastructure.Tests.EventSourcing.Fakes
             this.StuffHappenedCount = state.StuffHappenedCount;
         }
 
-        public override ISnapshot TakeSnapshot()
+        protected override ISnapshot TakeSnapshot()
         {
             return new ComplexAggregateSnapshot(this.StreamName, this.Version, this.StuffHappenedCount);
         }
