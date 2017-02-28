@@ -7,12 +7,12 @@ var MapsArea;
         }
         MainContentController.prototype.initMap = function () {
             var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 11,
-                center: { lat: -25.43108, lng: -55.63441 }
+                zoom: 20,
+                center: { lat: -25.42983, lng: -55.63346 }
             });
             var ctaLayer = new google.maps.KmlLayer({
                 map: map,
-                url: 'https://github.com/Narvalex/Agrobook/blob/realease-v1.0.0/samples/sommer.kmz'
+                url: 'https://raw.githubusercontent.com/Narvalex/Agrobook/realease-v1.0.0/samples/big.kml'
             });
         };
         return MainContentController;
