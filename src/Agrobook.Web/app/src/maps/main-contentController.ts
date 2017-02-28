@@ -11,12 +11,12 @@ module MapsArea {
         initMap(): void {
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 11,
-                center: { lat: -25.34578, lng: -55.64516 }
+                center: { lat: -25.43108, lng: -55.63441 }
             });
 
             var ctaLayer = new google.maps.KmlLayer({
                 map: map,
-                url: 'https://raw.githubusercontent.com/Narvalex/Agrobook/realease-v1.0.0/samples/sommer.kml'
+                url: 'https://github.com/Narvalex/Agrobook/blob/realease-v1.0.0/samples/sommer.kmz'
             });
         }
     }
