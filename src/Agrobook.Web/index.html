@@ -6,10 +6,10 @@
     <meta name="description" content=""/>
     <meta name="viewport" content="initial-scale=1, maximum-scale=2" />
 
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic"/>
+    <link href="./app/assets/google-font-roboto.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="./app/bower_components/angular-material/angular-material.min.css" />
     <link rel="stylesheet" href="./app/bower_components/angular-material-icons/angular-material-icons.css" />
-    <link rel="stylesheet" href="./app/assets/app.css"/>
     <link rel="stylesheet" href="./app/assets/home.css"/>
 
     <style type="text/css">
@@ -17,10 +17,13 @@
         display: none !important;
     }
     </style>
+    <title>Agrobook - Home</title>
 </head>
-<body layout="row" ng-cloak>
-
-    <div layout="column" flex>
+<body layout="row">
+    <div ng-show="false">
+        <h1>Cargando... muy lento por lo visto :(</h1>
+    </div>
+    <div ng-cloak layout="column" flex>
         <div ng-include="'app/dist/home/toolbar-header.html'"></div>
         <md-content flex id="content">
             <div ng-include="'app/dist/home/main-content.html'"></div>

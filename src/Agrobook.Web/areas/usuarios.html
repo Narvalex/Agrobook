@@ -1,28 +1,35 @@
 ﻿<!DOCTYPE html>
-<html lang="en" ng-app="mapsArea">
+<html lang="es-py" ng-app="usuariosArea">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=2" />
 
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic" />
+
+    <link href="../app/assets/google-font-roboto.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="../app/bower_components/angular-material/angular-material.min.css" />
     <link rel="stylesheet" href="../app/bower_components/angular-material-icons/angular-material-icons.css" />
 
+    <link href="../app/assets/dialogs.css" rel="stylesheet" />
     <style type="text/css">
         [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
             display: none !important;
         }
     </style>
-    <title>Maps</title>
+
+    <title>Agrobook - Usuarios</title>
 </head>
-<body layout="row" ng-cloak>
-    <div ng-include="'../app/dist/maps/sidenav.html'" layout="vertical"></div>
-    
-    <div layout="column" flex id="wrapper">
-        <div ng-include="'../app/dist/maps/toolbar-header.html'"></div>
-        <div ng-include="'../app/dist/maps/main-content.html'"></div>
+<body layout="row">
+    <div ng-show="false">
+        <h1>Cargando... muy lento por lo visto :(</h1>
+    </div>
+    <div ng-cloak ng-include="'../app/dist/usuarios/sidenav.html'" layout="vertical" ng-controller="sidenavController as vm"></div>
+
+    <div ng-cloak layout="column" flex>
+        <div ng-include="'../app/dist/usuarios/toolbar-header.html'"></div>
+        <div ng-include="'../app/dist/usuarios/main-content.html'"></div>
     </div>
 
     <script src="../app/bower_components/angular/angular.min.js"></script>
@@ -31,10 +38,9 @@
     <script src="../app/bower_components/angular-material/angular-material.min.js"></script>
     <script src="../app/bower_components/angular-material-icons/angular-material-icons.min.js"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwomtu5DLtvtXPOLHIwKw3p8kUSyX3Bp8"></script>
-
-    <script src="../app/dist/maps/toolbar-headerController.js"></script>
-    <script src="../app/dist/maps/main-contentController.js"></script>
-    <script src="../app/dist/maps/mapsArea.js"></script>
+    <script src="../app/dist/usuarios/dialogs/nuevoUsuarioDialogController.js"></script>
+    <script src="../app/dist/usuarios/sidenavController.js"></script>
+    <script src="../app/dist/usuarios/toolbarHeaderController.js"></script>
+    <script src="../app/dist/usuarios/usuariosArea.js"></script>
 </body>
 </html>

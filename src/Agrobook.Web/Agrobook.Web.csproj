@@ -82,9 +82,11 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\assets\app.css" />
+    <Content Include="app\assets\dialogs.css" />
+    <Content Include="app\assets\google-font-roboto.css" />
     <Content Include="app\assets\home.css" />
     <Content Include="app\assets\svg\avatars.svg" />
+    <Content Include="app\assets\svg\close.svg" />
     <Content Include="app\assets\svg\google_plus.svg" />
     <Content Include="app\assets\svg\hangouts.svg" />
     <Content Include="app\assets\svg\menu.svg" />
@@ -580,18 +582,17 @@
     <Content Include="app\bower_components\angular\angular.js" />
     <Content Include="app\bower_components\angular\angular.min.js" />
     <Content Include="app\bower_components\angular\index.js" />
-    <Content Include="app\dist\boot.js" />
     <Content Include="app\dist\maps\main-content.html" />
-    <Content Include="app\dist\maps\main-contentController.js" />
-    <Content Include="app\dist\maps\mapsArea.js" />
     <Content Include="app\dist\maps\sidenav.html" />
     <Content Include="app\dist\maps\toolbar-header.html" />
     <Content Include="app\dist\home\main-content.html" />
     <Content Include="app\dist\home\toolbar-header.html" />
-    <Content Include="app\dist\home\toolbar-headerController.js" />
-    <Content Include="app\dist\maps\toolbar-headerController.js" />
-    <Content Include="app\dist\_all.js" />
+    <Content Include="app\dist\usuarios\dialogs\nuevo-usuario-dialog.html" />
+    <Content Include="app\dist\usuarios\main-content.html" />
+    <Content Include="app\dist\usuarios\sidenav.html" />
+    <Content Include="app\dist\usuarios\toolbar-header.html" />
     <Content Include="areas\maps.html" />
+    <Content Include="areas\usuarios.html" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
@@ -713,6 +714,10 @@
     <TypeScriptCompile Include="app\src\maps\mapsArea.ts" />
     <TypeScriptCompile Include="app\src\home\toolbar-headerController.ts" />
     <TypeScriptCompile Include="app\src\maps\toolbar-headerController.ts" />
+    <TypeScriptCompile Include="app\src\usuarios\dialogs\nuevoUsuarioDialogController.ts" />
+    <TypeScriptCompile Include="app\src\usuarios\sidenavController.ts" />
+    <TypeScriptCompile Include="app\src\usuarios\toolbarHeaderController.ts" />
+    <TypeScriptCompile Include="app\src\usuarios\usuariosArea.ts" />
     <TypeScriptCompile Include="app\src\_all.ts" />
     <TypeScriptCompile Include="typings\globals\angularjs\legacy\angular\index.d.ts" />
     <TypeScriptCompile Include="typings\globals\googlemaps\index.d.ts" />

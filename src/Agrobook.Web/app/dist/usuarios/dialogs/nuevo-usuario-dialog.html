@@ -1,0 +1,16 @@
+﻿<md-dialog class="fullscreen-dialog">
+    <form name="nuevoUsuarioForm" ng-submit="vm.crearNuevoUsuario()">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Nuevo usuario</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.cancelar()" aria-label="cancelar">
+                    <ng-md-icon icon="close"></ng-md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <h2>Contenido del dialogo</h2>
+        </md-dialog-content>
+    </form>
+</md-dialog>

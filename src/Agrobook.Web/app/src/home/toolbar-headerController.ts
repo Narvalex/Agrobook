@@ -7,7 +7,7 @@ module Home {
         constructor() { }
 
         login(): void {
-            location.href = "areas/maps.html";
+            location.href = "areas/usuarios.html";
         }
     }
 }
