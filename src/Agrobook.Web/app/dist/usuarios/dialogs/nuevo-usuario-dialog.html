@@ -10,7 +10,45 @@
             </div>
         </md-toolbar>
         <md-dialog-content>
-            <h2>Contenido del dialogo</h2>
+            <div layout="column" layout-padding>
+                <div layout-gt-sm="row">
+                    <!-- Avatar -->
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Imagen de perfil</label>
+                        <md-select ng-model="vm.usuario.avatarUrl" name="avatar" required>
+                            <md-option ng-repeat="url in vm.avatarUrls" ng-value="url">
+                                <img style="height: 50px;" ng-src="{{url}}" alt="Imagen de perfil" />
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="nuevoUsuarioForm.avatar.$error">
+                            <div ng-message="required">Debe elegir una imagen de perfil.</div>
+                        </div>
+                    </md-input-container>
+                    <!-- Usuario -->
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Nombre de usuario</label>
+                        <input ng-model="vm.usuario.nombreDeUsuario" name="nombreDeUsuario" required/>
+                        <div ng-messages="nuevoUsuarioForm.nombreDeUsuario.$error">
+                            <div ng-message="required">Debe elegir un nombre de usuario</div>
+                        </div>
+                    </md-input-container>
+                    <!-- Password -->
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Contraseña</label>
+                        <input ng-model="vm.usuario.password" name="password" required type="password"/>
+                        <div ng-messages="nuevoUsuarioForm.password.$error">
+                            <div ng-message="required">Debe elegir una contraseña</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
         </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button type="submit" class="md-primary md-raised" ng-disabled="nuevoUsuarioForm.$invalid">
+                Crear nuevo usuario
+            </md-button>
+            <md-button ng-click="vm.cancelar()">Cancelar</md-button>
+        </md-dialog-actions>
     </form>
 </md-dialog>

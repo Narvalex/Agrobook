@@ -2,13 +2,13 @@
 
 module UsuariosArea {
     export class sidenavController {
-        static $inject = ['$mdSidenav', '$mdDialog', '$mdMedia'];
-
+        static $inject = ['$mdSidenav', '$mdDialog', '$mdMedia', '$mdToast'];
 
         constructor(
             private $mdSidenav: angular.material.ISidenavService,
             private $mdDialog: angular.material.IDialogService,
-            private $mdMedia: angular.material.IMedia)
+            private $mdMedia: angular.material.IMedia,
+            private $mdToast: angular.material.IToastService)
         { }
 
         toggleSideNav(): void {
@@ -24,10 +24,18 @@ module UsuariosArea {
                 controllerAs: 'vm',
                 clickOutsideToClose: true,
                 fullscreen: (this.$mdMedia('sm') || this.$mdMedia('xs'))
-            }).then((usuario: any) => {
-                }, () => {
-                    console.log('Usted canceló la creación de un nuevo usuario')
-                });
+            }).then((usuario: Usuario) => {
+                var message = 'El usuario de nombre ' + usuario.nombreDeUsuario + ' fue creado exitosamente';
+                var toast = this.$mdToast
+                    .simple()
+                    .textContent(message)
+                    .position('top right')
+                    .hideDelay(3000);
+
+                this.$mdToast.show(toast);
+            }, () => {
+                console.log('Usted canceló la creación de un nuevo usuario')
+            });
         }
     }
 }
