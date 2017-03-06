@@ -16,6 +16,8 @@ module UsuariosArea {
         }
 
         crearNuevoUsuario($event): void {
+            var self = this;
+
             this.$mdDialog.show({
                 templateUrl: '../app/dist/usuarios/dialogs/nuevo-usuario-dialog.html',
                 parent: angular.element(document.body),
@@ -24,18 +26,23 @@ module UsuariosArea {
                 controllerAs: 'vm',
                 clickOutsideToClose: true,
                 fullscreen: (this.$mdMedia('sm') || this.$mdMedia('xs'))
-            }).then((usuario: Usuario) => {
+            }).then((usuario: UsuarioDto) => {
                 var message = 'El usuario de nombre ' + usuario.nombreDeUsuario + ' fue creado exitosamente';
-                var toast = this.$mdToast
-                    .simple()
-                    .textContent(message)
-                    .position('top right')
-                    .hideDelay(3000);
-
-                this.$mdToast.show(toast);
+                self.showToast(message);
+                
             }, () => {
                 console.log('Usted canceló la creación de un nuevo usuario')
             });
+        }
+
+        private showToast(message: string): void {
+            var toast = this.$mdToast
+                .simple()
+                .textContent(message)
+                .position('top right')
+                .hideDelay(3000);
+
+            this.$mdToast.show(toast);
         }
     }
 }

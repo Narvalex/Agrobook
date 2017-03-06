@@ -38,17 +38,11 @@ namespace Agrobook.Core
         private readonly ICollection<object> newEvents = new List<object>();
         private readonly IDictionary<Type, Action<object>> handlers = new Dictionary<Type, Action<object>>();
 
-        public ICollection<object> NewEvents => this.newEvents;
-
         public int Version { get; private set; } = ExpectedVersion.NoStream; // Empty/NoExistent stream, in Event Store
 
         public string StreamName { get; protected set; }
 
-        string IEventSourced.StreamName => throw new NotImplementedException();
-
-        int IEventSourced.Version => throw new NotImplementedException();
-
-        ICollection<object> IEventSourced.NewEvents => throw new NotImplementedException();
+        ICollection<object> IEventSourced.NewEvents => this.newEvents;
 
         protected void On<T>(Action<T> handler) => this.handlers[typeof(T)] = e => handler((T)e);
 

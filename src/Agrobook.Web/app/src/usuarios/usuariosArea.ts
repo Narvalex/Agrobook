@@ -2,6 +2,7 @@
 
 module UsuariosArea {
     angular.module('usuariosArea', ['ngMaterial', 'ngMdIcons'])
+        .service('usuariosWriteService', usuariosWriteService)
         .controller('sidenavController', sidenavController)
         .controller('toolbarHeaderController', toolbarHeaderController)
         .config((

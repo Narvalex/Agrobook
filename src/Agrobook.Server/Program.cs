@@ -51,7 +51,7 @@ namespace Agrobook.Server
                 });
 
             // Web Api
-            var baseUri = "http://localhost:8080";
+            var baseUri = "http://localhost:8081";
 
             OnEventStoreStarted();
 

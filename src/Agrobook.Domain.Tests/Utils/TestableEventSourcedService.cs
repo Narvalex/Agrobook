@@ -51,7 +51,7 @@ namespace Agrobook.Domain.Tests.Utils
     {
         private readonly IDictionary<string, object[]> eventStore = new Dictionary<string, object[]>();
 
-        internal ICollection<object> NewEventsCommitted { get; private set; } = new List<object>();
+        internal List<object> NewEventsCommitted { get; private set; } = new List<object>();
         internal ISnapshot Snapshot { get; private set; }
 
         public void PreloadStream(string streamName, params object[] @events)
@@ -84,7 +84,7 @@ namespace Agrobook.Domain.Tests.Utils
                 && this.eventStore.ContainsKey(eventSourced.StreamName))
                 throw new UniqueConstraintViolationException(eventSourced.StreamName);
 
-            this.NewEventsCommitted = await Task.FromResult(eventSourced.NewEvents);
+            this.NewEventsCommitted.AddRange(await Task.FromResult(eventSourced.NewEvents));
             this.Snapshot = eventSourced.TakeSnapshot();
             eventSourced.MarkAsCommited();
         }

@@ -2,6 +2,7 @@
 
 module Home {
     angular.module("app", ['ngMaterial', 'ngMdIcons'])
+        .service('loginWriteService', login.loginService)
         .controller('toolbar-headerController', ToolbarHeaderController)
         .config((
             $mdIconProvider: angular.material.IIconProvider,

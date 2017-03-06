@@ -18,7 +18,7 @@ module UsuariosArea {
             '../app/assets/img/avatar/9.png'
         ];
 
-        usuario: Usuario
+        usuario: UsuarioDto
 
         cancelar(): void {
             this.$mdDialog.cancel();

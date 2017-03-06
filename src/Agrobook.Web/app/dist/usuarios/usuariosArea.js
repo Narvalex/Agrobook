@@ -2,6 +2,7 @@
 var UsuariosArea;
 (function (UsuariosArea) {
     angular.module('usuariosArea', ['ngMaterial', 'ngMdIcons'])
+        .service('usuariosWriteService', UsuariosArea.usuariosWriteService)
         .controller('sidenavController', UsuariosArea.sidenavController)
         .controller('toolbarHeaderController', UsuariosArea.toolbarHeaderController)
         .config(function ($mdIconProvider, $mdThemingProvider) {

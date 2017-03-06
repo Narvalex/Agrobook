@@ -1,7 +1,7 @@
 ﻿/// <reference path="../_all.ts" />
 
 module UsuariosArea {
-    export class Usuario {
+    export class UsuarioDto {
         constructor(
             public avatarUrl: string,
             public nombreDeUsuario: string,

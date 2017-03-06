@@ -11,7 +11,7 @@ namespace Agrobook.CLI
         static void Main(string[] args)
         {
             var serializer = new JsonTextSerializer();
-            var accessTokenProvider = new LoginClient("http://localhost:8080", serializer);
+            var accessTokenProvider = new LoginClient("http://localhost:8081", serializer);
 
             var loginController = new LoginController(new Views.LoginView(), accessTokenProvider);
 

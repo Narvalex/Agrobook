@@ -9,6 +9,8 @@ namespace Agrobook.Web
 
         protected void Application_Start(object _, EventArgs __)
         {
+            ServiceLocator.Initialize();
+
             GlobalConfiguration.Configure(config =>
             {
                 config.Routes.MapHttpRoute(

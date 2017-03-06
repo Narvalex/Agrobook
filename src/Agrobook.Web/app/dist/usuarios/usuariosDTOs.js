@@ -11,4 +11,4 @@ var UsuariosArea;
     }());
     UsuariosArea.UsuarioDto = UsuarioDto;
 })(UsuariosArea || (UsuariosArea = {}));
-//# sourceMappingURL=usuariosModels.js.map
+//# sourceMappingURL=usuariosDTOs.js.map

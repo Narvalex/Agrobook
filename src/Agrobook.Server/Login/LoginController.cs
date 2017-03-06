@@ -18,8 +18,8 @@ namespace Agrobook.Server.Login
         }
 
         [HttpPost]
-        [Route("try")]
-        public async Task<IHttpActionResult> Login([FromBody]dynamic value)
+        [Route("try-login")]
+        public async Task<IHttpActionResult> TryLogin([FromBody]dynamic value)
         {
             // Source: http://stackoverflow.com/questions/13120971/how-to-get-json-post-values-with-asp-net-webapi
             string username = value.username.Value;

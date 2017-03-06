@@ -12,7 +12,7 @@ var UsuariosArea;
             this.$mdSidenav('left').toggle();
         };
         sidenavController.prototype.crearNuevoUsuario = function ($event) {
-            var _this = this;
+            var self = this;
             this.$mdDialog.show({
                 templateUrl: '../app/dist/usuarios/dialogs/nuevo-usuario-dialog.html',
                 parent: angular.element(document.body),
@@ -23,15 +23,18 @@ var UsuariosArea;
                 fullscreen: (this.$mdMedia('sm') || this.$mdMedia('xs'))
             }).then(function (usuario) {
                 var message = 'El usuario de nombre ' + usuario.nombreDeUsuario + ' fue creado exitosamente';
-                var toast = _this.$mdToast
-                    .simple()
-                    .textContent(message)
-                    .position('top right')
-                    .hideDelay(3000);
-                _this.$mdToast.show(toast);
+                self.showToast(message);
             }, function () {
                 console.log('Usted canceló la creación de un nuevo usuario');
             });
+        };
+        sidenavController.prototype.showToast = function (message) {
+            var toast = this.$mdToast
+                .simple()
+                .textContent(message)
+                .position('top right')
+                .hideDelay(3000);
+            this.$mdToast.show(toast);
         };
         return sidenavController;
     }());

@@ -1,19 +1,22 @@
-﻿<md-toolbar class="md-hue-2" ng-controller="toolbar-headerController as vm">
+﻿<md-toolbar ng-controller="toolbar-headerController as vm">
     <div class="md-toolbar-tools">
-        <md-truncate>
+        <h2 flex md-truncate hide-xs>
             Agrobook
-        </md-truncate>
-        <span flex></span>
+        </h2>
+        <!--<span flex></span>-->
 
         <div layout="row" class="home-login-form">
             <md-input-container>
                 <label>Usuario</label>
-                <input class="home-input">
+                <input class="home-input"
+                       ng-model="vm.usuario">
             </md-input-container>
 
             <md-input-container>
                 <label>Password</label>
-                <input class="home-input">
+                <input class="home-input" 
+                       type="password"
+                       ng-model="vm.password">
             </md-input-container>
         </div>
         <md-button class="md-flat" aria-label="Login" ng-click="vm.login()">

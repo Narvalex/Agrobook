@@ -22,12 +22,12 @@ namespace Agrobook.Client.Login
             this.serializer = serializer;
         }
 
-        public async Task<LoginResult> TryLogin(string userName, string password)
+        public async Task<LoginResult> TryLoginAsync(string userName, string password)
         {
             HttpResponseMessage response;
             using (var client = new HttpClient())
             {
-                var tokenEndpoint = new Uri(new Uri(this.hostUri), "login/try");
+                var tokenEndpoint = new Uri(new Uri(this.hostUri), "login/try-login");
                 var stringContent = new StringContent($"{{ 'username':'{userName}', 'password':'{password}'}}", Encoding.UTF8, "application/json");
                 response = await client.PostAsync(tokenEndpoint, stringContent);
             }

@@ -48,7 +48,7 @@ namespace Agrobook.CLI.Controllers
             LoginResult result;
             try
             {
-                result = this.loginClient.TryLogin(userName, password).Result;
+                result = this.loginClient.TryLoginAsync(userName, password).Result;
                 if (result.LoginExitoso)
                     this.view.PrintLoginSuccessfully();
                 else
