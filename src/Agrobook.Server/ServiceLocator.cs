@@ -1,6 +1,7 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Usuarios;
 using Agrobook.Infrastructure;
+using Agrobook.Infrastructure.Cryptography;
 using Agrobook.Infrastructure.EventSourcing;
 using Agrobook.Infrastructure.IoC;
 using Agrobook.Infrastructure.Serialization;
@@ -19,13 +20,15 @@ namespace Agrobook.Server
 
             var dateTimeProvider = new SimpleDateTimeProvider();
 
+            var oneWayEncriptor = new MD5OneWayEncryptor();
+
             var jsonSerializer = new JsonTextSerializer();
 
             var snapshotCache = new SnapshotCache();
 
             var eventSourcedRepository = new EventSourcedRepository(es.GetFailFastConnection, jsonSerializer, snapshotCache);
 
-            var usuariosService = new UsuariosYGruposService(eventSourcedRepository, dateTimeProvider);
+            var usuariosService = new UsuariosYGruposService(eventSourcedRepository, dateTimeProvider, oneWayEncriptor);
 
             container.Register<IDateTimeProvider>(dateTimeProvider);
             container.Register<EventStoreManager>(es);

@@ -15,7 +15,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         public UsuariosYGruposTests()
         {
             this.sut = new TestableEventSourcedService<UsuariosYGruposService>(
-                r => new UsuariosYGruposService(r, new SimpleDateTimeProvider()));
+                r => new UsuariosYGruposService(r, new SimpleDateTimeProvider(), new FakeOneWayEncryptor()));
         }
 
         #region ABM Usuarios

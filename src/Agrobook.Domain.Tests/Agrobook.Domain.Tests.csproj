@@ -52,6 +52,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Usuarios\UsuariosYGruposTests.cs" />
     <Compile Include="Utils\FakeMeta.cs" />
+    <Compile Include="Utils\FakeOneWayEncryptor.cs" />
     <Compile Include="Utils\SimpleDateTimeProvider.cs" />
     <Compile Include="Utils\TestableEventSourcedService.cs" />
   </ItemGroup>

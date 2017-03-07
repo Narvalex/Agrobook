@@ -7,13 +7,19 @@ namespace Agrobook.Domain.Usuarios
     public class UsuariosYGruposService : EventSourcedService
     {
         public const string UsuarioAdmin = "admin";
+        public const string DefaultPassword = "changeit";
+        private readonly IOneWayEncryptor encryptor;
 
         public UsuariosYGruposService(
             IEventSourcedRepository repository,
             IDateTimeProvider dateTime,
             IOneWayEncryptor encryptor)
             : base(repository, dateTime)
-        { }
+        {
+            Ensure.NotNull(encryptor, nameof(encryptor));
+
+            this.encryptor = encryptor;
+        }
 
         public bool ExisteUsuarioAdmin
         {
@@ -27,14 +33,14 @@ namespace Agrobook.Domain.Usuarios
         public async Task CrearUsuarioAdminAsync()
         {
             var admin = new Usuario();
-            admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), "admin", "changeit"));
+            admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), UsuarioAdmin, this.encryptor.Encrypt(DefaultPassword)));
             await this.repository.SaveAsync(admin);
         }
 
         public async Task HandleAsync(CrearNuevoUsuario cmd)
         {
             var state = new Usuario();
-            state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario, cmd.Password));
+            state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario, cmd.PasswordCrudo));
             await this.repository.SaveAsync(state);
         }
 
@@ -60,7 +66,8 @@ namespace Agrobook.Domain.Usuarios
             var usuario = await this.repository.GetAsync<Usuario>(cmd.Usuario);
             if (usuario is null) return new LoginResult(false);
 
-            if (usuario.Password == cmd.Password)
+            var passwordIngresadoEncriptado = this.encryptor.Encrypt(cmd.PasswordCrudo);
+            if (usuario.PasswordEncriptado == passwordIngresadoEncriptado)
                 usuario.Emit(new UsuarioInicioSesion(new Metadatos(cmd.Usuario, this.dateTime.Now)));
             else
                 return new LoginResult(false);
