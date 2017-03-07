@@ -8,7 +8,10 @@ namespace Agrobook.Domain.Usuarios
     {
         public const string UsuarioAdmin = "admin";
 
-        public UsuariosYGruposService(IEventSourcedRepository repository, IDateTimeProvider dateTime)
+        public UsuariosYGruposService(
+            IEventSourcedRepository repository,
+            IDateTimeProvider dateTime,
+            IOneWayEncryptor encryptor)
             : base(repository, dateTime)
         { }
 

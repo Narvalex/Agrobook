@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cryptography\MD5OneWayEncryptor.cs" />
     <Compile Include="EventSourcing\EventSourcedRepository.cs" />
     <Compile Include="EventSourcing\EventStoreManager.cs" />
     <Compile Include="EventSourcing\ISnapshotCache.cs" />

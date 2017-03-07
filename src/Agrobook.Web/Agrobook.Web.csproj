@@ -605,6 +605,7 @@
     <Content Include="areas\maps.html" />
     <Content Include="areas\usuarios.html" />
     <Content Include="Global.asax" />
+    <Content Include="favicon.ico" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
     <Content Include=".bowerrc" />
