@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cryptography\MD5OneWayEncryptor.cs" />
+    <Compile Include="Cryptography\RijndaelDecryptor.cs" />
     <Compile Include="EventSourcing\EventSourcedRepository.cs" />
     <Compile Include="EventSourcing\EventStoreManager.cs" />
     <Compile Include="EventSourcing\ISnapshotCache.cs" />
@@ -62,6 +64,8 @@
     <Compile Include="Serialization\IJsonSerializer.cs" />
     <Compile Include="Serialization\JsonTextSerializer.cs" />
     <Compile Include="SimpleDateTimeProvider.cs" />
+    <Compile Include="Utils\ByteArrayExtensions.cs" />
+    <Compile Include="Utils\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="EventStore\clusternode-web\fonts\roboto-bold-webfont.woff">

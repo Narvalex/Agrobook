@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cryptography\OneWayEncryptorTests.cs" />
+    <Compile Include="Cryptography\DecryptorTests.cs" />
     <Compile Include="EventSourcing\EventSourcedRepositoryIntegrationTests.cs" />
     <Compile Include="EventSourcing\EventStoreManagerTests.cs" />
     <Compile Include="EventSourcing\Fakes\ComplexAggregate.cs" />

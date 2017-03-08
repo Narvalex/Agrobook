@@ -14,4 +14,4 @@ var HomeArea;
             .accentPalette('blue');
     });
 })(HomeArea || (HomeArea = {}));
-//# sourceMappingURL=homeArea.js.map
+//# sourceMappingURL=HomeArea.js.map

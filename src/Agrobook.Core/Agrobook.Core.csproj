@@ -45,7 +45,7 @@
     <Compile Include="Ensure.cs" />
     <Compile Include="ExpectedVersion.cs" />
     <Compile Include="HelpfulExtensions.cs" />
-    <Compile Include="IOneWayEncryptor.cs" />
+    <Compile Include="Cryptography.cs" />
     <Compile Include="ISimpleContainer.cs" />
     <Compile Include="IDateTimeProvider.cs" />
     <Compile Include="IEventSourcedRepository.cs" />

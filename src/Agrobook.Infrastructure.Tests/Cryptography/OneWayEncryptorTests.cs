@@ -29,5 +29,16 @@ namespace Agrobook.Infrastructure.Tests.Cryptography
             Console.WriteLine(encrypted);
             Assert.AreEqual(encrypted, encryptedAgain);
         }
+
+        [TestMethod]
+        public void ATextEncryptionAlwaysReturnsTheSameEncryptedValueAsync()
+        {
+            var text = "pass";
+            var encrypted = this.sut.EncryptAsync(text).Result;
+            var encryptedAgain = this.sut.EncryptAsync(text).Result;
+
+            Console.WriteLine(encrypted);
+            Assert.AreEqual(encrypted, encryptedAgain);
+        }
     }
 }

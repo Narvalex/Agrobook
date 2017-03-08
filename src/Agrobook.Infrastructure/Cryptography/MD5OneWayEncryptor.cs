@@ -1,6 +1,7 @@
-﻿using System.Security.Cryptography;
+﻿using Agrobook.Core;
+using System.Security.Cryptography;
 using System.Text;
-using Agrobook.Core;
+using System.Threading.Tasks;
 
 namespace Agrobook.Infrastructure.Cryptography
 {
@@ -12,14 +13,12 @@ namespace Agrobook.Infrastructure.Cryptography
 
             var md5 = new MD5CryptoServiceProvider();
             md5.ComputeHash(Encoding.UTF8.GetBytes(text));
-            var result = md5.Hash;
+            return md5.Hash.ToHexString();
+        }
 
-            var stringBuilder = new StringBuilder();
-            for (int i = 0; i < result.Length; i++)
-                // change it into 2 hexadecimal digits for each byte
-                stringBuilder.Append(result[i].ToString("x2"));
-
-            return stringBuilder.ToString();
+        public Task<string> EncryptAsync(string text)
+        {
+            return Task.FromResult(this.Encrypt(text));
         }
     }
 }
