@@ -1,10 +1,10 @@
 /// <reference path="_all.ts" />
-var Home;
-(function (Home) {
+var HomeArea;
+(function (HomeArea) {
     angular.module("app", ['ngMaterial', 'ngMdIcons'])
-        .value('')
+        .value('config', new Common.config())
         .service('loginWriteService', login.loginService)
-        .controller('toolbar-headerController', Home.ToolbarHeaderController)
+        .controller('toolbar-headerController', HomeArea.ToolbarHeaderController)
         .config(function ($mdIconProvider, $mdThemingProvider) {
         $mdIconProvider
             .defaultIconSet('./app/assets/svg/avatars.svg', 128)
@@ -13,5 +13,5 @@ var Home;
             .primaryPalette('green')
             .accentPalette('blue');
     });
-})(Home || (Home = {}));
-//# sourceMappingURL=boot.js.map
+})(HomeArea || (HomeArea = {}));
+//# sourceMappingURL=homeArea.js.map

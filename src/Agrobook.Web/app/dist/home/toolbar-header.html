@@ -8,13 +8,15 @@
         <div layout="row" class="home-login-form">
             <md-input-container>
                 <label>Usuario</label>
-                <input class="home-input"
+                <input ng-keyup="vm.onInputKeyPress($event)"
+                       class="home-input"
                        ng-model="vm.usuario">
             </md-input-container>
 
             <md-input-container>
                 <label>Password</label>
-                <input class="home-input" 
+                <input class="home-input"
+                       ng-keyup="vm.onInputKeyPress($event)"
                        type="password"
                        ng-model="vm.password">
             </md-input-container>

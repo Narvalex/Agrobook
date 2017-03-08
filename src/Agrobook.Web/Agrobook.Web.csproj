@@ -701,6 +701,7 @@
     <Content Include="app\bower_components\angular-material-icons\package.json" />
     <Content Include="app\bower_components\angular-material-icons\README.md" />
     <Content Include="typings\globals\googlemaps\typings.json" />
+    <TypeScriptCompile Include="app\src\config.ts" />
     <TypeScriptCompile Include="app\src\login\loginDTOs.ts" />
     <TypeScriptCompile Include="app\src\login\loginService.ts" />
     <TypeScriptCompile Include="app\src\usuarios\usuariosReadService.ts" />
@@ -729,7 +730,7 @@
     <Compile Include="ServiceLocator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="app\src\boot.ts" />
+    <TypeScriptCompile Include="app\src\homeArea.ts" />
     <TypeScriptCompile Include="app\src\maps\main-contentController.ts" />
     <TypeScriptCompile Include="app\src\maps\mapsArea.ts" />
     <TypeScriptCompile Include="app\src\home\toolbar-headerController.ts" />
