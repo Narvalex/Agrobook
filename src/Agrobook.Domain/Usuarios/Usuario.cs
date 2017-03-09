@@ -9,7 +9,7 @@ namespace Agrobook.Domain.Usuarios
             this.On<NuevoUsuarioCreado>(e =>
             {
                 this.StreamName = e.Usuario;
-                this.PasswordEncriptado = e.Password;
+                this.LoginInfo = e.LoginInfo;
             });
         }
 
@@ -18,24 +18,24 @@ namespace Agrobook.Domain.Usuarios
             base.Rehydrate(snapshot);
 
             var state = (UsuarioSnapshot)snapshot;
-            this.PasswordEncriptado = state.Password;
+            this.LoginInfo = state.LoginInfo;
         }
 
         protected override ISnapshot TakeSnapshot()
         {
-            return new UsuarioSnapshot(this.StreamName, this.Version, this.PasswordEncriptado);
+            return new UsuarioSnapshot(this.StreamName, this.Version, this.LoginInfo);
         }
 
-        public string PasswordEncriptado { get; private set; }
+        public string LoginInfo { get; private set; }
     }
 
     public class UsuarioSnapshot : Snapshot
     {
-        public UsuarioSnapshot(string streamName, int version, string password) : base(streamName, version)
+        public UsuarioSnapshot(string streamName, int version, string loginInfo) : base(streamName, version)
         {
-            this.Password = password;
+            this.LoginInfo = loginInfo;
         }
 
-        public string Password { get; }
+        public string LoginInfo { get; }
     }
 }

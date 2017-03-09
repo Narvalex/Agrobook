@@ -1,6 +1,5 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Usuarios;
-using Agrobook.Infrastructure.Serialization;
 using System;
 using System.Net.Http;
 using System.Text;

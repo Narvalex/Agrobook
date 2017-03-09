@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Agrobook.Core;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.IO;
 using System.Runtime.Serialization.Formatters;
@@ -21,7 +22,7 @@ namespace Agrobook.Infrastructure.Serialization
             });
         }
 
-        public string Serialize(object value)
+        public virtual string Serialize(object value)
         {
             using (var writer = new StringWriter())
             {
@@ -32,7 +33,7 @@ namespace Agrobook.Infrastructure.Serialization
             }
         }
 
-        public object Deserialize(string value)
+        public virtual object Deserialize(string value)
         {
             using (var reader = new StringReader(value))
             {
@@ -43,7 +44,7 @@ namespace Agrobook.Infrastructure.Serialization
             }
         }
 
-        public T Deserialize<T>(string value)
+        public virtual T Deserialize<T>(string value)
         {
             using (var reader = new StringReader(value))
             {

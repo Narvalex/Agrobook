@@ -1,6 +1,9 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Tests.Utils;
 using Agrobook.Domain.Usuarios;
+using Agrobook.Domain.Usuarios.Login;
+using Agrobook.Infrastructure.Cryptography;
+using Agrobook.Infrastructure.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -11,11 +14,13 @@ namespace Agrobook.Domain.Tests.Usuarios
     public class UsuariosYGruposTests
     {
         private TestableEventSourcedService<UsuariosYGruposService> sut;
+        private CryptoSerializer crypto;
 
         public UsuariosYGruposTests()
         {
+            this.crypto = new CryptoSerializer(new RijndaelDecryptor());
             this.sut = new TestableEventSourcedService<UsuariosYGruposService>(
-                r => new UsuariosYGruposService(r, new SimpleDateTimeProvider(), new FakeOneWayEncryptor()));
+                r => new UsuariosYGruposService(r, new SimpleDateTimeProvider(), this.crypto));
         }
 
         #region ABM Usuarios
@@ -43,7 +48,10 @@ namespace Agrobook.Domain.Tests.Usuarios
                 {
                     Assert.AreEqual(1, e.Count);
                     Assert.AreEqual("admin", e.OfType<NuevoUsuarioCreado>().Single().Usuario);
-                    Assert.AreEqual("changeit", e.OfType<NuevoUsuarioCreado>().Single().Password);
+
+                    var loginInfo = this.crypto.Deserialize<LoginInfo>(e.OfType<NuevoUsuarioCreado>().Single().LoginInfo);
+
+                    Assert.AreEqual("changeit", loginInfo.Password);
                 });
         }
 
@@ -67,7 +75,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                     {
                         Assert.AreEqual(1, e.Count);
                         Assert.AreEqual("Admin", e.OfType<NuevoUsuarioCreado>().Single().Usuario);
-                        Assert.AreEqual("123", e.OfType<NuevoUsuarioCreado>().Single().Password);
+                        Assert.AreEqual("123", e.OfType<NuevoUsuarioCreado>().Single().LoginInfo);
                     })
                     .And<Snapshot>(s =>
                     {
@@ -161,8 +169,10 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void SiElUsuarioExisteYLasCredencialesSonValidasSePuedeIniciarSesion()
         {
             var now = DateTime.Now;
+            var loginInfo = new LoginInfo("user1", "123", new string[] { ClaimDefs.Roles.Admin });
+            var eLoginInfo = this.crypto.Serialize(loginInfo);
             this.sut
-                .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", "123"))
+                .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", eLoginInfo))
                 .When(s =>
                 {
                     var result = s.HandleAsync(new IniciarSesion("user1", "123", now)).Result;
@@ -178,8 +188,10 @@ namespace Agrobook.Domain.Tests.Usuarios
         [TestMethod]
         public void SiElUsuarioExisteYLasCredencialesNoSonValidasEntoncesNoSePuedeIniciarSesion()
         {
+            var loginInfo = new LoginInfo("user1", "123", new string[] { ClaimDefs.Roles.Admin });
+            var eLoginInfo = this.crypto.Serialize(loginInfo);
             this.sut
-                .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", "123"))
+                .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", eLoginInfo))
                 .When(s =>
                 {
                     var result = s.HandleAsync(new IniciarSesion("user1", "wrongPassword", DateTime.Now)).Result;

@@ -1,4 +1,4 @@
-﻿namespace Agrobook.Infrastructure.Serialization
+﻿namespace Agrobook.Core
 {
     public interface IJsonSerializer
     {

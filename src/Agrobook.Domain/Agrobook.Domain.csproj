@@ -43,14 +43,17 @@
   <ItemGroup>
     <Compile Include="Common\MensajeAuditable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Usuarios\Login\ClaimDefs.cs" />
+    <Compile Include="Usuarios\Login\LoginInfo.cs" />
+    <Compile Include="Usuarios\Login\ClaimInfo.cs" />
     <Compile Include="Usuarios\UsuariosCommands.cs" />
     <Compile Include="Usuarios\UsuariosEvents.cs" />
-    <Compile Include="Usuarios\UsuariosYGruposService.cs" />
+    <Compile Include="Usuarios\Services\UsuariosYGruposService.cs" />
     <Compile Include="Usuarios\GrupoDeUsuariosCommands.cs" />
     <Compile Include="Usuarios\GrupoDeUsuariosEvents.cs" />
     <Compile Include="Usuarios\GrupoDeUsuarios.cs" />
     <Compile Include="Usuarios\Usuario.cs" />
-    <Compile Include="Usuarios\UsuariosYGruposServiceResults.cs" />
+    <Compile Include="Usuarios\Services\UsuariosYGruposServiceResults.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

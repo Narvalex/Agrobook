@@ -20,7 +20,9 @@ namespace Agrobook.Server
 
             var dateTimeProvider = new SimpleDateTimeProvider();
 
-            var oneWayEncriptor = new MD5OneWayEncryptor();
+            var decryptor = new RijndaelDecryptor();
+
+            var cryptoSerializer = new CryptoSerializer(decryptor);
 
             var jsonSerializer = new JsonTextSerializer();
 
@@ -28,7 +30,7 @@ namespace Agrobook.Server
 
             var eventSourcedRepository = new EventSourcedRepository(es.GetFailFastConnection, jsonSerializer, snapshotCache);
 
-            var usuariosService = new UsuariosYGruposService(eventSourcedRepository, dateTimeProvider, oneWayEncriptor);
+            var usuariosService = new UsuariosYGruposService(eventSourcedRepository, dateTimeProvider, cryptoSerializer);
 
             container.Register<IDateTimeProvider>(dateTimeProvider);
             container.Register<EventStoreManager>(es);

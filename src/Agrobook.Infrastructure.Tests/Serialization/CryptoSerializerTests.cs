@@ -1,36 +1,29 @@
-﻿using Agrobook.Core;
+﻿using Agrobook.Infrastructure.Cryptography;
 using Agrobook.Infrastructure.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Agrobook.Infrastructure.Tests.Serialization
 {
     [TestClass]
-    public class JsonSerializerTests
+    public class CryptoSerializerTests
     {
-        private JsonTextSerializer sut;
+        private CryptoSerializer sut;
 
         private readonly SimplePoco simplePoco = new SimplePoco("user", 18);
-        private const string _serializedSimplePoco = "{\"$type\":\"Agrobook.Infrastructure.Tests.Serialization.JsonSerializerTests+SimplePoco, Agrobook.Infrastructure.Tests\",\"name\":\"user\",\"age\":18}";
 
-        public JsonSerializerTests()
+        public CryptoSerializerTests()
         {
-            this.sut = new JsonTextSerializer();
+            this.sut = new CryptoSerializer(new RijndaelDecryptor());
         }
 
         [TestMethod]
-        public void CanSerializeSimplePoco()
+        public void CanSerializedAndDeserializeSimplePoco()
         {
             var serialized = this.sut.Serialize(this.simplePoco);
 
-            Ensure.NotNullOrWhiteSpace(serialized, nameof(serialized));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(serialized));
 
-            Assert.AreEqual(_serializedSimplePoco, serialized);
-        }
-
-        [TestMethod]
-        public void CanDeserializeSimplePoco()
-        {
-            var deserialized = (SimplePoco)this.sut.Deserialize(_serializedSimplePoco);
+            var deserialized = this.sut.Deserialize<SimplePoco>(serialized);
 
             Assert.AreEqual(this.simplePoco.Name, deserialized.Name);
             Assert.AreEqual(this.simplePoco.Age, deserialized.Age);

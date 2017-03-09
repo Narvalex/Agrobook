@@ -65,6 +65,10 @@
       <Project>{6b9ad205-891c-491a-9166-9b7996821c5d}</Project>
       <Name>Agrobook.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Agrobook.Infrastructure\Agrobook.Infrastructure.csproj">
+      <Project>{8194b76b-7583-48a8-a610-01efaded7417}</Project>
+      <Name>Agrobook.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

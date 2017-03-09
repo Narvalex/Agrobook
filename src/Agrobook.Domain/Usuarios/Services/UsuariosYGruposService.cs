@@ -1,5 +1,6 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Common;
+using Agrobook.Domain.Usuarios.Login;
 using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Usuarios
@@ -8,17 +9,17 @@ namespace Agrobook.Domain.Usuarios
     {
         public const string UsuarioAdmin = "admin";
         public const string DefaultPassword = "changeit";
-        private readonly IOneWayEncryptor encryptor;
+        private readonly IJsonSerializer cryptoSerializer;
 
         public UsuariosYGruposService(
             IEventSourcedRepository repository,
             IDateTimeProvider dateTime,
-            IOneWayEncryptor encryptor)
+            IJsonSerializer cryptoSerializer)
             : base(repository, dateTime)
         {
-            Ensure.NotNull(encryptor, nameof(encryptor));
+            Ensure.NotNull(cryptoSerializer, nameof(cryptoSerializer));
 
-            this.encryptor = encryptor;
+            this.cryptoSerializer = cryptoSerializer;
         }
 
         public bool ExisteUsuarioAdmin
@@ -33,7 +34,9 @@ namespace Agrobook.Domain.Usuarios
         public async Task CrearUsuarioAdminAsync()
         {
             var admin = new Usuario();
-            admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), UsuarioAdmin, this.encryptor.Encrypt(DefaultPassword)));
+            var loginInfo = new LoginInfo(UsuarioAdmin, DefaultPassword, new string[] { ClaimDefs.Roles.Admin });
+            var encryptedLoginInfo = this.cryptoSerializer.Serialize(loginInfo);
+            admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), UsuarioAdmin, encryptedLoginInfo));
             await this.repository.SaveAsync(admin);
         }
 
@@ -64,16 +67,17 @@ namespace Agrobook.Domain.Usuarios
         public async Task<LoginResult> HandleAsync(IniciarSesion cmd)
         {
             var usuario = await this.repository.GetAsync<Usuario>(cmd.Usuario);
-            if (usuario is null) return new LoginResult(false);
+            if (usuario is null) return new LoginResult(false, null);
 
-            var passwordIngresadoEncriptado = this.encryptor.Encrypt(cmd.PasswordCrudo);
-            if (usuario.PasswordEncriptado == passwordIngresadoEncriptado)
+            var loginInfo = this.cryptoSerializer.Deserialize<LoginInfo>(usuario.LoginInfo);
+
+            if (loginInfo.Password == cmd.PasswordCrudo)
                 usuario.Emit(new UsuarioInicioSesion(new Metadatos(cmd.Usuario, this.dateTime.Now)));
             else
-                return new LoginResult(false);
+                return new LoginResult(false, null);
 
             await this.repository.SaveAsync(usuario);
-            return new LoginResult(true);
+            return new LoginResult(true, usuario.LoginInfo);
         }
     }
 }
