@@ -2,9 +2,10 @@
 var HomeArea;
 (function (HomeArea) {
     var ToolbarHeaderController = (function () {
-        function ToolbarHeaderController(loginWriteService, config) {
+        function ToolbarHeaderController(loginWriteService, config, $mdPanel) {
             this.loginWriteService = loginWriteService;
             this.config = config;
+            this.$mdPanel = $mdPanel;
         }
         ToolbarHeaderController.prototype.onInputKeyPress = function ($event) {
             if ($event.keyCode == this.config.keyCodes.enter)
@@ -24,9 +25,15 @@ var HomeArea;
                 location.href = "areas/usuarios.html";
             }, function (reason) { return console.log(reason); });
         };
+        ToolbarHeaderController.prototype.showMenu = function ($event) {
+            var position = this.$mdPanel
+                .newPanelPosition()
+                .relativeTo('menu-btn')
+                .addPanelPosition(this.$mdPanel.xPosition.ALIGN_START, this.$mdPanel.yPosition.BELOW);
+        };
         return ToolbarHeaderController;
     }());
-    ToolbarHeaderController.$inject = ['loginWriteService', 'config'];
+    ToolbarHeaderController.$inject = ['loginWriteService', 'config', '$mdPanel'];
     HomeArea.ToolbarHeaderController = ToolbarHeaderController;
 })(HomeArea || (HomeArea = {}));
 //# sourceMappingURL=toolbar-headerController.js.map
