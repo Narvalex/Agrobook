@@ -1,6 +1,6 @@
 /// <reference path="_all.ts" />
-var Common;
-(function (Common) {
+var common;
+(function (common) {
     var config = (function () {
         function config() {
             this._keyCodes = {
@@ -20,14 +20,24 @@ var Common;
                 insert: 45,
                 del: 46
             };
+            this._repoIndex = {
+                login: {
+                    usuarioActual: 'ag-login-usuarioActual'
+                }
+            };
         }
         Object.defineProperty(config.prototype, "keyCodes", {
             get: function () { return this._keyCodes; },
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(config.prototype, "repoIndex", {
+            get: function () { return this._repoIndex; },
+            enumerable: true,
+            configurable: true
+        });
         return config;
     }());
-    Common.config = config;
-})(Common || (Common = {}));
+    common.config = config;
+})(common || (common = {}));
 //# sourceMappingURL=config.js.map

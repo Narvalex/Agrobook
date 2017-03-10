@@ -2,7 +2,8 @@
 
 module HomeArea {
     angular.module("app", ['ngMaterial', 'ngMdIcons'])
-        .value('config', new Common.config())
+        .value('config', new common.config())
+        .service('localStorageLite', common.localStorageLite)
         .service('loginWriteService', login.loginService)
         .controller('toolbar-headerController', ToolbarHeaderController)
         .config((

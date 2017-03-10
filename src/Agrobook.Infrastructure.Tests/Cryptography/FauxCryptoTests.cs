@@ -4,9 +4,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Agrobook.Infrastructure.Tests.Cryptography
 {
     [TestClass]
-    public class DecryptorTests
+    public class FauxCryptoTests
     {
-        private RijndaelDecryptor sut = new RijndaelDecryptor();
+        private FauxCrypto sut = new FauxCrypto();
 
         [TestMethod]
         public void CanEncrypt()
@@ -38,22 +38,6 @@ namespace Agrobook.Infrastructure.Tests.Cryptography
 
             var enc2 = this.sut.Encrypt(text);
             var dec2 = this.sut.Decrypt(encrypted);
-
-            Assert.AreEqual(encrypted, enc2);
-            Assert.AreEqual(decrypted, dec2);
-        }
-
-        [TestMethod]
-        public void CanDecrypMultipleTimesTheSameValueAsync()
-        {
-            var text = "pass";
-            var encrypted = this.sut.EncryptAsync(text).Result;
-            var decrypted = this.sut.DecryptAsync(encrypted).Result;
-
-            Assert.AreEqual(text, decrypted);
-
-            var enc2 = this.sut.EncryptAsync(text).Result;
-            var dec2 = this.sut.DecryptAsync(encrypted).Result;
 
             Assert.AreEqual(encrypted, enc2);
             Assert.AreEqual(decrypted, dec2);

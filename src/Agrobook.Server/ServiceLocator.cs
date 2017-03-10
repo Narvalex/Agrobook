@@ -20,7 +20,7 @@ namespace Agrobook.Server
 
             var dateTimeProvider = new SimpleDateTimeProvider();
 
-            var decryptor = new RijndaelDecryptor();
+            var decryptor = new StringCipher();
 
             var cryptoSerializer = new CryptoSerializer(decryptor);
 

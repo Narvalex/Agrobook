@@ -11,7 +11,6 @@ var HomeArea;
                 this.login();
         };
         ToolbarHeaderController.prototype.login = function () {
-            //location.href = "areas/usuarios.html";)
             if (this.usuario == undefined || this.usuario == '') {
                 window.alert('Por favor ingrese su usuario');
                 return;
@@ -20,12 +19,10 @@ var HomeArea;
                 window.alert('Por favor ingrese su contraseña');
                 return;
             }
-            this.loginWriteService.tryLogin(new login.credencialesDto(this.usuario, this.password))
-                .then(function (response) {
-                console.log(response.data);
-            }, function (reason) {
-                console.log(reason);
-            });
+            this.loginWriteService.tryLogin(new login.credencialesDto(this.usuario, this.password), function (value) {
+                console.log('Logueado!');
+                location.href = "areas/usuarios.html";
+            }, function (reason) { return console.log(reason); });
         };
         return ToolbarHeaderController;
     }());

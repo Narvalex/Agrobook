@@ -6,7 +6,7 @@ module HomeArea {
 
         constructor(
             private loginWriteService: login.loginService,
-            private config: Common.config)
+            private config: common.config)
         { }
 
         usuario: string;
@@ -19,7 +19,6 @@ module HomeArea {
         }
 
         login(): void {
-            //location.href = "areas/usuarios.html";)
             if (this.usuario == undefined || this.usuario == '') {
                 window.alert('Por favor ingrese su usuario');
                 return;
@@ -30,12 +29,13 @@ module HomeArea {
                 return;
             }
 
-            this.loginWriteService.tryLogin(new login.credencialesDto(this.usuario, this.password))
-                .then(response => {
-                    console.log(response.data);
-                }, reason => {
-                    console.log(reason);
-                });
+            this.loginWriteService.tryLogin(
+                new login.credencialesDto(this.usuario, this.password),
+                value => {
+                    console.log('Logueado!');
+                    location.href = "areas/usuarios.html";
+                },
+                reason => console.log(reason));
         }
     }
 }

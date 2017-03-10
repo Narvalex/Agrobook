@@ -18,7 +18,7 @@ namespace Agrobook.Domain.Tests.Usuarios
 
         public UsuariosYGruposTests()
         {
-            this.crypto = new CryptoSerializer(new RijndaelDecryptor());
+            this.crypto = new CryptoSerializer(new FauxCrypto());
             this.sut = new TestableEventSourcedService<UsuariosYGruposService>(
                 r => new UsuariosYGruposService(r, new SimpleDateTimeProvider(), this.crypto));
         }

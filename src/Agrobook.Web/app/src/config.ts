@@ -1,6 +1,6 @@
 ﻿/// <reference path="_all.ts" />
 
-module Common {
+module common {
     export class config {
 
         private _keyCodes = {
@@ -21,6 +21,13 @@ module Common {
             del: 46
         };
 
+        private _repoIndex = {
+            login: {
+                usuarioActual: 'ag-login-usuarioActual'
+            }
+        }
+
         get keyCodes() { return this._keyCodes; }
+        get repoIndex() { return this._repoIndex; }
     }
 }

@@ -13,7 +13,7 @@ namespace Agrobook.Infrastructure.Tests.Serialization
 
         public CryptoSerializerTests()
         {
-            this.sut = new CryptoSerializer(new RijndaelDecryptor());
+            this.sut = new CryptoSerializer(new FauxCrypto());
         }
 
         [TestMethod]

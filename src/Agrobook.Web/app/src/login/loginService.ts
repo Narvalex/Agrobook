@@ -4,17 +4,28 @@ module login {
     export class loginService {
         private prefix = 'login';
 
-        static $inject = ['$http'];
+        static $inject = ['$http', 'config', 'localStorageLite'];
 
         constructor(
-            private $http: angular.IHttpService) { }
+            private $http: angular.IHttpService,
+            private config: common.config,
+            private ls: common.localStorageLite) { }
 
         private post<TResult>(url: string, dto: any): ng.IHttpPromise<TResult> {
             return this.$http.post(this.prefix + '/' + url, dto);
         }
 
-        tryLogin(credenciales: credencialesDto): ng.IHttpPromise<loginResult> {
-            return this.post<loginResult>('try-login', credenciales);
+        tryLogin(
+            credenciales: credencialesDto,
+            successCallback: (value: ng.IHttpPromiseCallbackArg<loginResult>) => void,
+            errorCallback: (reason: any) => void) : void {
+            this.post<loginResult>('try-login', credenciales)
+                .then(
+                value => {
+                    this.ls.save(this.config.repoIndex.login.usuarioActual, value.data);
+                    successCallback(value);
+                },
+                reason => { errorCallback(reason); });
         }
     }
 }
