@@ -6,6 +6,7 @@ module HomeArea {
         .service('localStorageLite', common.localStorageLite)
         .service('loginWriteService', login.loginService)
         .controller('toolbar-headerController', ToolbarHeaderController)
+        .controller('userMenuWidgetController', common.userMenuWidgetController)
         .config((
             $mdIconProvider: angular.material.IIconProvider,
             $mdThemingProvider: angular.material.IThemingProvider) => {

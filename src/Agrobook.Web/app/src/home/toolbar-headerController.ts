@@ -2,14 +2,12 @@
 
 module HomeArea {
     export class ToolbarHeaderController {
-        static $inject = ['loginWriteService', 'config', '$mdPanel'];
+
+        static $inject = ['loginWriteService', 'config'];
 
         constructor(
             private loginWriteService: login.loginService,
-            private config: common.config,
-            private $mdPanel: angular.material.IPanelService)
-        {
-
+            private config: common.config) {
         }
 
         usuario: string;
@@ -39,14 +37,6 @@ module HomeArea {
                     location.href = "areas/usuarios.html";
                 },
                 reason => console.log(reason));
-        }
-
-        showMenu($event: any): void {
-            var position =
-                this.$mdPanel
-                    .newPanelPosition()
-                    .relativeTo('menu-btn')
-                    .addPanelPosition(this.$mdPanel.xPosition.ALIGN_START, this.$mdPanel.yPosition.BELOW);
         }
     }
 }

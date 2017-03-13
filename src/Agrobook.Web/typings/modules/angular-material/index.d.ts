@@ -334,6 +334,7 @@ declare module angular.material {
         onDomRemoved?: Function;
         origin?: string | JQuery | Element;
         onCloseSuccess?: ((panel: IPanelRef, closeReason: string) => any);
+        openFrom: any
     }
 
     interface IPanelRef {

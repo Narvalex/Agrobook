@@ -6,6 +6,7 @@ var HomeArea;
         .service('localStorageLite', common.localStorageLite)
         .service('loginWriteService', login.loginService)
         .controller('toolbar-headerController', HomeArea.ToolbarHeaderController)
+        .controller('userMenuWidgetController', common.userMenuWidgetController)
         .config(function ($mdIconProvider, $mdThemingProvider) {
         $mdIconProvider
             .defaultIconSet('./app/assets/svg/avatars.svg', 128)
@@ -15,4 +16,4 @@ var HomeArea;
             .accentPalette('blue');
     });
 })(HomeArea || (HomeArea = {}));
-//# sourceMappingURL=HomeArea.js.map
+//# sourceMappingURL=homeArea.js.map
