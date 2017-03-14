@@ -6,6 +6,9 @@
                    aria-label="Toggle side nav">
             <md-icon md-svg-icon="menu"></md-icon>
         </md-button>
-        <h2><a href="../">Agrobook</a></h2><h2 hide-gt-sm>&nbsp;/ Usuarios</h2>
+        <h2 md-truncate><a href="../">Agrobook</a></h2><h2 hide-gt-sm>&nbsp;/ Usuarios</h2>
+        <span flex></span>
+        <div ng-include="'dist/common/userMenu/widget.html'"
+             ng-controller="userMenuWidgetController as vm"></div>
     </div>
 </md-toolbar>

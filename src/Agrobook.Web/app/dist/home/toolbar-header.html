@@ -3,7 +3,6 @@
         <h2 flex md-truncate hide-xs>
             Agrobook
         </h2>
-        <!--<span flex></span>-->
 
         <div layout="row" class="home-login-form">
             <md-input-container>
@@ -24,7 +23,7 @@
         <md-button class="md-flat" aria-label="Login" ng-click="vm.login()">
             Login
         </md-button>
-        <div ng-include="'app/dist/common/userMenu/widget.html'"
+        <div ng-include="'dist/common/userMenu/widget.html'"
              ng-controller="userMenuWidgetController as vm"></div>
     </div>
 </md-toolbar>

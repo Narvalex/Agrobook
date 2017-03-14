@@ -5,6 +5,7 @@ module UsuariosArea {
         .service('usuariosWriteService', usuariosWriteService)
         .controller('sidenavController', sidenavController)
         .controller('toolbarHeaderController', toolbarHeaderController)
+        .controller('userMenuWidgetController', common.userMenuWidgetController)
         .config((
             $mdIconProvider: angular.material.IIconProvider,
             $mdThemingProvider: angular.material.IThemingProvider) => {

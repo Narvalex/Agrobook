@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="es" ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=2" />
+
+    <!--ICON Credits: http://www.iconarchive.com/show/food-drink-icons-by-graphicloads/leaf-icon.html -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <link href="./assets/google-font-roboto.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="./bower_components/angular-material/angular-material.min.css" />
+    <link rel="stylesheet" href="./bower_components/angular-material-icons/angular-material-icons.css" />
+
+    <!-- Custom -->
+    <link href="./assets/home.css" rel="stylesheet" />
+    <link href="./assets/menu-panel.css" rel="stylesheet" />
+
+    <style type="text/css">
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
+    <title>Agrobook - Home</title>
+</head>
+<body layout="row">
+    <div ng-show="false">
+        <h1>Cargando... muy lento por lo visto :(</h1>
+    </div>
+    <div layout="column" flex>
+        <div ng-include="'dist/home/toolbar-header.html'"></div>
+        <md-content flex id="content">
+            <div ng-include="'dist/home/main-content.html'"></div>
+        </md-content>
+    </div>
+
+    <script src="./bower_components/angular/angular.min.js"></script>
+    <script src="./bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="./bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="./bower_components/angular-material/angular-material.min.js"></script>
+    <script src="./bower_components/angular-material-icons/angular-material-icons.min.js"></script>
+    <!-- values -->
+    <script src="./dist/config.js"></script>
+    <!-- dtos/models -->
+    <script src="./dist/login/loginDTOs.js"></script>
+    <!-- services -->
+    <script src="./dist/infrastructure.js"></script>
+    <script src="./dist/login/loginService.js"></script>
+    <!-- controllers -->
+    <script src="./dist/common/userMenu/widgetController.js"></script>
+    <script src="./dist/home/toolbar-headerController.js"></script>
+    <!-- boot -->
+    <script src="./dist/home/homeArea.js"></script>
+</body>
+</html>

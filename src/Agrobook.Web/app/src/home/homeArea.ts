@@ -1,4 +1,4 @@
-﻿/// <reference path="_all.ts" />
+﻿/// <reference path="../_all.ts" />
 
 module HomeArea {
     angular.module("app", ['ngMaterial', 'ngMdIcons'])

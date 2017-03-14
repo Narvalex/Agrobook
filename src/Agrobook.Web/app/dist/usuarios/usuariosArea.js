@@ -5,6 +5,7 @@ var UsuariosArea;
         .service('usuariosWriteService', UsuariosArea.usuariosWriteService)
         .controller('sidenavController', UsuariosArea.sidenavController)
         .controller('toolbarHeaderController', UsuariosArea.toolbarHeaderController)
+        .controller('userMenuWidgetController', common.userMenuWidgetController)
         .config(function ($mdIconProvider, $mdThemingProvider) {
         // most from flat icon dot com
         $mdIconProvider

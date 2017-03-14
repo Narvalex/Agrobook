@@ -7,21 +7,23 @@ var common;
         }
         userMenuWidgetController.prototype.mostrarMenu = function ($event) {
             var panelConfig;
+            var position = this.$mdPanel
+                .newPanelPosition()
+                .relativeTo($event.target)
+                .addPanelPosition(this.$mdPanel.xPosition.ALIGN_START, this.$mdPanel.yPosition.BELOW)
+                .withOffsetX('-75px');
             panelConfig = {
-                position: this.$mdPanel
-                    .newPanelPosition()
-                    .relativeTo('#menu-btn')
-                    .addPanelPosition(this.$mdPanel.xPosition.ALIGN_START, this.$mdPanel.yPosition.BELOW),
+                position: position,
                 attachTo: angular.element(document.body),
                 controller: panelMenuController,
                 controllerAs: 'vm',
-                templateUrl: 'app/dist/common/userMenu/menu-items-template.html',
-                panelClass: 'menu-template',
+                templateUrl: 'dist/common/userMenu/menu-items-template.html',
+                panelClass: 'menu-panel-container',
                 openFrom: $event,
                 clickOutsideToClose: true,
                 escapeToClose: true,
                 focusOnOpen: true,
-                zIndex: 2
+                zIndex: 100
             };
             this.$mdPanel.open(panelConfig);
         };
@@ -32,9 +34,27 @@ var common;
     var panelMenuController = (function () {
         function panelMenuController(mdPanelRef) {
             this.mdPanelRef = mdPanelRef;
+            this.menuItemList = [
+                new menuItem('Inicio', 'home.html'),
+                new menuItem('Usuarios', 'usuarios.html'),
+                new menuItem('Siscole', 'http://ti.fecoprod.com.py/siscole')
+            ];
         }
+        panelMenuController.prototype.closeMenu = function () {
+            this.mdPanelRef.close();
+        };
+        panelMenuController.prototype.seleccionarItem = function (item) {
+            window.location.href = item.link;
+        };
         return panelMenuController;
     }());
-    panelMenuController.$inject = ['mdPanelRef', '$timeout'];
+    panelMenuController.$inject = ['mdPanelRef'];
+    var menuItem = (function () {
+        function menuItem(name, link) {
+            this.name = name;
+            this.link = link;
+        }
+        return menuItem;
+    }());
 })(common || (common = {}));
 //# sourceMappingURL=widgetController.js.map

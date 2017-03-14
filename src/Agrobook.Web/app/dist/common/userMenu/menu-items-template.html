@@ -1,1 +1,16 @@
-﻿<p>hola</p>
+﻿
+    <div ng-cloak class="menu-panel" md-whiteframe="4">
+        <div class="menu-content">
+            <div class="menu-item" ng-repeat="item in vm.menuItemList">
+                <button class="md-button" ng-click="vm.seleccionarItem(item)">
+                    <span>{{item.name}}</span>
+                </button>
+            </div>
+            <md-divider></md-divider>
+            <div class="menu-item">
+                <button class="md-button" ng-click="vm.closeMenu()">
+                    <span>Cerrar</span>
+                </button>
+            </div>
+        </div>
+    </div>
