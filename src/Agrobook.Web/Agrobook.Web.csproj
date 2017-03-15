@@ -711,8 +711,8 @@
     <TypeScriptCompile Include="app\src\login\loginDTOs.ts" />
     <TypeScriptCompile Include="app\src\login\loginQueryService.ts" />
     <TypeScriptCompile Include="app\src\login\loginService.ts" />
-    <TypeScriptCompile Include="app\src\usuarios\usuariosReadService.ts" />
-    <TypeScriptCompile Include="app\src\usuarios\usuariosWriteService.ts" />
+    <TypeScriptCompile Include="app\src\usuarios\usuariosQueryService.ts" />
+    <TypeScriptCompile Include="app\src\usuarios\usuariosService.ts" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -728,8 +728,7 @@
   <ItemGroup>
     <Compile Include="Controllers\Login\LoginController.cs" />
     <Compile Include="Controllers\Maps\KmlController.cs" />
-    <Compile Include="Controllers\Usuarios\UsuariosDTOs.cs" />
-    <Compile Include="Controllers\Usuarios\UsuariosWriteController.cs" />
+    <Compile Include="Controllers\Usuarios\UsuariosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

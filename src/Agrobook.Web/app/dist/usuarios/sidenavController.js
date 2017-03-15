@@ -1,6 +1,6 @@
 /// <reference path="../_all.ts" />
-var UsuariosArea;
-(function (UsuariosArea) {
+var usuariosArea;
+(function (usuariosArea) {
     var sidenavController = (function () {
         function sidenavController($mdSidenav, $mdDialog, $mdMedia, $mdToast) {
             this.$mdSidenav = $mdSidenav;
@@ -17,7 +17,7 @@ var UsuariosArea;
                 templateUrl: '../app/dist/usuarios/dialogs/nuevo-usuario-dialog.html',
                 parent: angular.element(document.body),
                 targetEvent: $event,
-                controller: UsuariosArea.nuevoUsuarioDialogController,
+                controller: usuariosArea.nuevoUsuarioDialogController,
                 controllerAs: 'vm',
                 clickOutsideToClose: true,
                 fullscreen: (this.$mdMedia('sm') || this.$mdMedia('xs'))
@@ -39,6 +39,6 @@ var UsuariosArea;
         return sidenavController;
     }());
     sidenavController.$inject = ['$mdSidenav', '$mdDialog', '$mdMedia', '$mdToast'];
-    UsuariosArea.sidenavController = sidenavController;
-})(UsuariosArea || (UsuariosArea = {}));
+    usuariosArea.sidenavController = sidenavController;
+})(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=sidenavController.js.map

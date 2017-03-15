@@ -1,10 +1,10 @@
 ﻿/// <reference path="../_all.ts" />
 
-module UsuariosArea {
+module usuariosArea {
     angular.module('usuariosArea', ['ngMaterial', 'ngMdIcons'])
         .value('config', new common.config())
         .service('localStorageLite', common.localStorageLite)
-        .service('usuariosWriteService', usuariosWriteService)
+        .service('usuariosService', usuariosService)
         .service('loginService', login.loginService)
         .service('loginQueryService', login.loginQueryService)
         .controller('sidenavController', sidenavController)

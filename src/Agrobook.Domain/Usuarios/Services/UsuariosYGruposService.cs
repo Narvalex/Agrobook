@@ -10,15 +10,19 @@ namespace Agrobook.Domain.Usuarios
         public const string UsuarioAdmin = "admin";
         public const string DefaultPassword = "changeit";
         private readonly IJsonSerializer cryptoSerializer;
+        private readonly string adminAvatarUrl;
 
         public UsuariosYGruposService(
             IEventSourcedRepository repository,
             IDateTimeProvider dateTime,
-            IJsonSerializer cryptoSerializer)
+            IJsonSerializer cryptoSerializer,
+            string adminAvatarUrl = "./assets/img/avatar/1.png")
             : base(repository, dateTime)
         {
             Ensure.NotNull(cryptoSerializer, nameof(cryptoSerializer));
+            Ensure.NotNullOrWhiteSpace(adminAvatarUrl, nameof(adminAvatarUrl));
 
+            this.adminAvatarUrl = adminAvatarUrl;
             this.cryptoSerializer = cryptoSerializer;
         }
 
@@ -36,14 +40,14 @@ namespace Agrobook.Domain.Usuarios
             var admin = new Usuario();
             var loginInfo = new LoginInfo(UsuarioAdmin, DefaultPassword, new string[] { ClaimDefs.Roles.Admin });
             var encryptedLoginInfo = this.cryptoSerializer.Serialize(loginInfo);
-            admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), UsuarioAdmin, UsuarioAdmin, encryptedLoginInfo));
+            admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), UsuarioAdmin, UsuarioAdmin, this.adminAvatarUrl, encryptedLoginInfo));
             await this.repository.SaveAsync(admin);
         }
 
         public async Task HandleAsync(CrearNuevoUsuario cmd)
         {
             var state = new Usuario();
-            state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario, cmd.NombreParaMostrar, cmd.PasswordCrudo));
+            state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario, cmd.NombreParaMostrar, cmd.AvatarUrl, cmd.PasswordCrudo));
             await this.repository.SaveAsync(state);
         }
 

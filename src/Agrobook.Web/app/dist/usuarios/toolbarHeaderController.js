@@ -1,6 +1,6 @@
 /// <reference path="../_all.ts" />
-var UsuariosArea;
-(function (UsuariosArea) {
+var usuariosArea;
+(function (usuariosArea) {
     var toolbarHeaderController = (function () {
         function toolbarHeaderController($mdSidenav) {
             this.$mdSidenav = $mdSidenav;
@@ -11,6 +11,6 @@ var UsuariosArea;
         return toolbarHeaderController;
     }());
     toolbarHeaderController.$inject = ['$mdSidenav'];
-    UsuariosArea.toolbarHeaderController = toolbarHeaderController;
-})(UsuariosArea || (UsuariosArea = {}));
+    usuariosArea.toolbarHeaderController = toolbarHeaderController;
+})(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=toolbarHeaderController.js.map

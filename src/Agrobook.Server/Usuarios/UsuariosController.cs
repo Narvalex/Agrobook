@@ -7,8 +7,8 @@ namespace Agrobook.Server.Usuarios
     public class UsuariosController : ApiController
     {
         [HttpPost]
-        [Route("nuevo-usuario")]
-        public async Task<IHttpActionResult> NuevoUsuarioAsync()
+        [Route("crear-nuevo-usuario")]
+        public async Task<IHttpActionResult> CrearNuevoUsuarioAsync()
         {
             return await Task.FromResult(this.Ok());
         }

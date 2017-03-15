@@ -1,42 +1,25 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Usuarios;
-using System;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Agrobook.Client.Login
 {
     public class LoginClient
     {
-        private readonly string hostUri;
-        private readonly IJsonSerializer serializer;
+        private readonly HttpLite http;
 
-        public LoginClient(string hostUri, IJsonSerializer serializer)
+        public LoginClient(HttpLite http)
         {
-            Ensure.NotNullOrWhiteSpace(hostUri, nameof(hostUri));
-            Ensure.NotNull(serializer, nameof(serializer));
+            Ensure.NotNull(http, nameof(http));
 
-            this.hostUri = hostUri;
-            this.serializer = serializer;
+            this.http = http;
         }
 
         public async Task<LoginResult> TryLoginAsync(string userName, string password)
         {
-            HttpResponseMessage response;
-            using (var client = new HttpClient())
-            {
-                var tokenEndpoint = new Uri(new Uri(this.hostUri), "login/try-login");
-                var stringContent = new StringContent($"{{ 'username':'{userName}', 'password':'{password}'}}", Encoding.UTF8, "application/json");
-                response = await client.PostAsync(tokenEndpoint, stringContent);
-            }
-
-            if (!response.IsSuccessStatusCode)
-                throw new Exception($"Error on login. Status Code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
-
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var result = this.serializer.Deserialize<LoginResult>(responseContent);
-            return result;
+            return await this.http.Post<LoginResult>(
+                "login/try-login",
+                $"{{ 'username':'{userName}', 'password':'{password}'}}");
         }
     }
 }

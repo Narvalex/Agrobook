@@ -1,6 +1,6 @@
 /// <reference path="../_all.ts" />
-var HomeArea;
-(function (HomeArea) {
+var homeArea;
+(function (homeArea) {
     var ToolbarHeaderController = (function () {
         function ToolbarHeaderController(loginService, loginQueryService, config, $rootScope) {
             var _this = this;
@@ -54,6 +54,6 @@ var HomeArea;
         return ToolbarHeaderController;
     }());
     ToolbarHeaderController.$inject = ['loginService', 'loginQueryService', 'config', '$rootScope'];
-    HomeArea.ToolbarHeaderController = ToolbarHeaderController;
-})(HomeArea || (HomeArea = {}));
+    homeArea.ToolbarHeaderController = ToolbarHeaderController;
+})(homeArea || (homeArea = {}));
 //# sourceMappingURL=toolbar-headerController.js.map

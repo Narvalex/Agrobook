@@ -32,6 +32,14 @@
                             <div ng-message="required">Debe elegir un nombre de usuario</div>
                         </div>
                     </md-input-container>
+                    <!-- Nombre para mostrar -->
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Nombre para mostrar</label>
+                        <input ng-model="vm.usuario.nombreParaMostrar" name="nombreParaMostrar" required />
+                        <div ng-messages="nuevoUsuarioForm.nombreParaMostrar.$error">
+                            <div ng-message="required">Debe especificar el nombre para mostrar</div>
+                        </div>
+                    </md-input-container>
                     <!-- Password -->
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Contraseña</label>

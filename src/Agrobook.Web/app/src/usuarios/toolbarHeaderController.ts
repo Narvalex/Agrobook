@@ -1,6 +1,6 @@
 ﻿/// <reference path="../_all.ts" />
 
-module UsuariosArea {
+module usuariosArea {
     export class toolbarHeaderController {
         static $inject = ['$mdSidenav'];
 

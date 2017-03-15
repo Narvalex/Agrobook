@@ -1,4 +1,5 @@
-﻿using Agrobook.Client.Login;
+﻿using Agrobook.Client;
+using Agrobook.Client.Login;
 using Agrobook.Core;
 using Agrobook.Infrastructure.IoC;
 using Agrobook.Infrastructure.Serialization;
@@ -14,7 +15,8 @@ namespace Agrobook.Web
             var container = Container;
 
             var serializer = new JsonTextSerializer();
-            var loginClient = new LoginClient("http://localhost:8081", serializer);
+            var http = new HttpLite("http://localhost:8081");
+            var loginClient = new LoginClient(http);
 
             container.Register<LoginClient>(loginClient);
         }

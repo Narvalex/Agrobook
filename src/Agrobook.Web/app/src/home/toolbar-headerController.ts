@@ -1,6 +1,6 @@
 ﻿/// <reference path="../_all.ts" />
 
-module HomeArea {
+module homeArea {
     export class ToolbarHeaderController {
 
         static $inject = ['loginService', 'loginQueryService', 'config', '$rootScope'];

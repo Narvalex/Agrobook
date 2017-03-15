@@ -1,6 +1,6 @@
 ﻿/// <reference path="../_all.ts" />
 
-module HomeArea {
+module homeArea {
     angular.module("app", ['ngMaterial', 'ngMdIcons'])
         .value('config', new common.config())
         .service('localStorageLite', common.localStorageLite)
