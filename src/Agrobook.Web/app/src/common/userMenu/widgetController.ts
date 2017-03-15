@@ -2,11 +2,21 @@
 
 module common {
     export class userMenuWidgetController {
-        static $inject = ['$mdPanel'];
+        static $inject = ['config', '$mdPanel', 'loginQueryService', '$rootScope'];
 
         constructor(
-            private $mdPanel: angular.material.IPanelService) {
+            private config: common.config,
+            private $mdPanel: angular.material.IPanelService,
+            private loginQueryService: login.loginQueryService,
+            private $rootScope: angular.IRootScopeService
+        ) {
+            this.$rootScope.$on(this.config.eventIndex.login.loggedIn, (e, args) => {
+                this.verificarLogueo();
+            });
+            this.verificarLogueo();
         }
+
+        estaLogueado: boolean = false;
 
         mostrarMenu($event: any): void {
             let panelConfig: angular.material.IPanelConfig;
@@ -31,6 +41,13 @@ module common {
             };
 
             this.$mdPanel.open(panelConfig);
+        }
+
+        private verificarLogueo() {
+            var result = this.loginQueryService.tryGetLocalLoginInfo();
+            if (result !== undefined && result.loginExitoso) {
+                this.estaLogueado = true;
+            }
         }
     }
 

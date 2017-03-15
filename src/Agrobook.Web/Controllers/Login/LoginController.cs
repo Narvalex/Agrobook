@@ -4,7 +4,7 @@ using System.Web.Http;
 
 namespace Agrobook.Web.Controllers.Login
 {
-    [RoutePrefix("login")]
+    [RoutePrefix("app/login")]
     public class LoginController : ApiController
     {
         private readonly LoginClient client = ServiceLocator.Container.ResolveSingleton<LoginClient>();

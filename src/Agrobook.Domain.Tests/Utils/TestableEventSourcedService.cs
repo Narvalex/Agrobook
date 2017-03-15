@@ -87,6 +87,9 @@ namespace Agrobook.Domain.Tests.Utils
             this.NewEventsCommitted.AddRange(await Task.FromResult(eventSourced.NewEvents));
             this.Snapshot = eventSourced.TakeSnapshot();
             eventSourced.MarkAsCommited();
+            // Testing the snapshot
+            eventSourced.Rehydrate(this.Snapshot);
+            this.Snapshot = eventSourced.TakeSnapshot();
         }
     }
 

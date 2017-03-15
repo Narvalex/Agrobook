@@ -2,8 +2,17 @@
 var common;
 (function (common) {
     var userMenuWidgetController = (function () {
-        function userMenuWidgetController($mdPanel) {
+        function userMenuWidgetController(config, $mdPanel, loginQueryService, $rootScope) {
+            var _this = this;
+            this.config = config;
             this.$mdPanel = $mdPanel;
+            this.loginQueryService = loginQueryService;
+            this.$rootScope = $rootScope;
+            this.estaLogueado = false;
+            this.$rootScope.$on(this.config.eventIndex.login.loggedIn, function (e, args) {
+                _this.verificarLogueo();
+            });
+            this.verificarLogueo();
         }
         userMenuWidgetController.prototype.mostrarMenu = function ($event) {
             var panelConfig;
@@ -27,9 +36,15 @@ var common;
             };
             this.$mdPanel.open(panelConfig);
         };
+        userMenuWidgetController.prototype.verificarLogueo = function () {
+            var result = this.loginQueryService.tryGetLocalLoginInfo();
+            if (result !== undefined && result.loginExitoso) {
+                this.estaLogueado = true;
+            }
+        };
         return userMenuWidgetController;
     }());
-    userMenuWidgetController.$inject = ['$mdPanel'];
+    userMenuWidgetController.$inject = ['config', '$mdPanel', 'loginQueryService', '$rootScope'];
     common.userMenuWidgetController = userMenuWidgetController;
     var panelMenuController = (function () {
         function panelMenuController(mdPanelRef) {

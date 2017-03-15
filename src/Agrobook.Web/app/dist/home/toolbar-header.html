@@ -4,7 +4,8 @@
             Agrobook
         </h2>
 
-        <div layout="row" class="home-login-form">
+        <div ng-hide="vm.estaLogueado"
+             layout="row" class="home-login-form">
             <md-input-container>
                 <label>Usuario</label>
                 <input ng-keyup="vm.onInputKeyPress($event)"
@@ -20,9 +21,14 @@
                        ng-model="vm.password">
             </md-input-container>
         </div>
-        <md-button class="md-flat" aria-label="Login" ng-click="vm.login()">
+
+        <md-button ng-hide="vm.estaLogueado"
+                   class="md-flat" aria-label="Login" ng-click="vm.login()">
             Login
         </md-button>
+
+        <h5 ng-cloak ng-show="vm.estaLogueado">¡Hola {{vm.nombreParaMostrar}}!</h5>
+
         <div ng-include="'dist/common/userMenu/widget.html'"
              ng-controller="userMenuWidgetController as vm"></div>
     </div>

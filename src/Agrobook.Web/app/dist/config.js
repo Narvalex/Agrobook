@@ -25,6 +25,11 @@ var common;
                     usuarioActual: 'ag-login-usuarioActual'
                 }
             };
+            this._eventIndex = {
+                login: {
+                    loggedIn: 'loggedIn'
+                }
+            };
         }
         Object.defineProperty(config.prototype, "keyCodes", {
             get: function () { return this._keyCodes; },
@@ -33,6 +38,11 @@ var common;
         });
         Object.defineProperty(config.prototype, "repoIndex", {
             get: function () { return this._repoIndex; },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(config.prototype, "eventIndex", {
+            get: function () { return this._eventIndex; },
             enumerable: true,
             configurable: true
         });

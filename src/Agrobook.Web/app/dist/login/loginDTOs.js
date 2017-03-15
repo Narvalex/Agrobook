@@ -10,7 +10,10 @@ var login;
     }());
     login.credencialesDto = credencialesDto;
     var loginResult = (function () {
-        function loginResult() {
+        function loginResult(loginExitoso, nombreParaMostrar, token) {
+            this.loginExitoso = loginExitoso;
+            this.nombreParaMostrar = nombreParaMostrar;
+            this.token = token;
         }
         return loginResult;
     }());

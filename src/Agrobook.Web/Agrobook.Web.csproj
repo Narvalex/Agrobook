@@ -709,6 +709,7 @@
     <TypeScriptCompile Include="app\src\config.ts" />
     <TypeScriptCompile Include="app\src\infrastructure.ts" />
     <TypeScriptCompile Include="app\src\login\loginDTOs.ts" />
+    <TypeScriptCompile Include="app\src\login\loginQueryService.ts" />
     <TypeScriptCompile Include="app\src\login\loginService.ts" />
     <TypeScriptCompile Include="app\src\usuarios\usuariosReadService.ts" />
     <TypeScriptCompile Include="app\src\usuarios\usuariosWriteService.ts" />

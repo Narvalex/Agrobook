@@ -4,15 +4,17 @@ namespace Agrobook.Domain.Usuarios
 {
     public class NuevoUsuarioCreado : MensajeAuditable
     {
-        public NuevoUsuarioCreado(Metadatos metadatos, string usuario, string loginInfo)
+        public NuevoUsuarioCreado(Metadatos metadatos, string usuario, string nombreParaMostrar, string loginInfoEncriptado)
             : base(metadatos)
         {
             this.Usuario = usuario;
-            this.LoginInfo = loginInfo;
+            this.NombreParaMostrar = nombreParaMostrar;
+            this.LoginInfoEncriptado = loginInfoEncriptado;
         }
 
         public string Usuario { get; }
-        public string LoginInfo { get; } // Encriptado
+        public string NombreParaMostrar { get; }
+        public string LoginInfoEncriptado { get; }
     }
 
     public class UsuarioInicioSesion : MensajeAuditable

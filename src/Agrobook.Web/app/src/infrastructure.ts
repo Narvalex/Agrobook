@@ -14,6 +14,9 @@ module common {
 
         get<T>(key: string): T {
             var payload = localStorage[key];
+            if (payload === undefined)
+                return undefined;
+
             var object = JSON.parse(payload);
             return object as T;
         }

@@ -36,14 +36,14 @@ namespace Agrobook.Domain.Usuarios
             var admin = new Usuario();
             var loginInfo = new LoginInfo(UsuarioAdmin, DefaultPassword, new string[] { ClaimDefs.Roles.Admin });
             var encryptedLoginInfo = this.cryptoSerializer.Serialize(loginInfo);
-            admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), UsuarioAdmin, encryptedLoginInfo));
+            admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), UsuarioAdmin, UsuarioAdmin, encryptedLoginInfo));
             await this.repository.SaveAsync(admin);
         }
 
         public async Task HandleAsync(CrearNuevoUsuario cmd)
         {
             var state = new Usuario();
-            state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario, cmd.PasswordCrudo));
+            state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario, cmd.NombreParaMostrar, cmd.PasswordCrudo));
             await this.repository.SaveAsync(state);
         }
 
@@ -67,17 +67,17 @@ namespace Agrobook.Domain.Usuarios
         public async Task<LoginResult> HandleAsync(IniciarSesion cmd)
         {
             var usuario = await this.repository.GetAsync<Usuario>(cmd.Usuario);
-            if (usuario is null) return new LoginResult(false, null);
+            if (usuario is null) return new LoginResult(false, null, null);
 
-            var loginInfo = this.cryptoSerializer.Deserialize<LoginInfo>(usuario.LoginInfo);
+            var loginInfo = this.cryptoSerializer.Deserialize<LoginInfo>(usuario.LoginInfoEncriptado);
 
             if (loginInfo.Password == cmd.PasswordCrudo)
                 usuario.Emit(new UsuarioInicioSesion(new Metadatos(cmd.Usuario, this.dateTime.Now)));
             else
-                return new LoginResult(false, null);
+                return new LoginResult(false, null, null);
 
             await this.repository.SaveAsync(usuario);
-            return new LoginResult(true, usuario.LoginInfo);
+            return new LoginResult(true, usuario.NombreParaMostrar, usuario.LoginInfoEncriptado);
         }
     }
 }

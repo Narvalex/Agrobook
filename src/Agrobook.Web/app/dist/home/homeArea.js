@@ -4,7 +4,8 @@ var HomeArea;
     angular.module("app", ['ngMaterial', 'ngMdIcons'])
         .value('config', new common.config())
         .service('localStorageLite', common.localStorageLite)
-        .service('loginWriteService', login.loginService)
+        .service('loginService', login.loginService)
+        .service('loginQueryService', login.loginQueryService)
         .controller('toolbar-headerController', HomeArea.ToolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
         .config(function ($mdIconProvider, $mdThemingProvider) {

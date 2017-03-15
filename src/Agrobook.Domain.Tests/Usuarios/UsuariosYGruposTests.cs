@@ -49,7 +49,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                     Assert.AreEqual(1, e.Count);
                     Assert.AreEqual("admin", e.OfType<NuevoUsuarioCreado>().Single().Usuario);
 
-                    var loginInfo = this.crypto.Deserialize<LoginInfo>(e.OfType<NuevoUsuarioCreado>().Single().LoginInfo);
+                    var loginInfo = this.crypto.Deserialize<LoginInfo>(e.OfType<NuevoUsuarioCreado>().Single().LoginInfoEncriptado);
 
                     Assert.AreEqual("changeit", loginInfo.Password);
                 });
@@ -59,7 +59,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void SePuedeDetectarQueSiExisteElUsuarioAdminUnaVezCreado()
         {
             this.sut
-                .Given("admin", new NuevoUsuarioCreado(TestMeta.New, "admin", "password"))
+                .Given("admin", new NuevoUsuarioCreado(TestMeta.New, "admin", "admin", "password"))
                 .When(s =>
                 {
                     Assert.IsTrue(s.ExisteUsuarioAdmin);
@@ -70,12 +70,12 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void SePuedeCrearUsuarioNuevo()
         {
             this.sut.Given()
-                    .When(s => s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "Admin", "123")).Wait())
+                    .When(s => s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "Admin", "Admincito", "123")).Wait())
                     .Then(e =>
                     {
                         Assert.AreEqual(1, e.Count);
                         Assert.AreEqual("Admin", e.OfType<NuevoUsuarioCreado>().Single().Usuario);
-                        Assert.AreEqual("123", e.OfType<NuevoUsuarioCreado>().Single().LoginInfo);
+                        Assert.AreEqual("123", e.OfType<NuevoUsuarioCreado>().Single().LoginInfoEncriptado);
                     })
                     .And<Snapshot>(s =>
                     {
@@ -87,14 +87,14 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void CuandoElUsuarioYaExisteEntoncesNoSePuedeAgregarOtroIgual()
         {
             var usuario = "user1";
-            this.sut.Given(usuario, new NuevoUsuarioCreado(TestMeta.New, "user1", "123"))
+            this.sut.Given(usuario, new NuevoUsuarioCreado(TestMeta.New, "user1", "User Lastname", "123"))
                     .When(s =>
                     {
                         Assert.ThrowsException<UniqueConstraintViolationException>(() =>
                         {
                             try
                             {
-                                s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "user1", "123")).Wait();
+                                s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "user1", "User One", "123")).Wait();
                             }
                             catch (AggregateException ex)
                             {
@@ -172,12 +172,13 @@ namespace Agrobook.Domain.Tests.Usuarios
             var loginInfo = new LoginInfo("user1", "123", new string[] { ClaimDefs.Roles.Admin });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
             this.sut
-                .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", eLoginInfo))
+                .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", "User Name", eLoginInfo))
                 .When(s =>
                 {
                     var result = s.HandleAsync(new IniciarSesion("user1", "123", now)).Result;
 
                     Assert.IsTrue(result.LoginExitoso);
+                    Assert.AreEqual("User Name", result.NombreParaMostrar);
                 })
                 .Then(e =>
                 {
@@ -191,7 +192,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var loginInfo = new LoginInfo("user1", "123", new string[] { ClaimDefs.Roles.Admin });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
             this.sut
-                .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", eLoginInfo))
+                .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", "Name Lastname", eLoginInfo))
                 .When(s =>
                 {
                     var result = s.HandleAsync(new IniciarSesion("user1", "wrongPassword", DateTime.Now)).Result;

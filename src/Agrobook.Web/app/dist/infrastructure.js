@@ -10,6 +10,8 @@ var common;
         };
         localStorageLite.prototype.get = function (key) {
             var payload = localStorage[key];
+            if (payload === undefined)
+                return undefined;
             var object = JSON.parse(payload);
             return object;
         };

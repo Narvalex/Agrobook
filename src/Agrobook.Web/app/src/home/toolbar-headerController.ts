@@ -3,12 +3,19 @@
 module HomeArea {
     export class ToolbarHeaderController {
 
-        static $inject = ['loginWriteService', 'config'];
+        static $inject = ['loginService', 'loginQueryService', 'config'];
 
         constructor(
-            private loginWriteService: login.loginService,
+            private loginService: login.loginService,
+            private loginQueryService: login.loginQueryService,
             private config: common.config) {
+
+            this.verificarSiEstaLogueado();
         }
+
+        estaLogueado: boolean = false;
+
+        nombreParaMostrar: string;
 
         usuario: string;
 
@@ -30,13 +37,33 @@ module HomeArea {
                 return;
             }
 
-            this.loginWriteService.tryLogin(
+            this.loginService.tryLogin(
                 new login.credencialesDto(this.usuario, this.password),
                 value => {
-                    console.log('Logueado!');
-                    location.href = "areas/usuarios.html";
+                    if (value.data.loginExitoso) {
+                        this.establecerUsuarioLogueado(value.data.nombreParaMostrar);
+                    }
+                    else {
+                        window.alert("Credenciales inválidas");
+                        this.password = "";
+                    }
                 },
                 reason => console.log(reason));
+        }
+
+        private verificarSiEstaLogueado(): void {
+            var result = this.loginQueryService.tryGetLocalLoginInfo();
+            if (result === undefined || !result.loginExitoso) {
+                this.estaLogueado = false;
+            }
+            else {
+                this.establecerUsuarioLogueado(result.nombreParaMostrar);
+            }
+        }
+
+        private establecerUsuarioLogueado(nombreParaMostrar: string) {
+            this.nombreParaMostrar = nombreParaMostrar;
+            this.estaLogueado = true;
         }
     }
 }

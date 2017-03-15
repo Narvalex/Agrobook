@@ -27,7 +27,14 @@ module common {
             }
         }
 
+        private _eventIndex = {
+            login: {
+                loggedIn: 'loggedIn'
+            }
+        }
+
         get keyCodes() { return this._keyCodes; }
         get repoIndex() { return this._repoIndex; }
+        get eventIndex() { return this._eventIndex; }
     }
 }

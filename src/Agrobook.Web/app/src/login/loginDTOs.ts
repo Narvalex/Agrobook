@@ -11,6 +11,9 @@ module login {
 
     export class loginResult {
         constructor(
+            public loginExitoso: boolean,
+            public nombreParaMostrar: string,
+            public token: string
         )
         { }
     }
