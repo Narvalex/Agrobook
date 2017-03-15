@@ -29,7 +29,8 @@ module common {
 
         private _eventIndex = {
             login: {
-                loggedIn: 'loggedIn'
+                loggedIn: 'loggedIn',
+                loggedOut: 'loggedOut'
             }
         }
 

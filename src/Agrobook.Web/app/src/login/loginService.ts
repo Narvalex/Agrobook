@@ -31,5 +31,10 @@ module login {
                 },
                 reason => { errorCallback(reason); });
         }
+
+        logOut() {
+            this.ls.delete(this.config.repoIndex.login.usuarioActual);
+            this.$rootScope.$broadcast(this.config.eventIndex.login.loggedOut, {});
+        }
     }
 }

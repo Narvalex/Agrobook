@@ -20,5 +20,9 @@ module common {
             var object = JSON.parse(payload);
             return object as T;
         }
+
+        delete(key: string) {
+            localStorage.removeItem(key);
+        }
     }
 }

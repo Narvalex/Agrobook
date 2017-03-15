@@ -2,7 +2,11 @@
 
 module UsuariosArea {
     angular.module('usuariosArea', ['ngMaterial', 'ngMdIcons'])
+        .value('config', new common.config())
+        .service('localStorageLite', common.localStorageLite)
         .service('usuariosWriteService', usuariosWriteService)
+        .service('loginService', login.loginService)
+        .service('loginQueryService', login.loginQueryService)
         .controller('sidenavController', sidenavController)
         .controller('toolbarHeaderController', toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)

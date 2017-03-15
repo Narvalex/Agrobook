@@ -13,10 +13,14 @@ module common {
             this.$rootScope.$on(this.config.eventIndex.login.loggedIn, (e, args) => {
                 this.verificarLogueo();
             });
+            this.$rootScope.$on(this.config.eventIndex.login.loggedOut, (e, args) => {
+                this.verificarLogueo();
+            });
             this.verificarLogueo();
         }
 
         estaLogueado: boolean = false;
+        nombreParaMostrar: string;
 
         mostrarMenu($event: any): void {
             let panelConfig: angular.material.IPanelConfig;
@@ -47,15 +51,26 @@ module common {
             var result = this.loginQueryService.tryGetLocalLoginInfo();
             if (result !== undefined && result.loginExitoso) {
                 this.estaLogueado = true;
+                this.nombreParaMostrar = result.nombreParaMostrar;
+            }
+            else {
+                this.estaLogueado = false;
             }
         }
     }
 
     class panelMenuController {
-        static $inject = ['mdPanelRef'];
+        static $inject = ['mdPanelRef', 'loginService'];
 
         constructor(
-            private mdPanelRef: angular.material.IPanelRef) { }
+            private mdPanelRef: angular.material.IPanelRef,
+            private loginService: login.loginService
+        ) { }
+
+        logOut() {
+            this.loginService.logOut();
+            this.closeMenu();
+        }
 
         closeMenu(): void {
             this.mdPanelRef.close();

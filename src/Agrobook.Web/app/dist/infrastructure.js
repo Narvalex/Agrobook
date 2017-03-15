@@ -15,6 +15,9 @@ var common;
             var object = JSON.parse(payload);
             return object;
         };
+        localStorageLite.prototype.delete = function (key) {
+            localStorage.removeItem(key);
+        };
         return localStorageLite;
     }());
     localStorageLite.$inject = [];

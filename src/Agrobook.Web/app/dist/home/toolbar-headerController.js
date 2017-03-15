@@ -2,11 +2,16 @@
 var HomeArea;
 (function (HomeArea) {
     var ToolbarHeaderController = (function () {
-        function ToolbarHeaderController(loginService, loginQueryService, config) {
+        function ToolbarHeaderController(loginService, loginQueryService, config, $rootScope) {
+            var _this = this;
             this.loginService = loginService;
             this.loginQueryService = loginQueryService;
             this.config = config;
+            this.$rootScope = $rootScope;
             this.estaLogueado = false;
+            this.$rootScope.$on(this.config.eventIndex.login.loggedOut, function (e, a) {
+                _this.verificarSiEstaLogueado();
+            });
             this.verificarSiEstaLogueado();
         }
         ToolbarHeaderController.prototype.onInputKeyPress = function ($event) {
@@ -48,7 +53,7 @@ var HomeArea;
         };
         return ToolbarHeaderController;
     }());
-    ToolbarHeaderController.$inject = ['loginService', 'loginQueryService', 'config'];
+    ToolbarHeaderController.$inject = ['loginService', 'loginQueryService', 'config', '$rootScope'];
     HomeArea.ToolbarHeaderController = ToolbarHeaderController;
 })(HomeArea || (HomeArea = {}));
 //# sourceMappingURL=toolbar-headerController.js.map

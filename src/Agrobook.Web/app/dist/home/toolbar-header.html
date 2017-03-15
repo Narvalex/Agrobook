@@ -27,7 +27,7 @@
             Login
         </md-button>
 
-        <h5 ng-cloak ng-show="vm.estaLogueado">¡Hola {{vm.nombreParaMostrar}}!</h5>
+        <span class="user-menu-user-name" style="padding-bottom: 3px;" ng-cloak ng-show="vm.estaLogueado">Bienvenido&nbsp;</span>
 
         <div ng-include="'dist/common/userMenu/widget.html'"
              ng-controller="userMenuWidgetController as vm"></div>

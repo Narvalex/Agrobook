@@ -21,6 +21,10 @@ var login;
                 successCallback(value);
             }, function (reason) { errorCallback(reason); });
         };
+        loginService.prototype.logOut = function () {
+            this.ls.delete(this.config.repoIndex.login.usuarioActual);
+            this.$rootScope.$broadcast(this.config.eventIndex.login.loggedOut, {});
+        };
         return loginService;
     }());
     loginService.$inject = ['$http', 'config', 'localStorageLite', '$rootScope'];

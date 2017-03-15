@@ -1,4 +1,11 @@
-﻿<md-button ng-show="vm.estaLogueado"
+﻿<span ng-cloak 
+      class="user-menu-user-name" 
+      ng-show="vm.estaLogueado"
+      ng-click="vm.mostrarMenu($event)"
+      style="cursor: pointer">
+    {{vm.nombreParaMostrar}}
+</span>
+<md-button ng-show="vm.estaLogueado"
            class="md-icon-button"
            aria-label="more"
            ng-click="vm.mostrarMenu($event)">

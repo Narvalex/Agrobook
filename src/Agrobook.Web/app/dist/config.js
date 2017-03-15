@@ -27,7 +27,8 @@ var common;
             };
             this._eventIndex = {
                 login: {
-                    loggedIn: 'loggedIn'
+                    loggedIn: 'loggedIn',
+                    loggedOut: 'loggedOut'
                 }
             };
         }

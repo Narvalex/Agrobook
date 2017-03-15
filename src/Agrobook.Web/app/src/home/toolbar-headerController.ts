@@ -3,12 +3,17 @@
 module HomeArea {
     export class ToolbarHeaderController {
 
-        static $inject = ['loginService', 'loginQueryService', 'config'];
+        static $inject = ['loginService', 'loginQueryService', 'config', '$rootScope'];
 
         constructor(
             private loginService: login.loginService,
             private loginQueryService: login.loginQueryService,
-            private config: common.config) {
+            private config: common.config,
+            private $rootScope: angular.IRootScopeService
+        ) {
+            this.$rootScope.$on(this.config.eventIndex.login.loggedOut, (e, a) => {
+                this.verificarSiEstaLogueado();
+            });
 
             this.verificarSiEstaLogueado();
         }

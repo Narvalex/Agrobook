@@ -1,4 +1,8 @@
-﻿.menu-panel-container {
+﻿.user-menu-user-name {
+    font-size: 17px;
+}
+
+.menu-panel-container {
     pointer-events: auto;
 }
 
