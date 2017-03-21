@@ -6,11 +6,11 @@ using System.Web.Http;
 
 namespace Agrobook.Server.Usuarios
 {
+    [Autorizar(Claims.Roles.Tecnico)]
     [RoutePrefix("usuarios")]
     public class UsuariosController : ApiController
     {
         [HttpPost]
-        [ApplyAuthPolicy(Claims.Roles.Tecnico)]
         [Route("crear-nuevo-usuario")]
         public async Task<IHttpActionResult> CrearNuevoUsuarioAsync([FromBody]CrearNuevoUsuario command)
         {

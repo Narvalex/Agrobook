@@ -7,30 +7,28 @@ using System.Web.Http.Controllers;
 
 namespace Agrobook.Server.Authorization
 {
-    public class ApplyAuthPolicyAttribute : AuthorizeAttribute
+    public class Autorizar : AuthorizeAttribute
     {
         public static ITokenAuthorizationProvider AuthProvider = new NullAuthProvider();
         private readonly string[] claims = new string[0];
 
-        public ApplyAuthPolicyAttribute(string claim)
+        public Autorizar(string claim)
         {
             this.claims = new string[1] { claim };
         }
 
-        public ApplyAuthPolicyAttribute(string[] claims)
+        public Autorizar(string[] claims)
         {
             this.claims = claims;
         }
 
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            var apiAttributes = GetAttributes<ApplyAuthPolicyAttribute>(actionContext);
+            var apiAttributes = GetAttributes<Autorizar>(actionContext);
 
             if (apiAttributes != null && apiAttributes.Any())
                 base.OnAuthorization(actionContext);
         }
-
-        public string[] Claims { get; set; }
 
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
@@ -48,10 +46,12 @@ namespace Agrobook.Server.Authorization
 
                     return false;
                 }))
+                    return true;
+                else
                     return false;
             }
-
-            return false;
+            else
+                return false;
         }
 
         private IEnumerable<T> GetAttributes<T>(HttpActionContext actionContext) where T : class
