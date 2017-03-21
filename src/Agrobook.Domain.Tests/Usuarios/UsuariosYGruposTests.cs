@@ -212,5 +212,39 @@ namespace Agrobook.Domain.Tests.Usuarios
                 });
         }
         #endregion
+
+        #region Authorize
+        [TestMethod]
+        public void CuandoSeQuiereAutorizarAUnUsuarioQueNoTienePermisosEntoncesSeLeNiega()
+        {
+            var now = DateTime.Now;
+            var loginInfo = new LoginInfo("productor", "123", new string[] { Claims.Roles.Productor, "permiso-i" });
+            var eLoginInfo = this.crypto.Serialize(loginInfo);
+
+            this.sut
+                .Given("productor", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
+                .When(s =>
+                {
+                    var autorizado = s.TryAuthorize(eLoginInfo, Claims.Roles.Tecnico);
+                    Assert.IsFalse(autorizado);
+                });
+        }
+
+        [TestMethod]
+        public void CuandoSeQuiereAutorizarAUnUsuarioQueSiTienePermisosEntoncesSeLeConcede()
+        {
+            var now = DateTime.Now;
+            var loginInfo = new LoginInfo("productor", "123", new string[] { Claims.Roles.Tecnico, "permisito" });
+            var eLoginInfo = this.crypto.Serialize(loginInfo);
+
+            this.sut
+                .Given("productor", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
+                .When(s =>
+                {
+                    var autorizado = s.TryAuthorize(eLoginInfo, Claims.Roles.Tecnico);
+                    Assert.IsTrue(autorizado);
+                });
+        }
+        #endregion
     }
 }

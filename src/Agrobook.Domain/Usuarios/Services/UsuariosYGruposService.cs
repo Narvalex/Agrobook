@@ -1,11 +1,12 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Common;
 using Agrobook.Domain.Usuarios.Login;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Usuarios
 {
-    public class UsuariosYGruposService : EventSourcedService
+    public class UsuariosYGruposService : EventSourcedService, ITokenAuthorizationProvider
     {
         public const string UsuarioAdmin = "admin";
         public const string DefaultPassword = "changeit";
@@ -82,6 +83,20 @@ namespace Agrobook.Domain.Usuarios
 
             await this.repository.SaveAsync(usuario);
             return new LoginResult(true, usuario.NombreParaMostrar, usuario.LoginInfoEncriptado);
+        }
+
+        public bool TryAuthorize(string token, params string[] claimsRequired)
+        {
+            var tokenInfo = this.cryptoSerializer.Deserialize<LoginInfo>(token);
+            var nombreUsuario = tokenInfo.Usuario;
+
+            var usuario = this.repository.GetAsync<Usuario>(nombreUsuario).Result;
+            if (usuario == null)
+                return false;
+
+            var realUserInfo = this.cryptoSerializer.Deserialize<LoginInfo>(usuario.LoginInfoEncriptado);
+            var tienePermiso = realUserInfo.Claims.Any(x => claimsRequired.Any(r => r == x));
+            return tienePermiso;
         }
     }
 }
