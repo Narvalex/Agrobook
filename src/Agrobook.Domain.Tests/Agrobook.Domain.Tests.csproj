@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MesajesAuditablesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Usuarios\UsuariosYGruposTests.cs" />
     <Compile Include="Utils\FakeMeta.cs" />

@@ -10,23 +10,12 @@ var homeArea;
         .controller('userMenuWidgetController', common.userMenuWidgetController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$injector', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $injector) {
             $mdIconProvider
-                .defaultIconSet('./app/assets/svg/avatars.svg', 128)
-                .icon('menu', './app/assets/svg/menu.svg', 24);
+                .defaultIconSet('./assets/svg/avatars.svg', 128)
+                .icon('menu', './assets/svg/menu.svg', 24);
             $mdThemingProvider.theme('default')
                 .primaryPalette('green')
                 .accentPalette('blue');
-            $httpProvider.interceptors.push(['config', 'localStorageLite', function (conf, ls) {
-                    return {
-                        request: function (config) {
-                            var loginInfo = ls.get(conf.repoIndex.login.usuarioActual);
-                            if (loginInfo !== undefined && loginInfo.loginExitoso) {
-                                config.headers['Authorization'] = loginInfo.token;
-                            }
-                            config.headers['Accept'] = 'application/json';
-                            return config;
-                        }
-                    };
-                }]);
+            common.registerHttpInterceptors($httpProvider);
         }]);
 })(homeArea || (homeArea = {}));
 //# sourceMappingURL=homeArea.js.map

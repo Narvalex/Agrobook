@@ -10,15 +10,16 @@ var usuariosArea;
         .controller('sidenavController', usuariosArea.sidenavController)
         .controller('toolbarHeaderController', usuariosArea.toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
-        .config(function ($mdIconProvider, $mdThemingProvider) {
-        // most from flat icon dot com
-        $mdIconProvider
-            .defaultIconSet('../app/assets/svg/avatars.svg', 128)
-            .icon('menu', '../app/assets/svg/menu.svg')
-            .icon('close', '../app/assets/svg/close.svg');
-        $mdThemingProvider.theme('default')
-            .primaryPalette('green')
-            .accentPalette('blue');
-    });
+        .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', function ($mdIconProvider, $mdThemingProvider, $httpProvider) {
+            // most from flat icon dot com
+            $mdIconProvider
+                .defaultIconSet('./assets/svg/avatars.svg', 128)
+                .icon('menu', './assets/svg/menu.svg', 24)
+                .icon('close', './assets/svg/close.svg');
+            $mdThemingProvider.theme('default')
+                .primaryPalette('green')
+                .accentPalette('blue');
+            common.registerHttpInterceptors($httpProvider);
+        }]);
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=usuariosArea.js.map

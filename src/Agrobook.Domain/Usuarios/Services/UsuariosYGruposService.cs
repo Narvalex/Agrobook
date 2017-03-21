@@ -38,7 +38,7 @@ namespace Agrobook.Domain.Usuarios
         public async Task CrearUsuarioAdminAsync()
         {
             var admin = new Usuario();
-            var loginInfo = new LoginInfo(UsuarioAdmin, DefaultPassword, new string[] { ClaimDefs.Roles.Admin });
+            var loginInfo = new LoginInfo(UsuarioAdmin, DefaultPassword, new string[] { Claims.Roles.Admin });
             var encryptedLoginInfo = this.cryptoSerializer.Serialize(loginInfo);
             admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), UsuarioAdmin, UsuarioAdmin, this.adminAvatarUrl, encryptedLoginInfo));
             await this.repository.SaveAsync(admin);

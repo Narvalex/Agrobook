@@ -6,16 +6,10 @@ using System.Web.Http;
 namespace Agrobook.Server.Login
 {
     [RoutePrefix("login")]
-    public class LoginController : ApiControllerBase
+    public class LoginController : ApiController
     {
-        private readonly IDateTimeProvider dateTime;
-        private readonly UsuariosYGruposService usuariosService;
-
-        public LoginController()
-        {
-            this.dateTime = this.container.ResolveSingleton<IDateTimeProvider>();
-            this.usuariosService = this.container.ResolveSingleton<UsuariosYGruposService>();
-        }
+        private readonly IDateTimeProvider dateTime = ServiceLocator.ResolveSingleton<IDateTimeProvider>();
+        private readonly UsuariosYGruposService usuariosService = ServiceLocator.ResolveSingleton<UsuariosYGruposService>();
 
         [HttpPost]
         [Route("try-login")]

@@ -5,9 +5,16 @@ using System.Web.Http;
 namespace Agrobook.Web.Controllers.Login
 {
     [RoutePrefix("app/login")]
-    public class LoginController : ApiController
+    public class LoginController : ApiControllerBase
     {
-        private readonly LoginClient client = ServiceLocator.Container.ResolveSingleton<LoginClient>();
+        private readonly LoginClient client;
+
+        public LoginController()
+        {
+            this.client = ServiceLocator
+                            .ResolveNewOf<LoginClient>()
+                            .SetupTokenProvider(this.GetToken);
+        }
 
         [HttpPost]
         [Route("try-login")]

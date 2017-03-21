@@ -10,18 +10,21 @@ module usuariosArea {
         .controller('sidenavController', sidenavController)
         .controller('toolbarHeaderController', toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
-        .config((
+        .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', (
             $mdIconProvider: angular.material.IIconProvider,
-            $mdThemingProvider: angular.material.IThemingProvider) => {
+            $mdThemingProvider: angular.material.IThemingProvider,
+            $httpProvider: angular.IHttpProvider) => {
 
             // most from flat icon dot com
             $mdIconProvider
-                .defaultIconSet('../app/assets/svg/avatars.svg', 128)
-                .icon('menu', '../app/assets/svg/menu.svg')
-                .icon('close', '../app/assets/svg/close.svg');
+                .defaultIconSet('./assets/svg/avatars.svg', 128)
+                .icon('menu', './assets/svg/menu.svg', 24)
+                .icon('close', './assets/svg/close.svg');
 
             $mdThemingProvider.theme('default')
                 .primaryPalette('green')
                 .accentPalette('blue');
-        });
+
+            common.registerHttpInterceptors($httpProvider); 
+        }]);
 }

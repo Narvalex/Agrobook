@@ -16,27 +16,13 @@ module homeArea {
         ) => {
 
             $mdIconProvider
-                .defaultIconSet('./app/assets/svg/avatars.svg', 128)
-                .icon('menu', './app/assets/svg/menu.svg', 24);
+                .defaultIconSet('./assets/svg/avatars.svg', 128)
+                .icon('menu', './assets/svg/menu.svg', 24);
 
             $mdThemingProvider.theme('default')
                 .primaryPalette('green')
                 .accentPalette('blue');
 
-
-            $httpProvider.interceptors.push(['config', 'localStorageLite', (conf: common.config, ls: common.localStorageLite) => {
-                return {
-                    request: (config: angular.IRequestConfig): angular.IRequestConfig => {
-                        var loginInfo = ls.get<login.loginResult>(conf.repoIndex.login.usuarioActual);
-
-                        if (loginInfo !== undefined && loginInfo.loginExitoso) {
-                            config.headers['Authorization'] = loginInfo.token;
-                        }
-
-                        config.headers['Accept'] = 'application/json';
-                        return config;
-                    }
-                };
-            }]);
+            common.registerHttpInterceptors($httpProvider);            
         }]);
 }

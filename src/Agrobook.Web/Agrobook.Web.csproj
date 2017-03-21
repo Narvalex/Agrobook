@@ -705,6 +705,7 @@
     <Content Include="app\bower_components\angular-material-icons\package.json" />
     <Content Include="app\bower_components\angular-material-icons\README.md" />
     <Content Include="typings\globals\googlemaps\typings.json" />
+    <TypeScriptCompile Include="app\src\common\httpInterceptorRegistry.ts" />
     <TypeScriptCompile Include="app\src\common\userMenu\widgetController.ts" />
     <TypeScriptCompile Include="app\src\config.ts" />
     <TypeScriptCompile Include="app\src\infrastructure.ts" />
@@ -726,6 +727,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ApiControllerBase.cs" />
     <Compile Include="Controllers\Login\LoginController.cs" />
     <Compile Include="Controllers\Maps\KmlController.cs" />
     <Compile Include="Controllers\Usuarios\UsuariosController.cs" />

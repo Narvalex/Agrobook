@@ -1,5 +1,4 @@
-﻿using Agrobook.Core;
-using Agrobook.Domain.Usuarios;
+﻿using Agrobook.Domain.Usuarios;
 using Agrobook.Infrastructure.EventSourcing;
 using Microsoft.Owin.Hosting;
 using System;
@@ -10,7 +9,6 @@ namespace Agrobook.Server
 {
     class Program
     {
-        private static ISimpleContainer container;
 
         #region Extern References
         // Source: http://stackoverflow.com/questions/474679/capture-console-exit-c-sharp
@@ -32,11 +30,10 @@ namespace Agrobook.Server
         {
             Console.Write("Resolving dependencies...");
             ServiceLocator.Initialize();
-            container = ServiceLocator.Container;
             Console.WriteLine("Done");
 
             Console.Write("Initializing EventStore...");
-            var es = ServiceLocator.Container.ResolveSingleton<EventStoreManager>();
+            var es = ServiceLocator.ResolveSingleton<EventStoreManager>();
             es.InitializeDb();
             Console.WriteLine("Done");
 
@@ -75,14 +72,14 @@ namespace Agrobook.Server
 
         private static void OnExit()
         {
-            container
+            ServiceLocator
                 .ResolveSingleton<EventStoreManager>()
                 .TearDown();
         }
 
         private static void OnEventStoreStarted()
         {
-            var userService = container.ResolveSingleton<UsuariosYGruposService>();
+            var userService = ServiceLocator.ResolveSingleton<UsuariosYGruposService>();
             var intentos = 0;
             var maxRetries = 3;
             try

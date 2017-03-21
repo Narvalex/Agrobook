@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientBase.cs" />
     <Compile Include="HttpLite.cs" />
     <Compile Include="Login\LoginClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

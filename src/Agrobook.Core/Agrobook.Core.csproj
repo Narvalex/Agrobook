@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorizationProvider.cs" />
     <Compile Include="EventSourcedService.cs" />
     <Compile Include="Ensure.cs" />
     <Compile Include="ExpectedVersion.cs" />

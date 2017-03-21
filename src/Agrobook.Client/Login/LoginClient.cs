@@ -1,24 +1,21 @@
-﻿using Agrobook.Core;
-using Agrobook.Domain.Usuarios;
+﻿using Agrobook.Domain.Usuarios;
+using System;
 using System.Threading.Tasks;
 
 namespace Agrobook.Client.Login
 {
-    public class LoginClient
+    public class LoginClient : ClientBase<LoginClient>
     {
-        private readonly HttpLite http;
+        private readonly string prefix = "login/";
 
-        public LoginClient(HttpLite http)
-        {
-            Ensure.NotNull(http, nameof(http));
-
-            this.http = http;
-        }
+        public LoginClient(HttpLite http, Func<string> tokenProvider = null)
+            : base(http, tokenProvider)
+        { }
 
         public async Task<LoginResult> TryLoginAsync(string userName, string password)
         {
-            return await this.http.Post<LoginResult>(
-                "login/try-login",
+            return await base.Post<LoginResult>(
+                this.prefix + "try-login",
                 $"{{ 'username':'{userName}', 'password':'{password}'}}");
         }
     }

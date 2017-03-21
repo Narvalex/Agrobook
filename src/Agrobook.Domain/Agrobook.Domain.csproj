@@ -43,7 +43,7 @@
   <ItemGroup>
     <Compile Include="Common\MensajeAuditable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Usuarios\Login\ClaimDefs.cs" />
+    <Compile Include="Usuarios\Login\Claims.cs" />
     <Compile Include="Usuarios\Login\LoginInfo.cs" />
     <Compile Include="Usuarios\Login\ClaimInfo.cs" />
     <Compile Include="Usuarios\UsuariosCommands.cs" />

@@ -9,7 +9,19 @@ namespace Agrobook.Domain.Common
             this.Metadatos = metadatos;
         }
 
-        public Metadatos Metadatos { get; }
+        public Metadatos Metadatos { get; private set; }
+
+        public bool TrySet(Metadatos metadatos)
+        {
+            // Only updates if metadatos is null
+            if (this.Metadatos == null)
+            {
+                this.Metadatos = metadatos;
+                return true;
+            }
+
+            return false;
+        }
     }
 
     public class Metadatos

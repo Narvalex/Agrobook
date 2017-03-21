@@ -1,7 +1,16 @@
-﻿namespace Agrobook.Infrastructure
+﻿using System.Collections.Generic;
+
+namespace Agrobook
 {
     public static class StringExtensions
     {
+        public static string[] And(this string text, params string[] otherTexts)
+        {
+            var stringList = new List<string>() { text };
+            stringList.AddRange(otherTexts);
+            return stringList.ToArray();
+        }
+
         public static byte[] ToByteArrayFromHexString(this string hexString)
         {
             var bytes = new byte[hexString.Length / 2];

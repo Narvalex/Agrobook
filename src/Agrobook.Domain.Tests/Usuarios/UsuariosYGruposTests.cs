@@ -176,7 +176,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void SiElUsuarioExisteYLasCredencialesSonValidasSePuedeIniciarSesion()
         {
             var now = DateTime.Now;
-            var loginInfo = new LoginInfo("user1", "123", new string[] { ClaimDefs.Roles.Admin });
+            var loginInfo = new LoginInfo("user1", "123", new string[] { Claims.Roles.Admin });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
             this.sut
                 .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", "User Name", "", eLoginInfo))
@@ -196,7 +196,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         [TestMethod]
         public void SiElUsuarioExisteYLasCredencialesNoSonValidasEntoncesNoSePuedeIniciarSesion()
         {
-            var loginInfo = new LoginInfo("user1", "123", new string[] { ClaimDefs.Roles.Admin });
+            var loginInfo = new LoginInfo("user1", "123", new string[] { Claims.Roles.Admin });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
             this.sut
                 .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", "Name Lastname", "", eLoginInfo))
