@@ -234,7 +234,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void CuandoSeQuiereAutorizarAUnUsuarioQueSiTienePermisosEntoncesSeLeConcede()
         {
             var now = DateTime.Now;
-            var loginInfo = new LoginInfo("productor", "123", new string[] { Claims.Roles.Tecnico, "permisito" });
+            var loginInfo = new LoginInfo("productor", "123", new string[] { Claims.Roles.Tecnico, "permisito", Claims.Roles.Productor });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
