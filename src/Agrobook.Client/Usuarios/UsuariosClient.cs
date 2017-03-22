@@ -14,7 +14,7 @@ namespace Agrobook.Client.Usuarios
         public async Task CrearNuevoUsuario(UsuarioDto dto)
         {
             var command = new CrearNuevoUsuario(null, dto.NombreDeUsuario, dto.NombreParaMostrar, dto.AvatarUrl, dto.Password, dto.Claims);
-            await base.Post(this.prefix + "crear-nuevo-usuario", dto);
+            await base.Post(this.prefix + "crear-nuevo-usuario", command);
         }
     }
 }

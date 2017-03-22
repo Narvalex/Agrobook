@@ -78,6 +78,8 @@ namespace Agrobook.Domain.Tests.Utils
 
         public async Task SaveAsync(IEventSourced eventSourced)
         {
+            Ensure.NotNullOrWhiteSpace(eventSourced.StreamName, nameof(eventSourced.StreamName));
+
             // Concurrency check
             var expectedVersion = eventSourced.Version - eventSourced.NewEvents.Count;
             if (expectedVersion == ExpectedVersion.NoStream

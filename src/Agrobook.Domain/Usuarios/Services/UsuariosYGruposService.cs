@@ -48,7 +48,7 @@ namespace Agrobook.Domain.Usuarios
         public async Task HandleAsync(CrearNuevoUsuario cmd)
         {
             var state = new Usuario();
-            var loginInfo = new LoginInfo(cmd.Usuario, cmd.PasswordCrudo, cmd.Claims);
+            var loginInfo = new LoginInfo(cmd.Usuario, cmd.PasswordCrudo, cmd.Claims ?? new string[0]);
             var eLoginInfo = this.cryptoSerializer.Serialize(loginInfo);
             state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario, cmd.NombreParaMostrar, cmd.AvatarUrl, eLoginInfo));
             await this.repository.SaveAsync(state);

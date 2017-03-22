@@ -71,7 +71,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var avatarUrl = "app/avatar.png";
             this.sut.Given()
-                    .When(s => s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "user1", "User One", avatarUrl, "123", new string[0])).Wait())
+                    .When(s => s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "user1", "User One", avatarUrl, "123", null)).Wait())
                     .Then(e =>
                     {
                         var ev = e.OfType<NuevoUsuarioCreado>().Single();
