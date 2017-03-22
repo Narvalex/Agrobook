@@ -95,7 +95,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authorization\AutorizarAttribute.cs" />
+    <Compile Include="Filters\AutorizarAttribute.cs" />
+    <Compile Include="Filters\GlobalErrorAttribute.cs" />
     <Compile Include="Login\LoginController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

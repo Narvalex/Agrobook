@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin.BuilderProperties;
+﻿using Agrobook.Server.Filters;
+using Microsoft.Owin.BuilderProperties;
 using Newtonsoft.Json.Serialization;
 using Owin;
 using System;
@@ -39,6 +40,9 @@ namespace Agrobook.Server
             config.MapHttpAttributeRoutes();
 
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            // Thanks to: https://docs.microsoft.com/en-us/aspnet/web-api/overview/error-handling/exception-handling
+            config.Filters.Add(new GlobalErrorAttribute());
 
             return config;
         }

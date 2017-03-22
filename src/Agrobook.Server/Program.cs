@@ -1,5 +1,6 @@
 ﻿using Agrobook.Domain.Usuarios;
 using Agrobook.Infrastructure.EventSourcing;
+using Agrobook.Infrastructure.Log;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Runtime.InteropServices;
@@ -28,6 +29,7 @@ namespace Agrobook.Server
 
         static void Main(string[] args)
         {
+            LogManager.GlobalLogger.Info("Starting Agrobook Server");
             Console.Write("Resolving dependencies...");
             ServiceLocator.Initialize();
             Console.WriteLine("Done");

@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 
-namespace Agrobook.Server.Authorization
+namespace Agrobook.Server.Filters
 {
     public class AutorizarAttribute : AuthorizeAttribute
     {

@@ -5,7 +5,7 @@ using Agrobook.Infrastructure.Cryptography;
 using Agrobook.Infrastructure.EventSourcing;
 using Agrobook.Infrastructure.IoC;
 using Agrobook.Infrastructure.Serialization;
-using Agrobook.Server.Authorization;
+using Agrobook.Server.Filters;
 
 namespace Agrobook.Server
 {
