@@ -48,7 +48,9 @@ namespace Agrobook.Domain.Usuarios
         public async Task HandleAsync(CrearNuevoUsuario cmd)
         {
             var state = new Usuario();
-            state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario, cmd.NombreParaMostrar, cmd.AvatarUrl, cmd.PasswordCrudo));
+            var loginInfo = new LoginInfo(cmd.Usuario, cmd.PasswordCrudo, cmd.Claims);
+            var eLoginInfo = this.cryptoSerializer.Serialize(loginInfo);
+            state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario, cmd.NombreParaMostrar, cmd.AvatarUrl, eLoginInfo));
             await this.repository.SaveAsync(state);
         }
 
@@ -94,8 +96,14 @@ namespace Agrobook.Domain.Usuarios
             if (usuario == null)
                 return false;
 
-            var realUserInfo = this.cryptoSerializer.Deserialize<LoginInfo>(usuario.LoginInfoEncriptado);
-            var tienePermiso = realUserInfo.Claims.Any(x => claimsRequired.Any(r => r == x));
+            // Validar token
+            if (token != usuario.LoginInfoEncriptado)
+                return false;
+
+            if (tokenInfo.Claims.Any(c => c == Claims.Roles.Admin))
+                return true;
+
+            var tienePermiso = tokenInfo.Claims.Any(x => claimsRequired.Any(r => r == x));
             return tienePermiso;
         }
     }

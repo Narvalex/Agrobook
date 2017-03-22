@@ -5,6 +5,7 @@ using Agrobook.Infrastructure.Cryptography;
 using Agrobook.Infrastructure.EventSourcing;
 using Agrobook.Infrastructure.IoC;
 using Agrobook.Infrastructure.Serialization;
+using Agrobook.Server.Authorization;
 
 namespace Agrobook.Server
 {
@@ -35,6 +36,7 @@ namespace Agrobook.Server
             var eventSourcedRepository = new EventSourcedRepository(es.GetFailFastConnection, jsonSerializer, snapshotCache);
 
             var usuariosService = new UsuariosYGruposService(eventSourcedRepository, dateTimeProvider, cryptoSerializer);
+            AutorizarAttribute.SetTokenAuthProvider(usuariosService);
 
             container.Register<IDateTimeProvider>(dateTimeProvider);
             container.Register<EventStoreManager>(es);

@@ -7,24 +7,29 @@ using System.Web.Http.Controllers;
 
 namespace Agrobook.Server.Authorization
 {
-    public class Autorizar : AuthorizeAttribute
+    public class AutorizarAttribute : AuthorizeAttribute
     {
-        public static ITokenAuthorizationProvider AuthProvider = new NullAuthProvider();
+        private static ITokenAuthorizationProvider _authProvider = new NullAuthProvider();
         private readonly string[] claims = new string[0];
 
-        public Autorizar(string claim)
+        public AutorizarAttribute(string claim)
         {
             this.claims = new string[1] { claim };
         }
 
-        public Autorizar(string[] claims)
+        public AutorizarAttribute(string[] claims)
         {
             this.claims = claims;
         }
 
+        public static void SetTokenAuthProvider(ITokenAuthorizationProvider tokenAuthProvider)
+        {
+            _authProvider = tokenAuthProvider;
+        }
+
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            var apiAttributes = GetAttributes<Autorizar>(actionContext);
+            var apiAttributes = GetAttributes<AutorizarAttribute>(actionContext);
 
             if (apiAttributes != null && apiAttributes.Any())
                 base.OnAuthorization(actionContext);
@@ -42,7 +47,7 @@ namespace Agrobook.Server.Authorization
                 {
                     AuthenticationHeaderValue tokenDescriptor;
                     if (AuthenticationHeaderValue.TryParse(v, out tokenDescriptor))
-                        return AuthProvider.TryAuthorize(tokenDescriptor.Parameter, this.claims);
+                        return _authProvider.TryAuthorize(tokenDescriptor.Parameter, this.claims);
 
                     return false;
                 }))

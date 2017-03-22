@@ -67,27 +67,37 @@ namespace Agrobook.Domain.Tests.Usuarios
         }
 
         [TestMethod]
-        public void SePuedeCrearUsuarioNuevo()
+        public void SePuedeCrearUsuarioNuevoSinNingunPermiso()
         {
             var avatarUrl = "app/avatar.png";
             this.sut.Given()
-                    .When(s => s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "user1", "User One", avatarUrl, "123")).Wait())
+                    .When(s => s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "user1", "User One", avatarUrl, "123", new string[0])).Wait())
                     .Then(e =>
                     {
                         var ev = e.OfType<NuevoUsuarioCreado>().Single();
                         Assert.AreEqual(1, e.Count);
                         Assert.AreEqual("user1", ev.Usuario);
                         Assert.AreEqual("User One", ev.NombreParaMostrar);
-                        Assert.AreEqual("123", ev.LoginInfoEncriptado);
                         Assert.AreEqual(avatarUrl, ev.AvatarUrl);
+
+                        TestearInfo(ev.LoginInfoEncriptado);
                     })
                     .And<UsuarioSnapshot>(s =>
                     {
                         Assert.AreEqual("user1", s.StreamName);
                         Assert.AreEqual("User One", s.NombreParaMostrar);
-                        Assert.AreEqual("123", s.LoginInfoEncriptado);
+                        TestearInfo(s.LoginInfoEncriptado);
                     });
+
+            void TestearInfo(string loginInfoEncriptado)
+            {
+                var info = this.crypto.Deserialize<LoginInfo>(loginInfoEncriptado);
+                Assert.AreEqual(0, info.Claims.Length);
+                Assert.AreEqual("123", info.Password);
+                Assert.AreEqual("user1", info.Usuario);
+            }
         }
+
 
         [TestMethod]
         public void CuandoElUsuarioYaExisteEntoncesNoSePuedeAgregarOtroIgual()
@@ -101,7 +111,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                         {
                             try
                             {
-                                s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "user1", "User One", avatarUrl, "123")).Wait();
+                                s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "user1", "User One", avatarUrl, "123", new string[0])).Wait();
                             }
                             catch (AggregateException ex)
                             {
@@ -215,7 +225,23 @@ namespace Agrobook.Domain.Tests.Usuarios
 
         #region Authorize
         [TestMethod]
-        public void CuandoSeQuiereAutorizarAUnUsuarioQueNoTienePermisosEntoncesSeLeNiega()
+        public void CuandoUsuarioSinNingunPermisoIntentaAccederASitioSinRestriccionesEntoncesSeLeAutoriza()
+        {
+            var now = DateTime.Now;
+            var loginInfo = new LoginInfo("productor", "123", new string[0]);
+            var eLoginInfo = this.crypto.Serialize(loginInfo);
+
+            this.sut
+                .Given("productor", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
+                .When(s =>
+                {
+                    var autorizado = s.TryAuthorize(eLoginInfo, Claims.Roles.Tecnico);
+                    Assert.IsFalse(autorizado);
+                });
+        }
+
+        [TestMethod]
+        public void CuandoSeQuiereAutorizarAUnUsuarioQueTienePermisosPeroNoElNecesarioEntoncesSeLeNiega()
         {
             var now = DateTime.Now;
             var loginInfo = new LoginInfo("productor", "123", new string[] { Claims.Roles.Productor, "permiso-i" });
@@ -239,6 +265,22 @@ namespace Agrobook.Domain.Tests.Usuarios
 
             this.sut
                 .Given("productor", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
+                .When(s =>
+                {
+                    var autorizado = s.TryAuthorize(eLoginInfo, Claims.Roles.Tecnico);
+                    Assert.IsTrue(autorizado);
+                });
+        }
+
+        [TestMethod]
+        public void SiElUsuarioEsAdminSiempreEsAutorizado()
+        {
+            var now = DateTime.Now;
+            var loginInfo = new LoginInfo("admin", "123", new string[] { Claims.Roles.Admin });
+            var eLoginInfo = this.crypto.Serialize(loginInfo);
+
+            this.sut
+                .Given("admin", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
                     var autorizado = s.TryAuthorize(eLoginInfo, Claims.Roles.Tecnico);

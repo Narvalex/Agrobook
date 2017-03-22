@@ -6,5 +6,6 @@
         public string NombreDeUsuario { get; set; }
         public string NombreParaMostrar { get; set; }
         public string Password { get; set; }
+        public string[] Claims { get; set; }
     }
 }
