@@ -1,9 +1,11 @@
 ﻿using Agrobook.Core;
 using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Agrobook.Infrastructure.EventSourcing
@@ -12,10 +14,15 @@ namespace Agrobook.Infrastructure.EventSourcing
     {
         private Process process;
         private readonly string path = @".\EventStore\EventStore.ClusterNode.exe";
-        private readonly string args = "--db=./ESData --run-projections=all";
+        private readonly string args = "--db=./ESData --start-standard-projections=true --run-projections=all";
 
         private readonly UserCredentials userCredentials;
         private readonly IPEndPoint ipEndPoint;
+
+        private readonly string resilientConnectionNamePrefix;
+        private readonly string failFastConnectionNamePrefix;
+
+        private static int failFastNumber = 0;
 
         private bool failFastConnectionWasEstablished = false;
         private bool resilientConnectionWasEstablished = false;
@@ -29,16 +36,23 @@ namespace Agrobook.Infrastructure.EventSourcing
             string defaultUserName = "admin",
             string defaultPassword = "changeit",
             string extIp = "127.0.0.1",
-            int tcpPort = 1113)
+            int tcpPort = 1113,
+            string resilientConnectionNamePrefix = "anonymous-resilient",
+            string failFastConnectionNamePrefix = "anonymous-fail-fast")
         {
             Ensure.NotNullOrWhiteSpace(defaultUserName, nameof(defaultUserName));
             Ensure.NotNullOrWhiteSpace(defaultPassword, nameof(defaultPassword));
             Ensure.NotNullOrWhiteSpace(extIp, nameof(extIp));
+            Ensure.NotNullOrWhiteSpace(failFastConnectionNamePrefix, nameof(failFastConnectionNamePrefix));
+            Ensure.NotNull(resilientConnectionNamePrefix, nameof(resilientConnectionNamePrefix));
 
             this.args += $" --ext-ip={extIp}";
 
             this.userCredentials = new UserCredentials(defaultUserName, defaultPassword);
             this.ipEndPoint = new IPEndPoint(IPAddress.Parse(extIp), tcpPort);
+
+            this.resilientConnectionNamePrefix = resilientConnectionNamePrefix;
+            this.failFastConnectionNamePrefix = failFastConnectionNamePrefix;
         }
 
         public void InitializeDb()
@@ -98,10 +112,15 @@ namespace Agrobook.Infrastructure.EventSourcing
                 .SetDefaultUserCredentials(this.userCredentials)
                 .Build();
 
-            this.failFastConnection = EventStoreConnection.Create(settings, this.ipEndPoint);
+            this.failFastConnection = EventStoreConnection.Create(settings, this.ipEndPoint, this.FormatConnectionName(this.failFastConnectionNamePrefix));
             this.failFastConnection.Closed += async (s, e) => await this.EstablishFailFastConnectionAsync();
 
             await this.failFastConnection.ConnectAsync();
+        }
+
+        private string FormatConnectionName(string prefix)
+        {
+            return $"{prefix}-{Interlocked.Increment(ref failFastNumber)}-{DateTime.UtcNow.ToString("dd/MM/yyy-hh:mm:ss")}";
         }
 
         private async Task EstablishResilientConnectionAsync()
@@ -115,7 +134,7 @@ namespace Agrobook.Infrastructure.EventSourcing
                 .SetDefaultUserCredentials(this.userCredentials)
                 .Build();
 
-            this.resilientConnection = EventStoreConnection.Create(settings, this.ipEndPoint);
+            this.resilientConnection = EventStoreConnection.Create(settings, this.ipEndPoint, this.FormatConnectionName(this.resilientConnectionNamePrefix));
             await this.resilientConnection.ConnectAsync();
         }
 
