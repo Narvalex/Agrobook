@@ -2,9 +2,10 @@
 var usuariosArea;
 (function (usuariosArea) {
     var nuevoUsuarioDialogController = (function () {
-        function nuevoUsuarioDialogController($mdDialog, usuariosService) {
+        function nuevoUsuarioDialogController($mdDialog, usuariosService, toasterLite) {
             this.$mdDialog = $mdDialog;
             this.usuariosService = usuariosService;
+            this.toasterLite = toasterLite;
             this.avatarUrls = [
                 './assets/img/avatar/1.png',
                 './assets/img/avatar/2.png',
@@ -16,19 +17,35 @@ var usuariosArea;
                 './assets/img/avatar/8.png',
                 './assets/img/avatar/9.png'
             ];
+            this.bloquearSubmit = false;
+            this.setDefaultSubmitText();
         }
         nuevoUsuarioDialogController.prototype.cancelar = function () {
             this.$mdDialog.cancel();
         };
         nuevoUsuarioDialogController.prototype.crearNuevoUsuario = function () {
+            var _this = this;
+            var nombre = this.usuario.nombreDeUsuario;
+            this.setWorkingText();
+            this.bloquearSubmit = true;
             this.usuariosService.crearNuevoUsuario(this.usuario, function (value) {
+                _this.toasterLite.success('El usuario ' + nombre + ' fue creado exitosamente');
+                _this.$mdDialog.hide(_this.usuario);
             }, function (reason) {
+                _this.setDefaultSubmitText();
+                _this.bloquearSubmit = false;
+                window.alert('Ocurrió un error y no se pudo crear el usuario');
             });
-            this.$mdDialog.hide(this.usuario);
+        };
+        nuevoUsuarioDialogController.prototype.setDefaultSubmitText = function () {
+            this.submitLabel = 'Crear nuevo usuario';
+        };
+        nuevoUsuarioDialogController.prototype.setWorkingText = function () {
+            this.submitLabel = 'Creando nuevo usuario...';
         };
         return nuevoUsuarioDialogController;
     }());
-    nuevoUsuarioDialogController.$inject = ['$mdDialog', 'usuariosService'];
+    nuevoUsuarioDialogController.$inject = ['$mdDialog', 'usuariosService', 'toasterLite'];
     usuariosArea.nuevoUsuarioDialogController = nuevoUsuarioDialogController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=nuevoUsuarioDialogController.js.map

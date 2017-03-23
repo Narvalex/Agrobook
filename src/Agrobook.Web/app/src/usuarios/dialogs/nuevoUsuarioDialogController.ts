@@ -3,12 +3,14 @@
 module usuariosArea {
     export class nuevoUsuarioDialogController {
 
-        static $inject = ['$mdDialog', 'usuariosService'];
+        static $inject = ['$mdDialog', 'usuariosService', 'toasterLite'];
 
         constructor(
             private $mdDialog: angular.material.IDialogService,
-            private usuariosService: usuariosArea.usuariosService
+            private usuariosService: usuariosArea.usuariosService,
+            private toasterLite: common.toasterLite
         ) {
+            this.setDefaultSubmitText();
         }
 
         avatarUrls = [
@@ -25,18 +27,35 @@ module usuariosArea {
 
         usuario: UsuarioDto
 
+        bloquearSubmit: boolean = false;
+        submitLabel: string;
+
         cancelar(): void {
             this.$mdDialog.cancel();
         }
 
         crearNuevoUsuario(): void {
+            var nombre = this.usuario.nombreDeUsuario;
+            this.setWorkingText();
+            this.bloquearSubmit = true;
             this.usuariosService.crearNuevoUsuario(this.usuario,
                 (value) => {
+                    this.toasterLite.success('El usuario ' + nombre + ' fue creado exitosamente');
+                    this.$mdDialog.hide(this.usuario);
                 },
                 (reason) => {
+                    this.setDefaultSubmitText();
+                    this.bloquearSubmit = false;
+                    window.alert('Ocurrió un error y no se pudo crear el usuario');
                 });
+        }
 
-            this.$mdDialog.hide(this.usuario);
+        private setDefaultSubmitText() {
+            this.submitLabel = 'Crear nuevo usuario';
+        }
+
+        private setWorkingText() {
+            this.submitLabel = 'Creando nuevo usuario...'
         }
     }
 }

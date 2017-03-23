@@ -1,0 +1,12 @@
+﻿md-toast.error .md-toast-content {
+  background: #f44336;
+  color: white; }
+
+md-toast.success .md-toast-content {
+  background: #4caf50;
+  color: white; }
+
+md-toast.info .md-toast-content {
+  background: #238bb9;
+  color: white; }
+

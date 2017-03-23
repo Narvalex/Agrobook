@@ -25,4 +25,49 @@ module common {
             localStorage.removeItem(key);
         }
     }
+
+    export class toasterLite {
+        static $inject = ['$mdToast'];
+
+        private defaultDelay = 5000; // 5 seconds
+        private defaultPosition = 'top right';
+
+        constructor(
+            private $mdToast: angular.material.IToastService) {
+        }
+
+        info(message: string, delay: number = this.defaultDelay, closeButton: boolean = true) {
+            var self = this;
+            let options: angular.material.IToastOptions = {
+                hideDelay: delay,
+                position: this.defaultPosition,
+                controllerAs: 'vm',
+                templateUrl: './dist/common/toasts/toast-cerrable.html',
+                toastClass: 'info',
+                controller: class {
+                    message: string = message;
+                    close = () => { self.$mdToast.hide(); }
+                }
+            };
+            this.$mdToast.show(options);
+        }
+
+        success(message: string, delay: number = this.defaultDelay, closeButton: boolean = true) {
+            var self = this;
+            let options: angular.material.IToastOptions = {
+                hideDelay: delay,
+                position: this.defaultPosition,
+                controllerAs: 'vm',
+                templateUrl: './dist/common/toasts/toast-cerrable.html',
+                toastClass: 'success',
+                controller: class {
+                    message: string = message;
+                    close = () => { self.$mdToast.hide(); }
+                }
+            };
+            this.$mdToast.show(options);
+        }
+
+        get delayForever(): number { return 3600000; }; // an hour! :O
+    }
 }

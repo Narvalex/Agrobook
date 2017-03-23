@@ -96,6 +96,13 @@
     <Content Include="app\assets\img\avatar\9.png" />
     <Content Include="app\assets\img\avatar\avatar-set.png" />
     <Content Include="app\assets\img\avatar\Source.txt" />
+    <None Include="app\assets\md-toasts.scss" />
+    <Content Include="app\assets\md-toasts.css">
+      <DependentUpon>md-toasts.scss</DependentUpon>
+    </Content>
+    <Content Include="app\assets\md-toasts.min.css">
+      <DependentUpon>md-toasts.css</DependentUpon>
+    </Content>
     <Content Include="app\assets\svg\avatars.svg" />
     <Content Include="app\assets\svg\close.svg" />
     <Content Include="app\assets\svg\google_plus.svg" />
@@ -700,6 +707,7 @@
     <Content Include="app\bower_components\toastr\toastr.js" />
     <Content Include="app\bower_components\toastr\toastr.min.css" />
     <Content Include="app\bower_components\toastr\toastr.min.js" />
+    <Content Include="app\dist\common\toasts\toast-cerrable.html" />
     <Content Include="app\dist\common\userMenu\menu-items-template.html" />
     <Content Include="app\assets\menu-panel.css" />
     <Content Include="app\dist\common\userMenu\widget.html" />
@@ -834,6 +842,10 @@
     <Content Include="app\bower_components\toastr\toastr.js.map" />
     <Content Include="app\bower_components\toastr\toastr.less" />
     <Content Include="app\bower_components\toastr\toastr.scss" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

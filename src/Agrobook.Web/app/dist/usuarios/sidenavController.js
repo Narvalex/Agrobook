@@ -2,16 +2,17 @@
 var usuariosArea;
 (function (usuariosArea) {
     var sidenavController = (function () {
-        function sidenavController($mdSidenav, $mdDialog, $mdMedia, $mdToast) {
+        function sidenavController($mdSidenav, $mdDialog, $mdMedia, toasterLite) {
             this.$mdSidenav = $mdSidenav;
             this.$mdDialog = $mdDialog;
             this.$mdMedia = $mdMedia;
-            this.$mdToast = $mdToast;
+            this.toasterLite = toasterLite;
         }
         sidenavController.prototype.toggleSideNav = function () {
             this.$mdSidenav('left').toggle();
         };
         sidenavController.prototype.crearNuevoUsuario = function ($event) {
+            var _this = this;
             var self = this;
             this.$mdDialog.show({
                 templateUrl: '../app/dist/usuarios/dialogs/nuevo-usuario-dialog.html',
@@ -22,23 +23,13 @@ var usuariosArea;
                 clickOutsideToClose: true,
                 fullscreen: (this.$mdMedia('sm') || this.$mdMedia('xs'))
             }).then(function (usuario) {
-                var message = 'El usuario de nombre ' + usuario.nombreDeUsuario + ' fue creado exitosamente';
-                self.showToast(message);
             }, function () {
-                console.log('Usted canceló la creación de un nuevo usuario');
+                _this.toasterLite.info('Creación de nuevo usuario cancelada');
             });
-        };
-        sidenavController.prototype.showToast = function (message) {
-            var toast = this.$mdToast
-                .simple()
-                .textContent(message)
-                .position('top right')
-                .hideDelay(3000);
-            this.$mdToast.show(toast);
         };
         return sidenavController;
     }());
-    sidenavController.$inject = ['$mdSidenav', '$mdDialog', '$mdMedia', '$mdToast'];
+    sidenavController.$inject = ['$mdSidenav', '$mdDialog', '$mdMedia', 'toasterLite'];
     usuariosArea.sidenavController = sidenavController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=sidenavController.js.map

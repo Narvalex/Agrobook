@@ -1,0 +1,24 @@
+﻿$red: rgb(244, 67, 54);
+$green: rgb(76, 175, 80);
+$cyan: rgb(35, 139, 185);
+
+md-toast {
+    &.error {
+        .md-toast-content {
+            background: $red;
+            color: white;
+        }
+    }
+    &.success {
+        .md-toast-content {
+            background: $green;
+            color: white;
+        }
+    }
+    &.info {
+        .md-toast-content {
+            background: $cyan;
+            color: white;
+        }
+    }
+}

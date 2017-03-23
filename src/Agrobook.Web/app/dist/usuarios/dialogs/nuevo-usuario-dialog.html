@@ -53,8 +53,8 @@
         </md-dialog-content>
 
         <md-dialog-actions layout="row">
-            <md-button type="submit" class="md-primary md-raised" ng-disabled="nuevoUsuarioForm.$invalid">
-                Crear nuevo usuario
+            <md-button ng-cloak type="submit" class="md-primary md-raised" ng-disabled="nuevoUsuarioForm.$invalid || vm.bloquearSubmit">
+                {{vm.submitLabel}}
             </md-button>
             <md-button ng-click="vm.cancelar()">Cancelar</md-button>
         </md-dialog-actions>
