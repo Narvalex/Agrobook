@@ -1,5 +1,4 @@
 ﻿using Agrobook.Core;
-using Agrobook.Infrastructure.Serialization;
 using EventStore.ClientAPI;
 using System;
 using System.Collections.Generic;
@@ -40,6 +39,8 @@ namespace Agrobook.Infrastructure.EventSourcing
 
         public async Task<T> GetAsync<T>(string streamName) where T : class, IEventSourced, new()
         {
+            streamName = StreamCategoryAttribute.GetFullStreamName<T>(streamName);
+
             var eventSourced = new T();
             if (this.snapshotCache.TryGet(streamName, out var snapshot))
             {

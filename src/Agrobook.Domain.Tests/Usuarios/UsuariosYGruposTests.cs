@@ -23,6 +23,15 @@ namespace Agrobook.Domain.Tests.Usuarios
                 r => new UsuariosYGruposService(r, new SimpleDateTimeProvider(), this.crypto));
         }
 
+        [TestMethod]
+        public void ElNombreDelStreamSeGeneraCorrectamente()
+        {
+            var usuario = new Usuario();
+            usuario.Emit(new NuevoUsuarioCreado(TestMeta.New, "user", "Us Er", "avatar.png", "encriptedata"));
+
+            Assert.AreEqual("agrobook.usuarios-user", usuario.StreamName);
+        }
+
         #region ABM Usuarios
         [TestMethod]
         public void SiPuedeDetectarQueNoExisteTodaviaElUsuarioAdmin()
@@ -59,7 +68,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void SePuedeDetectarQueSiExisteElUsuarioAdminUnaVezCreado()
         {
             this.sut
-                .Given("admin", new NuevoUsuarioCreado(TestMeta.New, "admin", "admin", "*.png", "password"))
+                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestMeta.New, "admin", "admin", "*.png", "password"))
                 .When(s =>
                 {
                     Assert.IsTrue(s.ExisteUsuarioAdmin);
@@ -71,7 +80,8 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var avatarUrl = "app/avatar.png";
             this.sut.Given()
-                    .When(s => s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "user1", "User One", avatarUrl, "123", null)).Wait())
+                    .When(s =>
+                        s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "user1", "User One", avatarUrl, "123", null)).Wait())
                     .Then(e =>
                     {
                         var ev = e.OfType<NuevoUsuarioCreado>().Single();
@@ -84,7 +94,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                     })
                     .And<UsuarioSnapshot>(s =>
                     {
-                        Assert.AreEqual("user1", s.StreamName);
+                        Assert.AreEqual("agrobook.usuarios-user1", s.StreamName);
                         Assert.AreEqual("User One", s.NombreParaMostrar);
                         TestearInfo(s.LoginInfoEncriptado);
                     });
@@ -102,7 +112,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         [TestMethod]
         public void CuandoElUsuarioYaExisteEntoncesNoSePuedeAgregarOtroIgual()
         {
-            var usuario = "user1";
+            var usuario = "agrobook.usuarios-user1";
             var avatarUrl = "picurl";
             this.sut.Given(usuario, new NuevoUsuarioCreado(TestMeta.New, "user1", "User Lastname", avatarUrl, "123"))
                     .When(s =>
@@ -189,7 +199,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var loginInfo = new LoginInfo("user1", "123", new string[] { Claims.Roles.Admin });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
             this.sut
-                .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", "User Name", "", eLoginInfo))
+                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("user1"), new NuevoUsuarioCreado(TestMeta.New, "user1", "User Name", "", eLoginInfo))
                 .When(s =>
                 {
                     var result = s.HandleAsync(new IniciarSesion("user1", "123", now)).Result;
@@ -264,7 +274,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
-                .Given("productor", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
+                .Given("agrobook.usuarios-productor", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
                     var autorizado = s.TryAuthorize(eLoginInfo, Claims.Roles.Tecnico);
@@ -280,7 +290,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
-                .Given("admin", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
+                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
                     var autorizado = s.TryAuthorize(eLoginInfo, Claims.Roles.Tecnico);

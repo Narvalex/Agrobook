@@ -2,6 +2,7 @@
 
 namespace Agrobook.Domain.Usuarios
 {
+    [StreamCategory("agrobook.usuarios")]
     public class Usuario : EventSourced
     {
         public Usuario()

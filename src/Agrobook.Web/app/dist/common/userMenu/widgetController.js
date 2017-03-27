@@ -62,11 +62,13 @@ var common;
                 new menuItem('Usuarios', 'usuarios.html'),
                 new menuItem('Siscole', 'http://ti.fecoprod.com.py/siscole')
             ];
+            this.estaEnHome = window.location.pathname == '/app/home.html';
         }
         panelMenuController.prototype.logOut = function () {
             this.loginService.logOut();
             this.closeMenu();
-            window.location.href = 'home.html';
+            if (!this.estaEnHome)
+                window.location.href = 'home.html';
         };
         panelMenuController.prototype.closeMenu = function () {
             this.mdPanelRef.close();

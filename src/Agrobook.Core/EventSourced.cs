@@ -35,12 +35,18 @@ namespace Agrobook.Core
 
     public abstract class EventSourced : IEventSourced
     {
+        private string streamName;
+
         private readonly ICollection<object> newEvents = new List<object>();
         private readonly IDictionary<Type, Action<object>> handlers = new Dictionary<Type, Action<object>>();
 
         public int Version { get; private set; } = ExpectedVersion.NoStream; // Empty/NoExistent stream, in Event Store
 
-        public string StreamName { get; protected set; }
+        public string StreamName
+        {
+            get => this.streamName;
+            protected set => this.streamName = StreamCategoryAttribute.GetFullStreamName(this.GetType(), value);
+        }
 
         ICollection<object> IEventSourced.NewEvents => this.newEvents;
 
@@ -66,7 +72,7 @@ namespace Agrobook.Core
 
         protected virtual void Rehydrate(ISnapshot snapshot)
         {
-            this.StreamName = snapshot.StreamName;
+            this.streamName = snapshot.StreamName;
             this.Version = snapshot.Version;
         }
 

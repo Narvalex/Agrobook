@@ -61,16 +61,20 @@ module common {
 
     class panelMenuController {
         static $inject = ['mdPanelRef', 'loginService'];
+        private estaEnHome: boolean;
 
         constructor(
             private mdPanelRef: angular.material.IPanelRef,
             private loginService: login.loginService
-        ) { }
+        ) {
+            this.estaEnHome = window.location.pathname == '/app/home.html';
+        }
 
         logOut() {
             this.loginService.logOut();
             this.closeMenu();
-            window.location.href = 'home.html';
+            if (!this.estaEnHome)
+                window.location.href = 'home.html';
         }
 
         closeMenu(): void {

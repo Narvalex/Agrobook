@@ -47,6 +47,9 @@ module homeArea {
                 value => {
                     if (value.data.loginExitoso) {
                         this.establecerUsuarioLogueado(value.data.nombreParaMostrar);
+                        // clear the inputs
+                        this.usuario = '';
+                        this.password = '';
                     }
                     else {
                         window.alert("Credenciales inválidas");

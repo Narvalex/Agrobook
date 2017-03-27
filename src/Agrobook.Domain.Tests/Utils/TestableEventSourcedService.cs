@@ -63,6 +63,8 @@ namespace Agrobook.Domain.Tests.Utils
 
         public async Task<T> GetAsync<T>(string streamName) where T : class, IEventSourced, new()
         {
+            streamName = StreamCategoryAttribute.GetFullStreamName<T>(streamName);
+
             if (!this.eventStore.ContainsKey(streamName))
                 return null;
 

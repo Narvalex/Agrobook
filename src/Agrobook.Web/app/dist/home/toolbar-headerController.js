@@ -31,6 +31,9 @@ var homeArea;
             this.loginService.tryLogin(new login.credencialesDto(this.usuario, this.password), function (value) {
                 if (value.data.loginExitoso) {
                     _this.establecerUsuarioLogueado(value.data.nombreParaMostrar);
+                    // clear the inputs
+                    _this.usuario = '';
+                    _this.password = '';
                 }
                 else {
                     window.alert("Credenciales inválidas");
