@@ -25,7 +25,14 @@ module usuariosArea {
             './assets/img/avatar/9.png'
         ];
 
-        usuario: UsuarioDto
+        tiposDeCuenta = [
+            { tipo: 'Admin', desc: 'Administrador' },
+            { tipo: 'Tecnico', desc: 'Técnico' },
+            { tipo: 'Productor', desc: 'Productor' }
+        ];
+
+        usuario: UsuarioDto;
+        tipoDeCuenta: any;
 
         bloquearSubmit: boolean = false;
         submitLabel: string;
@@ -38,6 +45,7 @@ module usuariosArea {
             var nombre = this.usuario.nombreDeUsuario;
             this.setWorkingText();
             this.bloquearSubmit = true;
+            this.usuario.claims = [this.tipoDeCuenta.tipo];
             this.usuariosService.crearNuevoUsuario(this.usuario,
                 (value) => {
                     this.toasterLite.success('El usuario ' + nombre + ' fue creado exitosamente');

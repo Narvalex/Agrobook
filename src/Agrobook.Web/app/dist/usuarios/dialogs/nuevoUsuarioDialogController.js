@@ -17,6 +17,11 @@ var usuariosArea;
                 './assets/img/avatar/8.png',
                 './assets/img/avatar/9.png'
             ];
+            this.tiposDeCuenta = [
+                { tipo: 'Admin', desc: 'Administrador' },
+                { tipo: 'Tecnico', desc: 'Técnico' },
+                { tipo: 'Productor', desc: 'Productor' }
+            ];
             this.bloquearSubmit = false;
             this.setDefaultSubmitText();
         }
@@ -28,6 +33,7 @@ var usuariosArea;
             var nombre = this.usuario.nombreDeUsuario;
             this.setWorkingText();
             this.bloquearSubmit = true;
+            this.usuario.claims = [this.tipoDeCuenta.tipo];
             this.usuariosService.crearNuevoUsuario(this.usuario, function (value) {
                 _this.toasterLite.success('El usuario ' + nombre + ' fue creado exitosamente');
                 _this.$mdDialog.hide(_this.usuario);

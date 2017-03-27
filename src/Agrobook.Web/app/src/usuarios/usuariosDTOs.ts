@@ -6,7 +6,8 @@ module usuariosArea {
             public avatarUrl: string,
             public nombreDeUsuario: string,
             public nombreParaMostrar: string,
-            public password: string
+            public password: string,
+            public claims: string[]
         ) { }
     }
 }

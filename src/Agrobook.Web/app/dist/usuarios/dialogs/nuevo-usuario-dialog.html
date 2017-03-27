@@ -24,6 +24,18 @@
                             <div ng-message="required">Debe elegir una imagen de perfil.</div>
                         </div>
                     </md-input-container>
+                    <!-- Tipo de usuario -->
+                    <md-input-container class="md-block" flex-gt-sm ng-cloak>
+                        <label>Tipo de cuenta</label>
+                        <md-select ng-model="vm.tipoDeCuenta" name="tipoDeCuenta" required>
+                            <md-option ng-repeat="tipoDeCuenta in vm.tiposDeCuenta" ng-value="tipoDeCuenta">
+                                {{tipoDeCuenta.desc}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="nuevoUsuarioForm.tipoDeCuenta.$error">
+                            <div ng-message="required">Debe seleccionar el tipo de cuenta.</div>
+                        </div>
+                    </md-input-container>
                     <!-- Usuario -->
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Nombre de usuario</label>

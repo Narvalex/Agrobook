@@ -2,11 +2,12 @@
 var usuariosArea;
 (function (usuariosArea) {
     var UsuarioDto = (function () {
-        function UsuarioDto(avatarUrl, nombreDeUsuario, nombreParaMostrar, password) {
+        function UsuarioDto(avatarUrl, nombreDeUsuario, nombreParaMostrar, password, claims) {
             this.avatarUrl = avatarUrl;
             this.nombreDeUsuario = nombreDeUsuario;
             this.nombreParaMostrar = nombreParaMostrar;
             this.password = password;
+            this.claims = claims;
         }
         return UsuarioDto;
     }());
