@@ -70,6 +70,7 @@ module common {
         logOut() {
             this.loginService.logOut();
             this.closeMenu();
+            window.location.href = 'home.html';
         }
 
         closeMenu(): void {

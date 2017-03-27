@@ -66,6 +66,7 @@ var common;
         panelMenuController.prototype.logOut = function () {
             this.loginService.logOut();
             this.closeMenu();
+            window.location.href = 'home.html';
         };
         panelMenuController.prototype.closeMenu = function () {
             this.mdPanelRef.close();
