@@ -1,5 +1,5 @@
 ﻿using Agrobook.Domain.Usuarios;
-using Agrobook.Infrastructure.EventSourcing;
+using Agrobook.Infrastructure.Persistence;
 using Agrobook.Infrastructure.Log;
 using Microsoft.Owin.Hosting;
 using System;
@@ -81,7 +81,7 @@ namespace Agrobook.Server
 
         private static void OnEventStoreStarted()
         {
-            var userService = ServiceLocator.ResolveSingleton<UsuariosYGruposService>();
+            var userService = ServiceLocator.ResolveSingleton<UsuariosService>();
             var intentos = 0;
             var maxRetries = 3;
             try
@@ -101,7 +101,7 @@ namespace Agrobook.Server
             }
         }
 
-        private static void CrearUsuarioAdminSiHaceFalta(UsuariosYGruposService userService)
+        private static void CrearUsuarioAdminSiHaceFalta(UsuariosService userService)
         {
             if (!userService.ExisteUsuarioAdmin)
             {

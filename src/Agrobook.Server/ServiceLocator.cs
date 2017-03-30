@@ -2,7 +2,7 @@
 using Agrobook.Domain.Usuarios;
 using Agrobook.Infrastructure;
 using Agrobook.Infrastructure.Cryptography;
-using Agrobook.Infrastructure.EventSourcing;
+using Agrobook.Infrastructure.Persistence;
 using Agrobook.Infrastructure.IoC;
 using Agrobook.Infrastructure.Serialization;
 using Agrobook.Server.Filters;
@@ -35,12 +35,12 @@ namespace Agrobook.Server
 
             var eventSourcedRepository = new EventSourcedRepository(es.GetFailFastConnection, jsonSerializer, snapshotCache);
 
-            var usuariosService = new UsuariosYGruposService(eventSourcedRepository, dateTimeProvider, cryptoSerializer);
+            var usuariosService = new UsuariosService(eventSourcedRepository, dateTimeProvider, cryptoSerializer);
             AutorizarAttribute.SetTokenAuthProvider(usuariosService);
 
             container.Register<IDateTimeProvider>(dateTimeProvider);
             container.Register<EventStoreManager>(es);
-            container.Register<UsuariosYGruposService>(usuariosService);
+            container.Register<UsuariosService>(usuariosService);
         }
     }
 }

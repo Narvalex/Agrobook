@@ -9,7 +9,7 @@ namespace Agrobook.Server.Login
     public class LoginController : ApiController
     {
         private readonly IDateTimeProvider dateTime = ServiceLocator.ResolveSingleton<IDateTimeProvider>();
-        private readonly UsuariosYGruposService usuariosService = ServiceLocator.ResolveSingleton<UsuariosYGruposService>();
+        private readonly UsuariosService usuariosService = ServiceLocator.ResolveSingleton<UsuariosService>();
 
         [HttpPost]
         [Route("try-login")]

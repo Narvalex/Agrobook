@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Usuarios
 {
-    public class UsuariosYGruposService : EventSourcedService, ITokenAuthorizationProvider
+    public class UsuariosService : EventSourcedService, ITokenAuthorizationProvider
     {
         public const string UsuarioAdmin = "admin";
         public const string DefaultPassword = "changeit";
         private readonly IJsonSerializer cryptoSerializer;
         private readonly string adminAvatarUrl;
 
-        public UsuariosYGruposService(
+        public UsuariosService(
             IEventSourcedRepository repository,
             IDateTimeProvider dateTime,
             IJsonSerializer cryptoSerializer,
@@ -51,23 +51,6 @@ namespace Agrobook.Domain.Usuarios
             var loginInfo = new LoginInfo(cmd.Usuario, cmd.PasswordCrudo, cmd.Claims ?? new string[0]);
             var eLoginInfo = this.cryptoSerializer.Serialize(loginInfo);
             state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario, cmd.NombreParaMostrar, cmd.AvatarUrl, eLoginInfo));
-            await this.repository.SaveAsync(state);
-        }
-
-        public async Task HandleAsync(CrearGrupo cmd)
-        {
-            var state = new GrupoDeUsuarios();
-            state.Emit(new NuevoGrupoCreado(cmd.Metadatos, cmd.IdGrupo));
-            await this.repository.SaveAsync(state);
-        }
-
-        public async Task HandleAsync(AgregarUsuarioAGrupo cmd)
-        {
-            var state = await this.repository.GetAsync<GrupoDeUsuarios>(cmd.IdGrupo);
-            if (state.YaPerteneceUsuarioAlGrupo(cmd.IdUsuario))
-                return;
-
-            state.Emit(new UsuarioAgregadoAGrupo(cmd.Metadatos, cmd.IdGrupo, cmd.IdUsuario));
             await this.repository.SaveAsync(state);
         }
 

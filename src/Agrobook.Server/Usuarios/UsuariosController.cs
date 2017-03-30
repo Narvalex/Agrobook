@@ -10,7 +10,7 @@ namespace Agrobook.Server.Usuarios
     [RoutePrefix("usuarios")]
     public class UsuariosController : ApiController
     {
-        private readonly UsuariosYGruposService service = ServiceLocator.ResolveSingleton<UsuariosYGruposService>();
+        private readonly UsuariosService service = ServiceLocator.ResolveSingleton<UsuariosService>();
 
         [HttpPost]
         [Route("crear-nuevo-usuario")]

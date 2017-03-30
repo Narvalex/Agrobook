@@ -1,5 +1,5 @@
 ﻿using Agrobook.Core;
-using Agrobook.Infrastructure.EventSourcing;
+using Agrobook.Infrastructure.Persistence;
 
 namespace Agrobook.Infrastructure.Tests.EventSourcing.Fakes
 {

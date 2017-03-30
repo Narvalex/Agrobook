@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Caching;
 
-namespace Agrobook.Infrastructure.EventSourcing
+namespace Agrobook.Infrastructure.Persistence
 {
     public class SnapshotCache : ISnapshotCache
     {

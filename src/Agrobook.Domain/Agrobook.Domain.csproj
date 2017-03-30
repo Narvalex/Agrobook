@@ -46,14 +46,12 @@
     <Compile Include="Usuarios\Login\Claims.cs" />
     <Compile Include="Usuarios\Login\LoginInfo.cs" />
     <Compile Include="Usuarios\Login\ClaimInfo.cs" />
+    <Compile Include="Usuarios\Services\UsuariosDenormalizer.cs" />
+    <Compile Include="Usuarios\Services\UsuariosService.cs" />
     <Compile Include="Usuarios\UsuariosCommands.cs" />
     <Compile Include="Usuarios\UsuariosEvents.cs" />
-    <Compile Include="Usuarios\Services\UsuariosYGruposService.cs" />
-    <Compile Include="Usuarios\GrupoDeUsuariosCommands.cs" />
-    <Compile Include="Usuarios\GrupoDeUsuariosEvents.cs" />
-    <Compile Include="Usuarios\GrupoDeUsuarios.cs" />
     <Compile Include="Usuarios\Usuario.cs" />
-    <Compile Include="Usuarios\Services\UsuariosYGruposServiceResults.cs" />
+    <Compile Include="Usuarios\Services\UsuariosServiceResults.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Agrobook.Infrastructure.EventSourcing
+namespace Agrobook.Infrastructure.Persistence
 {
     public class EventSourcedRepository : IEventSourcedRepository
     {
@@ -50,7 +50,7 @@ namespace Agrobook.Infrastructure.EventSourcing
 
             var connection = await this.connectionFactory.Invoke();
 
-            var sliceStart = 0;
+            long sliceStart = 0;
 
             StreamEventsSlice currentSlice;
             do

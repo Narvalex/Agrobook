@@ -11,16 +11,16 @@ using System.Linq;
 namespace Agrobook.Domain.Tests.Usuarios
 {
     [TestClass]
-    public class UsuariosYGruposTests
+    public class UsuariosTests
     {
-        private TestableEventSourcedService<UsuariosYGruposService> sut;
+        private TestableEventSourcedService<UsuariosService> sut;
         private CryptoSerializer crypto;
 
-        public UsuariosYGruposTests()
+        public UsuariosTests()
         {
             this.crypto = new CryptoSerializer(new FauxCrypto());
-            this.sut = new TestableEventSourcedService<UsuariosYGruposService>(
-                r => new UsuariosYGruposService(r, new SimpleDateTimeProvider(), this.crypto));
+            this.sut = new TestableEventSourcedService<UsuariosService>(
+                r => new UsuariosService(r, new SimpleDateTimeProvider(), this.crypto));
         }
 
         [TestMethod]
@@ -128,47 +128,6 @@ namespace Agrobook.Domain.Tests.Usuarios
                                 throw ex.InnerException;
                             }
                         });
-                    });
-        }
-        #endregion
-
-        #region ABM Grupos
-        [TestMethod]
-        public void SePuedeCrearNuevoGrupo()
-        {
-            this.sut.Given()
-                    .When(s => s.HandleAsync(new CrearGrupo("nuevoGrupo", TestMeta.New)).Wait())
-                    .Then(e =>
-                    {
-                        Assert.IsTrue(e.Count == 1);
-                        Assert.IsTrue(e.OfType<NuevoGrupoCreado>().Single().IdGrupo == "nuevoGrupo");
-                    })
-                    .And<Snapshot>(s =>
-                    {
-                        Assert.IsTrue(s.StreamName == "nuevoGrupo");
-                    });
-        }
-
-        [TestMethod]
-        public void SePuedeAgregarUsuarioAUnGrupo()
-        {
-            var streamName = "grupoCreado";
-            this.sut.Given(streamName, new NuevoGrupoCreado(TestMeta.New, streamName))
-                    .When(s =>
-                    {
-                        s.HandleAsync(new AgregarUsuarioAGrupo(streamName, "user1", TestMeta.New)).Wait();
-                    })
-                    .Then(e =>
-                    {
-                        Assert.IsTrue(e.Count == 1, "Cuenta de usuario");
-                        Assert.IsTrue(e.OfType<UsuarioAgregadoAGrupo>().Single().IdGrupo == streamName, "Nombre del grupo");
-                        Assert.IsTrue(e.OfType<UsuarioAgregadoAGrupo>().Single().IdUsuario == "user1", "Nombre del usuario");
-                    })
-                    .And<GrupoDeUsuariosSnapshot>(s =>
-                    {
-                        Assert.AreEqual(streamName, s.StreamName);
-                        Assert.AreEqual(1, s.Usuarios.Length);
-                        Assert.AreEqual("user1", s.Usuarios[0]);
                     });
         }
         #endregion

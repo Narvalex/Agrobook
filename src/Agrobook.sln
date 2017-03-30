@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26206.0
+VisualStudioVersion = 15.0.26323.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Server", "Agrobook.Server\Agrobook.Server.csproj", "{6B68ACFE-67B3-4AE4-9C2E-B723FCDC4DE5}"
 EndProject
@@ -24,6 +24,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Core", "Agrobook.Core\Agrobook.Core.csproj", "{02F6C2B8-C3EB-4107-8D43-113A0258992F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Client", "Agrobook.Client\Agrobook.Client.csproj", "{28D58658-F70E-4F16-9AFE-CCBAE661A992}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{E3353730-C86E-4373-A842-0CBD906F8CBC}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\ArchivosDeAgricultura.docx = ..\docs\ArchivosDeAgricultura.docx
+		..\docs\queries.js = ..\docs\queries.js
+		..\docs\UsuariosYGrupos.docx = ..\docs\UsuariosYGrupos.docx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

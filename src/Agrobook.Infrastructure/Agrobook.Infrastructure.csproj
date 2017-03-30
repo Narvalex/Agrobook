@@ -32,12 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EventStore.ClientAPI, Version=3.9.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EventStore.Client.3.9.4\lib\net40\EventStore.ClientAPI.dll</HintPath>
+    <Reference Include="EventStore.ClientAPI, Version=4.0.0.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EventStore.Client.4.0.0\lib\net40\EventStore.ClientAPI.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -54,10 +54,10 @@
     <Compile Include="Cryptography\MD5OneWayEncryptor.cs" />
     <Compile Include="Cryptography\FauxCrypto.cs" />
     <Compile Include="Cryptography\StringCipher.cs" />
-    <Compile Include="EventSourcing\EventSourcedRepository.cs" />
-    <Compile Include="EventSourcing\EventStoreManager.cs" />
-    <Compile Include="EventSourcing\ISnapshotCache.cs" />
-    <Compile Include="EventSourcing\SnapshotCache.cs" />
+    <Compile Include="Persistence\EventSourcedRepository.cs" />
+    <Compile Include="Persistence\EventStoreManager.cs" />
+    <Compile Include="Persistence\ISnapshotCache.cs" />
+    <Compile Include="Persistence\SnapshotCache.cs" />
     <Compile Include="Http\HttpClientExtensions.cs" />
     <Compile Include="IoC\SimpleContainer.cs" />
     <Compile Include="Login\TokenManager.cs" />
@@ -70,6 +70,8 @@
     <Compile Include="Serialization\CryptoSerializer.cs" />
     <Compile Include="Serialization\JsonTextSerializer.cs" />
     <Compile Include="SimpleDateTimeProvider.cs" />
+    <Compile Include="Subscription\EventStreamSubscriber.cs" />
+    <Compile Include="Subscription\EventStreamSubscription.cs" />
     <Compile Include="Utils\ByteArrayExtensions.cs" />
     <Compile Include="Utils\StringExtensions.cs" />
   </ItemGroup>

@@ -1,4 +1,4 @@
-﻿using Agrobook.Infrastructure.EventSourcing;
+﻿using Agrobook.Infrastructure.Persistence;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 

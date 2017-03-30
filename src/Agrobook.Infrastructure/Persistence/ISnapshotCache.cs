@@ -1,6 +1,6 @@
 ﻿using Agrobook.Core;
 
-namespace Agrobook.Infrastructure.EventSourcing
+namespace Agrobook.Infrastructure.Persistence
 {
     public interface ISnapshotCache
     {

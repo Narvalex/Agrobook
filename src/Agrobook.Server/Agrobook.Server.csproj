@@ -127,4 +127,8 @@
     <Folder Include="bin\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!--<Target Name="HelloWorld">
+    <Message Text="Hello"></Message>
+    <Message Text="World"></Message>
+  </Target>-->
 </Project>

@@ -1,4 +1,4 @@
-﻿using Agrobook.Infrastructure.EventSourcing;
+﻿using Agrobook.Infrastructure.Persistence;
 using Agrobook.Infrastructure.Serialization;
 using Agrobook.Infrastructure.Tests.EventSourcing.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
