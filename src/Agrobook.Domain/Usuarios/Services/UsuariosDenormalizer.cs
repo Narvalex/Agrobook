@@ -36,8 +36,6 @@ namespace Agrobook.Domain.Usuarios.Services
                 .CreateSubscriptionFromCategory(StreamCategoryAttribute.GetCategory<Usuario>(),
                 lastCheckpoint,
                 this.Dispatch);
-
-            this.subscription.Start();
         }
 
         public async Task Handle(long eventNumber, NuevoUsuarioCreado e)
@@ -50,6 +48,16 @@ namespace Agrobook.Domain.Usuarios.Services
                     NombreCompleto = e.NombreParaMostrar,
                 });
             });
+        }
+
+        public void Start()
+        {
+            this.subscription.Start();
+        }
+
+        public void Stop()
+        {
+            this.subscription.Stop();
         }
 
         protected override async Task Handle(long eventNumber, object @event)

@@ -1,6 +1,7 @@
 ﻿using Agrobook.Domain.Usuarios;
-using Agrobook.Infrastructure.Persistence;
+using Agrobook.Domain.Usuarios.Services;
 using Agrobook.Infrastructure.Log;
+using Agrobook.Infrastructure.Persistence;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Runtime.InteropServices;
@@ -29,33 +30,37 @@ namespace Agrobook.Server
 
         static void Main(string[] args)
         {
+            SetConsoleCtrlHandler(
+              add: true,
+              handler: signal =>
+              {
+                  OnExit();
+                    // Shutdown right away
+                    Environment.Exit(-1);
+                  return true;
+              });
+
+            // Dependency Container
             LogManager.GlobalLogger.Info("Starting Agrobook Server");
             Console.Write("Resolving dependencies...");
             ServiceLocator.Initialize();
             Console.WriteLine("Done");
 
+            // EventStore
             Console.Write("Initializing EventStore...");
             var es = ServiceLocator.ResolveSingleton<EventStoreManager>();
             es.InitializeDb();
             Console.WriteLine("Done");
 
-            SetConsoleCtrlHandler(
-                add: true,
-                handler: signal =>
-                {
-                    OnExit();
-                    // Shutdown right away
-                    Environment.Exit(-1);
-                    return true;
-                });
+            // SQL
+            var sqlInit = ServiceLocator.ResolveSingleton<SqlDbInitializer<UsuariosDbContext>>();
+            sqlInit.CreateDatabaseIfNoExists();
 
-            // Web Api
-            var baseUri = "http://localhost:8081";
-
-            OnEventStoreStarted();
+            OnPersistenceEnginesInitialized();
 
             Console.Write("Starting web server...");
-
+            // Web Api
+            var baseUri = "http://localhost:8081";
             WebApiStartup.OnAppDisposing = () => OnExit();
             WebApp.Start<WebApiStartup>(baseUri);
             Console.WriteLine("Done");
@@ -79,7 +84,7 @@ namespace Agrobook.Server
                 .TearDown();
         }
 
-        private static void OnEventStoreStarted()
+        private static void OnPersistenceEnginesInitialized()
         {
             var userService = ServiceLocator.ResolveSingleton<UsuariosService>();
             var intentos = 0;
@@ -99,6 +104,9 @@ namespace Agrobook.Server
                 Thread.Sleep(1500);
                 CrearUsuarioAdminSiHaceFalta(userService);
             }
+
+            var usuariosDenormalizer = ServiceLocator.ResolveSingleton<UsuariosDenormalizer>();
+            usuariosDenormalizer.Start();
         }
 
         private static void CrearUsuarioAdminSiHaceFalta(UsuariosService userService)
