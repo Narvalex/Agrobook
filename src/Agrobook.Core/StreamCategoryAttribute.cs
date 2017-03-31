@@ -13,15 +13,25 @@ namespace Agrobook.Core
 
         public string CategoryName { get; }
 
-        public static string GetFullStreamName<T>(string streamName) => GetFullStreamName(typeof(T), streamName);
+        public static string GetFullStreamName<T>(string streamId) => GetFullStreamName(typeof(T), streamId);
 
         public static string GetFullStreamName(Type type, string streamName)
         {
+            var category = GetCategory(type);
+
+            return category is null ? streamName : $"{category}-{streamName}";
+        }
+
+        public static string GetCategory<T>()
+        {
+            return GetCategory(typeof(T));
+        }
+
+        public static string GetCategory(Type type)
+        {
             var att = GetCustomAttributes(type)
                         .FirstOrDefault(a => a is StreamCategoryAttribute);
-
-            return att is null ? streamName
-                    : $"{((StreamCategoryAttribute)att).CategoryName}-{streamName}";
+            return att is null ? null : ((StreamCategoryAttribute)att).CategoryName;
         }
     }
 }

@@ -51,12 +51,10 @@
   <ItemGroup>
     <Compile Include="MesajesAuditablesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Usuarios\UsuariosDenormalizerTests.cs" />
     <Compile Include="Usuarios\UsuariosTests.cs" />
     <Compile Include="Utils\FakeMeta.cs" />
     <Compile Include="Utils\FakeOneWayEncryptor.cs" />
     <Compile Include="Utils\SimpleDateTimeProvider.cs" />
-    <Compile Include="Utils\TestableEventHandler.cs" />
     <Compile Include="Utils\TestableEventSourcedService.cs" />
   </ItemGroup>
   <ItemGroup>
