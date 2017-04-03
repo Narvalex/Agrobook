@@ -4,7 +4,7 @@
             Agrobook
         </h2>
 
-        <div ng-hide="vm.estaLogueado"
+        <div ng-hide="vm.estaLogueado || vm.enEspera"
              layout="row" class="home-login-form">
             <md-input-container>
                 <label>Usuario</label>
@@ -23,8 +23,9 @@
         </div>
 
         <md-button ng-hide="vm.estaLogueado"
+                   ng-disabled="vm.enEspera" 
                    class="md-flat" aria-label="Login" ng-click="vm.login()">
-            Login
+            {{vm.loginBtnLabel}}
         </md-button>
 
         <span class="user-menu-user-name" style="padding-bottom: 3px;" ng-cloak ng-show="vm.estaLogueado">Bienvenido&nbsp;</span>

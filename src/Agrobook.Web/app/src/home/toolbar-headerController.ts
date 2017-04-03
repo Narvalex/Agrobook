@@ -15,10 +15,13 @@ module homeArea {
                 this.verificarSiEstaLogueado();
             });
 
+            this.establecerFormularioDeLogin();
             this.verificarSiEstaLogueado();
         }
 
         estaLogueado: boolean = false;
+        enEspera: boolean = false;
+        loginBtnLabel: string;
 
         nombreParaMostrar: string;
 
@@ -42,6 +45,7 @@ module homeArea {
                 return;
             }
 
+            this.establecerFormularioDeLogin(true);
             this.loginService.tryLogin(
                 new login.credencialesDto(this.usuario, this.password),
                 value => {
@@ -49,14 +53,18 @@ module homeArea {
                         this.establecerUsuarioLogueado(value.data.nombreParaMostrar);
                         // clear the inputs
                         this.usuario = '';
-                        this.password = '';
                     }
                     else {
                         window.alert("Credenciales inválidas");
-                        this.password = "";
                     }
+                    this.password = '';
+                    this.establecerFormularioDeLogin();
                 },
-                reason => console.log(reason));
+                reason => {
+                    this.establecerFormularioDeLogin();
+                    window.alert('Hubo un error inesperado al intentar inciar sesión');
+                    console.log(reason);
+                });
         }
 
         private verificarSiEstaLogueado(): void {
@@ -72,6 +80,16 @@ module homeArea {
         private establecerUsuarioLogueado(nombreParaMostrar: string) {
             this.nombreParaMostrar = nombreParaMostrar;
             this.estaLogueado = true;
+        }
+
+        private establecerFormularioDeLogin(enEspera: boolean = false): void {
+            this.enEspera = enEspera;
+            if (enEspera) {
+                this.loginBtnLabel = 'Inciando sesión...';
+            }
+            else {
+                this.loginBtnLabel = 'Login';
+            }
         }
     }
 }

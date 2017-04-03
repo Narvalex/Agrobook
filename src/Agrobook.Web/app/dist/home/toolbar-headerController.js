@@ -9,9 +9,11 @@ var homeArea;
             this.config = config;
             this.$rootScope = $rootScope;
             this.estaLogueado = false;
+            this.enEspera = false;
             this.$rootScope.$on(this.config.eventIndex.login.loggedOut, function (e, a) {
                 _this.verificarSiEstaLogueado();
             });
+            this.establecerFormularioDeLogin();
             this.verificarSiEstaLogueado();
         }
         ToolbarHeaderController.prototype.onInputKeyPress = function ($event) {
@@ -28,18 +30,23 @@ var homeArea;
                 window.alert('Por favor ingrese su contraseña');
                 return;
             }
+            this.establecerFormularioDeLogin(true);
             this.loginService.tryLogin(new login.credencialesDto(this.usuario, this.password), function (value) {
                 if (value.data.loginExitoso) {
                     _this.establecerUsuarioLogueado(value.data.nombreParaMostrar);
                     // clear the inputs
                     _this.usuario = '';
-                    _this.password = '';
                 }
                 else {
                     window.alert("Credenciales inválidas");
-                    _this.password = "";
                 }
-            }, function (reason) { return console.log(reason); });
+                _this.password = '';
+                _this.establecerFormularioDeLogin();
+            }, function (reason) {
+                _this.establecerFormularioDeLogin();
+                window.alert('Hubo un error inesperado al intentar inciar sesión');
+                console.log(reason);
+            });
         };
         ToolbarHeaderController.prototype.verificarSiEstaLogueado = function () {
             var result = this.loginQueryService.tryGetLocalLoginInfo();
@@ -53,6 +60,16 @@ var homeArea;
         ToolbarHeaderController.prototype.establecerUsuarioLogueado = function (nombreParaMostrar) {
             this.nombreParaMostrar = nombreParaMostrar;
             this.estaLogueado = true;
+        };
+        ToolbarHeaderController.prototype.establecerFormularioDeLogin = function (enEspera) {
+            if (enEspera === void 0) { enEspera = false; }
+            this.enEspera = enEspera;
+            if (enEspera) {
+                this.loginBtnLabel = 'Inciando sesión...';
+            }
+            else {
+                this.loginBtnLabel = 'Login';
+            }
         };
         return ToolbarHeaderController;
     }());
