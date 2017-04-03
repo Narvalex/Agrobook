@@ -97,6 +97,7 @@
     <Content Include="app\assets\img\avatar\avatar-set.png" />
     <Content Include="app\assets\img\avatar\Source.txt" />
     <None Include="app\assets\md-toasts.scss" />
+    <Content Include="app\assets\img\home\agro1.jpg" />
     <Content Include="app\assets\md-toasts.css">
       <DependentUpon>md-toasts.scss</DependentUpon>
     </Content>
