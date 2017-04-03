@@ -62,17 +62,20 @@ namespace Agrobook.Infrastructure.Subscription
                 this.subscription = this.resilientConnection.SubscribeToStreamFrom(this.streamName, this.lastCheckpoint.Value, CatchUpSubscriptionSettings.Default,
                        (sub, eventAppeared) =>
                        {
-                           if (!this.shouldStopNow)
+                           lock (this.lockObject)
                            {
-                               var serialized = Encoding.UTF8.GetString(eventAppeared.Event.Data);
-                               var deserialized = this.serializer.Deserialize(serialized);
-                               this.handler.Invoke(eventAppeared.OriginalEventNumber, deserialized);
+                               if (!this.shouldStopNow)
+                               {
+                                   var serialized = Encoding.UTF8.GetString(eventAppeared.Event.Data);
+                                   var deserialized = this.serializer.Deserialize(serialized);
+                                   this.handler.Invoke(eventAppeared.OriginalEventNumber, deserialized);
+                               } 
                            }
                        },
                        sub => { },
                        (sub, reason, ex) =>
                        {
-                           if (reason == SubscriptionDropReason.CatchUpError)
+                           if (reason == SubscriptionDropReason.CatchUpError || reason == SubscriptionDropReason.ConnectionClosed)
                            {
                                this.DoStart();
                                return;
@@ -87,7 +90,8 @@ namespace Agrobook.Infrastructure.Subscription
 
         private void DoStop()
         {
-            this.subscription.Stop(this.stopTimeout);
+            //this.subscription.Stop(this.stopTimeout);
+            this.subscription.Stop();
             this.subscription = null;
         }
     }
