@@ -57,17 +57,17 @@ namespace Agrobook.Domain.Usuarios
         public async Task<LoginResult> HandleAsync(IniciarSesion cmd)
         {
             var usuario = await this.repository.GetAsync<Usuario>(cmd.Usuario);
-            if (usuario is null) return new LoginResult(false, null, null);
+            if (usuario is null) return LoginResult.Failed;
 
             var loginInfo = this.cryptoSerializer.Deserialize<LoginInfo>(usuario.LoginInfoEncriptado);
 
             if (loginInfo.Password == cmd.PasswordCrudo)
                 usuario.Emit(new UsuarioInicioSesion(new Metadatos(cmd.Usuario, this.dateTime.Now)));
             else
-                return new LoginResult(false, null, null);
+                return LoginResult.Failed;
 
             await this.repository.SaveAsync(usuario);
-            return new LoginResult(true, usuario.NombreParaMostrar, usuario.LoginInfoEncriptado);
+            return new LoginResult(true, usuario.NombreParaMostrar, usuario.LoginInfoEncriptado, usuario.AvatarUrl);
         }
 
         public bool TryAuthorize(string token, params string[] claimsRequired)

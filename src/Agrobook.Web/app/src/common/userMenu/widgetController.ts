@@ -21,6 +21,7 @@ module common {
 
         estaLogueado: boolean = false;
         nombreParaMostrar: string;
+        avatarUrl: string;
 
         mostrarMenu($event: any): void {
             let panelConfig: angular.material.IPanelConfig;
@@ -52,6 +53,7 @@ module common {
             if (result !== undefined && result.loginExitoso) {
                 this.estaLogueado = true;
                 this.nombreParaMostrar = result.nombreParaMostrar;
+                this.avatarUrl = result.avatarUrl;
             }
             else {
                 this.estaLogueado = false;

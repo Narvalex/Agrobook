@@ -13,7 +13,8 @@ module login {
         constructor(
             public loginExitoso: boolean,
             public nombreParaMostrar: string,
-            public token: string
+            public token: string,
+            public avatarUrl: string
         )
         { }
     }

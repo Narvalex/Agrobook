@@ -1,13 +1,7 @@
-﻿<span ng-cloak 
-      class="user-menu-user-name" 
-      ng-show="vm.estaLogueado"
-      ng-click="vm.mostrarMenu($event)"
-      style="cursor: pointer">
-    {{vm.nombreParaMostrar}}
-</span>
-<md-button ng-show="vm.estaLogueado"
-           class="md-icon-button"
-           aria-label="more"
-           ng-click="vm.mostrarMenu($event)">
-    <ng-md-icon icon="expand_more"></ng-md-icon>
-</md-button>
+﻿<md-list-item style="cursor: pointer" ng-click="vm.mostrarMenu($event)" ng-show="vm.estaLogueado">
+    <img ng-src="{{vm.avatarUrl}}" alt="Imagen de perfil" style="height:40px"/>
+    <p ng-cloak
+       class="user-menu-user-name">
+        &nbsp;{{vm.nombreParaMostrar}}<ng-md-icon icon="expand_more"></ng-md-icon>
+    </p>
+</md-list-item>

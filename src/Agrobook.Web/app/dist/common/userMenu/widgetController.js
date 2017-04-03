@@ -44,6 +44,7 @@ var common;
             if (result !== undefined && result.loginExitoso) {
                 this.estaLogueado = true;
                 this.nombreParaMostrar = result.nombreParaMostrar;
+                this.avatarUrl = result.avatarUrl;
             }
             else {
                 this.estaLogueado = false;
