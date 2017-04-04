@@ -11,16 +11,16 @@ namespace Agrobook.Infrastructure.Subscription
         private readonly IJsonSerializer serializer;
         private readonly string streamName;
         private readonly Action<long, object> handler;
-        private readonly TimeSpan stopTimeout;
 
-        private Lazy<long?> lastCheckpoint;
+        private Lazy<long?> lazyLastCheckpoint;
         private EventStoreCatchUpSubscription subscription;
 
         private bool shouldStopNow = false;
+        private long? lastCheckpoint;
 
         private readonly object lockObject = new object();
 
-        public EventStreamSubscription(IEventStoreConnection resilientConnection, IJsonSerializer serializer, string streamName, Lazy<long?> lastCheckpoint, Action<long, object> handler, TimeSpan stopTimeout)
+        public EventStreamSubscription(IEventStoreConnection resilientConnection, IJsonSerializer serializer, string streamName, Lazy<long?> lazyLastCheckpoint, Action<long, object> handler)
         {
             Ensure.NotNull(resilientConnection, nameof(resilientConnection));
             Ensure.NotNullOrWhiteSpace(streamName, nameof(streamName));
@@ -30,14 +30,18 @@ namespace Agrobook.Infrastructure.Subscription
             this.resilientConnection = resilientConnection;
             this.streamName = streamName;
             this.handler = handler;
-            this.lastCheckpoint = lastCheckpoint;
-            this.stopTimeout = stopTimeout;
+            this.lazyLastCheckpoint = lazyLastCheckpoint;
             this.serializer = serializer;
         }
 
         public void Start()
         {
-            this.shouldStopNow = false;
+            lock (this.lockObject)
+            {
+                this.shouldStopNow = false;
+                if (this.lastCheckpoint == null)
+                    this.lastCheckpoint = this.lazyLastCheckpoint.Value;
+            }
             this.DoStart();
         }
 
@@ -59,7 +63,7 @@ namespace Agrobook.Infrastructure.Subscription
                     this.DoStop();
 
 
-                this.subscription = this.resilientConnection.SubscribeToStreamFrom(this.streamName, this.lastCheckpoint.Value, CatchUpSubscriptionSettings.Default,
+                this.subscription = this.resilientConnection.SubscribeToStreamFrom(this.streamName, this.lastCheckpoint, CatchUpSubscriptionSettings.Default,
                        (sub, eventAppeared) =>
                        {
                            lock (this.lockObject)
@@ -69,6 +73,7 @@ namespace Agrobook.Infrastructure.Subscription
                                    var serialized = Encoding.UTF8.GetString(eventAppeared.Event.Data);
                                    var deserialized = this.serializer.Deserialize(serialized);
                                    this.handler.Invoke(eventAppeared.OriginalEventNumber, deserialized);
+                                   this.lastCheckpoint = eventAppeared.OriginalEventNumber;
                                } 
                            }
                        },
@@ -90,7 +95,6 @@ namespace Agrobook.Infrastructure.Subscription
 
         private void DoStop()
         {
-            //this.subscription.Stop(this.stopTimeout);
             this.subscription.Stop();
             this.subscription = null;
         }

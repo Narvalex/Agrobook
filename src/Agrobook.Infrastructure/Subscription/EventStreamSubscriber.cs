@@ -8,19 +8,13 @@ namespace Agrobook.Infrastructure.Subscription
     {
         private readonly IEventStoreConnection resilientConnection;
         private readonly IJsonSerializer serializer;
-        private readonly TimeSpan closeTimeout;
 
         public EventStreamSubscriber(IEventStoreConnection resilientConnection, IJsonSerializer serializer)
-            : this(resilientConnection, serializer, TimeSpan.FromMinutes(1))
-        { }
-
-        public EventStreamSubscriber(IEventStoreConnection resilientConnection, IJsonSerializer serializer, TimeSpan closeTimeout)
         {
             Ensure.NotNull(resilientConnection, nameof(resilientConnection));
             Ensure.NotNull(serializer, nameof(serializer));
 
             this.resilientConnection = resilientConnection;
-            this.closeTimeout = closeTimeout;
             this.serializer = serializer;
         }
 
@@ -31,8 +25,7 @@ namespace Agrobook.Infrastructure.Subscription
                 this.serializer,
                 streamName,
                 lastCheckpoint,
-                handler,
-                this.closeTimeout);
+                handler);
         }
 
         public IEventStreamSubscription CreateSubscriptionFromCategory(string category, Lazy<long?> lastCheckpoint, Action<long, object> handler)
