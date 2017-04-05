@@ -5,6 +5,7 @@ var usuariosArea;
         .value('config', new common.config())
         .service('localStorageLite', common.localStorageLite)
         .service('toasterLite', common.toasterLite)
+        .service('httpLite', common.httpLite)
         .service('usuariosService', usuariosArea.usuariosService)
         .service('loginService', login.loginService)
         .service('loginQueryService', login.loginQueryService)

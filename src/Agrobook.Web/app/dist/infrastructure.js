@@ -78,5 +78,25 @@ var common;
     }());
     toasterLite.$inject = ['$mdToast'];
     common.toasterLite = toasterLite;
+    var httpLite = (function () {
+        function httpLite($http) {
+            this.$http = $http;
+            this.prefix = '';
+        }
+        httpLite.prototype.get = function (url, successCallback, errorCallback) {
+            return this.$http.get(this.buildUrl(url))
+                .then(successCallback, errorCallback);
+        };
+        httpLite.prototype.post = function (url, dto, successCallback, erroCallback) {
+            this.$http.post(this.buildUrl(url), dto)
+                .then(successCallback, erroCallback);
+        };
+        httpLite.prototype.buildUrl = function (url) {
+            return this.prefix + '/' + url;
+        };
+        return httpLite;
+    }());
+    httpLite.$inject = ['$http'];
+    common.httpLite = httpLite;
 })(common || (common = {}));
 //# sourceMappingURL=infrastructure.js.map

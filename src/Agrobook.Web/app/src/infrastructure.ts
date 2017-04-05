@@ -70,4 +70,39 @@ module common {
 
         get delayForever(): number { return 3600000; }; // an hour! :O
     }
+
+    export class httpLite {
+
+        static $inject = ['$http'];
+
+        constructor(
+            private $http: angular.IHttpService
+        ) {
+        }
+
+        public prefix: string = '';
+
+        get<TResult>(
+            url: string,
+            successCallback: (value: ng.IHttpPromiseCallbackArg<TResult>) => any,
+            errorCallback?: (reason: any) => any
+        ) {
+            return this.$http.get(this.buildUrl(url))
+                .then<TResult>(successCallback, errorCallback);
+        }
+
+        post<TResult>(
+            url: string,
+            dto,
+            successCallback: (value: ng.IHttpPromiseCallbackArg<TResult>) => any,
+            erroCallback?: (reason: any) => any
+        ) {
+            this.$http.post<TResult>(this.buildUrl(url), dto)
+                .then<TResult>(successCallback, erroCallback);
+        }
+
+        private buildUrl(url: string) : string {
+            return this.prefix + '/' + url;
+        }
+    }
 }

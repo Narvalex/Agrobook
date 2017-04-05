@@ -5,6 +5,7 @@ module usuariosArea {
         .value('config', new common.config())
         .service('localStorageLite', common.localStorageLite)
         .service('toasterLite', common.toasterLite)
+        .service('httpLite', common.httpLite)
         .service('usuariosService', usuariosService)
         .service('loginService', login.loginService)
         .service('loginQueryService', login.loginQueryService)

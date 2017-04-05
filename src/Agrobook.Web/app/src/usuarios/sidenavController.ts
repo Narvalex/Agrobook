@@ -8,11 +8,20 @@ module usuariosArea {
             private $mdSidenav: angular.material.ISidenavService,
             private $mdDialog: angular.material.IDialogService,
             private $mdMedia: angular.material.IMedia,
-            private toasterLite: common.toasterLite)
-        { }
+            private toasterLite: common.toasterLite
+        ) {
+            this.cargarListaDeUsuarios();
+        }
+
+        usuarios: usuarioEnLista[] = [];
+        usuarioSeleccionado: usuarioEnLista = null;
 
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
+        }
+
+        seleccionarUsuario(usuario: usuarioEnLista) {
+            this.usuarioSeleccionado = usuario;
         }
 
         crearNuevoUsuario($event): void {
@@ -31,6 +40,15 @@ module usuariosArea {
             }, () => {
                 this.toasterLite.info('Creación de nuevo usuario cancelada');
             });
-        }       
+        }
+
+        private cargarListaDeUsuarios() {
+            this.usuarios = [
+                new usuarioEnLista('Pepito', './assets/img/avatar/1.png'),
+                new usuarioEnLista('Fulanito', './assets/img/avatar/2.png'),
+                new usuarioEnLista('Menganito', './assets/img/avatar/3.png'),
+                new usuarioEnLista('Sultanito', './assets/img/avatar/3.png')
+            ];
+        }
     }
 }

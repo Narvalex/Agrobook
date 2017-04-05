@@ -2,19 +2,16 @@
 var usuariosArea;
 (function (usuariosArea) {
     var usuariosService = (function () {
-        function usuariosService($http) {
-            this.$http = $http;
-            this.prefix = 'usuarios/';
+        function usuariosService(httpLite) {
+            this.httpLite = httpLite;
+            this.httpLite.prefix = 'usuarios';
         }
-        usuariosService.prototype.post = function (url, dto) {
-            return this.$http.post(this.prefix + url, dto);
-        };
-        usuariosService.prototype.crearNuevoUsuario = function (usuario, s, e) {
-            this.post('crear-nuevo-usuario', usuario).then(function (value) { s(value); }, function (reason) { e(reason); });
+        usuariosService.prototype.crearNuevoUsuario = function (usuario, onSuccess, onError) {
+            this.httpLite.post('crear-nuevo-usuario', usuario, onSuccess, onError);
         };
         return usuariosService;
     }());
-    usuariosService.$inject = ['$http'];
+    usuariosService.$inject = ['httpLite'];
     usuariosArea.usuariosService = usuariosService;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=usuariosService.js.map

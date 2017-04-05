@@ -2,26 +2,20 @@
 
 module usuariosArea {
     export class usuariosService {
-        private prefix = 'usuarios/';
-
-        static $inject = ['$http'];
+        static $inject = ['httpLite'];
 
         constructor(
-            private $http: angular.IHttpService)
-        { }
-
-        private post<TResult>(url: string, dto: any): ng.IHttpPromise<TResult> {
-            return this.$http.post(this.prefix + url, dto);
+            private httpLite: common.httpLite
+        ) {
+            this.httpLite.prefix = 'usuarios';
         }
 
         crearNuevoUsuario(
             usuario: UsuarioDto,
-            s: (value: ng.IHttpPromiseCallbackArg<{}>) => void,
-            e: (reason: any) => void): void {
-            this.post<{}>('crear-nuevo-usuario', usuario).then(
-                value => { s(value); },
-                reason => { e(reason); }
-            );
+            onSuccess: (value: ng.IHttpPromiseCallbackArg<{}>) => void,
+            onError: (reason: any) => void
+        ) {
+            this.httpLite.post('crear-nuevo-usuario', usuario, onSuccess, onError);
         }
     }
 }

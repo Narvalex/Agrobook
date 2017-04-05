@@ -13,6 +13,27 @@
             </md-button>
         </div>
     </md-toolbar>
+    <div layout-padding>
+        <md-autocomplete md-search-text="vm.searchText"
+                         md-items="item in vm.usuarios | filter: vm.searchText"
+                         md-item-text="item.nombre"
+                         md-min-length="100"
+                         placeholder="Buscar">
+            <md-not-found>
+                Ninguno coincide con "{{vm.searchText}}".
+            </md-not-found>
+        </md-autocomplete>
+    </div>
+    <md-content class="scrollable-nav-content">
+        <md-list>
+            <md-list-item ng-repeat="usuario in vm.usuarios | filter:vm.searchText | orderBy:'nombre'"
+                          ng-click="vm.seleccionarUsuario(usuario)"
+                          ng-class="{'seleccionado': usuario === vm.usuarioSeleccionado }">
+                    <img ng-src="{{usuario.avatarUrl}}" alt="Imagen de perfil" style="height:40px" />
+                    &nbsp;{{usuario.nombre}}
+            </md-list-item>
+        </md-list>
+    </md-content>
     <md-button class="md-fab md-fab-bottom-right" ng-click="vm.crearNuevoUsuario($event)" aria-label="Crear nuevo usuario">
         <ng-md-icon icon="add"></ng-md-icon>
     </md-button>

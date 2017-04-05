@@ -10,4 +10,12 @@ module usuariosArea {
             public claims: string[]
         ) { }
     }
+
+    export class usuarioEnLista {
+        constructor(
+            public nombre: string,
+            public avatarUrl: string
+        ) {
+        }
+    }
 }

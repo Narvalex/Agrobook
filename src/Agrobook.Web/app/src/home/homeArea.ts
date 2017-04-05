@@ -4,6 +4,7 @@ module homeArea {
     angular.module("app", ['ngMaterial', 'ngMdIcons'])
         .value('config', new common.config())
         .service('localStorageLite', common.localStorageLite)
+        .service('httpLite', common.httpLite)
         .service('loginService', login.loginService)
         .service('loginQueryService', login.loginQueryService)
         .controller('toolbar-headerController', ToolbarHeaderController)
