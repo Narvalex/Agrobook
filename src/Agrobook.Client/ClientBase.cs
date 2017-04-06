@@ -4,12 +4,13 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Client
 {
-    public abstract class ClientBase<T> where T : ClientBase<T>
+    public abstract class ClientBase
     {
+        private readonly string prefix;
         private readonly HttpLite http;
         private Func<string> tokenProvider;
 
-        public ClientBase(HttpLite http, Func<string> tokenProvider)
+        public ClientBase(HttpLite http, Func<string> tokenProvider, string prefix = "")
         {
             Ensure.NotNull(http, nameof(http));
             if (tokenProvider == null)
@@ -18,22 +19,33 @@ namespace Agrobook.Client
                 this.tokenProvider = () => null;
 
             this.http = http;
+            this.prefix = prefix + "/";
         }
 
         protected async Task<TResult> Post<TResult>(string uri, string jsonContent)
         {
-            return await this.http.Post<TResult>(uri, jsonContent, this.tokenProvider.Invoke());
+            return await this.http.Post<TResult>(this.BuildUri(uri), jsonContent, this.tokenProvider.Invoke());
         }
 
         protected async Task Post<TContent>(string uri, TContent content)
         {
-            await this.http.Post<TContent>(uri, content, this.tokenProvider());
+            await this.http.Post<TContent>(this.BuildUri(uri), content, this.tokenProvider());
         }
 
-        public T SetupTokenProvider(Func<string> tokenProvider)
+        protected async Task<TResult> Get<TResult>(string uri)
+        {
+            var result = await this.http.Get<TResult>(this.BuildUri(uri), this.tokenProvider());
+            return result;
+        }
+
+        public void SetupTokenProvider(Func<string> tokenProvider)
         {
             this.tokenProvider = tokenProvider;
-            return (T)this;
+        }
+
+        private string BuildUri(string uri)
+        {
+            return this.prefix + uri;
         }
     }
 }

@@ -68,6 +68,26 @@ var common;
             };
             this.$mdToast.show(options);
         };
+        toasterLite.prototype.error = function (message, delay, closeButton) {
+            if (delay === void 0) { delay = this.defaultDelay; }
+            if (closeButton === void 0) { closeButton = true; }
+            var self = this;
+            var options = {
+                hideDelay: delay,
+                position: this.defaultPosition,
+                controllerAs: 'vm',
+                templateUrl: './dist/common/toasts/toast-cerrable.html',
+                toastClass: 'error',
+                controller: (function () {
+                    function class_3() {
+                        this.message = message;
+                        this.close = function () { self.$mdToast.hide(); };
+                    }
+                    return class_3;
+                }())
+            };
+            this.$mdToast.show(options);
+        };
         Object.defineProperty(toasterLite.prototype, "delayForever", {
             get: function () { return 3600000; },
             enumerable: true,

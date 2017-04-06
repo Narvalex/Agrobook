@@ -48,9 +48,12 @@ namespace Agrobook.Server
 
             var usuariosDenormalizer = new UsuariosDenormalizer(eventStreamSubscriber, () => new UsuariosDbContext(false, sqlDbName));
 
+            var usuariosQueryService = new UsuariosQueryService(() => new UsuariosDbContext(true, sqlDbName));
+
             container.Register<IDateTimeProvider>(dateTimeProvider);
             container.Register<EventStoreManager>(es);
             container.Register<UsuariosService>(usuariosService);
+            container.Register<UsuariosQueryService>(usuariosQueryService);
             container.Register<SqlDbInitializer<UsuariosDbContext>>(sqlInitializer);
             container.Register<UsuariosDenormalizer>(usuariosDenormalizer);
         }

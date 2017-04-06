@@ -7,6 +7,7 @@ module usuariosArea {
         .service('toasterLite', common.toasterLite)
         .service('httpLite', common.httpLite)
         .service('usuariosService', usuariosService)
+        .service('usuariosQueryService', usuariosQueryService)
         .service('loginService', login.loginService)
         .service('loginQueryService', login.loginQueryService)
         .controller('sidenavController', sidenavController)

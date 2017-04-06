@@ -26,11 +26,12 @@
     </div>
     <md-content class="scrollable-nav-content">
         <md-list>
-            <md-list-item ng-repeat="usuario in vm.usuarios | filter:vm.searchText | orderBy:'nombre'"
+            <!--Optional filter  | orderBy:'nombre'" -->
+            <md-list-item ng-repeat="usuario in vm.usuarios | filter:vm.searchText"
                           ng-click="vm.seleccionarUsuario(usuario)"
                           ng-class="{'seleccionado': usuario === vm.usuarioSeleccionado }">
                     <img ng-src="{{usuario.avatarUrl}}" alt="Imagen de perfil" style="height:40px" />
-                    &nbsp;{{usuario.nombre}}
+                    &nbsp;{{usuario.nombreCompleto}}
             </md-list-item>
         </md-list>
     </md-content>

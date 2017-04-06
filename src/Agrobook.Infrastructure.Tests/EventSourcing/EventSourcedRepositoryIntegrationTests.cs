@@ -20,8 +20,7 @@ namespace Agrobook.Infrastructure.Tests.EventSourcing
         public void Init()
         {
             this.esManager = new EventStoreManager();
-            this.TearDown(); // Cleans trash if remained...
-            this.esManager.InitializeDb();
+            this.esManager.DropAndCreateDb();
             Thread.Sleep(TimeSpan.FromSeconds(4)); // Warmingup the Db
 
             this.snapshotter = new TestableRealTimeSnapshotter();

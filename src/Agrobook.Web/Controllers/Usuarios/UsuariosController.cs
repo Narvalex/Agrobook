@@ -1,4 +1,5 @@
-﻿using Agrobook.Client.Usuarios;
+﻿using Agrobook.Client;
+using Agrobook.Client.Usuarios;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -11,8 +12,9 @@ namespace Agrobook.Web.Controllers.Usuarios
 
         public UsuariosController()
         {
-            this.client = ServiceLocator.ResolveNewOf<UsuariosClient>()
-                                        .SetupTokenProvider(this.GetToken);
+            this.client = ServiceLocator
+                            .ResolveNewOf<UsuariosClient>()
+                            .WithTokenProvider(this.GetToken);
         }
 
         [HttpPost]

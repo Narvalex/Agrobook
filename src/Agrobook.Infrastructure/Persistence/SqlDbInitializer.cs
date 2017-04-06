@@ -19,7 +19,7 @@ namespace Agrobook.Infrastructure.Persistence
 
         public void CreateDatabaseIfNoExists()
         {
-            this.log.Info("Checking the sql databse...");
+            this.log.Info("Checking the sql databse. If not exists a new one will be created.");
             using (var context = this.dbContextFactory.Invoke())
             {
                 if (!context.Database.Exists())
@@ -30,6 +30,23 @@ namespace Agrobook.Infrastructure.Persistence
                 }
                 else
                     this.log.Info("Sql database is ready");
+            }
+        }
+
+        public void DropAndCreateDb()
+        {
+            this.log.Info("Checking the sql database. If exists it will be deleted and a new one will be created");
+            using (var context = this.dbContextFactory.Invoke())
+            {
+                if (context.Database.Exists())
+                {
+                    this.log.Info("The sql database was found. Deleting the current db...");
+                    context.Database.Delete();
+                    this.log.Info("The sql database was successfully deleted. Creating a new one...");
+                }
+
+                context.Database.Create();
+                this.log.Info("Database created successfully");
             }
         }
     }

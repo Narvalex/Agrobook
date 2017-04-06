@@ -4,9 +4,10 @@ var usuariosArea;
     var usuariosQueryService = (function () {
         function usuariosQueryService(httpLite) {
             this.httpLite = httpLite;
-            this.prefix = 'usuarios/query';
+            this.httpLite.prefix = 'usuarios/query';
         }
         usuariosQueryService.prototype.obtenerListaDeTodosLosUsuarios = function (onSuccess, onError) {
+            this.httpLite.get('todos', onSuccess, onError);
         };
         return usuariosQueryService;
     }());

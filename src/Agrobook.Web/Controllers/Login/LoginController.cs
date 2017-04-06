@@ -1,4 +1,5 @@
-﻿using Agrobook.Client.Login;
+﻿using Agrobook.Client;
+using Agrobook.Client.Login;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -13,7 +14,7 @@ namespace Agrobook.Web.Controllers.Login
         {
             this.client = ServiceLocator
                             .ResolveNewOf<LoginClient>()
-                            .SetupTokenProvider(this.GetToken);
+                            .WithTokenProvider(this.GetToken);
         }
 
         [HttpPost]

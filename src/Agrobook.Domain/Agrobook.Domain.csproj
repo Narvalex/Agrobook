@@ -30,6 +30,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DropDb|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug_RecreateDb\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -60,6 +69,8 @@
     <Compile Include="Usuarios\Login\ClaimInfo.cs" />
     <Compile Include="Usuarios\Services\UsuariosDbContext.cs" />
     <Compile Include="Usuarios\Services\UsuariosDenormalizer.cs" />
+    <Compile Include="Usuarios\Services\UsuariosQueryService.cs" />
+    <Compile Include="Usuarios\Services\UsuariosQueryServiceDTOs.cs" />
     <Compile Include="Usuarios\Services\UsuariosService.cs" />
     <Compile Include="Usuarios\UsuariosCommands.cs" />
     <Compile Include="Usuarios\UsuariosEvents.cs" />

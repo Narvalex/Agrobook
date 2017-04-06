@@ -68,6 +68,22 @@ module common {
             this.$mdToast.show(options);
         }
 
+        error(message: string, delay: number = this.defaultDelay, closeButton: boolean = true) {
+            var self = this;
+            let options: angular.material.IToastOptions = {
+                hideDelay: delay,
+                position: this.defaultPosition,
+                controllerAs: 'vm',
+                templateUrl: './dist/common/toasts/toast-cerrable.html',
+                toastClass: 'error',
+                controller: class {
+                    message: string = message;
+                    close = () => { self.$mdToast.hide(); }
+                }
+            };
+            this.$mdToast.show(options);
+        }
+
         get delayForever(): number { return 3600000; }; // an hour! :O
     }
 

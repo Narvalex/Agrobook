@@ -1,4 +1,5 @@
 ﻿using Agrobook.Core;
+using Agrobook.Infrastructure.Log;
 using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
 using System;
@@ -12,6 +13,8 @@ namespace Agrobook.Infrastructure.Persistence
 {
     public class EventStoreManager
     {
+        private ILogLite log = LogManager.GetLoggerFor<EventStoreManager>();
+
         private Process process;
         private readonly string path = @".\EventStore\EventStore.ClusterNode.exe";
         private readonly string args = "--db=./ESData --start-standard-projections=true --run-projections=all";
@@ -55,7 +58,22 @@ namespace Agrobook.Infrastructure.Persistence
             this.failFastConnectionNamePrefix = failFastConnectionNamePrefix;
         }
 
-        public void InitializeDb()
+        public void CreateDbIfNotExists() => this.InitializeDb();
+
+        public void DropAndCreateDb()
+        {
+            var path = @".\ESData";
+            this.log.Info("Checking if EventStore database exits...");
+            if (Directory.Exists(path))
+            {
+                this.log.Info("EventStore database was found. Deleting now...");
+                Directory.Delete(path, true);
+                this.log.Info("EventStore database deleted");
+            }
+            this.InitializeDb();
+        }
+
+        private void InitializeDb()
         {
             this.process = new Process()
             {
@@ -138,7 +156,7 @@ namespace Agrobook.Infrastructure.Persistence
             await this.resilientConnection.ConnectAsync();
         }
 
-        public void TearDown(bool deleteAll = false)
+        public void TearDown(bool dropDb = false)
         {
             if (this.failFastConnectionWasEstablished)
                 this.failFastConnection.Close();
@@ -152,8 +170,11 @@ namespace Agrobook.Infrastructure.Persistence
                 this.process.WaitForExit();
             }
 
-            if (deleteAll)
-                Directory.Delete(@".\ESData", true);
+            var path = @".\ESData";
+            if (dropDb && Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
         }
     }
 }

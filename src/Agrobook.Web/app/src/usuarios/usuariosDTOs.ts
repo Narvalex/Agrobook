@@ -14,6 +14,7 @@ module usuariosArea {
     export class usuarioEnLista {
         constructor(
             public nombre: string,
+            public nombreCompleto: string,
             public avatarUrl: string
         ) {
         }

@@ -46,6 +46,7 @@ namespace Agrobook.Domain.Usuarios.Services
                 {
                     NombreDeUsuario = e.Usuario,
                     NombreCompleto = e.NombreParaMostrar,
+                    AvatarUrl = e.AvatarUrl
                 });
             });
         }

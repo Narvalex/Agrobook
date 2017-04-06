@@ -4,18 +4,15 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Client.Login
 {
-    public class LoginClient : ClientBase<LoginClient>
+    public class LoginClient : ClientBase
     {
-        private readonly string prefix = "login/";
-
         public LoginClient(HttpLite http, Func<string> tokenProvider = null)
-            : base(http, tokenProvider)
+            : base(http, tokenProvider, "login")
         { }
 
         public async Task<LoginResult> TryLoginAsync(string userName, string password)
         {
-            return await base.Post<LoginResult>(
-                this.prefix + "try-login",
+            return await base.Post<LoginResult>("try-login",
                 $"{{ 'username':'{userName}', 'password':'{password}'}}");
         }
     }

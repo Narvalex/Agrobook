@@ -12,7 +12,7 @@ namespace Agrobook.Infrastructure.Tests.EventSourcing
         [TestMethod]
         public void CanStartEventStore()
         {
-            this.sut.InitializeDb();
+            this.sut.DropAndCreateDb();
         }
 
         [TestMethod]

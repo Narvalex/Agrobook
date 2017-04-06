@@ -7,6 +7,7 @@ var usuariosArea;
         .service('toasterLite', common.toasterLite)
         .service('httpLite', common.httpLite)
         .service('usuariosService', usuariosArea.usuariosService)
+        .service('usuariosQueryService', usuariosArea.usuariosQueryService)
         .service('loginService', login.loginService)
         .service('loginQueryService', login.loginQueryService)
         .controller('sidenavController', usuariosArea.sidenavController)

@@ -4,17 +4,15 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Client.Usuarios
 {
-    public class UsuariosClient : ClientBase<UsuariosClient>
+    public class UsuariosClient : ClientBase
     {
-        private readonly string prefix = "usuarios/";
-
         public UsuariosClient(HttpLite http, Func<string> tokenProvider = null)
-            : base(http, tokenProvider) { }
+            : base(http, tokenProvider, "usuarios") { }
 
         public async Task CrearNuevoUsuario(UsuarioDto dto)
         {
             var command = new CrearNuevoUsuario(null, dto.NombreDeUsuario, dto.NombreParaMostrar, dto.AvatarUrl, dto.Password, dto.Claims);
-            await base.Post(this.prefix + "crear-nuevo-usuario", command);
+            await base.Post("crear-nuevo-usuario", command);
         }
     }
 }

@@ -13,8 +13,9 @@ var usuariosArea;
     }());
     usuariosArea.UsuarioDto = UsuarioDto;
     var usuarioEnLista = (function () {
-        function usuarioEnLista(nombre, avatarUrl) {
+        function usuarioEnLista(nombre, nombreCompleto, avatarUrl) {
             this.nombre = nombre;
+            this.nombreCompleto = nombreCompleto;
             this.avatarUrl = avatarUrl;
         }
         return usuarioEnLista;

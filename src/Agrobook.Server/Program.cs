@@ -11,7 +11,7 @@ namespace Agrobook.Server
 {
     class Program
     {
-
+        private static ILogLite _log = LogManager.GlobalLogger;
         #region Extern References
         // Source: http://stackoverflow.com/questions/474679/capture-console-exit-c-sharp
         [DllImport("Kernel32")]
@@ -41,7 +41,7 @@ namespace Agrobook.Server
               });
 
             // Dependency Container
-            LogManager.GlobalLogger.Info("Starting Agrobook Server");
+            _log.Info("Starting Agrobook Server");
             Console.Write("Resolving dependencies...");
             ServiceLocator.Initialize();
             Console.WriteLine("Done");
@@ -49,12 +49,24 @@ namespace Agrobook.Server
             // EventStore
             Console.Write("Initializing EventStore...");
             var es = ServiceLocator.ResolveSingleton<EventStoreManager>();
-            es.InitializeDb();
+#if DROP_DB
+            _log.Info("The database initializer configuration is DROP AND CREATE");
+            es.DropAndCreateDb();
+#endif
+#if !DROP_DB
+            _log.Info("The database initializer configuration is CREATE IF NOT EXISTS");
+            es.CreateDbIfNotExists();
+#endif
             Console.WriteLine("Done");
 
             // SQL
             var sqlInit = ServiceLocator.ResolveSingleton<SqlDbInitializer<UsuariosDbContext>>();
+#if DROP_DB
+            sqlInit.DropAndCreateDb();
+#endif
+#if !DROP_DB
             sqlInit.CreateDatabaseIfNoExists();
+#endif
 
             OnPersistenceEnginesInitialized();
 

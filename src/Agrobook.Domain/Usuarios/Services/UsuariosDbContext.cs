@@ -24,7 +24,7 @@ namespace Agrobook.Domain.Usuarios.Services
     {
         public string NombreDeUsuario { get; set; }
         public string NombreCompleto { get; set; }
-        public string ClaimsCsv { get; set; }
+        public string AvatarUrl { get; set; }
     }
 
     public class UsuariosEntityMap : EntityTypeConfiguration<UsuariosEntity>
@@ -36,7 +36,6 @@ namespace Agrobook.Domain.Usuarios.Services
             this.ToTable("Usuarios");
             this.Property(e => e.NombreDeUsuario).HasColumnName("NombreDeUsuario");
             this.Property(e => e.NombreCompleto).HasColumnName("NombreCompleto");
-            this.Property(e => e.ClaimsCsv).HasColumnName("ClaimsCsv");
         }
     }
 }

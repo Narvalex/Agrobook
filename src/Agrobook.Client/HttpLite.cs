@@ -19,10 +19,25 @@ namespace Agrobook.Client
             this.hostUri = hostUri;
         }
 
+        public async Task<TResult> Get<TResult>(string uri, string token = null)
+        {
+            HttpResponseMessage response;
+            using (var client = this.CreateHttpClient(token))
+            {
+                var endpoint = new Uri(new Uri(this.hostUri), uri);
+                response = await client.GetAsync(endpoint.AbsoluteUri);
+            }
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Error on posting to {uri}. Status Code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
+            var result = await response.Content.ReadAsAsync<TResult>();
+            return result;
+        }
+
         public async Task<TResult> Post<TResult>(string uri, string jsonContent, string token = null)
         {
             HttpResponseMessage response;
-            using (var client = CreateHttpClient(token))
+            using (var client = this.CreateHttpClient(token))
             {
                 var tokenEndpoint = new Uri(new Uri(this.hostUri), uri);
                 var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -54,8 +69,8 @@ namespace Agrobook.Client
             HttpResponseMessage response;
             using (var client = this.CreateHttpClient(token))
             {
-                var tokenEndpoint = new Uri(new Uri(this.hostUri), uri);
-                response = await client.PostAsJsonAsync<TContent>(tokenEndpoint.AbsoluteUri, content);
+                var endpoint = new Uri(new Uri(this.hostUri), uri);
+                response = await client.PostAsJsonAsync<TContent>(endpoint.AbsoluteUri, content);
             }
 
             if (!response.IsSuccessStatusCode)
