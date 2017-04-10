@@ -1,7 +1,7 @@
 ﻿/// <reference path="../_all.ts" />
 
 module usuariosArea {
-    angular.module('usuariosArea', ['ngMaterial', 'ngMdIcons'])
+    angular.module('usuariosArea', ['ngRoute', 'ngMaterial', 'ngMdIcons'])
         .value('config', new common.config())
         .service('localStorageLite', common.localStorageLite)
         .service('toasterLite', common.toasterLite)
@@ -13,10 +13,13 @@ module usuariosArea {
         .controller('sidenavController', sidenavController)
         .controller('toolbarHeaderController', toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
-        .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', (
+        .controller('usuarioController', usuarioController)
+        .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', (
             $mdIconProvider: angular.material.IIconProvider,
             $mdThemingProvider: angular.material.IThemingProvider,
-            $httpProvider: angular.IHttpProvider) => {
+            $httpProvider: angular.IHttpProvider,
+            $routeProvider: angular.route.IRouteProvider
+        ) => {
 
             // most from flat icon dot com
             $mdIconProvider
@@ -28,6 +31,11 @@ module usuariosArea {
                 .primaryPalette('green')
                 .accentPalette('blue');
 
-            common.registerHttpInterceptors($httpProvider); 
+            common.registerHttpInterceptors($httpProvider);
+
+            getRouteConfigs().forEach(config => {
+                $routeProvider.when(config.path, config.route);
+            });
+            $routeProvider.otherwise({ redirectTo: '/' });
         }]);
 }

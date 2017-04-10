@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/1770103b6ef1a658476712c1f127e41dc2c8aca1/angular-route/index.d.ts",
+    "raw": "registry:dt/angular-route#1.3.0+20161206185711",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/1770103b6ef1a658476712c1f127e41dc2c8aca1/angular-route/index.d.ts"
+  }
+}

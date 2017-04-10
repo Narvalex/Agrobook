@@ -2,14 +2,17 @@
 
 module usuariosArea {
     export class sidenavController {
-        static $inject = ['$mdSidenav', '$mdDialog', '$mdMedia', 'toasterLite', 'usuariosQueryService'];
+        static $inject = ['$mdSidenav', '$mdDialog', '$mdMedia', 'toasterLite', 'usuariosQueryService', '$rootScope',
+        'config'];
 
         constructor(
             private $mdSidenav: angular.material.ISidenavService,
             private $mdDialog: angular.material.IDialogService,
             private $mdMedia: angular.material.IMedia,
             private toasterLite: common.toasterLite,
-            private usuariosQueryService: usuariosQueryService
+            private usuariosQueryService: usuariosQueryService,
+            private $rootScope: ng.IRootScopeService,
+            private config: common.config
         ) {
             this.cargarListaDeUsuarios();
         }
@@ -23,6 +26,9 @@ module usuariosArea {
 
         seleccionarUsuario(usuario: usuarioEnLista) {
             this.usuarioSeleccionado = usuario;
+            this.$rootScope.$broadcast(this.config.eventIndex.usuarios.usuarioSeleccionado, {});
+            window.location.href = '#!/usuario/' + usuario.nombre;
+            this.toggleSideNav();
         }
 
         crearNuevoUsuario($event): void {

@@ -2,4 +2,4 @@
 /// <reference path="globals/googlemaps/index.d.ts" />
 /// <reference path="globals/jquery/index.d.ts" />
 /// <reference path="modules/angular-material/index.d.ts" />
-/// <reference path="globals/googlemaps/index.d.ts" />
+/// <reference path="modules/angular-route/index.d.ts" />

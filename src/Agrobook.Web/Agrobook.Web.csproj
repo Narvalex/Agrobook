@@ -111,6 +111,7 @@
     <Content Include="app\assets\svg\menu.svg" />
     <Content Include="app\assets\svg\phone.svg" />
     <Content Include="app\assets\svg\twitter.svg" />
+    <Content Include="app\assets\view.css" />
     <Content Include="app\bower_components\angular-animate\angular-animate.js" />
     <Content Include="app\bower_components\angular-animate\angular-animate.min.js" />
     <Content Include="app\bower_components\angular-animate\index.js" />
@@ -597,6 +598,9 @@
     <Content Include="app\bower_components\angular-messages\angular-messages.js" />
     <Content Include="app\bower_components\angular-messages\angular-messages.min.js" />
     <Content Include="app\bower_components\angular-messages\index.js" />
+    <Content Include="app\bower_components\angular-route\angular-route.js" />
+    <Content Include="app\bower_components\angular-route\angular-route.min.js" />
+    <Content Include="app\bower_components\angular-route\index.js" />
     <Content Include="app\bower_components\angular\angular-csp.css" />
     <Content Include="app\bower_components\angular\angular.js" />
     <Content Include="app\bower_components\angular\angular.min.js" />
@@ -722,6 +726,8 @@
     <Content Include="app\dist\usuarios\sidenav.html" />
     <Content Include="app\dist\usuarios\style.css" />
     <Content Include="app\dist\usuarios\toolbar-header.html" />
+    <Content Include="app\dist\usuarios\views\no-user.html" />
+    <Content Include="app\dist\usuarios\views\usuario.html" />
     <Content Include="app\home.html" />
     <Content Include="app\maps.html" />
     <Content Include="app\usuarios.html" />
@@ -829,6 +835,7 @@
     <TypeScriptCompile Include="app\src\login\loginDTOs.ts" />
     <TypeScriptCompile Include="app\src\login\loginQueryService.ts" />
     <TypeScriptCompile Include="app\src\login\loginService.ts" />
+    <TypeScriptCompile Include="app\src\usuarios\routes.ts" />
     <TypeScriptCompile Include="app\src\usuarios\usuariosQueryService.ts" />
     <TypeScriptCompile Include="app\src\usuarios\usuariosService.ts" />
     <Content Include="app\bower_components\jquery\.bower.json" />
@@ -844,16 +851,25 @@
     <Content Include="app\bower_components\toastr\toastr.js.map" />
     <Content Include="app\bower_components\toastr\toastr.less" />
     <Content Include="app\bower_components\toastr\toastr.scss" />
+    <Content Include="app\bower_components\angular-route\.bower.json" />
+    <Content Include="app\bower_components\angular-route\angular-route.min.js.map" />
+    <Content Include="app\bower_components\angular-route\bower.json" />
+    <Content Include="app\bower_components\angular-route\LICENSE.md" />
+    <Content Include="app\bower_components\angular-route\package.json" />
+    <Content Include="app\bower_components\angular-route\README.md" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
+    <Content Include="typings\modules\angular-route\typings.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <TypeScriptCompile Include="app\src\usuarios\views\usuarioController.ts" />
+    <TypeScriptCompile Include="typings\modules\angular-route\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config">

@@ -1,7 +1,7 @@
 /// <reference path="../_all.ts" />
 var usuariosArea;
 (function (usuariosArea) {
-    angular.module('usuariosArea', ['ngMaterial', 'ngMdIcons'])
+    angular.module('usuariosArea', ['ngRoute', 'ngMaterial', 'ngMdIcons'])
         .value('config', new common.config())
         .service('localStorageLite', common.localStorageLite)
         .service('toasterLite', common.toasterLite)
@@ -13,7 +13,8 @@ var usuariosArea;
         .controller('sidenavController', usuariosArea.sidenavController)
         .controller('toolbarHeaderController', usuariosArea.toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
-        .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', function ($mdIconProvider, $mdThemingProvider, $httpProvider) {
+        .controller('usuarioController', usuariosArea.usuarioController)
+        .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $routeProvider) {
             // most from flat icon dot com
             $mdIconProvider
                 .defaultIconSet('./assets/svg/avatars.svg', 128)
@@ -23,6 +24,10 @@ var usuariosArea;
                 .primaryPalette('green')
                 .accentPalette('blue');
             common.registerHttpInterceptors($httpProvider);
+            usuariosArea.getRouteConfigs().forEach(function (config) {
+                $routeProvider.when(config.path, config.route);
+            });
+            $routeProvider.otherwise({ redirectTo: '/' });
         }]);
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=usuariosArea.js.map

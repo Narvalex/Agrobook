@@ -29,6 +29,9 @@ var common;
                 login: {
                     loggedIn: 'loggedIn',
                     loggedOut: 'loggedOut'
+                },
+                usuarios: {
+                    usuarioSeleccionado: 'usuarioSeleccionado'
                 }
             };
         }

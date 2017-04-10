@@ -15,6 +15,7 @@
     <!-- Custom -->
     <link href="./assets/dialogs.css" rel="stylesheet" />
     <link href="./assets/menu-panel.css" rel="stylesheet" />
+    <link href="./assets/view.css" rel="stylesheet" />
     <link href="./assets/md-toasts.css" rel="stylesheet" />
     <link href="./dist/usuarios/style.css" rel="stylesheet" />
 
@@ -37,13 +38,15 @@
         <div ng-include="'./dist/usuarios/main-content.html'"></div>
     </div>
 
-    <script src="./bower_components/angular/angular.min.js"></script>
+    <script src="./bower_components/angular/angular.js"></script>
+    <script src="./bower_components/angular-route/angular-route.min.js"></script>
     <script src="./bower_components/angular-animate/angular-animate.min.js"></script>
     <script src="./bower_components/angular-aria/angular-aria.min.js"></script>
     <script src="./bower_components/angular-material/angular-material.min.js"></script>
     <script src="./bower_components/angular-material-icons/angular-material-icons.min.js"></script>
     <!-- functions -->
     <script src="./dist/common/httpInterceptorRegistry.js"></script>
+    <script src="./dist/usuarios/routes.js"></script>
     <!-- values -->
     <script src="./dist/config.js"></script>
     <!--Models-->
@@ -59,6 +62,7 @@
     <script src="./dist/usuarios/dialogs/nuevoUsuarioDialogController.js"></script>
     <script src="./dist/usuarios/sidenavController.js"></script>
     <script src="./dist/usuarios/toolbarHeaderController.js"></script>
+    <script src="./dist/usuarios/views/usuarioController.js"></script>
     <!--Boot-->
     <script src="./dist/usuarios/usuariosArea.js"></script>
 </body>
