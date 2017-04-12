@@ -82,6 +82,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\archivos.html" />
     <Content Include="app\assets\dialogs.css" />
     <Content Include="app\assets\google-font-roboto.css" />
     <Content Include="app\assets\home.css" />
