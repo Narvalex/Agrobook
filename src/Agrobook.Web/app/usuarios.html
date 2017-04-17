@@ -31,14 +31,14 @@
     <div ng-show="false">
         <h1>Cargando...</h1>
     </div>
-    <div ng-cloak ng-include="'./dist/usuarios/sidenav.html'" layout="vertical" ng-controller="sidenavController as vm"></div>
+    <div ng-include="'./dist/usuarios/sidenav.html'" layout="vertical" ng-controller="sidenavController as vm"></div>
 
-    <div ng-cloak layout="column" flex>
+    <div layout="column" flex>
         <div ng-include="'./dist/usuarios/toolbar-header.html'"></div>
         <div ng-include="'./dist/usuarios/main-content.html'"></div>
     </div>
 
-    <script src="./bower_components/angular/angular.js"></script>
+    <script src="./bower_components/angular/angular.min.js"></script>
     <script src="./bower_components/angular-route/angular-route.min.js"></script>
     <script src="./bower_components/angular-animate/angular-animate.min.js"></script>
     <script src="./bower_components/angular-aria/angular-aria.min.js"></script>

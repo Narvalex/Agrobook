@@ -60,6 +60,7 @@ var common;
             this.loginService = loginService;
             this.menuItemList = [
                 new menuItem('Inicio', 'home.html'),
+                new menuItem('Archivos', 'archivos.html'),
                 new menuItem('Usuarios', 'usuarios.html'),
                 new menuItem('Siscole', 'http://ti.fecoprod.com.py/siscole')
             ];
