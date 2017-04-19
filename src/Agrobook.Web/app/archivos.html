@@ -14,6 +14,7 @@
     <!-- Custom -->    
     <link href="./assets/view.css" rel="stylesheet" />
     <link href="./assets/md-toasts.css" rel="stylesheet" />
+    <link href="./dist/common/userMenu/user-menu-widget.css" rel="stylesheet" />
 
     <style type="text/css">
         [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -27,7 +28,7 @@
     <div ng-show="false">
         <h1>Cargando...</h1>
     </div>
-    <div ng-include="'./dist/archivos/sidenav.html'" layout="vertival" ng-controller="sidenavController as vm"></div>
+    <div ng-include="'./dist/archivos/sidenav.html'" layout="vertical" ng-controller="sidenavController as vm"></div>
 
     <div layout="column" flex>
         <div ng-include="'./dist/archivos/toolbar-header.html'"></div>
@@ -46,9 +47,13 @@
     <script src="./dist/config.js"></script>
     <!-- services -->
     <script src="./dist/infrastructure.js"></script>
+    <script src="./dist/login/loginService.js"></script>
+    <script src="./dist/login/loginQueryService.js"></script>
     <!-- controllers -->
     <script src="./dist/common/userMenu/widgetController.js"></script>
     <script src="./dist/archivos/sidenavController.js"></script>
+    <script src="./dist/archivos/toolbarHeaderController.js"></script>
+    <script src="./dist/archivos/mainContentController.js"></script>
     <!-- boot -->
     <script src="./dist/archivos/archivosArea.js"></script>
 </body>

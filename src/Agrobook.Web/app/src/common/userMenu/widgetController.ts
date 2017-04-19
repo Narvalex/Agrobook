@@ -29,7 +29,7 @@ module common {
                 .newPanelPosition()
                 .relativeTo($event.target)
                 .addPanelPosition(this.$mdPanel.xPosition.ALIGN_START, this.$mdPanel.yPosition.BELOW)
-                .withOffsetX('-75px');
+                .withOffsetX('-1px');
 
             panelConfig = {
                 position: position,
@@ -90,8 +90,7 @@ module common {
         menuItemList: menuItem[] = [
             new menuItem('Inicio', 'home.html'),
             new menuItem('Archivos', 'archivos.html'),
-            new menuItem('Usuarios', 'usuarios.html'),
-            new menuItem('Siscole', 'http://ti.fecoprod.com.py/siscole')
+            new menuItem('Usuarios', 'usuarios.html')
         ]
     }
 

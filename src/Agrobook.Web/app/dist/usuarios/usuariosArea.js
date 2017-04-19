@@ -8,7 +8,7 @@ var usuariosArea;
         .service('httpLite', common.httpLite)
         .service('usuariosService', usuariosArea.usuariosService)
         .service('usuariosQueryService', usuariosArea.usuariosQueryService)
-        .service('loginService', login.loginService)
+        .service('loginService', login.loginService) // to log out...! do not remove this!
         .service('loginQueryService', login.loginQueryService)
         .controller('sidenavController', usuariosArea.sidenavController)
         .controller('toolbarHeaderController', usuariosArea.toolbarHeaderController)

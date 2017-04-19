@@ -6,7 +6,12 @@ module archivosArea {
         .service('localStorageLite', common.localStorageLite)
         .service('toasterLite', common.toasterLite)
         .service('httpLite', common.httpLite)
+        .service('loginService', login.loginService)
+        .service('loginQueryService', login.loginQueryService)
+        .controller('userMenuWidgetController', common.userMenuWidgetController)
         .controller('sidenavController', sidenavController)
+        .controller('toolbarHeaderController', toolbarHeaderController)
+        .controller('mainContentController', mainContentController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', (
             $mdIconProvider: angular.material.IIconProvider,
             $mdThemingProvider: angular.material.IThemingProvider,

@@ -8,7 +8,7 @@ module usuariosArea {
         .service('httpLite', common.httpLite)
         .service('usuariosService', usuariosService)
         .service('usuariosQueryService', usuariosQueryService)
-        .service('loginService', login.loginService)
+        .service('loginService', login.loginService) // to log out...! do not remove this!
         .service('loginQueryService', login.loginQueryService)
         .controller('sidenavController', sidenavController)
         .controller('toolbarHeaderController', toolbarHeaderController)

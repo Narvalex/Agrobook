@@ -1,7 +1,7 @@
 ﻿/// <reference path="../_all.ts" />
 
 module archivosArea {
-    export class sidenavController {
+    export class toolbarHeaderController {
         static $inject = ['$mdSidenav'];
 
         constructor(
@@ -13,7 +13,5 @@ module archivosArea {
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
         }
-
-       
     }
 }

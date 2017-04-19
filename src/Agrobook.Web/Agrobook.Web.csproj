@@ -25,7 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TypeScriptToolsVersion>2.1</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.2</TypeScriptToolsVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -111,6 +111,7 @@
     <Content Include="app\assets\svg\hangouts.svg" />
     <Content Include="app\assets\svg\menu.svg" />
     <Content Include="app\assets\svg\phone.svg" />
+    <Content Include="app\assets\svg\search.svg" />
     <Content Include="app\assets\svg\twitter.svg" />
     <Content Include="app\assets\view.css" />
     <Content Include="app\bower_components\angular-animate\angular-animate.js" />
@@ -714,11 +715,12 @@
     <Content Include="app\bower_components\toastr\toastr.min.css" />
     <Content Include="app\bower_components\toastr\toastr.min.js" />
     <Content Include="app\dist\archivos\main-content.html" />
+    <Content Include="app\dist\archivos\sidenav-right.html" />
     <Content Include="app\dist\archivos\sidenav.html" />
     <Content Include="app\dist\archivos\toolbar-header.html" />
     <Content Include="app\dist\common\toasts\toast-cerrable.html" />
     <Content Include="app\dist\common\userMenu\menu-items-template.html" />
-    <Content Include="app\assets\menu-panel.css" />
+    <Content Include="app\dist\common\userMenu\user-menu-widget.css" />
     <Content Include="app\dist\common\userMenu\widget.html" />
     <Content Include="app\dist\maps\main-content.html" />
     <Content Include="app\dist\maps\sidenav.html" />
@@ -833,7 +835,9 @@
     <Content Include="app\bower_components\angular-material-icons\README.md" />
     <Content Include="typings\globals\googlemaps\typings.json" />
     <TypeScriptCompile Include="app\src\archivos\archivosArea.ts" />
+    <TypeScriptCompile Include="app\src\archivos\mainContentController.ts" />
     <TypeScriptCompile Include="app\src\archivos\sidenavController.ts" />
+    <TypeScriptCompile Include="app\src\archivos\toolbarHeaderController.ts" />
     <TypeScriptCompile Include="app\src\common\httpInterceptorRegistry.ts" />
     <TypeScriptCompile Include="app\src\common\userMenu\widgetController.ts" />
     <TypeScriptCompile Include="app\src\config.ts" />

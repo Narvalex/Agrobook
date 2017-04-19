@@ -23,7 +23,7 @@ var common;
                 .newPanelPosition()
                 .relativeTo($event.target)
                 .addPanelPosition(this.$mdPanel.xPosition.ALIGN_START, this.$mdPanel.yPosition.BELOW)
-                .withOffsetX('-75px');
+                .withOffsetX('-1px');
             panelConfig = {
                 position: position,
                 attachTo: angular.element(document.body),
@@ -61,8 +61,7 @@ var common;
             this.menuItemList = [
                 new menuItem('Inicio', 'home.html'),
                 new menuItem('Archivos', 'archivos.html'),
-                new menuItem('Usuarios', 'usuarios.html'),
-                new menuItem('Siscole', 'http://ti.fecoprod.com.py/siscole')
+                new menuItem('Usuarios', 'usuarios.html')
             ];
             this.estaEnHome = window.location.pathname == '/app/home.html';
         }

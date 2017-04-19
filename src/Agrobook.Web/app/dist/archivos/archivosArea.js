@@ -6,7 +6,12 @@ var archivosArea;
         .service('localStorageLite', common.localStorageLite)
         .service('toasterLite', common.toasterLite)
         .service('httpLite', common.httpLite)
+        .service('loginService', login.loginService)
+        .service('loginQueryService', login.loginQueryService)
+        .controller('userMenuWidgetController', common.userMenuWidgetController)
         .controller('sidenavController', archivosArea.sidenavController)
+        .controller('toolbarHeaderController', archivosArea.toolbarHeaderController)
+        .controller('mainContentController', archivosArea.mainContentController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $routeProvider) {
             // most from flat icon dot com
             $mdIconProvider
