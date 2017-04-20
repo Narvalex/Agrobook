@@ -730,7 +730,7 @@
     <Content Include="app\dist\usuarios\dialogs\nuevo-usuario-dialog.html" />
     <Content Include="app\dist\usuarios\main-content.html" />
     <Content Include="app\dist\usuarios\sidenav.html" />
-    <Content Include="app\dist\usuarios\style.css" />
+    <Content Include="app\dist\usuarios\sidenav.css" />
     <Content Include="app\dist\usuarios\toolbar-header.html" />
     <Content Include="app\dist\usuarios\views\no-user.html" />
     <Content Include="app\dist\usuarios\views\usuario.html" />

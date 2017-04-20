@@ -1,0 +1,12 @@
+﻿md-list-item.seleccionado {
+    color: rgb(76, 175, 80);
+}
+
+.scrollable-nav-content {
+    position: absolute;
+    top: 136px;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    overflow: auto;
+}
