@@ -13,6 +13,12 @@
             </md-button>
         </div>
     </md-toolbar>
+    <md-content layout-padding ng-hide="vm.loaded">
+        <div layout="row" layout-sm="column" layout-align="space-around">
+            <md-progress-circular md-mode="indeterminate"
+                                  ng-disabled="vm.loaded"></md-progress-circular>
+        </div>
+    </md-content>
     <div layout-padding>
         <md-autocomplete md-search-text="vm.searchText"
                          md-items="item in vm.usuarios | filter: vm.searchText"
@@ -24,14 +30,15 @@
             </md-not-found>
         </md-autocomplete>
     </div>
+
     <md-content class="scrollable-nav-content">
         <md-list>
             <!--Optional filter  | orderBy:'nombre'" -->
             <md-list-item ng-repeat="usuario in vm.usuarios | filter:vm.searchText"
                           ng-click="vm.seleccionarUsuario(usuario)"
                           ng-class="{'seleccionado': usuario === vm.usuarioSeleccionado }">
-                    <img ng-src="{{usuario.avatarUrl}}" alt="Imagen de perfil" style="height:40px" />
-                    &nbsp;{{usuario.nombreCompleto}}
+                <img ng-src="{{usuario.avatarUrl}}" alt="Imagen de perfil" style="height:40px" />
+                &nbsp;{{usuario.nombreCompleto}}
             </md-list-item>
         </md-list>
     </md-content>

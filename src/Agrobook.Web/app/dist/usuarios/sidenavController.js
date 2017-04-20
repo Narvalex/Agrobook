@@ -12,6 +12,7 @@ var usuariosArea;
             this.config = config;
             this.usuarios = [];
             this.usuarioSeleccionado = null;
+            this.loaded = false;
             this.cargarListaDeUsuarios();
         }
         sidenavController.prototype.toggleSideNav = function () {
@@ -43,6 +44,7 @@ var usuariosArea;
         sidenavController.prototype.cargarListaDeUsuarios = function () {
             var _this = this;
             this.usuariosQueryService.obtenerListaDeTodosLosUsuarios(function (value) {
+                _this.loaded = true;
                 _this.usuarios = value.data;
             }, function (reason) {
                 _this.toasterLite.error(JSON.stringify(reason), _this.toasterLite.delayForever);

@@ -19,6 +19,7 @@ module usuariosArea {
 
         usuarios: usuarioEnLista[] = [];
         usuarioSeleccionado: usuarioEnLista = null;
+        loaded: boolean = false;
 
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
@@ -56,6 +57,7 @@ module usuariosArea {
         private cargarListaDeUsuarios() {
             this.usuariosQueryService.obtenerListaDeTodosLosUsuarios(
                 value => {
+                    this.loaded = true;
                     this.usuarios = value.data;
                 },
                 reason => {
