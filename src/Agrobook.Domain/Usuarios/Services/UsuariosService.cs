@@ -67,7 +67,7 @@ namespace Agrobook.Domain.Usuarios
                 return LoginResult.Failed;
 
             await this.repository.SaveAsync(usuario);
-            return new LoginResult(true, usuario.NombreParaMostrar, usuario.LoginInfoEncriptado, usuario.AvatarUrl);
+            return new LoginResult(true, cmd.Usuario, usuario.NombreParaMostrar, usuario.LoginInfoEncriptado, usuario.AvatarUrl);
         }
 
         public bool TryAuthorize(string token, params string[] claimsRequired)

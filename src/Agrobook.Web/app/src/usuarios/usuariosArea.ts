@@ -13,7 +13,7 @@ module usuariosArea {
         .controller('sidenavController', sidenavController)
         .controller('toolbarHeaderController', toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
-        .controller('usuarioController', usuarioController)
+        .controller('mainContentController', mainContentController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', (
             $mdIconProvider: angular.material.IIconProvider,
             $mdThemingProvider: angular.material.IThemingProvider,

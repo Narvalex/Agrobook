@@ -12,14 +12,14 @@ module usuariosArea {
             { 
                 path: '/',
                 route: {
-                    templateUrl: './dist/usuarios/views/no-user.html',
+                    templateUrl: './dist/usuarios/views/main-content.html',
                     reloadOnSearch: false
                 }
             },
             {
                 path: '/usuario/:idUsuario',
                 route: {
-                    templateUrl: './dist/usuarios/views/usuario.html',
+                    templateUrl: './dist/usuarios/views/main-content.html',
                     reloadOnSearch: false
                 }
             }

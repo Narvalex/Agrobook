@@ -13,7 +13,7 @@ var usuariosArea;
         .controller('sidenavController', usuariosArea.sidenavController)
         .controller('toolbarHeaderController', usuariosArea.toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
-        .controller('usuarioController', usuariosArea.usuarioController)
+        .controller('mainContentController', usuariosArea.mainContentController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $routeProvider) {
             // most from flat icon dot com
             $mdIconProvider
