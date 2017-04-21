@@ -12,10 +12,16 @@ namespace Agrobook.Client.Usuarios
         {
         }
 
-        public async Task<IList<UsuarioDtoBasico>> ObtenerListaDeTodosLosUsuarios()
+        public async Task<IList<UsuarioInfoBasica>> ObtenerListaDeTodosLosUsuarios()
         {
-            var lista = await base.Get<IList<UsuarioDtoBasico>>("todos");
+            var lista = await base.Get<IList<UsuarioInfoBasica>>("todos");
             return lista;
+        }
+
+        public async Task<UsuarioInfoBasica> ObtenerInfoBasicaDeUsuario(string usuario)
+        {
+            var dto = await base.Get<UsuarioInfoBasica>($"info-basica/{usuario}");
+            return dto;
         }
     }
 }

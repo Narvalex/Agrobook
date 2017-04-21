@@ -1,3 +1,30 @@
-﻿<div class="view" ng-controller="mainContentController as vm">
-    <h1>{{vm.nombreCompleto}}</h1>
+﻿<div ng-controller="mainContentController as vm">
+    <div class="padding-all">
+        <md-content layout-padding ng-hide="vm.loaded">
+            <div layout="row">
+                <md-progress-circular md-mode="indeterminate"
+                                      ng-disabled="vm.loaded"></md-progress-circular>
+            </div>
+        </md-content>
+        <div ng-show="vm.loaded" ng-cloak>
+            <img ng-src="{{vm.usuario.avatarUrl}}" alt="Imagen de perfil" style="height:125px" />
+            <h2>{{vm.usuario.nombreCompleto}}</h2>
+        </div>
+    </div>
+
+    <md-tabs md-dynamic-height=""
+             md-selected="vm.tabIndex">
+        <md-tab label="Perfil">
+            <h1>perfil</h1>
+        </md-tab>
+        <md-tab label="Permisos">
+            <h1>Permisos</h1>
+        </md-tab>
+        <md-tab label="Grupos">
+            <h1>Grupos</h1>
+        </md-tab>
+        <md-tab label="Organizaciones">
+            <h1>Organizaciones</h1>
+        </md-tab>
+    </md-tabs>
 </div>

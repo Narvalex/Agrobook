@@ -12,14 +12,14 @@ var usuariosArea;
         return UsuarioDto;
     }());
     usuariosArea.UsuarioDto = UsuarioDto;
-    var usuarioEnLista = (function () {
-        function usuarioEnLista(nombre, nombreCompleto, avatarUrl) {
+    var usuarioInfoBasica = (function () {
+        function usuarioInfoBasica(nombre, nombreCompleto, avatarUrl) {
             this.nombre = nombre;
             this.nombreCompleto = nombreCompleto;
             this.avatarUrl = avatarUrl;
         }
-        return usuarioEnLista;
+        return usuarioInfoBasica;
     }());
-    usuariosArea.usuarioEnLista = usuarioEnLista;
+    usuariosArea.usuarioInfoBasica = usuarioInfoBasica;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=usuariosDTOs.js.map

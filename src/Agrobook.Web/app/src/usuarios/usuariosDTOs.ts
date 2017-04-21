@@ -11,7 +11,7 @@ module usuariosArea {
         ) { }
     }
 
-    export class usuarioEnLista {
+    export class usuarioInfoBasica {
         constructor(
             public nombre: string,
             public nombreCompleto: string,

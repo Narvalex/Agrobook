@@ -18,11 +18,11 @@ namespace Agrobook.Domain.Usuarios.Services
             this.contextFactory = contextFactory;
         }
 
-        public async Task<IList<UsuarioDtoBasico>> ObtenerTodosLosUsuarios()
+        public async Task<IList<UsuarioInfoBasica>> ObtenerTodosLosUsuarios()
         {
             using (var context = this.contextFactory())
             {
-                var lista = await context.Usuarios.Select(u => new UsuarioDtoBasico
+                var lista = await context.Usuarios.Select(u => new UsuarioInfoBasica
                 {
                     Nombre = u.NombreDeUsuario,
                     NombreCompleto = u.NombreCompleto,
@@ -31,6 +31,25 @@ namespace Agrobook.Domain.Usuarios.Services
                 .ToListAsync();
 
                 return lista;
+            }
+        }
+
+        public async Task<UsuarioInfoBasica> ObtenerUsuarioInfoBasica(string usuario)
+        {
+            using (var context = this.contextFactory())
+            {
+                var dto = await context
+                                .Usuarios
+                                .Where(u => u.NombreDeUsuario == usuario)
+                                .Select(u => new UsuarioInfoBasica
+                                {
+                                    Nombre = u.NombreDeUsuario,
+                                    NombreCompleto = u.NombreCompleto,
+                                    AvatarUrl = u.AvatarUrl
+                                })
+                                .SingleOrDefaultAsync();
+
+                return dto;
             }
         }
     }

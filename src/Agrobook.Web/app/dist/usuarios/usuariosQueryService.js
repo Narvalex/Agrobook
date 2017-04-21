@@ -9,6 +9,9 @@ var usuariosArea;
         usuariosQueryService.prototype.obtenerListaDeTodosLosUsuarios = function (onSuccess, onError) {
             this.httpLite.get('todos', onSuccess, onError);
         };
+        usuariosQueryService.prototype.obtenerInfoBasicaDeUsuario = function (usuario, onSuccess, onError) {
+            this.httpLite.get('info-basica/' + usuario, onSuccess, onError);
+        };
         return usuariosQueryService;
     }());
     usuariosQueryService.$inject = ['httpLite'];

@@ -1,6 +1,6 @@
 ﻿namespace Agrobook.Domain.Usuarios.Services
 {
-    public class UsuarioDtoBasico
+    public class UsuarioInfoBasica
     {
         public string Nombre { get; set; }
         public string NombreCompleto { get; set; }

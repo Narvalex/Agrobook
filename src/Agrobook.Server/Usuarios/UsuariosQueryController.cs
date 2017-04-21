@@ -19,5 +19,13 @@ namespace Agrobook.Server.Usuarios
             var lista = await this.service.ObtenerTodosLosUsuarios();
             return this.Ok(lista);
         }
+
+        [HttpGet]
+        [Route("info-basica/{usuario}")]
+        public async Task<IHttpActionResult> ObtenerInfoBasica([FromUri] string usuario)
+        {
+            var dto = await this.service.ObtenerUsuarioInfoBasica(usuario);
+            return this.Ok(dto);
+        }
     }
 }

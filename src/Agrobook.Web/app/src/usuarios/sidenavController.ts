@@ -17,15 +17,15 @@ module usuariosArea {
             this.cargarListaDeUsuarios();
         }
 
-        usuarios: usuarioEnLista[] = [];
-        usuarioSeleccionado: usuarioEnLista = null;
+        usuarios: usuarioInfoBasica[] = [];
+        usuarioSeleccionado: usuarioInfoBasica = null;
         loaded: boolean = false;
 
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
         }
 
-        seleccionarUsuario(usuario: usuarioEnLista) {
+        seleccionarUsuario(usuario: usuarioInfoBasica) {
             this.usuarioSeleccionado = usuario;
             this.$rootScope.$broadcast(this.config.eventIndex.usuarios.usuarioSeleccionado, {});
             window.location.href = '#!/usuario/' + usuario.nombre;
@@ -45,7 +45,7 @@ module usuariosArea {
                 fullscreen: (this.$mdMedia('sm') || this.$mdMedia('xs'))
             }).then((usuario: UsuarioDto) => {
                 this.usuarios.unshift(
-                    new usuarioEnLista(
+                    new usuarioInfoBasica(
                         usuario.nombreDeUsuario,
                         usuario.nombreParaMostrar,
                         usuario.avatarUrl));
@@ -61,7 +61,7 @@ module usuariosArea {
                     this.usuarios = value.data;
                 },
                 reason => {
-                    this.toasterLite.error(JSON.stringify(reason), this.toasterLite.delayForever);
+                    this.toasterLite.error('Ocurrió un error al recuperar lista de usuarios', this.toasterLite.delayForever);
                 });
         }
     }

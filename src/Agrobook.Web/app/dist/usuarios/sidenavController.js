@@ -36,7 +36,7 @@ var usuariosArea;
                 clickOutsideToClose: true,
                 fullscreen: (this.$mdMedia('sm') || this.$mdMedia('xs'))
             }).then(function (usuario) {
-                _this.usuarios.unshift(new usuariosArea.usuarioEnLista(usuario.nombreDeUsuario, usuario.nombreParaMostrar, usuario.avatarUrl));
+                _this.usuarios.unshift(new usuariosArea.usuarioInfoBasica(usuario.nombreDeUsuario, usuario.nombreParaMostrar, usuario.avatarUrl));
             }, function () {
                 _this.toasterLite.info('Creación de nuevo usuario cancelada');
             });
@@ -47,7 +47,7 @@ var usuariosArea;
                 _this.loaded = true;
                 _this.usuarios = value.data;
             }, function (reason) {
-                _this.toasterLite.error(JSON.stringify(reason), _this.toasterLite.delayForever);
+                _this.toasterLite.error('Ocurrió un error al recuperar lista de usuarios', _this.toasterLite.delayForever);
             });
         };
         return sidenavController;

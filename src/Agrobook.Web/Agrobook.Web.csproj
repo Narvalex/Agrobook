@@ -113,6 +113,7 @@
     <Content Include="app\assets\svg\phone.svg" />
     <Content Include="app\assets\svg\search.svg" />
     <Content Include="app\assets\svg\twitter.svg" />
+    <Content Include="app\assets\tab-fix.css" />
     <Content Include="app\assets\view.css" />
     <Content Include="app\bower_components\angular-animate\angular-animate.js" />
     <Content Include="app\bower_components\angular-animate\angular-animate.min.js" />
