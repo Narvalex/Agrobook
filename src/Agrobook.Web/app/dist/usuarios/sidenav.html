@@ -38,7 +38,7 @@
                           ng-click="vm.seleccionarUsuario(usuario)"
                           ng-class="{'seleccionado': usuario === vm.usuarioSeleccionado }">
                 <img ng-src="{{usuario.avatarUrl}}" alt="Imagen de perfil" style="height:40px" />
-                &nbsp;{{usuario.nombreCompleto}}
+                &nbsp;{{usuario.nombreParaMostrar}}
             </md-list-item>
         </md-list>
     </md-content>

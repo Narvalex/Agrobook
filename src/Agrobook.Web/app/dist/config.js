@@ -20,6 +20,17 @@ var common;
                 insert: 45,
                 del: 46
             };
+            this._avatarUrls = [
+                './assets/img/avatar/1.png',
+                './assets/img/avatar/2.png',
+                './assets/img/avatar/3.png',
+                './assets/img/avatar/4.png',
+                './assets/img/avatar/5.png',
+                './assets/img/avatar/6.png',
+                './assets/img/avatar/7.png',
+                './assets/img/avatar/8.png',
+                './assets/img/avatar/9.png'
+            ];
             this._repoIndex = {
                 login: {
                     usuarioActual: 'ag-login-usuarioActual'
@@ -47,6 +58,11 @@ var common;
         });
         Object.defineProperty(config.prototype, "eventIndex", {
             get: function () { return this._eventIndex; },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(config.prototype, "avatarUrls", {
+            get: function () { return this._avatarUrls; },
             enumerable: true,
             configurable: true
         });

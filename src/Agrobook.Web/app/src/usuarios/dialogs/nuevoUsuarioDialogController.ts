@@ -3,27 +3,19 @@
 module usuariosArea {
     export class nuevoUsuarioDialogController {
 
-        static $inject = ['$mdDialog', 'usuariosService', 'toasterLite'];
+        static $inject = ['$mdDialog', 'usuariosService', 'toasterLite', 'config'];
 
         constructor(
             private $mdDialog: angular.material.IDialogService,
             private usuariosService: usuariosArea.usuariosService,
-            private toasterLite: common.toasterLite
+            private toasterLite: common.toasterLite,
+            private config: common.config
         ) {
             this.setDefaultSubmitText();
+            this.avatarUrls = config.avatarUrls;
         }
 
-        avatarUrls = [
-            './assets/img/avatar/1.png',
-            './assets/img/avatar/2.png',
-            './assets/img/avatar/3.png',
-            './assets/img/avatar/4.png',
-            './assets/img/avatar/5.png',
-            './assets/img/avatar/6.png',
-            './assets/img/avatar/7.png',
-            './assets/img/avatar/8.png',
-            './assets/img/avatar/9.png'
-        ];
+        avatarUrls = [];
 
         tiposDeCuenta = [
             { tipo: 'Admin', desc: 'Administrador' },

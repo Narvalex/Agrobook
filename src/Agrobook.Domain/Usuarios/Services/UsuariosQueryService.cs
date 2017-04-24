@@ -25,7 +25,7 @@ namespace Agrobook.Domain.Usuarios.Services
                 var lista = await context.Usuarios.Select(u => new UsuarioInfoBasica
                 {
                     Nombre = u.NombreDeUsuario,
-                    NombreCompleto = u.NombreCompleto,
+                    NombreParaMostrar = u.NombreParaMostrar,
                     AvatarUrl = u.AvatarUrl
                 })
                 .ToListAsync();
@@ -44,7 +44,7 @@ namespace Agrobook.Domain.Usuarios.Services
                                 .Select(u => new UsuarioInfoBasica
                                 {
                                     Nombre = u.NombreDeUsuario,
-                                    NombreCompleto = u.NombreCompleto,
+                                    NombreParaMostrar = u.NombreParaMostrar,
                                     AvatarUrl = u.AvatarUrl
                                 })
                                 .SingleOrDefaultAsync();

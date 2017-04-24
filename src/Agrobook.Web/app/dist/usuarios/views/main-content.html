@@ -8,23 +8,25 @@
         </md-content>
         <div ng-show="vm.loaded" ng-cloak>
             <img ng-src="{{vm.usuario.avatarUrl}}" alt="Imagen de perfil" style="height:125px" />
-            <h2>{{vm.usuario.nombreCompleto}}</h2>
+            <h2>{{vm.usuario.nombreParaMostrar}}</h2>
         </div>
     </div>
 
-    <md-tabs md-dynamic-height=""
-             md-selected="vm.tabIndex">
-        <md-tab label="Perfil">
-            <h1>perfil</h1>
-        </md-tab>
-        <md-tab label="Permisos">
-            <h1>Permisos</h1>
-        </md-tab>
-        <md-tab label="Grupos">
-            <h1>Grupos</h1>
-        </md-tab>
-        <md-tab label="Organizaciones">
-            <h1>Organizaciones</h1>
-        </md-tab>
-    </md-tabs>
+    <div ng-show="vm.loaded">
+        <md-tabs md-dynamic-height=""
+                 md-selected="vm.tabIndex">
+            <md-tab label="Perfil">
+                <div ng-include="'./dist/usuarios/views/perfil.html'"></div>
+            </md-tab>
+            <md-tab label="Permisos">
+                <h1>Permisos</h1>
+            </md-tab>
+            <md-tab label="Grupos">
+                <h1>Grupos</h1>
+            </md-tab>
+            <md-tab label="Organizaciones">
+                <h1>Organizaciones</h1>
+            </md-tab>
+        </md-tabs>
+    </div>
 </div>

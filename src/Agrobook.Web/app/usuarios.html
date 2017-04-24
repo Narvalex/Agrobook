@@ -36,7 +36,10 @@
 
     <div layout="column" flex>
         <div ng-include="'./dist/usuarios/toolbar-header.html'"></div>
-        <div ng-include="'./dist/usuarios/main-content.html'"></div>
+        <!-- This content is routed -->
+        <md-content flex>
+            <div ng-view></div>
+        </md-content>
     </div>
 
     <script src="./bower_components/angular/angular.min.js"></script>
@@ -64,6 +67,7 @@
     <script src="./dist/usuarios/sidenavController.js"></script>
     <script src="./dist/usuarios/toolbarHeaderController.js"></script>
     <script src="./dist/usuarios/views/mainContentController.js"></script>
+    <script src="./dist/usuarios/views/perfilController.js"></script>
     <!--Boot-->
     <script src="./dist/usuarios/usuariosArea.js"></script>
 </body>

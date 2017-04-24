@@ -7,15 +7,15 @@
         <div ng-hide="vm.estaLogueado || vm.enEspera"
              layout="row" class="home-login-form">
             <md-input-container>
-                <label>Usuario</label>
                 <input ng-keyup="vm.onInputKeyPress($event)"
+                       placeholder="Usuario"
                        class="home-input"
                        ng-model="vm.usuario">
             </md-input-container>
 
             <md-input-container>
-                <label>Password</label>
                 <input class="home-input"
+                       placeholder="Contraseña"
                        ng-keyup="vm.onInputKeyPress($event)"
                        type="password"
                        ng-model="vm.password">

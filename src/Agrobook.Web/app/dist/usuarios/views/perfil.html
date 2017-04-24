@@ -1,0 +1,55 @@
+﻿<div class="padding-all md-inline-form" ng-controller="perfilController as vm">
+    <md-content layout-padding>
+        <div>
+            <form name="perfilForm">
+                <div layout-gt-md="row">
+                    <!--Avatar-->
+                      <md-input-container class="md-block" flex-gt-md>
+                        <label>Imagen de perfil</label>
+                        <md-select ng-model="vm.usuarioEditado.avatarUrl" name="avatar" required>
+                            <md-option ng-repeat="url in vm.avatarUrls" ng-value="url">
+                                <img style="height: 50px;" ng-src="{{url}}" alt="Imagen de perfil" />
+                            </md-option>
+                        </md-select>
+                          <div ng-messages="perfilForm.avatar.$error">
+                              <div ng-message="required">Debe elegir una imagen de perfil.</div>
+                          </div>
+                    </md-input-container>
+                    <br />
+                    <!--Nombre para mostrar-->
+                    <md-input-container class="md-block" flex-gt-md>
+                        <label>Nombre para mostrar</label>
+                        <input ng-model="vm.usuarioEditado.nombreParaMostrar"
+                               name="nombreParaMostrar"
+                               required/>
+                        <div ng-messages="perfilForm.nombreParaMostrar.$error">
+                            <div ng-message="required">Debe especificar un nombre para mostrar.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="column">
+                    <!-- Password-->
+                    <md-input-container class="md-block" flex-gt-md>
+                        <label>Contraseña actual</label>
+                        <input ng-model="vm.passwordActual" type="password" />
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-md>
+                        <label>Nueva contraseña</label>
+                        <input ng-model="vm.nuevoPassword" type="password" />
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-md>
+                        <label>Confirmar contraseña</label>
+                        <input ng-model="vm.nuevoPasswordConfirmacion" type="password" />
+                    </md-input-container>
+                </div>
+                <div layout-gt-xs="row">
+                    <!-- Botones -->
+                    <md-button type="submit" class="md-primary">Actualizar perfil</md-button>
+                    <md-button type="submit" class="md-warn">Resetear password</md-button>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</div>

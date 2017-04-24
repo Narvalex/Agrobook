@@ -2,21 +2,12 @@
 var usuariosArea;
 (function (usuariosArea) {
     var nuevoUsuarioDialogController = (function () {
-        function nuevoUsuarioDialogController($mdDialog, usuariosService, toasterLite) {
+        function nuevoUsuarioDialogController($mdDialog, usuariosService, toasterLite, config) {
             this.$mdDialog = $mdDialog;
             this.usuariosService = usuariosService;
             this.toasterLite = toasterLite;
-            this.avatarUrls = [
-                './assets/img/avatar/1.png',
-                './assets/img/avatar/2.png',
-                './assets/img/avatar/3.png',
-                './assets/img/avatar/4.png',
-                './assets/img/avatar/5.png',
-                './assets/img/avatar/6.png',
-                './assets/img/avatar/7.png',
-                './assets/img/avatar/8.png',
-                './assets/img/avatar/9.png'
-            ];
+            this.config = config;
+            this.avatarUrls = [];
             this.tiposDeCuenta = [
                 { tipo: 'Admin', desc: 'Administrador' },
                 { tipo: 'Tecnico', desc: 'Técnico' },
@@ -24,6 +15,7 @@ var usuariosArea;
             ];
             this.bloquearSubmit = false;
             this.setDefaultSubmitText();
+            this.avatarUrls = config.avatarUrls;
         }
         nuevoUsuarioDialogController.prototype.cancelar = function () {
             this.$mdDialog.cancel();
@@ -51,7 +43,7 @@ var usuariosArea;
         };
         return nuevoUsuarioDialogController;
     }());
-    nuevoUsuarioDialogController.$inject = ['$mdDialog', 'usuariosService', 'toasterLite'];
+    nuevoUsuarioDialogController.$inject = ['$mdDialog', 'usuariosService', 'toasterLite', 'config'];
     usuariosArea.nuevoUsuarioDialogController = nuevoUsuarioDialogController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=nuevoUsuarioDialogController.js.map

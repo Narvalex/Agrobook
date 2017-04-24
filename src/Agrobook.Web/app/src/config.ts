@@ -21,6 +21,18 @@ module common {
             del: 46
         };
 
+        private _avatarUrls = [
+            './assets/img/avatar/1.png',
+            './assets/img/avatar/2.png',
+            './assets/img/avatar/3.png',
+            './assets/img/avatar/4.png',
+            './assets/img/avatar/5.png',
+            './assets/img/avatar/6.png',
+            './assets/img/avatar/7.png',
+            './assets/img/avatar/8.png',
+            './assets/img/avatar/9.png'
+        ];
+
         private _repoIndex = {
             login: {
                 usuarioActual: 'ag-login-usuarioActual'
@@ -40,5 +52,6 @@ module common {
         get keyCodes() { return this._keyCodes; }
         get repoIndex() { return this._repoIndex; }
         get eventIndex() { return this._eventIndex; }
+        get avatarUrls() { return this._avatarUrls; }
     }
 }

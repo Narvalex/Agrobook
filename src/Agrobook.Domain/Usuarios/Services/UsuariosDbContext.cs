@@ -23,7 +23,7 @@ namespace Agrobook.Domain.Usuarios.Services
     public class UsuariosEntity
     {
         public string NombreDeUsuario { get; set; }
-        public string NombreCompleto { get; set; }
+        public string NombreParaMostrar { get; set; }
         public string AvatarUrl { get; set; }
     }
 
@@ -35,7 +35,7 @@ namespace Agrobook.Domain.Usuarios.Services
 
             this.ToTable("Usuarios");
             this.Property(e => e.NombreDeUsuario).HasColumnName("NombreDeUsuario");
-            this.Property(e => e.NombreCompleto).HasColumnName("NombreCompleto");
+            this.Property(e => e.NombreParaMostrar).HasColumnName("NombreCompleto");
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿<md-dialog class="fullscreen-dialog">
+
     <form name="nuevoUsuarioForm" ng-submit="vm.crearNuevoUsuario()">
         <md-toolbar>
             <div class="md-toolbar-tools">
@@ -10,10 +11,11 @@
             </div>
         </md-toolbar>
         <md-dialog-content>
-            <div layout="column" layout-padding>
-                <div layout-gt-sm="row">
+           
+            <div class="padding-all">
+                <div layout-gt-md="row">
                     <!-- Avatar -->
-                    <md-input-container class="md-block" flex-gt-sm>
+                    <md-input-container class="md-block" flex-gt-md>
                         <label>Imagen de perfil</label>
                         <md-select ng-model="vm.usuario.avatarUrl" name="avatar" required>
                             <md-option ng-repeat="url in vm.avatarUrls" ng-value="url">
@@ -24,8 +26,10 @@
                             <div ng-message="required">Debe elegir una imagen de perfil.</div>
                         </div>
                     </md-input-container>
+                </div>
+                <div layout-gt-md="row">
                     <!-- Tipo de usuario -->
-                    <md-input-container class="md-block" flex-gt-sm ng-cloak>
+                    <md-input-container class="md-block" flex-gt-md ng-cloak>
                         <label>Tipo de cuenta</label>
                         <md-select ng-model="vm.tipoDeCuenta" name="tipoDeCuenta" required>
                             <md-option ng-repeat="tipoDeCuenta in vm.tiposDeCuenta" ng-value="tipoDeCuenta">
@@ -37,15 +41,17 @@
                         </div>
                     </md-input-container>
                     <!-- Usuario -->
-                    <md-input-container class="md-block" flex-gt-sm>
+                    <md-input-container class="md-block" flex-gt-md>
                         <label>Nombre de usuario</label>
-                        <input ng-model="vm.usuario.nombreDeUsuario" name="nombreDeUsuario" required/>
+                        <input ng-model="vm.usuario.nombreDeUsuario" name="nombreDeUsuario" required />
                         <div ng-messages="nuevoUsuarioForm.nombreDeUsuario.$error">
                             <div ng-message="required">Debe elegir un nombre de usuario</div>
                         </div>
                     </md-input-container>
+                </div>
+                <div layout-gt-md="row">
                     <!-- Nombre para mostrar -->
-                    <md-input-container class="md-block" flex-gt-sm>
+                    <md-input-container class="md-block" flex-gt-md>
                         <label>Nombre para mostrar</label>
                         <input ng-model="vm.usuario.nombreParaMostrar" name="nombreParaMostrar" required />
                         <div ng-messages="nuevoUsuarioForm.nombreParaMostrar.$error">
@@ -53,22 +59,25 @@
                         </div>
                     </md-input-container>
                     <!-- Password -->
-                    <md-input-container class="md-block" flex-gt-sm>
+                    <md-input-container class="md-block" flex-gt-md>
                         <label>Contraseña</label>
-                        <input ng-model="vm.usuario.password" name="password" required type="password"/>
+                        <input ng-model="vm.usuario.password" name="password" required type="password" />
                         <div ng-messages="nuevoUsuarioForm.password.$error">
                             <div ng-message="required">Debe elegir una contraseña</div>
                         </div>
                     </md-input-container>
                 </div>
             </div>
+           
         </md-dialog-content>
 
         <md-dialog-actions layout="row">
-            <md-button ng-cloak type="submit" class="md-primary md-raised" ng-disabled="nuevoUsuarioForm.$invalid || vm.bloquearSubmit">
-                {{vm.submitLabel}}
-            </md-button>
-            <md-button ng-click="vm.cancelar()">Cancelar</md-button>
+            <div class="padding-all">
+                <md-button ng-cloak type="submit" class="md-primary md-raised" ng-disabled="nuevoUsuarioForm.$invalid || vm.bloquearSubmit">
+                    {{vm.submitLabel}}
+                </md-button>
+                <md-button ng-click="vm.cancelar()">Cancelar</md-button>
+            </div>
         </md-dialog-actions>
     </form>
 </md-dialog>

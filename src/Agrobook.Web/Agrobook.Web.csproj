@@ -729,11 +729,11 @@
     <Content Include="app\dist\home\main-content.html" />
     <Content Include="app\dist\home\toolbar-header.html" />
     <Content Include="app\dist\usuarios\dialogs\nuevo-usuario-dialog.html" />
-    <Content Include="app\dist\usuarios\main-content.html" />
     <Content Include="app\dist\usuarios\sidenav.html" />
     <Content Include="app\dist\usuarios\sidenav.css" />
     <Content Include="app\dist\usuarios\toolbar-header.html" />
     <Content Include="app\dist\usuarios\views\main-content.html" />
+    <Content Include="app\dist\usuarios\views\perfil.html" />
     <Content Include="app\home.html" />
     <Content Include="app\maps.html" />
     <Content Include="app\usuarios.html" />
@@ -879,6 +879,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <TypeScriptCompile Include="app\src\usuarios\views\mainContentController.ts" />
+    <TypeScriptCompile Include="app\src\usuarios\views\perfilController.ts" />
     <TypeScriptCompile Include="typings\modules\angular-route\index.d.ts" />
   </ItemGroup>
   <ItemGroup>

@@ -13,9 +13,9 @@ var usuariosArea;
     }());
     usuariosArea.UsuarioDto = UsuarioDto;
     var usuarioInfoBasica = (function () {
-        function usuarioInfoBasica(nombre, nombreCompleto, avatarUrl) {
+        function usuarioInfoBasica(nombre, nombreParaMostrar, avatarUrl) {
             this.nombre = nombre;
-            this.nombreCompleto = nombreCompleto;
+            this.nombreParaMostrar = nombreParaMostrar;
             this.avatarUrl = avatarUrl;
         }
         return usuarioInfoBasica;

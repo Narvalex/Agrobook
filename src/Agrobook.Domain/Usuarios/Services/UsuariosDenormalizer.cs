@@ -45,7 +45,7 @@ namespace Agrobook.Domain.Usuarios.Services
                 context.Usuarios.Add(new UsuariosEntity
                 {
                     NombreDeUsuario = e.Usuario,
-                    NombreCompleto = e.NombreParaMostrar,
+                    NombreParaMostrar = e.NombreParaMostrar,
                     AvatarUrl = e.AvatarUrl
                 });
             });

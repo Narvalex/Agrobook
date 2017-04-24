@@ -28,7 +28,7 @@ module usuariosArea {
         seleccionarUsuario(usuario: usuarioInfoBasica) {
             this.usuarioSeleccionado = usuario;
             this.$rootScope.$broadcast(this.config.eventIndex.usuarios.usuarioSeleccionado, {});
-            window.location.href = '#!/usuario/' + usuario.nombre;
+            window.location.replace('#!/usuario/' + usuario.nombre);
             this.toggleSideNav();
         }
 

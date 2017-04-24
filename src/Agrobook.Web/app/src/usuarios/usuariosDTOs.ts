@@ -14,7 +14,7 @@ module usuariosArea {
     export class usuarioInfoBasica {
         constructor(
             public nombre: string,
-            public nombreCompleto: string,
+            public nombreParaMostrar: string,
             public avatarUrl: string
         ) {
         }

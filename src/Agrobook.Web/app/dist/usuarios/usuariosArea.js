@@ -14,6 +14,7 @@ var usuariosArea;
         .controller('toolbarHeaderController', usuariosArea.toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
         .controller('mainContentController', usuariosArea.mainContentController)
+        .controller('perfilController', usuariosArea.perfilController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $routeProvider) {
             // most from flat icon dot com
             $mdIconProvider

@@ -14,6 +14,7 @@ module usuariosArea {
         .controller('toolbarHeaderController', toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
         .controller('mainContentController', mainContentController)
+        .controller('perfilController', perfilController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', (
             $mdIconProvider: angular.material.IIconProvider,
             $mdThemingProvider: angular.material.IThemingProvider,
