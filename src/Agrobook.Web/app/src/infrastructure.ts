@@ -33,7 +33,7 @@ module common {
         private defaultPosition = 'top right';
 
         constructor(
-            private $mdToast: angular.material.IToastService) {
+            private $mdToast: angular.material.IToastService) { 
         }
 
         info(message: string, delay: number = this.defaultDelay, closeButton: boolean = true) {
@@ -87,23 +87,20 @@ module common {
         get delayForever(): number { return 3600000; }; // an hour! :O
     }
 
-    export class httpLite {
-
-        static $inject = ['$http'];
+    export abstract class httpLite {
 
         constructor(
-            private $http: angular.IHttpService
+            private $httpService: angular.IHttpService,
+            private prefix: string = '',
         ) {
         }
-
-        public prefix: string = '';
 
         get<TResult>(
             url: string,
             successCallback: (value: ng.IHttpPromiseCallbackArg<TResult>) => any,
             errorCallback?: (reason: any) => any
         ) {
-            return this.$http.get(this.buildUrl(url))
+            return this.$httpService.get(this.buildUrl(url))
                 .then<TResult>(successCallback, errorCallback);
         }
 
@@ -113,7 +110,7 @@ module common {
             successCallback: (value: ng.IHttpPromiseCallbackArg<TResult>) => any,
             erroCallback?: (reason: any) => any
         ) {
-            this.$http.post<TResult>(this.buildUrl(url), dto)
+            this.$httpService.post<TResult>(this.buildUrl(url), dto)
                 .then<TResult>(successCallback, erroCallback);
         }
 

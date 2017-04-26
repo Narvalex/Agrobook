@@ -32,7 +32,7 @@ var usuariosArea;
             }, function (reason) {
                 _this.setDefaultSubmitText();
                 _this.bloquearSubmit = false;
-                window.alert('Ocurrió un error y no se pudo crear el usuario');
+                _this.toasterLite.error('Ocurrió un error y no se pudo crear el usuario');
             });
         };
         nuevoUsuarioDialogController.prototype.setDefaultSubmitText = function () {

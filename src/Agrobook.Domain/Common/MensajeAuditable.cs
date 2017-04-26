@@ -2,6 +2,11 @@
 
 namespace Agrobook.Domain.Common
 {
+    public interface IProveedorDeMetadatosDelUsuario
+    {
+        Metadatos ObtenerMetadatosDelUsuario(string token);
+    }
+
     public class MensajeAuditable
     {
         public MensajeAuditable(Metadatos metadatos)

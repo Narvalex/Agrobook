@@ -43,7 +43,7 @@ module usuariosArea {
                 controllerAs: 'vm',
                 clickOutsideToClose: true,
                 fullscreen: (this.$mdMedia('sm') || this.$mdMedia('xs'))
-            }).then((usuario: UsuarioDto) => {
+            }).then((usuario: usuarioDto) => {
                 this.usuarios.unshift(
                     new usuarioInfoBasica(
                         usuario.nombreDeUsuario,

@@ -23,7 +23,7 @@ module usuariosArea {
             { tipo: 'Productor', desc: 'Productor' }
         ];
 
-        usuario: UsuarioDto;
+        usuario: usuarioDto;
         tipoDeCuenta: any;
 
         bloquearSubmit: boolean = false;
@@ -46,7 +46,7 @@ module usuariosArea {
                 (reason) => {
                     this.setDefaultSubmitText();
                     this.bloquearSubmit = false;
-                    window.alert('Ocurrió un error y no se pudo crear el usuario');
+                    this.toasterLite.error('Ocurrió un error y no se pudo crear el usuario');
                 });
         }
 

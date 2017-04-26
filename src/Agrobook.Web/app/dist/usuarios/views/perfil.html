@@ -1,7 +1,7 @@
 ﻿<div class="padding-all md-inline-form" ng-controller="perfilController as vm">
     <md-content layout-padding>
         <div>
-            <form name="perfilForm">
+            <form name="perfilForm" ng-submit="vm.actualizarPerfil()">
                 <div layout-gt-md="row">
                     <!--Avatar-->
                       <md-input-container class="md-block" flex-gt-md>
@@ -47,7 +47,7 @@
                 <div layout-gt-xs="row">
                     <!-- Botones -->
                     <md-button type="submit" class="md-primary">Actualizar perfil</md-button>
-                    <md-button type="submit" class="md-warn">Resetear password</md-button>
+                    <md-button ng-click="vm.resetearPassword()" class="md-warn">Resetear password</md-button>
                 </div>
             </form>
         </div>

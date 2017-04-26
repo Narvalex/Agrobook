@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Usuarios
 {
-    public class UsuariosService : EventSourcedService, ITokenAuthorizationProvider
+    public class UsuariosService : EventSourcedService, ITokenAuthorizationProvider, IProveedorDeMetadatosDelUsuario
     {
         public const string UsuarioAdmin = "admin";
         public const string DefaultPassword = "changeit";
@@ -68,6 +68,14 @@ namespace Agrobook.Domain.Usuarios
 
             await this.repository.SaveAsync(usuario);
             return new LoginResult(true, cmd.Usuario, usuario.NombreParaMostrar, usuario.LoginInfoEncriptado, usuario.AvatarUrl);
+        }
+
+        public Metadatos ObtenerMetadatosDelUsuario(string token)
+        {
+            var tokenInfo = this.cryptoSerializer.Deserialize<LoginInfo>(token);
+            var nombreUsuario = tokenInfo.Usuario;
+
+            return new Metadatos(nombreUsuario, this.dateTime.Now);
         }
 
         public bool TryAuthorize(string token, params string[] claimsRequired)

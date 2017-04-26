@@ -8,4 +8,12 @@
         public string Password { get; set; }
         public string[] Claims { get; set; }
     }
+
+    public class ActualizarPerfilDto
+    {
+        public string AvatarUrl { get; set; }
+        public string NombreParaMostrar { get; set; }
+        public string PasswordActual { get; set; }
+        public string NuevoPassword { get; set; }
+    }
 }

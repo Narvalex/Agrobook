@@ -1,21 +1,29 @@
 ﻿/// <reference path="../_all.ts" />
 
 module usuariosArea {
-    export class usuariosService {
-        static $inject = ['httpLite'];
+    export class usuariosService extends common.httpLite {
+        static $inject = ['$http'];
 
         constructor(
-            private httpLite: common.httpLite
+            private $http: ng.IHttpService
         ) {
-            this.httpLite.prefix = 'usuarios';
+            super($http, 'usuarios');
         }
 
         crearNuevoUsuario(
-            usuario: UsuarioDto,
+            usuario: usuarioDto,
             onSuccess: (value: ng.IHttpPromiseCallbackArg<{}>) => void,
             onError: (reason: any) => void
         ) {
-            this.httpLite.post('crear-nuevo-usuario', usuario, onSuccess, onError);
+            this.post('crear-nuevo-usuario', usuario, onSuccess, onError);
+        }
+
+        actualizarPerfil(
+            usuario: actualizarPerfilDto,
+            onSuccess: (value: ng.IHttpPromiseCallbackArg<{}>) => void,
+            onError: (reason: any) => void
+        ) {
+            this.post('actualizar-perfil', usuario, onSuccess, onError);
         }
     }
 }

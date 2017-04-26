@@ -1,20 +1,20 @@
 ﻿/// <reference path="../_all.ts" />
 
 module usuariosArea {
-    export class usuariosQueryService {
-        static $inject = ['httpLite'];
+    export class usuariosQueryService extends common.httpLite {
+        static $inject = ['$http'];
 
         constructor(
-            private httpLite: common.httpLite
+            private $http: ng.IHttpService
         ) {
-            this.httpLite.prefix = 'usuarios/query';
+            super($http, 'usuarios/query');
         }
 
         obtenerListaDeTodosLosUsuarios(
             onSuccess: (value: ng.IHttpPromiseCallbackArg<usuarioInfoBasica[]>) => void,
             onError?: (reason: any) => void
         ) {
-            this.httpLite.get('todos', onSuccess, onError);
+            super.get('todos', onSuccess, onError);
         }
 
         obtenerInfoBasicaDeUsuario(
@@ -22,7 +22,7 @@ module usuariosArea {
             onSuccess: (value: ng.IHttpPromiseCallbackArg<usuarioInfoBasica>) => void,
             onError?: (reason) => void
         ) {
-            this.httpLite.get('info-basica/' + usuario, onSuccess, onError);
+            super.get('info-basica/' + usuario, onSuccess, onError);
         }
     }
 }

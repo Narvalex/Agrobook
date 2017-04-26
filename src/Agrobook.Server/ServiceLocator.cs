@@ -1,4 +1,5 @@
 ﻿using Agrobook.Core;
+using Agrobook.Domain.Common;
 using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Services;
 using Agrobook.Infrastructure;
@@ -53,6 +54,7 @@ namespace Agrobook.Server
             container.Register<IDateTimeProvider>(dateTimeProvider);
             container.Register<EventStoreManager>(es);
             container.Register<UsuariosService>(usuariosService);
+            container.Register<IProveedorDeMetadatosDelUsuario>(usuariosService);
             container.Register<UsuariosQueryService>(usuariosQueryService);
             container.Register<SqlDbInitializer<UsuariosDbContext>>(sqlInitializer);
             container.Register<UsuariosDenormalizer>(usuariosDenormalizer);

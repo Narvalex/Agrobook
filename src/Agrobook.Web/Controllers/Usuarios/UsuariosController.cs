@@ -24,5 +24,13 @@ namespace Agrobook.Web.Controllers.Usuarios
             await this.client.CrearNuevoUsuario(dto);
             return this.Ok();
         }
+
+        [HttpPost]
+        [Route("actualizar-perfil")]
+        public async Task<IHttpActionResult> ActualizarPerfil(ActualizarPerfilDto dto)
+        {
+            await this.client.ActualizarPerfil(dto);
+            return this.Ok();
+        }
     }
 }

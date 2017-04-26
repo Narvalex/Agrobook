@@ -27,9 +27,57 @@ var usuariosArea;
                 });
             }
         }
+        perfilController.prototype.actualizarPerfil = function () {
+            if (!this.perfilEstaEditado)
+                this.toasterLite.info('No hay nada para actualizar');
+            if (!this.intentarValidarEdicionDePerfil())
+                return;
+        };
+        perfilController.prototype.resetearPassword = function () {
+            console.log('password reseteado');
+        };
         perfilController.prototype.inicializarEdicionDeInfoBasica = function (usuarioRecuperado) {
             this.usuarioRecuperado = usuarioRecuperado;
             this.usuarioEditado = new usuariosArea.usuarioInfoBasica(usuarioRecuperado.nombre, usuarioRecuperado.nombreParaMostrar, usuarioRecuperado.avatarUrl);
+        };
+        Object.defineProperty(perfilController.prototype, "perfilEstaEditado", {
+            get: function () {
+                if (this.usuarioRecuperado.avatarUrl !== this.usuarioEditado.avatarUrl)
+                    return true;
+                if (this.usuarioRecuperado.nombreParaMostrar !== this.usuarioEditado.nombreParaMostrar)
+                    return true;
+                if (this.seQuiereActualizarPassword)
+                    return true;
+                return false;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(perfilController.prototype, "seQuiereActualizarPassword", {
+            get: function () {
+                if (this.nuevoPassword !== undefined
+                    && this.nuevoPassword !== null
+                    && this.nuevoPassword !== '')
+                    return true;
+                else
+                    return false;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        perfilController.prototype.intentarValidarEdicionDePerfil = function () {
+            if (this.seQuiereActualizarPassword) {
+                if (this.passwordActual === undefined
+                    || this.passwordActual === null
+                    || this.passwordActual === '') {
+                    this.toasterLite.error('Debe ingresar el password actual para actualizarlo.');
+                    return false;
+                }
+                if (this.nuevoPassword !== this.nuevoPasswordConfirmacion)
+                    this.toasterLite.error('El password ingresado no coincide con la confirmación');
+                return false;
+            }
+            return true;
         };
         return perfilController;
     }());

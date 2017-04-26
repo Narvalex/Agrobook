@@ -119,6 +119,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MensajeAuditableExtensions.cs" />
     <Compile Include="Filters\AutorizarAttribute.cs" />
     <Compile Include="Filters\GlobalErrorAttribute.cs" />
     <Compile Include="Login\LoginController.cs" />

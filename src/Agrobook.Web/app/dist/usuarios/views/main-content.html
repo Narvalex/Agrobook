@@ -6,9 +6,13 @@
                                       ng-disabled="vm.loaded"></md-progress-circular>
             </div>
         </md-content>
-        <div ng-show="vm.loaded" ng-cloak>
-            <img ng-src="{{vm.usuario.avatarUrl}}" alt="Imagen de perfil" style="height:125px" />
-            <h2>{{vm.usuario.nombreParaMostrar}}</h2>
+        <div ng-show="vm.loaded" layout="column" ng-cloak>
+            <table>
+                <tr>
+                    <td><img ng-src="{{vm.usuario.avatarUrl}}" alt="Imagen de perfil" style="height:125px" /></td>
+                    <td><h2>{{vm.usuario.nombreParaMostrar}}</h2><p>{{vm.usuario.nombre}}</p></td>
+                </tr>
+            </table>
         </div>
     </div>
 

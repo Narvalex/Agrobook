@@ -14,5 +14,11 @@ namespace Agrobook.Client.Usuarios
             var command = new CrearNuevoUsuario(null, dto.NombreDeUsuario, dto.NombreParaMostrar, dto.AvatarUrl, dto.Password, dto.Claims);
             await base.Post("crear-nuevo-usuario", command);
         }
+
+        public async Task ActualizarPerfil(ActualizarPerfilDto dto)
+        {
+            var command = new ActualizarPerfil(null, dto.AvatarUrl, dto.NombreParaMostrar, dto.PasswordActual, dto.NuevoPassword);
+            await base.Post("actualizar-perfil", command);
+        }
     }
 }
