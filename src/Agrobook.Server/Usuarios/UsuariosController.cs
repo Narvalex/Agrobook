@@ -1,7 +1,6 @@
 ﻿using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Login;
 using Agrobook.Server.Filters;
-using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -23,10 +22,10 @@ namespace Agrobook.Server.Usuarios
 
         [HttpPost]
         [Route("actualizar-perfil")]
-        public async Task<IHttpActionResult> ActualizarPerfil()
+        public async Task<IHttpActionResult> ActualizarPerfil([FromBody]ActualizarPerfil command)
         {
-            throw new NotImplementedException();
-
+            await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            return this.Ok();
         }
     }
 }

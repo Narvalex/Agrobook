@@ -11,7 +11,7 @@ using System.Linq;
 namespace Agrobook.Domain.Tests.Usuarios
 {
     [TestClass]
-    public class UsuariosTests
+    public partial class UsuariosTests
     {
         private TestableEventSourcedService<UsuariosService> sut;
         private CryptoSerializer crypto;
@@ -158,7 +158,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var loginInfo = new LoginInfo("user1", "123", new string[] { Claims.Roles.Admin });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
             this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("user1"), new NuevoUsuarioCreado(TestMeta.New, "user1", "User Name", "", eLoginInfo))
+                .Given("user1".AsStreamNameOf<Usuario>(), new NuevoUsuarioCreado(TestMeta.New, "user1", "User Name", "", eLoginInfo))
                 .When(s =>
                 {
                     var result = s.HandleAsync(new IniciarSesion("user1", "123", now)).Result;
@@ -233,7 +233,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
-                .Given("agrobook.usuarios-productor", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
+                .Given("productor".AsStreamNameOf<Usuario>(), new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
                     var autorizado = s.TryAuthorize(eLoginInfo, Claims.Roles.Tecnico);
@@ -249,12 +249,51 @@ namespace Agrobook.Domain.Tests.Usuarios
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
+                .Given("admin".AsStreamNameOf<Usuario>(), new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
                     var autorizado = s.TryAuthorize(eLoginInfo, Claims.Roles.Tecnico);
                     Assert.IsTrue(autorizado);
                 });
+        }
+        #endregion
+
+        #region DadaUnaActualizacionDePerfilSolicitada
+
+        [TestMethod]
+        public void CuandoElUsuarioNoExisteEntoncesError()
+        {
+            this.sut.When(s =>
+            {
+                Assert.ThrowsException<InvalidOperationException>(() =>
+                {
+                    try
+                    {
+                        s.HandleAsync(new ActualizarPerfil(TestMeta.New, "admin", null, null, null, null)).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex.InnerException;
+                    }
+                });
+            });
+        }
+
+        [TestMethod]
+        public void CuandoLasOpcionesSonNulasEntoncesNoSeActualizaPerfil()
+        {
+            this.sut
+                .Given("admin".AsStreamNameOf<Usuario>(), new NuevoUsuarioCreado(TestMeta.New, "admin", "admin", "avatar.png", "..."))
+                .When(s =>
+                {
+                    s.HandleAsync(new ActualizarPerfil(TestMeta.New, "admin", null, null, null, null)).Wait();
+                })
+                .Then(events =>
+                {
+                    Assert.IsTrue(events.Count == 0);
+                });
+
+            throw new Exception("Faltan mas tests");
         }
         #endregion
     }

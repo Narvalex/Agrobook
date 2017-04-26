@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 namespace Agrobook.Domain.Usuarios.Services
 {
     public class UsuariosDenormalizer : EventStreamHandler,
-        IEventHandler<NuevoUsuarioCreado>
+        IEventHandler<NuevoUsuarioCreado>,
+        IEventHandler<AvatarUrlActualizado>
     {
         private readonly IEventStreamSubscription subscription;
         private readonly Func<UsuariosDbContext> contextFactory;
@@ -48,6 +49,14 @@ namespace Agrobook.Domain.Usuarios.Services
                     NombreParaMostrar = e.NombreParaMostrar,
                     AvatarUrl = e.AvatarUrl
                 });
+            });
+        }
+
+        public async Task Handle(long eventNumber, AvatarUrlActualizado e)
+        {
+            await this.Denormalize(eventNumber, context =>
+            {
+                //var usuario = context.Usuarios.Single(u => u.NombreDeUsuario == e.)
             });
         }
 

@@ -39,7 +39,8 @@ namespace Agrobook.Domain.Usuarios
     public class ActualizarPerfil : MensajeAuditable
     {
         public ActualizarPerfil(
-            Metadatos metadatos, 
+            Metadatos metadatos,
+            string usuario,
             string avatarUrl, 
             string nombreParaMostrar,
             string passwordActual,
@@ -47,15 +48,36 @@ namespace Agrobook.Domain.Usuarios
             ) 
             : base(metadatos)
         {
+            this.Usuario = usuario;
             this.AvatarUrl = avatarUrl;
             this.NombreParaMostrar = nombreParaMostrar;
             this.PasswordActual = passwordActual;
             this.NuevoPassword = nuevoPassword;
         }
 
+        /// <summary>
+        /// El usuario a ser actualizado.
+        /// </summary>
+        public string Usuario { get; }
+
+        /// <summary>
+        /// El nuevo avatar url. Si no se cambio, entonces es nulo
+        /// </summary>
         public string AvatarUrl { get; }
+
+        /// <summary>
+        /// El nuevo nombre para mostrar. Si no hubo cambio, entonces es nulo.
+        /// </summary>
         public string NombreParaMostrar { get; }
+
+        /// <summary>
+        /// El password actual, para ver si coincide con el verdadero.
+        /// </summary>
         public string PasswordActual { get; }
+
+        /// <summary>
+        /// Nuevo password propuesto. Si no se quiere cambiar este, entonces es nulo.
+        /// </summary>
         public string NuevoPassword { get; }
     }
 }

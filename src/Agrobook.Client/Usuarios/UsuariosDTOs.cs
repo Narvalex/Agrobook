@@ -11,6 +11,7 @@
 
     public class ActualizarPerfilDto
     {
+        public string Usuario { get; set; }
         public string AvatarUrl { get; set; }
         public string NombreParaMostrar { get; set; }
         public string PasswordActual { get; set; }

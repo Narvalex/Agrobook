@@ -17,7 +17,7 @@ namespace Agrobook.Client.Usuarios
 
         public async Task ActualizarPerfil(ActualizarPerfilDto dto)
         {
-            var command = new ActualizarPerfil(null, dto.AvatarUrl, dto.NombreParaMostrar, dto.PasswordActual, dto.NuevoPassword);
+            var command = new ActualizarPerfil(null, dto.Usuario, dto.AvatarUrl, dto.NombreParaMostrar, dto.PasswordActual, dto.NuevoPassword);
             await base.Post("actualizar-perfil", command);
         }
     }

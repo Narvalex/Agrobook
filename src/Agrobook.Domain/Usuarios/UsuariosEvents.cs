@@ -25,4 +25,43 @@ namespace Agrobook.Domain.Usuarios
             : base(metadatos)
         { }
     }
+
+    public class AvatarUrlActualizado : MensajeAuditable
+    {
+        public AvatarUrlActualizado(Metadatos metadatos, string usuario, string nuevoAvatarUrl)
+            : base(metadatos)
+        {
+            this.Usuario = usuario;
+            this.NuevoAvatarUrl = nuevoAvatarUrl;
+        }
+
+        public string Usuario { get; }
+        public string NuevoAvatarUrl { get; }
+    }
+
+    public class NombreParaMostrarActualizado : MensajeAuditable
+    {
+        public NombreParaMostrarActualizado(Metadatos metadatos, string usuario, string nuevoNombreParaMostrar)
+            : base(metadatos)
+        {
+            this.Usuario = usuario;
+            this.NuevoNombreParaMostrar = nuevoNombreParaMostrar;
+        }
+
+        public string Usuario { get; }
+        public string NuevoNombreParaMostrar { get; }
+    }
+
+    public class PasswordCambiado : MensajeAuditable
+    {
+        public PasswordCambiado(Metadatos metadatos, string usuario, string loginInfoEncriptado)
+            : base(metadatos)
+        {
+            this.Usuario = usuario;
+            this.LoginInfoEncriptado = loginInfoEncriptado;
+        }
+
+        public string Usuario { get; }
+        public string LoginInfoEncriptado { get; }
+    }
 }

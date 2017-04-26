@@ -22,7 +22,8 @@ var usuariosArea;
     }());
     usuariosArea.usuarioInfoBasica = usuarioInfoBasica;
     var actualizarPerfilDto = (function () {
-        function actualizarPerfilDto(avatarUrl, nombreParaMostrar, passwordActual, nuevoPassword) {
+        function actualizarPerfilDto(usuario, avatarUrl, nombreParaMostrar, passwordActual, nuevoPassword) {
+            this.usuario = usuario;
             this.avatarUrl = avatarUrl;
             this.nombreParaMostrar = nombreParaMostrar;
             this.passwordActual = passwordActual;

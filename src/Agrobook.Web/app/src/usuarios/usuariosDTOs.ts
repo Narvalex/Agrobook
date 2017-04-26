@@ -22,6 +22,7 @@ module usuariosArea {
 
     export class actualizarPerfilDto {
         constructor(
+            public usuario: string,
             public avatarUrl: string,
             public nombreParaMostrar: string,
             public passwordActual: string,
