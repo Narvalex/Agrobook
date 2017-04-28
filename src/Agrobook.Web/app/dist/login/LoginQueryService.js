@@ -16,4 +16,4 @@ var login;
     loginQueryService.$inject = ['$http', 'config', 'localStorageLite'];
     login.loginQueryService = loginQueryService;
 })(login || (login = {}));
-//# sourceMappingURL=LoginQueryService.js.map
+//# sourceMappingURL=loginQueryService.js.map

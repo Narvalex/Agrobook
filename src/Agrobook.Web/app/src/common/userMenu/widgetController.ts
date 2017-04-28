@@ -2,13 +2,14 @@
 
 module common {
     export class userMenuWidgetController {
-        static $inject = ['config', '$mdPanel', 'loginQueryService', '$rootScope'];
+        static $inject = ['config', '$mdPanel', 'loginQueryService', '$rootScope', '$scope'];
 
         constructor(
             private config: common.config,
             private $mdPanel: angular.material.IPanelService,
             private loginQueryService: login.loginQueryService,
-            private $rootScope: angular.IRootScopeService
+            private $rootScope: angular.IRootScopeService,
+            private $scope: ng.IScope
         ) {
             this.$rootScope.$on(this.config.eventIndex.login.loggedIn, (e, args) => {
                 this.verificarLogueo();
@@ -17,8 +18,17 @@ module common {
                 this.verificarLogueo();
             });
             this.verificarLogueo();
+
+            this.$scope.$on(this.config.eventIndex.usuarios.perfilActualizado,
+                (e, args: common.perfilActualizado) => {
+                    if (this.estaLogueado && this.usuario === args.usuario) {
+                        this.nombreParaMostrar = args.nombreParaMostrar;
+                        this.avatarUrl = args.avatarUrl;
+                    }
+                });
         }
 
+        usuario: string;
         estaLogueado: boolean = false;
         nombreParaMostrar: string;
         avatarUrl: string;
@@ -52,6 +62,7 @@ module common {
             var result = this.loginQueryService.tryGetLocalLoginInfo();
             if (result !== undefined && result.loginExitoso) {
                 this.estaLogueado = true;
+                this.usuario = result.usuario;
                 this.nombreParaMostrar = result.nombreParaMostrar;
                 this.avatarUrl = result.avatarUrl;
             }

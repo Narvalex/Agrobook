@@ -2,34 +2,41 @@
 
 module usuariosArea {
     export class perfilController {
-        static $inject = ['$routeParams', 'loginQueryService', 'usuariosQueryService', 'toasterLite', 'config'];
+        static $inject = ['$routeParams', 'loginQueryService', 'usuariosService',
+            'usuariosQueryService', 'toasterLite', 'config', '$rootScope', '$scope'];
 
         constructor(
             private $routeParams: angular.route.IRouteParamsService,
             private loginQueryService: login.loginQueryService,
+            private usuariosService: usuariosService,
             private usuariosQueryService: usuariosQueryService,
             private toasterLite: common.toasterLite,
-            private config: common.config
+            private config: common.config,
+            private $rootScope: ng.IRootScopeService,
+            private $scope: ng.IScope
         ) {
             this.avatarUrls = config.avatarUrls;
 
-            var idUsuario = this.$routeParams['idUsuario'];
-            if (idUsuario === undefined) {
-                let usuario = this.loginQueryService.tryGetLocalLoginInfo();
-                this.inicializarEdicionDeInfoBasica(new usuarioInfoBasica(usuario.usuario, usuario.nombreParaMostrar, usuario.avatarUrl));
-                this.loaded = true;
-            }
-            else {
-                this.usuariosQueryService.obtenerInfoBasicaDeUsuario(
-                    idUsuario,
-                    (value) => {
-                        this.inicializarEdicionDeInfoBasica(value.data);
-                        this.loaded = true;
-                    },
-                    (reason) => {
-                        this.toasterLite.error('Ocurrió un error al recuperar información del usuario ' + idUsuario, this.toasterLite.delayForever);
-                    });
-            }
+            let idUsuario = this.$routeParams['idUsuario'];
+            let usuario: login.loginResult;
+            if (idUsuario === undefined)
+                idUsuario = this.loginQueryService.tryGetLocalLoginInfo().usuario;
+
+            this.usuariosQueryService.obtenerInfoBasicaDeUsuario(
+                idUsuario,
+                (value) => {
+                    this.inicializarEdicionDeInfoBasica(value.data);
+                    this.loaded = true;
+                },
+                (reason) => {
+                    this.toasterLite.error('Ocurrió un error al recuperar información del usuario ' + idUsuario, this.toasterLite.delayForever);
+                });
+
+            this.$scope.$on(this.config.eventIndex.usuarios.perfilActualizado,
+                (e, args: common.perfilActualizado) => {
+                    this.inicializarEdicionDeInfoBasica(new usuarioInfoBasica(
+                        args.usuario, args.nombreParaMostrar, args.avatarUrl));
+                });
         }
 
         loaded: boolean = false;
@@ -48,6 +55,22 @@ module usuariosArea {
             if (!this.intentarValidarEdicionDePerfil())
                 return;
 
+            var dto = new actualizarPerfilDto(
+                this.usuarioRecuperado.nombre,
+                this.usuarioEditado.avatarUrl,
+                this.usuarioEditado.nombreParaMostrar,
+                this.passwordActual,
+                this.nuevoPassword);
+
+            this.usuariosService.actualizarPerfil(
+                dto,
+                value => {
+                    this.$rootScope.$broadcast(this.config.eventIndex.usuarios.perfilActualizado,
+                    new common.perfilActualizado(dto.usuario, dto.avatarUrl, dto.nombreParaMostrar));
+                    this.toasterLite.success('El perfil se ha actualizado exitosamente');
+                },
+                reason => this.toasterLite.error('Ocurrió un error al intentar actualizar el perfil')
+            );
         }
 
         resetearPassword() {
@@ -62,7 +85,7 @@ module usuariosArea {
                 usuarioRecuperado.avatarUrl);
         }
 
-        private get perfilEstaEditado() : boolean {
+        private get perfilEstaEditado(): boolean {
             if (this.usuarioRecuperado.avatarUrl !== this.usuarioEditado.avatarUrl)
                 return true;
             if (this.usuarioRecuperado.nombreParaMostrar !== this.usuarioEditado.nombreParaMostrar)
@@ -89,9 +112,10 @@ module usuariosArea {
                     this.toasterLite.error('Debe ingresar el password actual para actualizarlo.');
                     return false;
                 }
-                if (this.nuevoPassword !== this.nuevoPasswordConfirmacion)
+                if (this.nuevoPassword !== this.nuevoPasswordConfirmacion) {
                     this.toasterLite.error('El password ingresado no coincide con la confirmación');
                     return false;
+                }
             }
 
             return true;

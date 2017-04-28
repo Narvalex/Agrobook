@@ -42,7 +42,8 @@ var common;
                     loggedOut: 'loggedOut'
                 },
                 usuarios: {
-                    usuarioSeleccionado: 'usuarioSeleccionado'
+                    usuarioSeleccionado: 'usuarioSeleccionado',
+                    perfilActualizado: 'perfilActualizado'
                 }
             };
         }

@@ -2,7 +2,8 @@
 var usuariosArea;
 (function (usuariosArea) {
     var sidenavController = (function () {
-        function sidenavController($mdSidenav, $mdDialog, $mdMedia, toasterLite, usuariosQueryService, $rootScope, config) {
+        function sidenavController($mdSidenav, $mdDialog, $mdMedia, toasterLite, usuariosQueryService, $rootScope, config, $scope) {
+            var _this = this;
             this.$mdSidenav = $mdSidenav;
             this.$mdDialog = $mdDialog;
             this.$mdMedia = $mdMedia;
@@ -10,10 +11,20 @@ var usuariosArea;
             this.usuariosQueryService = usuariosQueryService;
             this.$rootScope = $rootScope;
             this.config = config;
+            this.$scope = $scope;
             this.usuarios = [];
             this.usuarioSeleccionado = null;
             this.loaded = false;
             this.cargarListaDeUsuarios();
+            this.$scope.$on(this.config.eventIndex.usuarios.perfilActualizado, function (e, args) {
+                for (var i = 0; i < _this.usuarios.length; i++) {
+                    if (_this.usuarios[i].nombre == args.usuario) {
+                        _this.usuarios[i].avatarUrl = args.avatarUrl;
+                        _this.usuarios[i].nombreParaMostrar = args.nombreParaMostrar;
+                        break;
+                    }
+                }
+            });
         }
         sidenavController.prototype.toggleSideNav = function () {
             this.$mdSidenav('left').toggle();
@@ -53,7 +64,7 @@ var usuariosArea;
         return sidenavController;
     }());
     sidenavController.$inject = ['$mdSidenav', '$mdDialog', '$mdMedia', 'toasterLite', 'usuariosQueryService', '$rootScope',
-        'config'];
+        'config', '$scope'];
     usuariosArea.sidenavController = sidenavController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=sidenavController.js.map

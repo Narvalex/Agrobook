@@ -7,7 +7,8 @@ namespace Agrobook.Domain.Usuarios.Services
 {
     public class UsuariosDenormalizer : EventStreamHandler,
         IEventHandler<NuevoUsuarioCreado>,
-        IEventHandler<AvatarUrlActualizado>
+        IEventHandler<AvatarUrlActualizado>,
+        IEventHandler<NombreParaMostrarActualizado>
     {
         private readonly IEventStreamSubscription subscription;
         private readonly Func<UsuariosDbContext> contextFactory;
@@ -56,7 +57,17 @@ namespace Agrobook.Domain.Usuarios.Services
         {
             await this.Denormalize(eventNumber, context =>
             {
-                //var usuario = context.Usuarios.Single(u => u.NombreDeUsuario == e.)
+                var usuario = context.Usuarios.Single(u => u.NombreDeUsuario == e.Usuario);
+                usuario.AvatarUrl = e.NuevoAvatarUrl;
+            });
+        }
+
+        public async Task Handle(long eventNumber, NombreParaMostrarActualizado e)
+        {
+            await this.Denormalize(eventNumber, context =>
+            {
+                var usuario = context.Usuarios.Single(u => u.NombreDeUsuario == e.Usuario);
+                usuario.NombreParaMostrar = e.NuevoNombreParaMostrar;
             });
         }
 

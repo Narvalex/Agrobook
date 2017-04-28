@@ -2,12 +2,13 @@
 var common;
 (function (common) {
     var userMenuWidgetController = (function () {
-        function userMenuWidgetController(config, $mdPanel, loginQueryService, $rootScope) {
+        function userMenuWidgetController(config, $mdPanel, loginQueryService, $rootScope, $scope) {
             var _this = this;
             this.config = config;
             this.$mdPanel = $mdPanel;
             this.loginQueryService = loginQueryService;
             this.$rootScope = $rootScope;
+            this.$scope = $scope;
             this.estaLogueado = false;
             this.$rootScope.$on(this.config.eventIndex.login.loggedIn, function (e, args) {
                 _this.verificarLogueo();
@@ -16,6 +17,12 @@ var common;
                 _this.verificarLogueo();
             });
             this.verificarLogueo();
+            this.$scope.$on(this.config.eventIndex.usuarios.perfilActualizado, function (e, args) {
+                if (_this.estaLogueado && _this.usuario === args.usuario) {
+                    _this.nombreParaMostrar = args.nombreParaMostrar;
+                    _this.avatarUrl = args.avatarUrl;
+                }
+            });
         }
         userMenuWidgetController.prototype.mostrarMenu = function ($event) {
             var panelConfig;
@@ -43,6 +50,7 @@ var common;
             var result = this.loginQueryService.tryGetLocalLoginInfo();
             if (result !== undefined && result.loginExitoso) {
                 this.estaLogueado = true;
+                this.usuario = result.usuario;
                 this.nombreParaMostrar = result.nombreParaMostrar;
                 this.avatarUrl = result.avatarUrl;
             }
@@ -52,7 +60,7 @@ var common;
         };
         return userMenuWidgetController;
     }());
-    userMenuWidgetController.$inject = ['config', '$mdPanel', 'loginQueryService', '$rootScope'];
+    userMenuWidgetController.$inject = ['config', '$mdPanel', 'loginQueryService', '$rootScope', '$scope'];
     common.userMenuWidgetController = userMenuWidgetController;
     var panelMenuController = (function () {
         function panelMenuController(mdPanelRef, loginService) {

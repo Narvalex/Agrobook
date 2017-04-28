@@ -14,6 +14,18 @@ namespace Agrobook.Domain.Usuarios
                 this.LoginInfoEncriptado = e.LoginInfoEncriptado;
                 this.AvatarUrl = e.AvatarUrl;
             });
+            this.On<AvatarUrlActualizado>(e =>
+            {
+                this.AvatarUrl = e.NuevoAvatarUrl;
+            });
+            this.On<NombreParaMostrarActualizado>(e =>
+            {
+                this.NombreParaMostrar = e.NuevoNombreParaMostrar;
+            });
+            this.On<PasswordCambiado>(e =>
+            {
+                this.LoginInfoEncriptado = e.LoginInfoEncriptado;
+            });
         }
 
         protected override void Rehydrate(ISnapshot snapshot)

@@ -3,7 +3,7 @@
 module usuariosArea {
     export class sidenavController {
         static $inject = ['$mdSidenav', '$mdDialog', '$mdMedia', 'toasterLite', 'usuariosQueryService', '$rootScope',
-        'config'];
+        'config', '$scope'];
 
         constructor(
             private $mdSidenav: angular.material.ISidenavService,
@@ -12,9 +12,21 @@ module usuariosArea {
             private toasterLite: common.toasterLite,
             private usuariosQueryService: usuariosQueryService,
             private $rootScope: ng.IRootScopeService,
-            private config: common.config
+            private config: common.config,
+            private $scope: ng.IScope
         ) {
             this.cargarListaDeUsuarios();
+
+            this.$scope.$on(this.config.eventIndex.usuarios.perfilActualizado,
+                (e, args: common.perfilActualizado) => {
+                    for (var i = 0; i < this.usuarios.length; i++) {
+                        if (this.usuarios[i].nombre == args.usuario) {
+                            this.usuarios[i].avatarUrl = args.avatarUrl;
+                            this.usuarios[i].nombreParaMostrar = args.nombreParaMostrar;
+                            break;
+                        }
+                    }
+                });
         }
 
         usuarios: usuarioInfoBasica[] = [];

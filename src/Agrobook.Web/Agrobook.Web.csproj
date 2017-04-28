@@ -838,6 +838,7 @@
     <TypeScriptCompile Include="app\src\archivos\mainContentController.ts" />
     <TypeScriptCompile Include="app\src\archivos\sidenavController.ts" />
     <TypeScriptCompile Include="app\src\archivos\toolbarHeaderController.ts" />
+    <TypeScriptCompile Include="app\src\common\commonDTOs.ts" />
     <TypeScriptCompile Include="app\src\common\httpInterceptorRegistry.ts" />
     <TypeScriptCompile Include="app\src\common\userMenu\widgetController.ts" />
     <TypeScriptCompile Include="app\src\config.ts" />
