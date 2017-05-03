@@ -27,6 +27,9 @@ var usuariosArea;
         usuariosService.prototype.resetearPassword = function (usuario, onSuccess, onError) {
             this.post('resetear-password/' + usuario, {}, onSuccess, onError);
         };
+        usuariosService.prototype.crearNuevaOrganizacion = function (nombreOrg, onSuccess, onError) {
+            this.post('crear-nueva-organizacion/' + nombreOrg, {}, onSuccess, onError);
+        };
         return usuariosService;
     }(common.httpLite));
     usuariosService.$inject = ['$http'];

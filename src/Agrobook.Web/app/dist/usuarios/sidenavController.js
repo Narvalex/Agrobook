@@ -32,7 +32,7 @@ var usuariosArea;
         sidenavController.prototype.seleccionarUsuario = function (usuario) {
             this.usuarioSeleccionado = usuario;
             this.$rootScope.$broadcast(this.config.eventIndex.usuarios.usuarioSeleccionado, {});
-            window.location.replace('#!/usuario/' + usuario.nombre);
+            window.location.replace('#!/usuario/' + usuario.nombre + '?tab=perfil');
             this.toggleSideNav();
         };
         sidenavController.prototype.crearNuevoUsuario = function ($event) {

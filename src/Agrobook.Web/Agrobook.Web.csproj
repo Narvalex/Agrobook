@@ -733,6 +733,7 @@
     <Content Include="app\dist\usuarios\sidenav.css" />
     <Content Include="app\dist\usuarios\toolbar-header.html" />
     <Content Include="app\dist\usuarios\views\main-content.html" />
+    <Content Include="app\dist\usuarios\views\organizaciones.html" />
     <Content Include="app\dist\usuarios\views\perfil.html" />
     <Content Include="app\home.html" />
     <Content Include="app\maps.html" />
@@ -880,6 +881,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <TypeScriptCompile Include="app\src\usuarios\views\mainContentController.ts" />
+    <TypeScriptCompile Include="app\src\usuarios\views\organizacionesController.ts" />
     <TypeScriptCompile Include="app\src\usuarios\views\perfilController.ts" />
     <TypeScriptCompile Include="typings\modules\angular-route\index.d.ts" />
   </ItemGroup>

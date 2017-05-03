@@ -1,0 +1,22 @@
+﻿<div class="padding-all" ng-controller="organizacionesController as vm">
+
+        <form name="nuevaOrgForm" ng-submit="vm.crearNuevaOrganizacion()">
+            <div layout-gt-xs="row">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Nueva organización</label>
+                    <input name="orgNombre" ng-model="vm.orgNombre" required/>
+                    <div ng-messages="nuevaOrgForm.orgNombre.$error">
+                        <div ng-message="required">Si desea crear una nueva debe especificar un nombre.</div>
+                    </div>
+                </md-input-container>
+                <div class="md-actions">
+                    <md-button class="md-primary md-raised date-row"
+                               type="submit"
+                               ng-disabled="nuevaOrgForm.$invalid">
+                        Crear
+                    </md-button>
+                </div>
+            </div>
+        </form>
+   
+</div>

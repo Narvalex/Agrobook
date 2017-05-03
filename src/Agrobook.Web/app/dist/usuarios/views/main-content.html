@@ -16,20 +16,20 @@
         </div>
     </div>
 
-    <div ng-show="vm.loaded">
+    <div ng-show="vm.loaded"> 
         <md-tabs md-dynamic-height=""
                  md-selected="vm.tabIndex">
-            <md-tab label="Perfil">
+            <md-tab label="Perfil" md-on-select="vm.onTabSelect(0)">
                 <div ng-include="'./dist/usuarios/views/perfil.html'"></div>
             </md-tab>
-            <md-tab label="Permisos">
+            <md-tab label="Permisos" md-on-select="vm.onTabSelect(1)">
                 <h1>Permisos</h1>
             </md-tab>
-            <md-tab label="Grupos">
+            <md-tab label="Grupos" md-on-select="vm.onTabSelect(2)">
                 <h1>Grupos</h1>
             </md-tab>
-            <md-tab label="Organizaciones">
-                <h1>Organizaciones</h1>
+            <md-tab label="Organizaciones" md-on-select="vm.onTabSelect(3)">
+                <div ng-include="'./dist/usuarios/views/organizaciones.html'"></div>
             </md-tab>
         </md-tabs>
     </div>

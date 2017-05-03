@@ -11,6 +11,7 @@ var usuariosArea;
             this.$scope = $scope;
             this.config = config;
             this.loaded = false;
+            this.abrirElTabQueCorresponde(this.$routeParams['tab']);
             var idUsuario = this.$routeParams['idUsuario'];
             if (idUsuario === undefined)
                 idUsuario = this.loginQueryService.tryGetLocalLoginInfo().usuario;
@@ -24,6 +25,46 @@ var usuariosArea;
                 _this.usuario = new usuariosArea.usuarioInfoBasica(_this.usuario.nombre, args.nombreParaMostrar, args.avatarUrl);
             });
         }
+        mainContentController.prototype.onTabSelect = function (tabIndex) {
+            if (this.usuario === undefined)
+                return;
+            var tabId;
+            switch (tabIndex) {
+                case 0:
+                    tabId = 'perfil';
+                    break;
+                case 1:
+                    tabId = 'permisos';
+                    break;
+                case 2:
+                    tabId = 'grupos';
+                    break;
+                case 3:
+                    tabId = 'organizaciones';
+                    break;
+                default: tabId = "perfil";
+            }
+            window.location.replace('#!/usuario/' + this.usuario.nombre + '?tab=' + tabId);
+        };
+        mainContentController.prototype.abrirElTabQueCorresponde = function (tabId) {
+            switch (tabId) {
+                case 'perfil':
+                    this.tabIndex = 0;
+                    break;
+                case 'permisos':
+                    this.tabIndex = 1;
+                    break;
+                case 'grupos':
+                    this.tabIndex = 2;
+                    break;
+                case 'organizaciones':
+                    this.tabIndex = 3;
+                    break;
+                default:
+                    this.tabIndex = 0;
+                    break;
+            }
+        };
         return mainContentController;
     }());
     mainContentController.$inject = ['$routeParams', 'loginQueryService', 'usuariosQueryService', 'toasterLite', '$scope',
