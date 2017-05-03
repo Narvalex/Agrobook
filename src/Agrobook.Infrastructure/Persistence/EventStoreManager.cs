@@ -126,7 +126,7 @@ namespace Agrobook.Infrastructure.Persistence
             var settings =
                 ConnectionSettings
                 .Create()
-                .UseConsoleLogger()
+                //.UseConsoleLogger()
                 .SetDefaultUserCredentials(this.userCredentials)
                 .Build();
 
@@ -148,7 +148,7 @@ namespace Agrobook.Infrastructure.Persistence
                 .Create()
                 .KeepReconnecting()
                 .KeepRetrying()
-                .UseConsoleLogger()
+                //.UseConsoleLogger()
                 .SetDefaultUserCredentials(this.userCredentials)
                 .Build();
 

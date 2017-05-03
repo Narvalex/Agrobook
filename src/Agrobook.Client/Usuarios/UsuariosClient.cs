@@ -20,5 +20,11 @@ namespace Agrobook.Client.Usuarios
             var command = new ActualizarPerfil(null, dto.Usuario, dto.AvatarUrl, dto.NombreParaMostrar, dto.PasswordActual, dto.NuevoPassword);
             await base.Post("actualizar-perfil", command);
         }
+
+        public async Task ResetearPassword(string usuario)
+        {
+            var command = new ResetearPassword(null, usuario);
+            await base.Post("resetear-password", command);
+        }
     }
 }

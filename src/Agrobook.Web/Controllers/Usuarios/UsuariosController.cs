@@ -32,5 +32,13 @@ namespace Agrobook.Web.Controllers.Usuarios
             await this.client.ActualizarPerfil(dto);
             return this.Ok();
         }
+
+        [HttpPost]
+        [Route("resetear-password/{usuario}")]
+        public async Task<IHttpActionResult> ResetearPassword([FromUri]string usuario)
+        {
+            await this.client.ResetearPassword(usuario);
+            return this.Ok();
+        }
     }
 }

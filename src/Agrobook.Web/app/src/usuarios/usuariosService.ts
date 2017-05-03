@@ -25,5 +25,13 @@ module usuariosArea {
         ) {
             this.post('actualizar-perfil', usuario, onSuccess, onError);
         }
+
+        resetearPassword(
+            usuario: string,
+            onSuccess: (value: ng.IHttpPromiseCallback<{}>) => void,
+            onError: (reason: any) => void
+        ) {
+            this.post('resetear-password/' + usuario, {}, onSuccess, onError);
+        }
     }
 }

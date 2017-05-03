@@ -64,4 +64,17 @@ namespace Agrobook.Domain.Usuarios
         public string Usuario { get; }
         public string LoginInfoEncriptado { get; }
     }
+
+    public class PasswordReseteado : MensajeAuditable
+    {
+        public PasswordReseteado(Metadatos metadatos, string usuario, string loginInfoEncriptado)
+            : base(metadatos)
+        {
+            this.Usuario = usuario;
+            this.LoginInfoEncriptado = loginInfoEncriptado;
+        }
+
+        public string Usuario { get; }
+        public string LoginInfoEncriptado { get; }
+    }
 }

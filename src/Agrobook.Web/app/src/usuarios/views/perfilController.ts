@@ -17,10 +17,12 @@ module usuariosArea {
         ) {
             this.avatarUrls = config.avatarUrls;
 
+            this.usuarioLogueado = this.loginQueryService.tryGetLocalLoginInfo();
+
             let idUsuario = this.$routeParams['idUsuario'];
             let usuario: login.loginResult;
             if (idUsuario === undefined)
-                idUsuario = this.loginQueryService.tryGetLocalLoginInfo().usuario;
+                idUsuario = this.usuarioLogueado.usuario;
 
             this.usuariosQueryService.obtenerInfoBasicaDeUsuario(
                 idUsuario,
@@ -43,6 +45,7 @@ module usuariosArea {
         avatarUrls = [];
         usuarioRecuperado: usuarioInfoBasica;
         usuarioEditado: usuarioInfoBasica;
+        usuarioLogueado: login.loginResult;
 
         // Password
         nuevoPassword: string;
@@ -68,13 +71,17 @@ module usuariosArea {
                     this.$rootScope.$broadcast(this.config.eventIndex.usuarios.perfilActualizado,
                     new common.perfilActualizado(dto.usuario, dto.avatarUrl, dto.nombreParaMostrar));
                     this.toasterLite.success('El perfil se ha actualizado exitosamente');
+
+                    
                 },
                 reason => this.toasterLite.error('Ocurrió un error al intentar actualizar el perfil')
             );
         }
 
         resetearPassword() {
-            console.log('password reseteado');
+            this.usuariosService.resetearPassword(this.usuarioRecuperado.nombre,
+                value => this.toasterLite.success('Password reseteado exitosamente'),
+                reason => this.toasterLite.error('Ocurrió un error al intentar resetear el password'));
         }
 
         private inicializarEdicionDeInfoBasica(usuarioRecuperado: usuarioInfoBasica) {

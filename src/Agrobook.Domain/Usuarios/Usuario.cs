@@ -26,6 +26,10 @@ namespace Agrobook.Domain.Usuarios
             {
                 this.LoginInfoEncriptado = e.LoginInfoEncriptado;
             });
+            this.On<PasswordReseteado>(e =>
+            {
+                this.LoginInfoEncriptado = e.LoginInfoEncriptado;
+            });
         }
 
         protected override void Rehydrate(ISnapshot snapshot)

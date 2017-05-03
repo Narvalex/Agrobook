@@ -24,6 +24,9 @@ var usuariosArea;
         usuariosService.prototype.actualizarPerfil = function (usuario, onSuccess, onError) {
             this.post('actualizar-perfil', usuario, onSuccess, onError);
         };
+        usuariosService.prototype.resetearPassword = function (usuario, onSuccess, onError) {
+            this.post('resetear-password/' + usuario, {}, onSuccess, onError);
+        };
         return usuariosService;
     }(common.httpLite));
     usuariosService.$inject = ['$http'];

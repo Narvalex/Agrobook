@@ -60,7 +60,7 @@ namespace Agrobook.Domain.Tests.Usuarios
 
                     var loginInfo = this.crypto.Deserialize<LoginInfo>(e.OfType<NuevoUsuarioCreado>().Single().LoginInfoEncriptado);
 
-                    Assert.AreEqual("changeit", loginInfo.Password);
+                    Assert.AreEqual(UsuariosService.DefaultPassword, loginInfo.Password);
                 });
         }
 
@@ -408,6 +408,57 @@ namespace Agrobook.Domain.Tests.Usuarios
                     Assert.IsTrue(s.LoginInfoEncriptado == expectedEncriptado);
                 });
         }
+        #endregion
+
+        #region Resetear Password
+
+        [TestMethod]
+        public void DadoUnUsuarioInexistenteNoPuedeResetearPassword()
+        {
+            this.sut.When(s =>
+            {
+                Assert.ThrowsException<InvalidOperationException>(() =>
+                {
+                    try
+                    {
+                        s.HandleAsync(new ResetearPassword(TestMeta.New, "admin")).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex.InnerException;
+                    }
+                });
+            });
+        }
+
+        [TestMethod]
+        public void CuandoSeQuiereResetearPasswordEntoncesSiempreSeReseteaAlPasswordPorDefecto()
+        {
+            var userName = "randomUser";
+            var infoEncriptado = this.crypto.Serialize(new LoginInfo(userName, "pass", null));
+            this.sut
+               .Given(userName.AsStreamNameOf<Usuario>(), new NuevoUsuarioCreado(TestMeta.New, userName, userName, "avatar.png", infoEncriptado))
+               .When(s =>
+               {
+                   s.HandleAsync(new ResetearPassword(TestMeta.New, userName)).Wait();
+               })
+               .Then(events =>
+               {
+                   Assert.AreEqual(1, events.Count);
+
+                   var e = events.OfType<PasswordReseteado>().Single();
+                   Assert.AreEqual(userName, e.Usuario);
+
+                   var info = this.crypto.Deserialize<LoginInfo>(e.LoginInfoEncriptado);
+                   Assert.AreEqual(UsuariosService.DefaultPassword, info.Password);
+               })
+               .And<UsuarioSnapshot>(s =>
+               {
+                   var info = this.crypto.Deserialize<LoginInfo>(s.LoginInfoEncriptado);
+                   Assert.AreEqual(UsuariosService.DefaultPassword, info.Password);
+               });
+        }
+
         #endregion
     }
 }

@@ -15,10 +15,11 @@ var usuariosArea;
             this.loaded = false;
             this.avatarUrls = [];
             this.avatarUrls = config.avatarUrls;
+            this.usuarioLogueado = this.loginQueryService.tryGetLocalLoginInfo();
             var idUsuario = this.$routeParams['idUsuario'];
             var usuario;
             if (idUsuario === undefined)
-                idUsuario = this.loginQueryService.tryGetLocalLoginInfo().usuario;
+                idUsuario = this.usuarioLogueado.usuario;
             this.usuariosQueryService.obtenerInfoBasicaDeUsuario(idUsuario, function (value) {
                 _this.inicializarEdicionDeInfoBasica(value.data);
                 _this.loaded = true;
@@ -42,7 +43,8 @@ var usuariosArea;
             }, function (reason) { return _this.toasterLite.error('Ocurrió un error al intentar actualizar el perfil'); });
         };
         perfilController.prototype.resetearPassword = function () {
-            console.log('password reseteado');
+            var _this = this;
+            this.usuariosService.resetearPassword(this.usuarioRecuperado.nombre, function (value) { return _this.toasterLite.success('Password reseteado exitosamente'); }, function (reason) { return _this.toasterLite.error('Ocurrió un error al intentar resetear el password'); });
         };
         perfilController.prototype.inicializarEdicionDeInfoBasica = function (usuarioRecuperado) {
             this.usuarioRecuperado = usuarioRecuperado;

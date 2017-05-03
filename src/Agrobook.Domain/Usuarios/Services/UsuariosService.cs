@@ -10,7 +10,7 @@ namespace Agrobook.Domain.Usuarios
     public class UsuariosService : EventSourcedService, ITokenAuthorizationProvider, IProveedorDeMetadatosDelUsuario
     {
         public const string UsuarioAdmin = "admin";
-        public const string DefaultPassword = "changeit";
+        public const string DefaultPassword = "1234";
         private readonly IJsonSerializer cryptoSerializer;
         private readonly string adminAvatarUrl;
 
@@ -119,6 +119,17 @@ namespace Agrobook.Domain.Usuarios
                 var encriptado = this.EncriptarLoginInfo(loginInfo);
                 usuario.Emit(new PasswordCambiado(cmd.Metadatos, cmd.Usuario, encriptado));
             }
+
+            await this.repository.SaveAsync(usuario);
+        }
+
+        public async Task HandleAsync(ResetearPassword cmd)
+        {
+            var usuario = await this.IntentarRecuperarUsuarioAsync(cmd.Usuario);
+            var loginInfo = this.ExtraerElLoginInfo(usuario);
+            loginInfo.ActualizarPassword(DefaultPassword);
+            var encriptado = this.EncriptarLoginInfo(loginInfo);
+            usuario.Emit(new PasswordReseteado(cmd.Metadatos, cmd.Usuario, encriptado));
 
             await this.repository.SaveAsync(usuario);
         }

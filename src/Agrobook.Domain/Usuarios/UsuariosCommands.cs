@@ -80,4 +80,14 @@ namespace Agrobook.Domain.Usuarios
         /// </summary>
         public string NuevoPassword { get; }
     }
+
+    public class ResetearPassword : MensajeAuditable
+    {
+        public ResetearPassword(Metadatos metadatos, string usuario) : base(metadatos)
+        {
+            this.Usuario = usuario;
+        }
+
+        public string Usuario { get; }
+    }
 }

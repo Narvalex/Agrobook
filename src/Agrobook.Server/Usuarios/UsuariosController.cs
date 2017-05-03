@@ -27,5 +27,13 @@ namespace Agrobook.Server.Usuarios
             await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
             return this.Ok();
         }
+
+        [HttpPost]
+        [Route("resetear-password")]
+        public async Task<IHttpActionResult> ResetearPassword([FromBody]ResetearPassword command)
+        {
+            await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            return this.Ok();
+        }
     }
 }
