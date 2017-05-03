@@ -76,6 +76,8 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task HandleAsync(CrearNuevoUsuario cmd)
         {
+            ValidarQue.ElNombreDeUsuarioNoContengaEspaciosEnBlanco(cmd.Usuario);
+
             var state = new Usuario();
             var loginInfo = new LoginInfo(cmd.Usuario, cmd.PasswordCrudo, cmd.Claims ?? new string[0]);
             var eLoginInfo = this.EncriptarLoginInfo(loginInfo);
@@ -151,6 +153,15 @@ namespace Agrobook.Domain.Usuarios
         {
             var info = this.cryptoSerializer.Deserialize<LoginInfo>(usuario.LoginInfoEncriptado);
             return info;
+        }
+
+        public static class ValidarQue
+        {
+            public static void ElNombreDeUsuarioNoContengaEspaciosEnBlanco(string nombreDeUsuario)
+            {
+                if (nombreDeUsuario.Contains(' '))
+                    throw new ArgumentException("El nombre de usuario no debe contener espacios en blanco");
+            }
         }
     }
 }

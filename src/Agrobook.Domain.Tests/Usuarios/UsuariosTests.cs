@@ -108,6 +108,28 @@ namespace Agrobook.Domain.Tests.Usuarios
             }
         }
 
+        [TestMethod]
+        public void NoSePuedeCrearUsuarioConEspaciosEntreCaracteres()
+        {
+            var avatarUrl = "app/avatar.png";
+            this.sut.Given()
+                    .When(s =>
+                    {
+                        Assert.ThrowsException<ArgumentException>(() =>
+                        {
+                            try
+                            {
+                                s.HandleAsync(new CrearNuevoUsuario(
+                                TestMeta.New,
+                                "user with spaces ", "User One", avatarUrl, "123", null)).Wait();
+                            }
+                            catch (Exception ex)
+                            {
+                                throw ex.InnerException;
+                            }
+                        });
+                    });
+        }
 
         [TestMethod]
         public void CuandoElUsuarioYaExisteEntoncesNoSePuedeAgregarOtroIgual()
