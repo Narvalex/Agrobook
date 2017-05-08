@@ -40,5 +40,13 @@ namespace Agrobook.Web.Controllers.Usuarios
             await this.client.ResetearPassword(usuario);
             return this.Ok();
         }
+
+        [HttpPost]
+        [Route("crear-nueva-organizacion/{nombreOrg}")]
+        public async Task<IHttpActionResult> CrearNuevaOrganizacion([FromUri]string nombreOrg)
+        {
+            await this.client.CrearNuevaOrganización(nombreOrg);
+            return this.Ok();
+        }
     }
 }

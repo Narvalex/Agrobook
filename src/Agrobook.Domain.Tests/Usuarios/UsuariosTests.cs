@@ -2,8 +2,6 @@
 using Agrobook.Domain.Tests.Utils;
 using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Login;
-using Agrobook.Infrastructure.Cryptography;
-using Agrobook.Infrastructure.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -11,18 +9,8 @@ using System.Linq;
 namespace Agrobook.Domain.Tests.Usuarios
 {
     [TestClass]
-    public partial class UsuariosTests
+    public class UsuariosTests : UsuariosServiceTestBase
     {
-        private TestableEventSourcedService<UsuariosService> sut;
-        private CryptoSerializer crypto;
-
-        public UsuariosTests()
-        {
-            this.crypto = new CryptoSerializer(new FauxCrypto());
-            this.sut = new TestableEventSourcedService<UsuariosService>(
-                r => new UsuariosService(r, new SimpleDateTimeProvider(), this.crypto));
-        }
-
         [TestMethod]
         public void ElNombreDelStreamSeGeneraCorrectamente()
         {

@@ -28,9 +28,9 @@ namespace Agrobook.Infrastructure.Subscription
                 handler);
         }
 
-        public IEventStreamSubscription CreateSubscriptionFromCategory(string category, Lazy<long?> lastCheckpoint, Action<long, object> handler)
-        {
-            return this.CreateSubscription($"$ce-{category}", lastCheckpoint, handler);
-        }
+        //public IEventStreamSubscription CreateSubscriptionFromCategory(string category, Lazy<long?> lastCheckpoint, Action<long, object> handler)
+        //{
+        //    return this.CreateSubscription($"$ce-{category}", lastCheckpoint, handler);
+        //}
     }
 }

@@ -18,4 +18,16 @@
 
         public static LoginResult Failed => new LoginResult(false, null, null, null, null);
     }
+
+    public class CrearNuevaOrganizacionResult
+    {
+        public CrearNuevaOrganizacionResult(string orgId, string nombreParaMostrar)
+        {
+            this.OrgId = orgId;
+            this.NombreParaMostrar = nombreParaMostrar;
+        }
+
+        public string OrgId { get; }
+        public string NombreParaMostrar { get; }
+    }
 }

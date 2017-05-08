@@ -1,4 +1,5 @@
 ﻿using Agrobook.Core;
+using Agrobook.Domain;
 using Agrobook.Domain.Common;
 using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Services;
@@ -9,6 +10,7 @@ using Agrobook.Infrastructure.Persistence;
 using Agrobook.Infrastructure.Serialization;
 using Agrobook.Infrastructure.Subscription;
 using Agrobook.Server.Filters;
+using System;
 
 namespace Agrobook.Server
 {
@@ -28,7 +30,10 @@ namespace Agrobook.Server
 
             var sqlDbName = "AgrobookDb";
 
-            var sqlInitializer = new SqlDbInitializer<UsuariosDbContext>(() => new UsuariosDbContext(false, sqlDbName));
+            Func<AgrobookDbContext> dbContextFactory = () => new AgrobookDbContext(false, sqlDbName);
+            Func<AgrobookDbContext> readOnlyDbContextFactory = () => new AgrobookDbContext(true, sqlDbName);
+
+            var sqlInitializer = new SqlDbInitializer<AgrobookDbContext>(dbContextFactory);
 
             var dateTimeProvider = new SimpleDateTimeProvider();
 
@@ -47,17 +52,23 @@ namespace Agrobook.Server
             var usuariosService = new UsuariosService(eventSourcedRepository, dateTimeProvider, cryptoSerializer);
             AutorizarAttribute.SetTokenAuthProvider(usuariosService);
 
-            var usuariosDenormalizer = new UsuariosDenormalizer(eventStreamSubscriber, () => new UsuariosDbContext(false, sqlDbName));
+            var usuariosDenormalizer = new UsuariosDenormalizer(eventStreamSubscriber, dbContextFactory);
 
-            var usuariosQueryService = new UsuariosQueryService(() => new UsuariosDbContext(true, sqlDbName));
+            var usuariosQueryService = new UsuariosQueryService(readOnlyDbContextFactory);
+
+            var organizacionesDenormalizer = new OrganizacionesDenormalizer(eventStreamSubscriber, dbContextFactory);
+
+            var organizacionesQueryService = new OrganizacionesQueryService(readOnlyDbContextFactory);
 
             container.Register<IDateTimeProvider>(dateTimeProvider);
             container.Register<EventStoreManager>(es);
+            container.Register<SqlDbInitializer<AgrobookDbContext>>(sqlInitializer);
             container.Register<UsuariosService>(usuariosService);
             container.Register<IProveedorDeMetadatosDelUsuario>(usuariosService);
             container.Register<UsuariosQueryService>(usuariosQueryService);
-            container.Register<SqlDbInitializer<UsuariosDbContext>>(sqlInitializer);
             container.Register<UsuariosDenormalizer>(usuariosDenormalizer);
+            container.Register<OrganizacionesDenormalizer>(organizacionesDenormalizer);
+            container.Register<OrganizacionesQueryService>(organizacionesQueryService);
         }
     }
 }

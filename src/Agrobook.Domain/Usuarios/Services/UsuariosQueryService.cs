@@ -1,4 +1,4 @@
-﻿using Agrobook.Core;
+﻿using Agrobook.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -7,20 +7,15 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Usuarios.Services
 {
-    public class UsuariosQueryService
+    public class UsuariosQueryService : AgrobookQueryService
     {
-        private readonly Func<UsuariosDbContext> contextFactory;
-
-        public UsuariosQueryService(Func<UsuariosDbContext> contextFactory)
-        {
-            Ensure.NotNull(contextFactory, nameof(contextFactory));
-
-            this.contextFactory = contextFactory;
-        }
+        public UsuariosQueryService(Func<AgrobookDbContext> contextFactory) 
+            : base(contextFactory)
+        { }
 
         public async Task<IList<UsuarioInfoBasica>> ObtenerTodosLosUsuarios()
         {
-            using (var context = this.contextFactory())
+            return await this.QueryAsync(async context =>
             {
                 var lista = await context.Usuarios.Select(u => new UsuarioInfoBasica
                 {
@@ -31,12 +26,12 @@ namespace Agrobook.Domain.Usuarios.Services
                 .ToListAsync();
 
                 return lista;
-            }
+            });
         }
 
         public async Task<UsuarioInfoBasica> ObtenerUsuarioInfoBasica(string usuario)
         {
-            using (var context = this.contextFactory())
+            return await this.QueryAsync(async context =>
             {
                 var dto = await context
                                 .Usuarios
@@ -50,7 +45,7 @@ namespace Agrobook.Domain.Usuarios.Services
                                 .SingleOrDefaultAsync();
 
                 return dto;
-            }
+            });
         }
     }
 }

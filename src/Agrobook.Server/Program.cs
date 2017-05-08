@@ -1,4 +1,5 @@
-﻿using Agrobook.Domain.Usuarios;
+﻿using Agrobook.Domain;
+using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Services;
 using Agrobook.Infrastructure.Log;
 using Agrobook.Infrastructure.Persistence;
@@ -60,7 +61,7 @@ namespace Agrobook.Server
             Console.WriteLine("Done");
 
             // SQL
-            var sqlInit = ServiceLocator.ResolveSingleton<SqlDbInitializer<UsuariosDbContext>>();
+            var sqlInit = ServiceLocator.ResolveSingleton<SqlDbInitializer<AgrobookDbContext>>();
 #if DROP_DB
             sqlInit.DropAndCreateDb();
 #endif
@@ -118,7 +119,10 @@ namespace Agrobook.Server
             }
 
             var usuariosDenormalizer = ServiceLocator.ResolveSingleton<UsuariosDenormalizer>();
+            var organizacionesDenormalizer = ServiceLocator.ResolveSingleton<OrganizacionesDenormalizer>();
+
             usuariosDenormalizer.Start();
+            organizacionesDenormalizer.Start();
         }
 
         private static void CrearUsuarioAdminSiHaceFalta(UsuariosService userService)

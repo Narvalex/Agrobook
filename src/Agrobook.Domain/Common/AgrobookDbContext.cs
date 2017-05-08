@@ -2,9 +2,9 @@
 using System.Data.Entity.ModelConfiguration;
 using System.Threading.Tasks;
 
-namespace Agrobook.Domain.Common
+namespace Agrobook.Domain
 {
-    public class AgrobookDbContext : DbContext
+    public partial class AgrobookDbContext : DbContext
     {
         public AgrobookDbContext(bool isReadonly, string nameOrConnectionString) 
             : base(nameOrConnectionString)
@@ -18,6 +18,9 @@ namespace Agrobook.Domain.Common
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new CheckpointEntityMap());
+
+            this.OnUsuariosModelCreating(modelBuilder);
+            this.OnOrganizacionesModelCreating(modelBuilder);
         }
 
         public async Task<int> SaveChangesAsync(string subscriptionName, long? lastCheckpoint)

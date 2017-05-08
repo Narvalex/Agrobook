@@ -1,6 +1,6 @@
 ﻿namespace Agrobook.Core
 {
-    public static class HelpfulExtensions
+    public static class StringExtensions
     {
         public static string ToLowerCamelCase(this string text)
         {
@@ -11,6 +11,11 @@
         {
             var name = StreamCategoryAttribute.GetFullStreamName<T>(streamId);
             return name;
+        }
+
+        public static string AsCategoryProjectionStream(this string category)
+        {
+            return $"$ce-{category}";
         }
     }
 }

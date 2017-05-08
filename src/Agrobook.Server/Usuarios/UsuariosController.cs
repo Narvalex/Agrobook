@@ -35,5 +35,13 @@ namespace Agrobook.Server.Usuarios
             await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
             return this.Ok();
         }
+
+        [HttpPost]
+        [Route("crear-nueva-organizacion")]
+        public async Task<IHttpActionResult> CrearNuevaOrganizacion([FromBody]CrearNuevaOrganizacion command)
+        {
+            await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            return this.Ok();
+        }
     }
 }

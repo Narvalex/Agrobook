@@ -12,6 +12,7 @@ namespace Agrobook.Domain.Usuarios
         public const string UsuarioAdmin = "admin";
         public const string DefaultPassword = "1234";
         private readonly IJsonSerializer cryptoSerializer;
+
         private readonly string adminAvatarUrl;
 
         public UsuariosService(
@@ -134,6 +135,23 @@ namespace Agrobook.Domain.Usuarios
             usuario.Emit(new PasswordReseteado(cmd.Metadatos, cmd.Usuario, encriptado));
 
             await this.repository.SaveAsync(usuario);
+        }
+
+        public async Task<CrearNuevaOrganizacionResult> HandleAsync(CrearNuevaOrganizacion cmd)
+        {
+            var organizacion = new Organizacion();
+
+            var nombreCompletoConTrim = cmd.NombreCrudo.Trim();
+
+            // Removing white spaces:
+            // http://stackoverflow.com/questions/6219454/efficient-way-to-remove-all-whitespace-from-stringS
+            //
+            var nombreSinEspacios = new string(nombreCompletoConTrim.Where(c => !char.IsWhiteSpace(c)).ToArray());
+            organizacion.Emit(new NuevaOrganizacionCreada(cmd.Metadatos, nombreSinEspacios, nombreCompletoConTrim));
+
+            await this.repository.SaveAsync(organizacion);
+
+            return new CrearNuevaOrganizacionResult(nombreSinEspacios, nombreCompletoConTrim);
         }
 
         private async Task<Usuario> IntentarRecuperarUsuarioAsync(string usuario)

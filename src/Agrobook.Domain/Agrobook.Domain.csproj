@@ -62,11 +62,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\AgrobookDbContext.cs" />
+    <Compile Include="Common\AgrobookDenormalizer.cs" />
+    <Compile Include="Common\AgrobookQueryService.cs" />
     <Compile Include="Common\MensajeAuditable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Usuarios\Login\Claims.cs" />
     <Compile Include="Usuarios\Login\LoginInfo.cs" />
     <Compile Include="Usuarios\Login\ClaimInfo.cs" />
+    <Compile Include="Usuarios\Organizacion.cs" />
+    <Compile Include="Usuarios\OrganizacionCommands.cs" />
+    <Compile Include="Usuarios\OrganizacionEvents.cs" />
+    <Compile Include="Usuarios\OrganizacionSnapshot.cs" />
+    <Compile Include="Usuarios\Services\OrganizacionesDbContext.cs" />
+    <Compile Include="Usuarios\Services\OrganizacionesDenormalizer.cs" />
+    <Compile Include="Usuarios\Services\OrganizacionesQueryService.cs" />
     <Compile Include="Usuarios\Services\UsuariosDbContext.cs" />
     <Compile Include="Usuarios\Services\UsuariosDenormalizer.cs" />
     <Compile Include="Usuarios\Services\UsuariosQueryService.cs" />
@@ -76,6 +85,7 @@
     <Compile Include="Usuarios\UsuariosEvents.cs" />
     <Compile Include="Usuarios\Usuario.cs" />
     <Compile Include="Usuarios\Services\UsuariosServiceResults.cs" />
+    <Compile Include="Usuarios\UsuarioSnapshot.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

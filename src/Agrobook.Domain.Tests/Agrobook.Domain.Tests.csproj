@@ -60,6 +60,8 @@
   <ItemGroup>
     <Compile Include="MesajesAuditablesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Usuarios\OrganizacionesTests.cs" />
+    <Compile Include="Usuarios\UsuariosServiceTestBase.cs" />
     <Compile Include="Usuarios\UsuariosTests.cs" />
     <Compile Include="Utils\FakeMeta.cs" />
     <Compile Include="Utils\FakeOneWayEncryptor.cs" />

@@ -1,33 +1,26 @@
-﻿using Agrobook.Domain.Common;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
 
-namespace Agrobook.Domain.Usuarios.Services
+namespace Agrobook.Domain
 {
-    public class UsuariosDbContext : AgrobookDbContext
+    public partial class AgrobookDbContext
     {
-        public UsuariosDbContext(bool isReadonly, string nameOrConnectionString) : base(isReadonly, nameOrConnectionString)
-        {
-        }
+        public IDbSet<UsuarioEntity> Usuarios { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected void OnUsuariosModelCreating(DbModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
             modelBuilder.Configurations.Add(new UsuariosEntityMap());
         }
-
-        public IDbSet<UsuariosEntity> Usuarios { get; set; }
     }
 
-    public class UsuariosEntity
+    public class UsuarioEntity
     {
         public string NombreDeUsuario { get; set; }
         public string NombreParaMostrar { get; set; }
         public string AvatarUrl { get; set; }
     }
 
-    public class UsuariosEntityMap : EntityTypeConfiguration<UsuariosEntity>
+    public class UsuariosEntityMap : EntityTypeConfiguration<UsuarioEntity>
     {
         public UsuariosEntityMap()
         {

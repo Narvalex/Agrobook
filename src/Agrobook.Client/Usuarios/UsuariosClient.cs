@@ -26,5 +26,11 @@ namespace Agrobook.Client.Usuarios
             var command = new ResetearPassword(null, usuario);
             await base.Post("resetear-password", command);
         }
+
+        public async Task CrearNuevaOrganización(string nombreOrg)
+        {
+            var command = new CrearNuevaOrganizacion(null, nombreOrg);
+            await base.Post("crear-nueva-organizacion", command);
+        }
     }
 }
