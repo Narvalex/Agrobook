@@ -105,6 +105,7 @@
     <Content Include="app\assets\md-toasts.min.css">
       <DependentUpon>md-toasts.css</DependentUpon>
     </Content>
+    <Content Include="app\assets\spinner.css" />
     <Content Include="app\assets\svg\avatars.svg" />
     <Content Include="app\assets\svg\close.svg" />
     <Content Include="app\assets\svg\google_plus.svg" />

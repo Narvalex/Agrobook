@@ -4,13 +4,13 @@ namespace Agrobook.Domain.Usuarios
 {
     public class NuevaOrganizacionCreada : MensajeAuditable
     {
-        public NuevaOrganizacionCreada(Metadatos metadatos, string nombre, string nombreParaMostrar) : base(metadatos)
+        public NuevaOrganizacionCreada(Metadatos metadatos, string identificador, string nombreParaMostrar) : base(metadatos)
         {
-            this.Nombre = nombre;
+            this.Identificador = identificador;
             this.NombreParaMostrar = nombreParaMostrar;
         }
 
-        public string Nombre { get; }
+        public string Identificador { get; }
         public string NombreParaMostrar { get; }
     }
 }

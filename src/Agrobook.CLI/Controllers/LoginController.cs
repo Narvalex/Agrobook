@@ -1,4 +1,5 @@
-﻿using Agrobook.CLI.Utils;
+﻿using Agrobook.CLI.Common;
+using Agrobook.CLI.Utils;
 using Agrobook.CLI.Views;
 using Agrobook.Client.Login;
 using Agrobook.Domain.Usuarios;
@@ -6,12 +7,13 @@ using System;
 
 namespace Agrobook.CLI.Controllers
 {
-    public class LoginController
+    public class LoginController : CommonController
     {
         private readonly LoginView view;
         private readonly LoginClient loginClient;
 
         public LoginController(LoginView view, LoginClient tokenProvider)
+            : base("login")
         {
             this.view = view;
             this.loginClient = tokenProvider;

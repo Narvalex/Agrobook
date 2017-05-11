@@ -21,7 +21,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                 Assert.AreEqual(1, events.Count);
 
                 var e = events.OfType<NuevaOrganizacionCreada>().Single();
-                Assert.AreEqual("CooperativaX", e.Nombre);
+                Assert.AreEqual("CooperativaX", e.Identificador);
                 Assert.AreEqual("Cooperativa X", e.NombreParaMostrar);
             })
             .And<OrganizacionSnapshot>(s =>
@@ -56,7 +56,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                 Assert.AreEqual(1, events.Count);
 
                 var e = events.OfType<NuevaOrganizacionCreada>().Single();
-                Assert.AreEqual("CooperativaX", e.Nombre);
+                Assert.AreEqual("CooperativaX", e.Identificador);
                 Assert.AreEqual("Cooperativa X", e.NombreParaMostrar);
             })
             .And<OrganizacionSnapshot>(s =>

@@ -12,6 +12,7 @@
     <link href="./bower_components/angular-material-icons/angular-material-icons.css" rel="stylesheet" />
 
     <!-- Custom -->    
+    <link href="./assets/spinner.css" rel="stylesheet" />
     <link href="./assets/view.css" rel="stylesheet" />
     <link href="./assets/md-toasts.css" rel="stylesheet" />
     <link href="./dist/common/userMenu/user-menu-widget.css" rel="stylesheet" />
@@ -26,7 +27,10 @@
 </head>
 <body layout="row">
     <div ng-show="false">
-        <h1>Cargando...</h1>
+        <div class="spinner">
+            <div class="dot1"></div>
+            <div class="dot2"></div>
+        </div>
     </div>
     <div ng-include="'./dist/archivos/sidenav.html'" layout="vertical" ng-controller="sidenavController as vm"></div>
 

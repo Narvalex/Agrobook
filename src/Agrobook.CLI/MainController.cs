@@ -14,6 +14,8 @@ namespace Agrobook.CLI
             this.loginController = loginController;
         }
 
+        public const string LoginCommand = "login";
+
         public void StartCommandLoop()
         {
             do
@@ -26,7 +28,7 @@ namespace Agrobook.CLI
                     continue;
                 }
                 // Single token commands
-                if (cmd.Equals("login", StringComparison.OrdinalIgnoreCase))
+                if (this.loginController.WasInvoked(cmd))
                 {
                     this.loginController.StartLoginCommandLoop();
                     continue;

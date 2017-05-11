@@ -9,8 +9,8 @@ namespace Agrobook.Domain.Usuarios
         {
             this.On<NuevaOrganizacionCreada>(e =>
             {
-                this.StreamName = e.Nombre;
-                this.Nombre = e.Nombre;
+                this.StreamName = e.Identificador;
+                this.Nombre = e.Identificador;
                 this.NombreParaMostrar = e.NombreParaMostrar;
             });
         }

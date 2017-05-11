@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\CommonController.cs" />
     <Compile Include="MainConsoleView.cs" />
     <Compile Include="MainController.cs" />
     <Compile Include="Controllers\LoginController.cs" />

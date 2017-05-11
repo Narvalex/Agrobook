@@ -7,8 +7,7 @@ namespace Agrobook.CLI
         public void Readraw()
         {
             Console.Clear();
-            Console.WriteLine("Available Commands:");
-            Console.WriteLine("\t login");
+            Console.WriteLine("Type help to see available commands");
             Console.Write("Command:");
         }
     }
