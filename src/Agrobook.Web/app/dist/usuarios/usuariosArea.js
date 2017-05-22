@@ -16,6 +16,7 @@ var usuariosArea;
         .controller('mainContentController', usuariosArea.mainContentController)
         .controller('perfilController', usuariosArea.perfilController)
         .controller('organizacionesController', usuariosArea.organizacionesController)
+        .controller('gruposController', usuariosArea.gruposController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $routeProvider) {
             // most from flat icon dot com
             $mdIconProvider

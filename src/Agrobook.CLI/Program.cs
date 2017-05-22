@@ -1,4 +1,5 @@
 ﻿using Agrobook.CLI.Controllers;
+using Agrobook.CLI.Views;
 using Agrobook.Client;
 using Agrobook.Client.Login;
 using Agrobook.Infrastructure.Serialization;
@@ -15,9 +16,10 @@ namespace Agrobook.CLI
             var http = new HttpLite("http://localhost:8081");
             var accessTokenProvider = new LoginClient(http);
 
-            var loginController = new LoginController(new Views.LoginView(), accessTokenProvider);
+            var loginController = new LoginController(new LoginView(), accessTokenProvider);
+            var helpController = new HelpController(new HelpView(), loginController);
 
-            _controller = new MainController(new MainConsoleView(), loginController);
+            _controller = new MainController(new MainConsoleView(), loginController, helpController);
             _controller.StartCommandLoop();
         }
     }

@@ -17,5 +17,7 @@ namespace Agrobook.CLI.Common
         {
             return cmd.Equals(this.command, System.StringComparison.OrdinalIgnoreCase);
         }
+
+        public abstract string CommandDescription { get; }
     }
 }

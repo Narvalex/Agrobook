@@ -24,5 +24,12 @@ module usuariosArea {
         ) {
             super.get('info-basica/' + usuario, onSuccess, onError);
         }
+
+        obtenerOrganizaciones(
+            onSuccess: (value: ng.IHttpPromiseCallbackArg<organizacionDto[]>) => void,
+            onError?: (reason) => void
+        ) {
+            super.get('organizaciones', onSuccess, onError);
+        }
     }
 }

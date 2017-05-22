@@ -26,7 +26,7 @@
                 <h1>Permisos</h1>
             </md-tab>
             <md-tab label="Grupos" md-on-select="vm.onTabSelect(2)">
-                <h1>Grupos</h1>
+                <div ng-include="'./dist/usuarios/views/grupos.html'"></div>
             </md-tab>
             <md-tab label="Organizaciones" md-on-select="vm.onTabSelect(3)">
                 <div ng-include="'./dist/usuarios/views/organizaciones.html'"></div>

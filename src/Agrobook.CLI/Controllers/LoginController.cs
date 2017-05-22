@@ -19,6 +19,8 @@ namespace Agrobook.CLI.Controllers
             this.loginClient = tokenProvider;
         }
 
+        public override string CommandDescription => "login: this will log you in";
+
         public void StartLoginCommandLoop()
         {
             this.view.ShowWellcomeScreen();

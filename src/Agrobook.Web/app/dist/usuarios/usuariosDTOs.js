@@ -32,5 +32,13 @@ var usuariosArea;
         return actualizarPerfilDto;
     }());
     usuariosArea.actualizarPerfilDto = actualizarPerfilDto;
+    var organizacionDto = (function () {
+        function organizacionDto(id, display) {
+            this.id = id;
+            this.display = display;
+        }
+        return organizacionDto;
+    }());
+    usuariosArea.organizacionDto = organizacionDto;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=usuariosDTOs.js.map

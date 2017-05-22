@@ -7,14 +7,14 @@ namespace Agrobook.CLI
     {
         private readonly MainConsoleView view;
         private readonly LoginController loginController;
+        private readonly HelpController helpController;
 
-        public MainController(MainConsoleView view, LoginController loginController)
+        public MainController(MainConsoleView view, LoginController loginController, HelpController helpController)
         {
             this.view = view;
             this.loginController = loginController;
+            this.helpController = helpController;
         }
-
-        public const string LoginCommand = "login";
 
         public void StartCommandLoop()
         {
@@ -28,6 +28,11 @@ namespace Agrobook.CLI
                     continue;
                 }
                 // Single token commands
+                if (this.helpController.WasInvoked(cmd))
+                {
+                    this.helpController.StartHelpCommandLoop();
+                    continue;
+                }
                 if (this.loginController.WasInvoked(cmd))
                 {
                     this.loginController.StartLoginCommandLoop();

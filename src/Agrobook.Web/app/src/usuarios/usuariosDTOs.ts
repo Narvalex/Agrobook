@@ -30,4 +30,12 @@ module usuariosArea {
         ){
         }
     }
+
+    export class organizacionDto {
+        constructor(
+            public id: string,
+            public display: string
+        ) {
+        }
+    }
 }

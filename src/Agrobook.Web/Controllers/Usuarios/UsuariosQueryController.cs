@@ -32,5 +32,13 @@ namespace Agrobook.Web.Controllers.Usuarios
             var dto = await this.client.ObtenerInfoBasicaDeUsuario(usuario);
             return this.Ok(dto);
         }
+
+        [HttpGet]
+        [Route("organizaciones")]
+        public async Task<IHttpActionResult> ObtenerOrganizaciones()
+        {
+            var dto = await this.client.ObtenerOrganizaciones();
+            return this.Ok(dto);
+        }
     }
 }

@@ -6,4 +6,10 @@
         public string NombreParaMostrar { get; set; }
         public string AvatarUrl { get; set; }
     }
+
+    public class OrganizacionDto
+    {
+        public string Id { get; set; }
+        public string Display { get; set; }
+    }
 }
