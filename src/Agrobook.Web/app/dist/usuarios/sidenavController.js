@@ -37,7 +37,6 @@ var usuariosArea;
         };
         sidenavController.prototype.crearNuevoUsuario = function ($event) {
             var _this = this;
-            var self = this;
             this.$mdDialog.show({
                 templateUrl: '../app/dist/usuarios/dialogs/nuevo-usuario-dialog.html',
                 parent: angular.element(document.body),

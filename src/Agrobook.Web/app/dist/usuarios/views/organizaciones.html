@@ -1,10 +1,11 @@
 ﻿<div class="padding-all" ng-controller="organizacionesController as vm">
 
+    <md-content class="md-padding">
         <form name="nuevaOrgForm" ng-submit="vm.crearNuevaOrganizacion()">
             <div layout-gt-xs="row">
                 <md-input-container class="md-block" flex-gt-xs>
                     <label>Nueva organización</label>
-                    <input name="orgNombre" ng-model="vm.orgNombre" required/>
+                    <input name="orgNombre" ng-model="vm.orgNombre" required />
                     <div ng-messages="nuevaOrgForm.orgNombre.$error">
                         <div ng-message="required">Si desea crear una nueva debe especificar un nombre.</div>
                     </div>
@@ -18,5 +19,6 @@
                 </div>
             </div>
         </form>
+    </md-content>
    
 </div>

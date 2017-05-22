@@ -45,7 +45,6 @@ module usuariosArea {
         }
 
         crearNuevoUsuario($event): void {
-            var self = this;
 
             this.$mdDialog.show({
                 templateUrl: '../app/dist/usuarios/dialogs/nuevo-usuario-dialog.html',

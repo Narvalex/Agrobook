@@ -1,0 +1,33 @@
+﻿<md-dialog>
+    <form name="nuevoGrupoForm" ng-submit="vm.crearNuevoGrupo()">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h3>Nuevo grupo para {{vm.orgSeleccionada}}</h3>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.cancelar()" aria-label="cancelar">
+                    <ng-md-icon icon="close"></ng-md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content class="padding-all">
+            <div layout-gt-md="row">
+                <br />
+                <md-input-container class="md-block" flex-gt-md>
+                    <label>Nombre del grupo</label>
+                    <input ng-model="vm.nuevoGrupo" name="grupo" required/>
+                    <div ng-messages="nuevoGrupoForm.grupo.$error">
+                        <div ng-message="required">Debe especificar el nombre para el nuevo grupo</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <div class="padding-all">
+                <md-button ng-cloak typeof="submit" class="md-primary md-raised" ng-disabled="nuevoGrupoForm.$invalid || vm.bloquearSubmit">
+                    {{vm.submitLabel}}
+                </md-button>
+                <md-button ng-click="vm.cancelar()">Cancelar</md-button>
+            </div>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

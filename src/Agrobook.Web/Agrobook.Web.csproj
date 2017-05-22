@@ -728,6 +728,7 @@
     <Content Include="app\dist\maps\toolbar-header.html" />
     <Content Include="app\dist\home\main-content.html" />
     <Content Include="app\dist\home\toolbar-header.html" />
+    <Content Include="app\dist\usuarios\dialogs\nuevo-grupo-dialog.html" />
     <Content Include="app\dist\usuarios\dialogs\nuevo-usuario-dialog.html" />
     <Content Include="app\dist\usuarios\sidenav.html" />
     <Content Include="app\dist\usuarios\sidenav.css" />
@@ -738,6 +739,7 @@
     <Content Include="app\dist\usuarios\views\perfil.html" />
     <Content Include="app\home.html" />
     <Content Include="app\maps.html" />
+    <TypeScriptCompile Include="app\src\usuarios\dialogs\nuevoGrupoDialogController.ts" />
     <Content Include="app\usuarios.html" />
     <Content Include="Global.asax" />
     <Content Include="favicon.ico" />

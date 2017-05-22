@@ -24,6 +24,9 @@ var usuariosArea;
             this.$scope.$on(this.config.eventIndex.usuarios.perfilActualizado, function (e, args) {
                 _this.usuario = new usuariosArea.usuarioInfoBasica(_this.usuario.nombre, args.nombreParaMostrar, args.avatarUrl);
             });
+            this.$scope.$on('$routeUpdate', function (scope, next, current) {
+                _this.abrirElTabQueCorresponde(_this.$routeParams['tab']);
+            });
         }
         mainContentController.prototype.onTabSelect = function (tabIndex) {
             if (this.usuario === undefined)

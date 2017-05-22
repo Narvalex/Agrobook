@@ -36,6 +36,10 @@ module usuariosArea {
                         args.nombreParaMostrar,
                         args.avatarUrl);
                 });
+
+            this.$scope.$on('$routeUpdate', (scope, next, current) => {
+                this.abrirElTabQueCorresponde(this.$routeParams['tab']);
+            });
         }
 
         loaded: boolean = false;
