@@ -69,7 +69,7 @@ var common;
             this.menuItemList = [
                 new menuItem('Inicio', 'home.html'),
                 new menuItem('Archivos', 'archivos.html'),
-                new menuItem('Usuarios', 'usuarios.html#!')
+                new menuItem('Usuarios', 'usuarios.html#!/')
             ];
             this.estaEnHome = window.location.pathname == '/app/home.html';
         }

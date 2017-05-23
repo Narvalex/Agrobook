@@ -101,7 +101,7 @@ module common {
         menuItemList: menuItem[] = [
             new menuItem('Inicio', 'home.html'),
             new menuItem('Archivos', 'archivos.html'),
-            new menuItem('Usuarios', 'usuarios.html#!')
+            new menuItem('Usuarios', 'usuarios.html#!/')
         ]
     }
 
