@@ -10,7 +10,7 @@ namespace Agrobook.Domain.Tests.Usuarios
     public class OrganizacionesTests : UsuariosServiceTestBase
     {
         [TestMethod]
-        public void SiNoExisteNingunaOrganizacionEntoncesSePuedeCrearUnaCualquiera()
+        public void SiNoExisteNingunaOrganizacionEntoncesSePuedeCrearUnaCualquieraYElIdEsEnLowerCase()
         {
             this.sut.When(s =>
             {
@@ -21,25 +21,25 @@ namespace Agrobook.Domain.Tests.Usuarios
                 Assert.AreEqual(1, events.Count);
 
                 var e = events.OfType<NuevaOrganizacionCreada>().Single();
-                Assert.AreEqual("CooperativaX", e.Identificador);
+                Assert.AreEqual("cooperativax", e.Identificador);
                 Assert.AreEqual("Cooperativa X", e.NombreParaMostrar);
             })
             .And<OrganizacionSnapshot>(s =>
             {
-                Assert.AreEqual("CooperativaX".AsStreamNameOf<Organizacion>(), s.StreamName);
-                Assert.AreEqual("CooperativaX", s.Nombre);
+                Assert.AreEqual("cooperativax".AsStreamNameOf<Organizacion>(), s.StreamName);
+                Assert.AreEqual("cooperativax", s.Nombre);
                 Assert.AreEqual("Cooperativa X", s.NombreParaMostrar);
             });
         }
 
         [TestMethod]
-        public void CuandoSeCreaUnaOrganizacionEntoncesSeDevuelveElNombreParaMostrarYElId()
+        public void CuandoSeCreaUnaOrganizacionEntoncesSeDevuelveElNombreParaMostrarYElIdEnLowerCase()
         {
             this.sut.When(s =>
             {
                 var result = s.HandleAsync(new CrearNuevaOrganizacion(TestMeta.New, "Cooperativa Equis")).Result;
 
-                Assert.AreEqual("CooperativaEquis", result.OrgId);
+                Assert.AreEqual("cooperativaequis", result.OrgId);
                 Assert.AreEqual("Cooperativa Equis", result.NombreParaMostrar);
             });
         }
@@ -56,14 +56,29 @@ namespace Agrobook.Domain.Tests.Usuarios
                 Assert.AreEqual(1, events.Count);
 
                 var e = events.OfType<NuevaOrganizacionCreada>().Single();
-                Assert.AreEqual("CooperativaX", e.Identificador);
+                Assert.AreEqual("cooperativax", e.Identificador);
                 Assert.AreEqual("Cooperativa X", e.NombreParaMostrar);
             })
             .And<OrganizacionSnapshot>(s =>
             {
-                Assert.AreEqual("CooperativaX".AsStreamNameOf<Organizacion>(), s.StreamName);
-                Assert.AreEqual("CooperativaX", s.Nombre);
+                Assert.AreEqual("cooperativax".AsStreamNameOf<Organizacion>(), s.StreamName);
+                Assert.AreEqual("cooperativax", s.Nombre);
                 Assert.AreEqual("Cooperativa X", s.NombreParaMostrar);
+            });
+        }
+
+        [TestMethod]
+        public void DadaOrganizacionSePuedeCrearPrimerGrupo()
+        {
+            this.sut
+            .Given<Organizacion>("coop", new NuevaOrganizacionCreada(TestMeta.New, "coop", "Coop"))
+            .When(s =>
+            {
+                s.HandleAsync(new CrearNuevoGrupo(TestMeta.New, "coop", "Admines")).Wait();
+            })
+            .Then(events =>
+            {
+                Assert.AreEqual(1, events.Count);
             });
         }
     }

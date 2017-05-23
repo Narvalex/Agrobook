@@ -24,6 +24,12 @@ namespace Agrobook.Domain.Tests.Utils
             return this;
         }
 
+        public IWhenReady<T> Given<TAggregate>(string streamName = null, params object[] @events)
+        {
+            this.Given(streamName.AsStreamNameOf<TAggregate>(), @events);
+            return this;
+        }
+
         public IWhenReady<T> And(string streamName = null, params object[] @events)
         {
             return this.Given(streamName, @events);

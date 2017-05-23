@@ -142,16 +142,19 @@ namespace Agrobook.Domain.Usuarios
             var organizacion = new Organizacion();
 
             var nombreCompletoConTrim = cmd.NombreCrudo.Trim();
+            var nombreFormateado = cmd.NombreCrudo.ToLowerTrimmedAndWhiteSpaceless();
 
-            // Removing white spaces:
-            // http://stackoverflow.com/questions/6219454/efficient-way-to-remove-all-whitespace-from-stringS
-            //
-            var nombreSinEspacios = new string(nombreCompletoConTrim.Where(c => !char.IsWhiteSpace(c)).ToArray());
-            organizacion.Emit(new NuevaOrganizacionCreada(cmd.Metadatos, nombreSinEspacios, nombreCompletoConTrim));
+            organizacion.Emit(new NuevaOrganizacionCreada(cmd.Metadatos, nombreFormateado, nombreCompletoConTrim));
 
             await this.repository.SaveAsync(organizacion);
 
-            return new CrearNuevaOrganizacionResult(nombreSinEspacios, nombreCompletoConTrim);
+            return new CrearNuevaOrganizacionResult(nombreFormateado, nombreCompletoConTrim);
+        }
+
+        public async Task HandleAsync(CrearNuevoGrupo command)
+        {
+            var org = await this.repository.GetAsync<Organizacion>(command.IdOrganizacion);
+            
         }
 
         private async Task<Usuario> IntentarRecuperarUsuarioAsync(string usuario)

@@ -48,5 +48,13 @@ namespace Agrobook.Web.Controllers.Usuarios
             await this.client.CrearNuevaOrganización(nombreOrg);
             return this.Ok();
         }
+
+        [HttpPost]
+        [Route("crear-nuevo-grupo/{idOrg}/{displayGrupoName}")]
+        public async Task<IHttpActionResult> CrearNuevoGrupo([FromUri]string idOrg, [FromUri]string displayGrupoName)
+        {
+            await this.client.CrearNuevoGrupo(idOrg, displayGrupoName);
+            return this.Ok();
+        }
     }
 }

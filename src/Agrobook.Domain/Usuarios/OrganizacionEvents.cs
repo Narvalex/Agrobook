@@ -13,4 +13,16 @@ namespace Agrobook.Domain.Usuarios
         public string Identificador { get; }
         public string NombreParaMostrar { get; }
     }
+
+    public class NuevoGrupoCreado : MensajeAuditable
+    {
+        public NuevoGrupoCreado(Metadatos metadatos, string grupoId, string grupoDisplayName) : base(metadatos)
+        {
+            this.GrupoId = grupoId;
+            this.GrupoDisplayName = grupoDisplayName;
+        }
+
+        public string GrupoId { get; }
+        public string GrupoDisplayName { get; }
+    }
 }

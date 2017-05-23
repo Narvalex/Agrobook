@@ -135,7 +135,7 @@ namespace Agrobook.Infrastructure.Persistence
             var metadataBytes = Encoding.UTF8.GetBytes(this.serializer.Serialize(eventHeaders));
             var dataBytes = Encoding.UTF8.GetBytes(this.serializer.Serialize(@event));
 
-            var eventType = @event.GetType().Name.ToLowerCamelCase();
+            var eventType = @event.GetType().Name.WithFirstCharInLower();
 
             return new EventData(eventId, eventType, true, dataBytes, metadataBytes);
         }

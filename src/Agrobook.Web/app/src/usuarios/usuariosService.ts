@@ -41,5 +41,14 @@ module usuariosArea {
         ) {
             this.post('crear-nueva-organizacion/' + nombreOrg, {}, onSuccess, onError);
         }
+
+        crearNuevoGrupo(
+            orgId: string,
+            displayGrupoName: string,
+            onSuccess: (value: ng.IHttpPromiseCallback<{}>) => void,
+            onError: (reason: any) => void
+        ) {
+            this.post('crear-nuevo-grupo/' + orgId + '/' + displayGrupoName, {}, onSuccess, onError);
+        }
     }
 }

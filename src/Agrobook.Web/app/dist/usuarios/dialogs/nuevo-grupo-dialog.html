@@ -2,7 +2,7 @@
     <form name="nuevoGrupoForm" ng-submit="vm.crearNuevoGrupo()">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h3>Nuevo grupo para {{vm.orgSeleccionada}}</h3>
+                <h3>Nuevo grupo para {{vm.orgSeleccionada.display}}</h3>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="vm.cancelar()" aria-label="cancelar">
                     <ng-md-icon icon="close"></ng-md-icon>
@@ -23,7 +23,7 @@
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <div class="padding-all">
-                <md-button ng-cloak typeof="submit" class="md-primary md-raised" ng-disabled="nuevoGrupoForm.$invalid || vm.bloquearSubmit">
+                <md-button ng-cloak type="submit" class="md-primary md-raised" ng-disabled="nuevoGrupoForm.$invalid || vm.bloquearSubmit">
                     {{vm.submitLabel}}
                 </md-button>
                 <md-button ng-click="vm.cancelar()">Cancelar</md-button>
