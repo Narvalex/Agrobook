@@ -151,10 +151,14 @@ namespace Agrobook.Domain.Usuarios
             return new CrearNuevaOrganizacionResult(nombreFormateado, nombreCompletoConTrim);
         }
 
-        public async Task HandleAsync(CrearNuevoGrupo command)
+        public async Task HandleAsync(CrearNuevoGrupo cmd)
         {
-            var org = await this.repository.GetAsync<Organizacion>(command.IdOrganizacion);
-            
+            var org = await this.repository.GetAsync<Organizacion>(cmd.IdOrganizacion);
+            var idGrupo = cmd.GrupoDisplayName.ToLowerTrimmedAndWhiteSpaceless();
+            if (org.YaTieneGrupoConId(idGrupo))
+                throw new InvalidOperationException($"Ya existe el grupo con id {idGrupo} en la organización {org.NombreParaMostrar}");
+            org.Emit(new NuevoGrupoCreado(cmd.Metadatos, idGrupo, cmd.GrupoDisplayName));
+            await this.repository.SaveAsync(org);
         }
 
         private async Task<Usuario> IntentarRecuperarUsuarioAsync(string usuario)

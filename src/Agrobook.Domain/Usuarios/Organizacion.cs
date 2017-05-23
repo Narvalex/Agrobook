@@ -1,5 +1,6 @@
 ﻿using Agrobook.Core;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Agrobook.Domain.Usuarios
 {
@@ -34,11 +35,14 @@ namespace Agrobook.Domain.Usuarios
             var state = (OrganizacionSnapshot)snapshot;
             this.Nombre = state.Nombre;
             this.NombreParaMostrar = state.NombreParaMostrar;
+            foreach (var item in state.Grupos)
+                this.grupos.Add(item);
         }
 
         protected override ISnapshot TakeSnapshot()
         {
-            return new OrganizacionSnapshot(this.StreamName, this.Version, this.Nombre, this.NombreParaMostrar);
+            return new OrganizacionSnapshot(this.StreamName, this.Version, this.Nombre, this.NombreParaMostrar,
+                this.grupos.ToArray());
         }
     }
 }
