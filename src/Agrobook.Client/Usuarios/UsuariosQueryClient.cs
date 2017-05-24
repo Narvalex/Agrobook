@@ -29,5 +29,11 @@ namespace Agrobook.Client.Usuarios
             var dto = await base.Get<IList<OrganizacionDto>>("organizaciones");
             return dto;
         }
+
+        public async Task<IList<ClaimDto>> ObtenerClaims()
+        {
+            var dto = await base.Get<IList<ClaimDto>>("claims");
+            return dto;
+        }
     }
 }

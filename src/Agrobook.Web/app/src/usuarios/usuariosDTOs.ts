@@ -20,6 +20,15 @@ module usuariosArea {
         }
     }
 
+    export class claimDto {
+        constructor(
+            public id: string,
+            public display: string,
+            public info: string
+        ) {
+        }
+    }
+
     export class actualizarPerfilDto {
         constructor(
             public usuario: string,

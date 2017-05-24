@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26401.1
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Server", "Agrobook.Server\Agrobook.Server.csproj", "{6B68ACFE-67B3-4AE4-9C2E-B723FCDC4DE5}"
 EndProject
@@ -30,6 +30,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{E3353730-C
 		..\docs\ArchivosDeAgricultura.docx = ..\docs\ArchivosDeAgricultura.docx
 		..\docs\queries.js = ..\docs\queries.js
 		..\docs\UsuariosYGrupos.docx = ..\docs\UsuariosYGrupos.docx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CasosDeUso", "CasosDeUso", "{50CC3FE7-1657-43A7-A1EE-C537B548A4C7}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\CasosDeUso\SeccionUsuarios.docx = ..\docs\CasosDeUso\SeccionUsuarios.docx
 	EndProjectSection
 EndProject
 Global
@@ -106,5 +111,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7461B967-5FD5-4BCF-BD16-9932585F1318} = {2773D51A-B4E8-4180-B403-A566314E72D9}
 		{1427506A-1548-4A66-8099-5D46D953C92E} = {2773D51A-B4E8-4180-B403-A566314E72D9}
+		{50CC3FE7-1657-43A7-A1EE-C537B548A4C7} = {E3353730-C86E-4373-A842-0CBD906F8CBC}
 	EndGlobalSection
 EndGlobal

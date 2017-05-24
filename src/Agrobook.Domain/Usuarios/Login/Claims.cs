@@ -4,10 +4,16 @@
     {
         public static class Roles
         {
-            public const string Admin = "Admin";
-            public const string Tecnico = "Tecnico";
-            public const string Productor = "Productor";
+            public const string Admin = "rol-admin";
+            public const string Gerente = "rol-gerente";
+            public const string Tecnico = "rol-tecnico";
+            public const string Productor = "rol-productor";
+            public const string Invitado = "rol-invitado";
+        }
 
+        public static class Permisos
+        {
+            public const string AdministrarOrganizaciones = "permiso-administrar-organizaciones";
         }
     }
 }

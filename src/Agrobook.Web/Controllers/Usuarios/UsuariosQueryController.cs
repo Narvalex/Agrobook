@@ -34,6 +34,14 @@ namespace Agrobook.Web.Controllers.Usuarios
         }
 
         [HttpGet]
+        [Route("claims")]
+        public async Task<IHttpActionResult> ObtenerClaims()
+        {
+            var dto = await this.client.ObtenerClaims();
+            return this.Ok(dto);
+        }
+
+        [HttpGet]
         [Route("organizaciones")]
         public async Task<IHttpActionResult> ObtenerOrganizaciones()
         {

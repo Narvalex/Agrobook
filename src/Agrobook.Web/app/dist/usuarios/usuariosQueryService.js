@@ -21,6 +21,9 @@ var usuariosArea;
         usuariosQueryService.prototype.obtenerListaDeTodosLosUsuarios = function (onSuccess, onError) {
             _super.prototype.get.call(this, 'todos', onSuccess, onError);
         };
+        usuariosQueryService.prototype.obtenerListaDeClaims = function (onSuccess, onError) {
+            _super.prototype.get.call(this, 'claims', onSuccess, onError);
+        };
         usuariosQueryService.prototype.obtenerInfoBasicaDeUsuario = function (usuario, onSuccess, onError) {
             _super.prototype.get.call(this, 'info-basica/' + usuario, onSuccess, onError);
         };

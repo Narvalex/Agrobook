@@ -2,30 +2,31 @@
 var usuariosArea;
 (function (usuariosArea) {
     var nuevoUsuarioDialogController = (function () {
-        function nuevoUsuarioDialogController($mdDialog, usuariosService, toasterLite, config) {
+        function nuevoUsuarioDialogController($mdDialog, usuariosService, usuariosQueryService, toasterLite, config) {
             this.$mdDialog = $mdDialog;
             this.usuariosService = usuariosService;
+            this.usuariosQueryService = usuariosQueryService;
             this.toasterLite = toasterLite;
             this.config = config;
+            this.claimsLoaded = false;
             this.avatarUrls = [];
-            this.tiposDeCuenta = [
-                { tipo: 'Admin', desc: 'Administrador' },
-                { tipo: 'Tecnico', desc: 'Técnico' },
-                { tipo: 'Productor', desc: 'Productor' }
-            ];
             this.bloquearSubmit = false;
             this.setDefaultSubmitText();
             this.avatarUrls = config.avatarUrls;
+            this.obtenerListaDeClaims();
         }
         nuevoUsuarioDialogController.prototype.cancelar = function () {
             this.$mdDialog.cancel();
+        };
+        nuevoUsuarioDialogController.prototype.test = function () {
+            this.toasterLite.info('hola hola');
         };
         nuevoUsuarioDialogController.prototype.crearNuevoUsuario = function () {
             var _this = this;
             var nombre = this.usuario.nombreDeUsuario;
             this.setWorkingText();
             this.bloquearSubmit = true;
-            this.usuario.claims = [this.tipoDeCuenta.tipo];
+            this.usuario.claims = [this.claim.id];
             this.usuariosService.crearNuevoUsuario(this.usuario, function (value) {
                 _this.toasterLite.success('El usuario ' + nombre + ' fue creado exitosamente');
                 _this.$mdDialog.hide(_this.usuario);
@@ -35,6 +36,16 @@ var usuariosArea;
                 _this.toasterLite.error('Ocurrió un error y no se pudo crear el usuario');
             });
         };
+        //****************************
+        // Interfal stuff
+        //****************************
+        nuevoUsuarioDialogController.prototype.obtenerListaDeClaims = function () {
+            var _this = this;
+            this.usuariosQueryService.obtenerListaDeClaims(function (response) {
+                _this.claimsLoaded = true;
+                _this.claims = response.data;
+            }, function (reason) { _this.toasterLite.error('Ocurrió un error al recuperar lista de claims', _this.toasterLite.delayForever); });
+        };
         nuevoUsuarioDialogController.prototype.setDefaultSubmitText = function () {
             this.submitLabel = 'Crear nuevo usuario';
         };
@@ -43,7 +54,7 @@ var usuariosArea;
         };
         return nuevoUsuarioDialogController;
     }());
-    nuevoUsuarioDialogController.$inject = ['$mdDialog', 'usuariosService', 'toasterLite', 'config'];
+    nuevoUsuarioDialogController.$inject = ['$mdDialog', 'usuariosService', 'usuariosQueryService', 'toasterLite', 'config'];
     usuariosArea.nuevoUsuarioDialogController = nuevoUsuarioDialogController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=nuevoUsuarioDialogController.js.map

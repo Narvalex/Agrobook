@@ -21,6 +21,15 @@ var usuariosArea;
         return usuarioInfoBasica;
     }());
     usuariosArea.usuarioInfoBasica = usuarioInfoBasica;
+    var claimDto = (function () {
+        function claimDto(id, display, info) {
+            this.id = id;
+            this.display = display;
+            this.info = info;
+        }
+        return claimDto;
+    }());
+    usuariosArea.claimDto = claimDto;
     var actualizarPerfilDto = (function () {
         function actualizarPerfilDto(usuario, avatarUrl, nombreParaMostrar, passwordActual, nuevoPassword) {
             this.usuario = usuario;

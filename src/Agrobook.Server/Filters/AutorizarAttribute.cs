@@ -17,7 +17,7 @@ namespace Agrobook.Server.Filters
             this.claims = new string[1] { claim };
         }
 
-        public AutorizarAttribute(string[] claims)
+        public AutorizarAttribute(params string[] claims)
         {
             this.claims = claims;
         }

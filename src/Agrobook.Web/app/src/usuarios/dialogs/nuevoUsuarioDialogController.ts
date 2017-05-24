@@ -3,28 +3,27 @@
 module usuariosArea {
     export class nuevoUsuarioDialogController {
 
-        static $inject = ['$mdDialog', 'usuariosService', 'toasterLite', 'config'];
+        static $inject = ['$mdDialog', 'usuariosService', 'usuariosQueryService', 'toasterLite', 'config'];
 
         constructor(
             private $mdDialog: angular.material.IDialogService,
             private usuariosService: usuariosArea.usuariosService,
+            private usuariosQueryService: usuariosArea.usuariosQueryService,
             private toasterLite: common.toasterLite,
             private config: common.config
         ) {
             this.setDefaultSubmitText();
-            this.avatarUrls = config.avatarUrls;
+            this.avatarUrls = config.avatarUrls; 
+            this.obtenerListaDeClaims();
         }
 
-        avatarUrls = [];
+        claimsLoaded = false;
+        avatarUrls = [];  
 
-        tiposDeCuenta = [
-            { tipo: 'Admin', desc: 'Administrador' },
-            { tipo: 'Tecnico', desc: 'Técnico' },
-            { tipo: 'Productor', desc: 'Productor' }
-        ];
+        claims: claimDto[]; 
 
         usuario: usuarioDto;
-        tipoDeCuenta: any;
+        claim: any; 
 
         bloquearSubmit: boolean = false;
         submitLabel: string;
@@ -33,11 +32,15 @@ module usuariosArea {
             this.$mdDialog.cancel();
         }
 
+        test() {
+            this.toasterLite.info('hola hola');
+        }
+
         crearNuevoUsuario(): void {
             var nombre = this.usuario.nombreDeUsuario;
             this.setWorkingText();
             this.bloquearSubmit = true;
-            this.usuario.claims = [this.tipoDeCuenta.tipo];
+            this.usuario.claims = [this.claim.id];
             this.usuariosService.crearNuevoUsuario(this.usuario,
                 (value) => {
                     this.toasterLite.success('El usuario ' + nombre + ' fue creado exitosamente');
@@ -48,6 +51,20 @@ module usuariosArea {
                     this.bloquearSubmit = false;
                     this.toasterLite.error('Ocurrió un error y no se pudo crear el usuario');
                 });
+        }
+
+        //****************************
+        // Interfal stuff
+        //****************************
+
+        private obtenerListaDeClaims() {
+            this.usuariosQueryService.obtenerListaDeClaims(
+                response =>
+                {
+                    this.claimsLoaded = true;
+                    this.claims = response.data;
+                },
+                reason => { this.toasterLite.error('Ocurrió un error al recuperar lista de claims', this.toasterLite.delayForever); });
         }
 
         private setDefaultSubmitText() {
