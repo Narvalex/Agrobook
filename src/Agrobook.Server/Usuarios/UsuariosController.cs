@@ -6,7 +6,7 @@ using System.Web.Http;
 
 namespace Agrobook.Server.Usuarios
 {
-    [Autorizar(Claims.Roles.Admin)]
+    [Autorizar(ClaimsDefs.Roles.Admin)]
     [RoutePrefix("usuarios")]
     public class UsuariosController : ApiController
     {

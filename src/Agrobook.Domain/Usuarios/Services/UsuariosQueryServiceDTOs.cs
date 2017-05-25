@@ -12,11 +12,4 @@
         public string Id { get; set; }
         public string Display { get; set; }
     }
-
-    public class ClaimDto
-    {
-        public string Id { get; set; }
-        public string Display { get; set; }
-        public string Info { get; set; }
-    }
 }

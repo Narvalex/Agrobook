@@ -1,6 +1,6 @@
 ﻿namespace Agrobook.Domain.Usuarios.Login
 {
-    public static class Claims
+    public static class ClaimsDefs
     {
         public static class Roles
         {

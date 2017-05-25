@@ -1,9 +1,10 @@
-﻿using Agrobook.Domain.Usuarios.Login;
+﻿using Agrobook.Domain.Usuarios;
+using Agrobook.Domain.Usuarios.Login;
 using Agrobook.Domain.Usuarios.Services;
 using Agrobook.Server.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
-using static Agrobook.Domain.Usuarios.Login.Claims;
+using static Agrobook.Domain.Usuarios.Login.ClaimsDefs;
 
 namespace Agrobook.Server.Usuarios
 {
@@ -11,6 +12,7 @@ namespace Agrobook.Server.Usuarios
     public class UsuariosQueryController : ApiController
     {
         private readonly UsuariosQueryService service = ServiceLocator.ResolveSingleton<UsuariosQueryService>();
+        private readonly UsuariosService usuariosService = ServiceLocator.ResolveSingleton<UsuariosService>();
 
         [Autorizar(Roles.Admin)]
         [HttpGet]
@@ -33,7 +35,8 @@ namespace Agrobook.Server.Usuarios
         [Route("claims")]
         public async Task<IHttpActionResult> ObtenerClaims()
         {
-            throw new System.NotImplementedException();
+            var claims = await this.usuariosService.ObtenerListaDeClaimsDisponiblesParaElUsuario(this.ActionContext.GetToken());
+            return this.Ok(claims);
         }
 
         [Autorizar(Roles.Admin, Permisos.AdministrarOrganizaciones)]

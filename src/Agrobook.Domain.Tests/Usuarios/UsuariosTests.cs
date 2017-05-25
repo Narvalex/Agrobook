@@ -5,6 +5,7 @@ using Agrobook.Domain.Usuarios.Login;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using static Agrobook.Domain.Usuarios.Login.ClaimsDefs;
 
 namespace Agrobook.Domain.Tests.Usuarios
 {
@@ -165,7 +166,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void SiElUsuarioExisteYLasCredencialesSonValidasSePuedeIniciarSesion()
         {
             var now = DateTime.Now;
-            var loginInfo = new LoginInfo("user1", "123", new string[] { Claims.Roles.Admin });
+            var loginInfo = new LoginInfo("user1", "123", new string[] { ClaimsDefs.Roles.Admin });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
             this.sut
                 .Given("user1".AsStreamNameOf<Usuario>(), new NuevoUsuarioCreado(TestMeta.New, "user1", "User Name", "", eLoginInfo))
@@ -185,7 +186,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         [TestMethod]
         public void SiElUsuarioExisteYLasCredencialesNoSonValidasEntoncesNoSePuedeIniciarSesion()
         {
-            var loginInfo = new LoginInfo("user1", "123", new string[] { Claims.Roles.Admin });
+            var loginInfo = new LoginInfo("user1", "123", new string[] { ClaimsDefs.Roles.Admin });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
             this.sut
                 .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", "Name Lastname", "", eLoginInfo))
@@ -214,7 +215,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                 .Given("productor", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
-                    var autorizado = s.TryAuthorize(eLoginInfo, Claims.Roles.Tecnico);
+                    var autorizado = s.TryAuthorize(eLoginInfo, ClaimsDefs.Roles.Tecnico);
                     Assert.IsFalse(autorizado);
                 });
         }
@@ -223,14 +224,14 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void CuandoSeQuiereAutorizarAUnUsuarioQueTienePermisosPeroNoElNecesarioEntoncesSeLeNiega()
         {
             var now = DateTime.Now;
-            var loginInfo = new LoginInfo("productor", "123", new string[] { Claims.Roles.Productor, "permiso-i" });
+            var loginInfo = new LoginInfo("productor", "123", new string[] { ClaimsDefs.Roles.Productor, "permiso-i" });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
                 .Given("productor", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
-                    var autorizado = s.TryAuthorize(eLoginInfo, Claims.Roles.Tecnico);
+                    var autorizado = s.TryAuthorize(eLoginInfo, ClaimsDefs.Roles.Tecnico);
                     Assert.IsFalse(autorizado);
                 });
         }
@@ -239,14 +240,14 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void CuandoSeQuiereAutorizarAUnUsuarioQueSiTienePermisosEntoncesSeLeConcede()
         {
             var now = DateTime.Now;
-            var loginInfo = new LoginInfo("productor", "123", new string[] { Claims.Roles.Tecnico, "permisito", Claims.Roles.Productor });
+            var loginInfo = new LoginInfo("productor", "123", new string[] { ClaimsDefs.Roles.Tecnico, "permisito", ClaimsDefs.Roles.Productor });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
                 .Given("productor".AsStreamNameOf<Usuario>(), new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
-                    var autorizado = s.TryAuthorize(eLoginInfo, Claims.Roles.Tecnico);
+                    var autorizado = s.TryAuthorize(eLoginInfo, ClaimsDefs.Roles.Tecnico);
                     Assert.IsTrue(autorizado);
                 });
         }
@@ -255,14 +256,14 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void SiElUsuarioEsAdminSiempreEsAutorizado()
         {
             var now = DateTime.Now;
-            var loginInfo = new LoginInfo("admin", "123", new string[] { Claims.Roles.Admin });
+            var loginInfo = new LoginInfo("admin", "123", new string[] { ClaimsDefs.Roles.Admin });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
                 .Given("admin".AsStreamNameOf<Usuario>(), new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
-                    var autorizado = s.TryAuthorize(eLoginInfo, Claims.Roles.Tecnico);
+                    var autorizado = s.TryAuthorize(eLoginInfo, ClaimsDefs.Roles.Tecnico);
                     Assert.IsTrue(autorizado);
                 });
         }
@@ -467,6 +468,112 @@ namespace Agrobook.Domain.Tests.Usuarios
                    var info = this.crypto.Deserialize<LoginInfo>(s.LoginInfoEncriptado);
                    Assert.AreEqual(UsuariosService.DefaultPassword, info.Password);
                });
+        }
+
+        #endregion
+
+        #region Creacion de Usuarios
+
+        [TestMethod]
+        public void DadoUsuarioQueQuiereCrearOtroUsuarioCuandoPasaTokenNuloEntoncesRetornaNulo()
+        {
+            var userName = "admin";
+            var infoEncriptado = this.crypto.Serialize(new LoginInfo(userName, "pass", null));
+            this.sut.Given<Usuario>("user", new NuevoUsuarioCreado(TestMeta.New, userName, "Admin", "pic.png", infoEncriptado))
+                .When(s =>
+                {
+                    var claims = s.ObtenerListaDeClaimsDisponiblesParaElUsuario(null).Result;
+
+                    Assert.IsNull(claims);
+                });
+        }
+
+        [TestMethod]
+        public void CuandoAdminQuiereCrearUsuarioSeLeHabilitanTodosLosRolesYPermisos()
+        {
+            var userName = "admin";
+            var infoEncriptado = this.crypto.Serialize(new LoginInfo(userName, "pass", new string[] { Roles.Admin }));
+            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestMeta.New, userName, "Admin", "pic.png", infoEncriptado))
+                .When(s =>
+                {
+                    var claims = s.ObtenerListaDeClaimsDisponiblesParaElUsuario(infoEncriptado).Result;
+
+                    Assert.IsNotNull(claims);
+                    Assert.AreEqual(ClaimProvider.ClaimCount, claims.Length);
+
+                    Assert.IsTrue(ClaimProvider
+                        .Todos.Values
+                        .All(c => claims.Any(x => x.Id == c.Id))
+                    );
+                });
+        }
+
+        [TestMethod]
+        public void CuandoGerenteQuiereCrearUsuariosEntoncesPuedeCrearTodosMenosAdmin()
+        {
+            var userName = "juancito";
+            var infoEncriptado = this.crypto.Serialize(new LoginInfo(userName, "pass", new string[] { Roles.Gerente }));
+            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestMeta.New, userName, userName, "pic.png", infoEncriptado))
+                .When(s =>
+                {
+                    var claims = s.ObtenerListaDeClaimsDisponiblesParaElUsuario(infoEncriptado).Result;
+
+                    Assert.IsNotNull(claims);
+                    Assert.AreEqual(ClaimProvider.ClaimCount - 1, claims.Length);
+
+                    Assert.IsTrue(ClaimProvider
+                        .Todos.Values
+                        .Where(c => c.Id != Roles.Admin)
+                        .All(c => claims.Any(x => x.Id == c.Id))
+                    );
+                });
+        }
+
+        [TestMethod]
+        public void CuandoTecnicoQuiereCrearUsuarioEntoncesSolamentePuedeCrearProductores()
+        {
+            var userName = "juancito";
+            var infoEncriptado = this.crypto.Serialize(
+                new LoginInfo(userName, "pass", new string[] { Roles.Tecnico }));
+            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestMeta.New, userName, userName, "pic.png", infoEncriptado))
+                .When(s =>
+                {
+                    var claims = s.ObtenerListaDeClaimsDisponiblesParaElUsuario(infoEncriptado).Result;
+
+                    Assert.IsNotNull(claims);
+                    Assert.AreEqual(1, claims.Length);
+                    Assert.AreEqual(Roles.Productor, claims.Single().Id);
+                });
+        }
+
+        [TestMethod]
+        public void CuandoProductorQuiereCrearUsuarioEntoncesNoSeLeDaNingunaPosibilidad()
+        {
+            var userName = "juancito";
+            var infoEncriptado = this.crypto.Serialize(
+                new LoginInfo(userName, "pass", new string[] { Roles.Productor }));
+            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestMeta.New, userName, userName, "pic.png", infoEncriptado))
+                .When(s =>
+                {
+                    var claims = s.ObtenerListaDeClaimsDisponiblesParaElUsuario(infoEncriptado).Result;
+
+                    Assert.IsNull(claims);
+                });
+        }
+
+        [TestMethod]
+        public void CuandoInvitadoQuiereCrearUsuarioEntoncesNoSeLeDaNingunaPosibilidad()
+        {
+            var userName = "juancito";
+            var infoEncriptado = this.crypto.Serialize(
+                new LoginInfo(userName, "pass", new string[] { Roles.Invitado }));
+            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestMeta.New, userName, userName, "pic.png", infoEncriptado))
+                .When(s =>
+                {
+                    var claims = s.ObtenerListaDeClaimsDisponiblesParaElUsuario(infoEncriptado).Result;
+
+                    Assert.IsNull(claims);
+                });
         }
 
         #endregion

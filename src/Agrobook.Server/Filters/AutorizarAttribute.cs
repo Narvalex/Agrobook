@@ -40,23 +40,8 @@ namespace Agrobook.Server.Filters
             if (this.GetAttributes<AllowAnonymousAttribute>(actionContext).Any())
                 return true;
 
-            IEnumerable<string> values;
-            if (actionContext.Request.Headers.TryGetValues("Authorization", out values))
-            {
-                if (values.Any(v =>
-                {
-                    AuthenticationHeaderValue tokenDescriptor;
-                    if (AuthenticationHeaderValue.TryParse(v, out tokenDescriptor))
-                        return _authProvider.TryAuthorize(tokenDescriptor.Parameter, this.claims);
-
-                    return false;
-                }))
-                    return true;
-                else
-                    return false;
-            }
-            else
-                return false;
+            var token = actionContext.GetToken();
+            return token != null && _authProvider.TryAuthorize(token, this.claims);            
         }
 
         private IEnumerable<T> GetAttributes<T>(HttpActionContext actionContext) where T : class

@@ -1,4 +1,5 @@
-﻿using Agrobook.Domain.Usuarios.Services;
+﻿using Agrobook.Domain.Usuarios.Login;
+using Agrobook.Domain.Usuarios.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -30,9 +31,9 @@ namespace Agrobook.Client.Usuarios
             return dto;
         }
 
-        public async Task<IList<ClaimDto>> ObtenerClaims()
+        public async Task<IList<Claim>> ObtenerClaims()
         {
-            var dto = await base.Get<IList<ClaimDto>>("claims");
+            var dto = await base.Get<IList<Claim>>("claims");
             return dto;
         }
     }

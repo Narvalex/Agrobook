@@ -41,7 +41,7 @@ namespace Agrobook.Domain.Usuarios
         public async Task CrearUsuarioAdminAsync()
         {
             var admin = new Usuario();
-            var loginInfo = new LoginInfo(UsuarioAdmin, DefaultPassword, new string[] { Claims.Roles.Admin });
+            var loginInfo = new LoginInfo(UsuarioAdmin, DefaultPassword, new string[] { ClaimsDefs.Roles.Admin });
             var encryptedLoginInfo = this.EncriptarLoginInfo(loginInfo);
             admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), UsuarioAdmin, UsuarioAdmin, this.adminAvatarUrl, encryptedLoginInfo));
             await this.repository.SaveAsync(admin);
@@ -53,6 +53,21 @@ namespace Agrobook.Domain.Usuarios
             var nombreUsuario = tokenInfo.Usuario;
 
             return new Metadatos(nombreUsuario, this.dateTime.Now);
+        }
+
+        public async Task<Claim[]> ObtenerListaDeClaimsDisponiblesParaElUsuario(string token)
+        {
+            if (token == null) return null;
+
+            var loginInfo = this.cryptoSerializer.Deserialize<LoginInfo>(token);
+
+            var usuarioActualizado = await this.IntentarRecuperarUsuarioAsync(loginInfo.Usuario);
+
+            //  Refrescamos la info
+            loginInfo = this.ExtraerElLoginInfo(usuarioActualizado);
+
+            var claimsPermitidos = ClaimProvider.ObtenerClaimsPermitidosParaCrearNuevoUsuario(loginInfo.Claims);
+            return claimsPermitidos;
         }
 
         public bool TryAuthorize(string token, params string[] claimsRequired)
@@ -68,7 +83,7 @@ namespace Agrobook.Domain.Usuarios
             if (token != usuario.LoginInfoEncriptado)
                 return false;
 
-            if (tokenInfo.Claims.Any(c => c == Claims.Roles.Admin))
+            if (tokenInfo.Claims.Any(c => c == ClaimsDefs.Roles.Admin))
                 return true;
 
             var tienePermiso = tokenInfo.Claims.Any(x => claimsRequired.Any(r => r == x));
