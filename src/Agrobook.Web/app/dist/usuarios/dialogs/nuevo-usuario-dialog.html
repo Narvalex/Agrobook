@@ -41,27 +41,24 @@
                     <p>&nbsp;&nbsp;&nbsp;Recuperando roles y permisos</p>
                 </div>
                 <div layout-gt-md="row" ng-show="vm.claimsLoaded">
-                    <!-- Tipo de usuario -->
+                    <!-- Roles y permisos -->
                     <md-input-container class="md-block" flex-gt-md ng-cloak>
-                        <label>Tipo de cuenta</label>
-                        <md-select ng-model="vm.tipoDeCuenta" name="tipoDeCuenta" required>
-                            <md-option ng-repeat="claim in vm.claims" ng-value="claim" ng-click="vm.test()">
+                        <label>Roles y permisos</label>
+                        <md-select ng-model="vm.tipoDeCuenta" name="claims" required>
+                            <md-option ng-repeat="claim in vm.claims" ng-value="claim" ng-click="vm.agregarClaim(claim)">
                                 {{claim.display}} <ng-md-icon title="{{claim.info}}" icon="help_outline"></ng-md-icon>
                             </md-option>
                         </md-select>
-                        <div ng-messages="nuevoUsuarioForm.tipoDeCuenta.$error">
-                            <div ng-message="required">Debe seleccionar el tipo de cuenta.</div>
+                        <div ng-messages="nuevoUsuarioForm.claims.$error">
+                            <div ng-message="required">Debe elegir al menos un rol.</div>
                         </div>
                     </md-input-container>
                 </div>
                 <div layout-gt-md="row" ng-show="vm.claimsLoaded">
-                    <md-chips>
-                        <md-chip>Hockey</md-chip>
-                        <md-chip>Lacrosse</md-chip>
-                        <md-chip>Baseball</md-chip>
-                        <md-chip>Hockey</md-chip>
-                        <md-chip>Lacrosse</md-chip>
-                        <md-chip>Baseball</md-chip>
+                    <md-chips ng-hide="vm.claimsSeleccionados.length < 1">
+                        <md-chip ng-repeat="claim in vm.claimsSeleccionados">
+                            {{claim.display}} <ng-md-icon icon="highlight_off" ng-click="vm.quitarClaim(claim)" style="cursor:pointer"></ng-md-icon>
+                        </md-chip>
                     </md-chips>
                 </div>
                 <div layout-gt-md="row">

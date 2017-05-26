@@ -10,6 +10,7 @@ var usuariosArea;
             this.config = config;
             this.claimsLoaded = false;
             this.avatarUrls = [];
+            this.claimsSeleccionados = [];
             this.bloquearSubmit = false;
             this.setDefaultSubmitText();
             this.avatarUrls = config.avatarUrls;
@@ -18,15 +19,27 @@ var usuariosArea;
         nuevoUsuarioDialogController.prototype.cancelar = function () {
             this.$mdDialog.cancel();
         };
-        nuevoUsuarioDialogController.prototype.test = function () {
-            this.toasterLite.info('hola hola');
+        nuevoUsuarioDialogController.prototype.agregarClaim = function (claim) {
+            for (var i = 0; i < this.claimsSeleccionados.length; i++) {
+                if (this.claimsSeleccionados[i].id === claim.id)
+                    return;
+            }
+            this.claimsSeleccionados.push(claim);
+        };
+        nuevoUsuarioDialogController.prototype.quitarClaim = function (claim) {
+            for (var i = 0; i < this.claimsSeleccionados.length; i++) {
+                if (this.claimsSeleccionados[i].id == claim.id) {
+                    this.claimsSeleccionados.splice(i, 1);
+                    break;
+                }
+            }
         };
         nuevoUsuarioDialogController.prototype.crearNuevoUsuario = function () {
             var _this = this;
             var nombre = this.usuario.nombreDeUsuario;
             this.setWorkingText();
             this.bloquearSubmit = true;
-            this.usuario.claims = [this.claim.id];
+            this.usuario.claims = this.claimsSeleccionados.map(function (c) { return c.id; });
             this.usuariosService.crearNuevoUsuario(this.usuario, function (value) {
                 _this.toasterLite.success('El usuario ' + nombre + ' fue creado exitosamente');
                 _this.$mdDialog.hide(_this.usuario);

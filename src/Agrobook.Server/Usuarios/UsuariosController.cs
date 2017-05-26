@@ -3,15 +3,16 @@ using Agrobook.Domain.Usuarios.Login;
 using Agrobook.Server.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
+using static Agrobook.Domain.Usuarios.Login.ClaimsDefs;
 
 namespace Agrobook.Server.Usuarios
 {
-    [Autorizar(ClaimsDefs.Roles.Admin)]
     [RoutePrefix("usuarios")]
     public class UsuariosController : ApiController
     {
         private readonly UsuariosService service = ServiceLocator.ResolveSingleton<UsuariosService>();
 
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
         [HttpPost]
         [Route("crear-nuevo-usuario")]
         public async Task<IHttpActionResult> CrearNuevoUsuarioAsync([FromBody]CrearNuevoUsuario command)

@@ -14,7 +14,7 @@ namespace Agrobook.Server.Usuarios
         private readonly UsuariosQueryService service = ServiceLocator.ResolveSingleton<UsuariosQueryService>();
         private readonly UsuariosService usuariosService = ServiceLocator.ResolveSingleton<UsuariosService>();
 
-        [Autorizar(Roles.Admin)]
+        [Autorizar(Roles.Gerente)]
         [HttpGet]
         [Route("todos")]
         public async Task<IHttpActionResult> ObtenerTodosLosUsuarios()
@@ -39,7 +39,7 @@ namespace Agrobook.Server.Usuarios
             return this.Ok(claims);
         }
 
-        [Autorizar(Roles.Admin, Permisos.AdministrarOrganizaciones)]
+        [Autorizar(Roles.Gerente, Permisos.AdministrarOrganizaciones)]
         [HttpGet]
         [Route("organizaciones")]
         public async Task<IHttpActionResult> ObtenerOrganizaciones()

@@ -509,7 +509,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         }
 
         [TestMethod]
-        public void CuandoGerenteQuiereCrearUsuariosEntoncesPuedeCrearTodosMenosAdmin()
+        public void CuandoGerenteQuiereCrearUsuariosEntoncesPuedeCrearTodosMenosAdminYGerente()
         {
             var userName = "juancito";
             var infoEncriptado = this.crypto.Serialize(new LoginInfo(userName, "pass", new string[] { Roles.Gerente }));
@@ -519,11 +519,11 @@ namespace Agrobook.Domain.Tests.Usuarios
                     var claims = s.ObtenerListaDeClaimsDisponiblesParaElUsuario(infoEncriptado).Result;
 
                     Assert.IsNotNull(claims);
-                    Assert.AreEqual(ClaimProvider.ClaimCount - 1, claims.Length);
+                    Assert.AreEqual(ClaimProvider.ClaimCount - 2, claims.Length);
 
                     Assert.IsTrue(ClaimProvider
                         .Todos.Values
-                        .Where(c => c.Id != Roles.Admin)
+                        .Where(c => c.Id != Roles.Admin && c.Id != Roles.Gerente)
                         .All(c => claims.Any(x => x.Id == c.Id))
                     );
                 });

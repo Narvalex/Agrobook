@@ -20,10 +20,11 @@ module usuariosArea {
         claimsLoaded = false;
         avatarUrls = [];  
 
+        // todos los claims cargados
         claims: claimDto[]; 
 
         usuario: usuarioDto;
-        claim: any; 
+        claimsSeleccionados: claimDto[] = [];
 
         bloquearSubmit: boolean = false;
         submitLabel: string;
@@ -32,15 +33,30 @@ module usuariosArea {
             this.$mdDialog.cancel();
         }
 
-        test() {
-            this.toasterLite.info('hola hola');
+        agregarClaim(claim: claimDto) {
+            for (var i = 0; i < this.claimsSeleccionados.length; i++) {
+                if (this.claimsSeleccionados[i].id === claim.id)
+                    return;
+            }
+            this.claimsSeleccionados.push(claim);
+        }
+
+        quitarClaim(claim: claimDto) {
+            for (var i = 0; i < this.claimsSeleccionados.length; i++) {
+                if (this.claimsSeleccionados[i].id == claim.id) {
+                    this.claimsSeleccionados.splice(i, 1);
+                    break;
+                }
+            }
         }
 
         crearNuevoUsuario(): void {
             var nombre = this.usuario.nombreDeUsuario;
             this.setWorkingText();
             this.bloquearSubmit = true;
-            this.usuario.claims = [this.claim.id];
+
+            this.usuario.claims = this.claimsSeleccionados.map(c => { return c.id; });
+
             this.usuariosService.crearNuevoUsuario(this.usuario,
                 (value) => {
                     this.toasterLite.success('El usuario ' + nombre + ' fue creado exitosamente');

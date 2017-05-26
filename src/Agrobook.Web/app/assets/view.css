@@ -6,3 +6,9 @@
 
     /*padding: 5px, 40px, 5px, 40px;*/
 }
+
+md-chips.md-default-theme .md-chips, md-chips .md-chips {
+     box-shadow: none !important;
+}
+
+

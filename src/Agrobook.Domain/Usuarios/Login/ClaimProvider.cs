@@ -34,7 +34,7 @@ namespace Agrobook.Domain.Usuarios.Login
                     return _claims.Values.ToArray();
 
                 case Roles.Gerente:
-                    return _claims.Values.SkipWhile(c => c.Id == Roles.Admin).ToArray();
+                    return _claims.Values.SkipWhile(c => c.Id == Roles.Admin || c.Id == Roles.Gerente).ToArray();
 
                 case Roles.Tecnico:
                     return new Claim[] { _claims[Roles.Productor] };
