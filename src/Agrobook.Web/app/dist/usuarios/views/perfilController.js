@@ -32,14 +32,16 @@ var usuariosArea;
         }
         perfilController.prototype.actualizarPerfil = function () {
             var _this = this;
-            if (!this.perfilEstaEditado)
+            if (!this.perfilEstaEditado) {
                 this.toasterLite.info('No hay nada para actualizar');
+                return;
+            }
             if (!this.intentarValidarEdicionDePerfil())
                 return;
             var dto = new usuariosArea.actualizarPerfilDto(this.usuarioRecuperado.nombre, this.usuarioEditado.avatarUrl, this.usuarioEditado.nombreParaMostrar, this.passwordActual, this.nuevoPassword);
             this.usuariosService.actualizarPerfil(dto, function (value) {
                 _this.$rootScope.$broadcast(_this.config.eventIndex.usuarios.perfilActualizado, new common.perfilActualizado(dto.usuario, dto.avatarUrl, dto.nombreParaMostrar));
-                _this.toasterLite.success('El perfil se ha actualizado exitosamente');
+                _this.toasterLite.info('El perfil se ha actualizado exitosamente. Atención: si actualizó su contraseña entonces usted debe volver a iniciar sesión.');
             }, function (reason) { return _this.toasterLite.error('Ocurrió un error al intentar actualizar el perfil'); });
         };
         perfilController.prototype.resetearPassword = function () {

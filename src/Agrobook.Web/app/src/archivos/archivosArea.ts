@@ -10,6 +10,7 @@ module archivosArea {
         .service('loginQueryService', login.loginQueryService)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
         .controller('sidenavController', sidenavController)
+        .controller('prodSidenavController', prodSidenavController)
         .controller('toolbarHeaderController', toolbarHeaderController)
         .controller('mainContentController', mainContentController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', (

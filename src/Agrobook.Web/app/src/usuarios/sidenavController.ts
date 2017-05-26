@@ -61,7 +61,7 @@ module usuariosArea {
                         usuario.nombreParaMostrar,
                         usuario.avatarUrl));
             }, () => {
-                this.toasterLite.info('Creación de nuevo usuario cancelada');
+                //this.toasterLite.info('Creación de nuevo usuario cancelada');
             });
         }
 

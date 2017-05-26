@@ -53,8 +53,10 @@ module usuariosArea {
         passwordActual: string;
 
         actualizarPerfil() {
-            if (!this.perfilEstaEditado)
+            if (!this.perfilEstaEditado) {
                 this.toasterLite.info('No hay nada para actualizar');
+                return;
+            }
             if (!this.intentarValidarEdicionDePerfil())
                 return;
 
@@ -70,9 +72,7 @@ module usuariosArea {
                 value => {
                     this.$rootScope.$broadcast(this.config.eventIndex.usuarios.perfilActualizado,
                     new common.perfilActualizado(dto.usuario, dto.avatarUrl, dto.nombreParaMostrar));
-                    this.toasterLite.success('El perfil se ha actualizado exitosamente');
-
-                    
+                    this.toasterLite.info('El perfil se ha actualizado exitosamente. Atención: si actualizó su contraseña entonces usted debe volver a iniciar sesión.');
                 },
                 reason => this.toasterLite.error('Ocurrió un error al intentar actualizar el perfil')
             );

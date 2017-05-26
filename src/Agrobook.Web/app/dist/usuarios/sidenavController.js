@@ -48,7 +48,7 @@ var usuariosArea;
             }).then(function (usuario) {
                 _this.usuarios.unshift(new usuariosArea.usuarioInfoBasica(usuario.nombreDeUsuario, usuario.nombreParaMostrar, usuario.avatarUrl));
             }, function () {
-                _this.toasterLite.info('Creación de nuevo usuario cancelada');
+                //this.toasterLite.info('Creación de nuevo usuario cancelada');
             });
         };
         sidenavController.prototype.cargarListaDeUsuarios = function () {

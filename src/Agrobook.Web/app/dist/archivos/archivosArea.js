@@ -10,6 +10,7 @@ var archivosArea;
         .service('loginQueryService', login.loginQueryService)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
         .controller('sidenavController', archivosArea.sidenavController)
+        .controller('prodSidenavController', archivosArea.prodSidenavController)
         .controller('toolbarHeaderController', archivosArea.toolbarHeaderController)
         .controller('mainContentController', archivosArea.mainContentController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $routeProvider) {

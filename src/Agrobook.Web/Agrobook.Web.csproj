@@ -716,7 +716,7 @@
     <Content Include="app\bower_components\toastr\toastr.min.css" />
     <Content Include="app\bower_components\toastr\toastr.min.js" />
     <Content Include="app\dist\archivos\main-content.html" />
-    <Content Include="app\dist\archivos\sidenav-right.html" />
+    <Content Include="app\dist\archivos\prod-sidenav.html" />
     <Content Include="app\dist\archivos\sidenav.html" />
     <Content Include="app\dist\archivos\toolbar-header.html" />
     <Content Include="app\dist\common\toasts\toast-cerrable.html" />
@@ -731,7 +731,7 @@
     <Content Include="app\dist\usuarios\dialogs\nuevo-grupo-dialog.html" />
     <Content Include="app\dist\usuarios\dialogs\nuevo-usuario-dialog.html" />
     <Content Include="app\dist\usuarios\sidenav.html" />
-    <Content Include="app\dist\usuarios\sidenav.css" />
+    <Content Include="app\assets\sidenav.css" />
     <Content Include="app\dist\usuarios\toolbar-header.html" />
     <Content Include="app\dist\usuarios\views\grupos.html" />
     <Content Include="app\dist\usuarios\views\main-content.html" />
@@ -740,6 +740,7 @@
     <Content Include="app\home.html" />
     <Content Include="app\maps.html" />
     <TypeScriptCompile Include="app\src\usuarios\dialogs\nuevoGrupoDialogController.ts" />
+    <TypeScriptCompile Include="app\src\archivos\prodSidenavController.ts" />
     <Content Include="app\usuarios.html" />
     <Content Include="Global.asax" />
     <Content Include="favicon.ico" />

@@ -34,6 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{E3353730-C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CasosDeUso", "CasosDeUso", "{50CC3FE7-1657-43A7-A1EE-C537B548A4C7}"
 	ProjectSection(SolutionItems) = preProject
+		..\docs\CasosDeUso\Archivos.docx = ..\docs\CasosDeUso\Archivos.docx
 		..\docs\CasosDeUso\SeccionUsuarios.docx = ..\docs\CasosDeUso\SeccionUsuarios.docx
 	EndProjectSection
 EndProject
