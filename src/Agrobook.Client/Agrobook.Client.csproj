@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archivos\ArchivosQueryClient.cs" />
     <Compile Include="ClientBase.cs" />
     <Compile Include="ClientBaseExtensions.cs" />
     <Compile Include="HttpLite.cs" />

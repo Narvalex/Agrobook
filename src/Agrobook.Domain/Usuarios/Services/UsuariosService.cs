@@ -4,13 +4,18 @@ using Agrobook.Domain.Usuarios.Login;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using static Agrobook.Domain.Usuarios.UsuariosConstants;
 
 namespace Agrobook.Domain.Usuarios
 {
-    public class UsuariosService : EventSourcedService, ITokenAuthorizationProvider, IProveedorDeMetadatosDelUsuario
+    public static class UsuariosConstants
     {
         public const string UsuarioAdmin = "admin";
         public const string DefaultPassword = "1234";
+    }
+
+    public class UsuariosService : EventSourcedService, ITokenAuthorizationProvider, IProveedorDeMetadatosDelUsuario
+    {
         private readonly IJsonSerializer cryptoSerializer;
 
         private readonly string adminAvatarUrl;
@@ -29,14 +34,6 @@ namespace Agrobook.Domain.Usuarios
             this.cryptoSerializer = cryptoSerializer;
         }
 
-        public bool ExisteUsuarioAdmin
-        {
-            get
-            {
-                var usuarioAdmin = this.repository.GetAsync<Usuario>(UsuarioAdmin).Result;
-                return usuarioAdmin != null;
-            }
-        }
 
         public async Task CrearUsuarioAdminAsync()
         {

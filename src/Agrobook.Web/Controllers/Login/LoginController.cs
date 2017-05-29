@@ -14,7 +14,7 @@ namespace Agrobook.Web.Controllers.Login
         {
             this.client = ServiceLocator
                             .ResolveNewOf<LoginClient>()
-                            .WithTokenProvider(this.GetToken);
+                            .WithTokenProvider(this.TokenProvider);
         }
 
         [HttpPost]

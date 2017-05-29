@@ -897,6 +897,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ApiControllerBase.cs" />
+    <Compile Include="Controllers\Archivos\ArchivosController.cs" />
+    <Compile Include="Controllers\Archivos\ArchivosQueryController.cs" />
     <Compile Include="Controllers\Login\LoginController.cs" />
     <Compile Include="Controllers\Maps\KmlController.cs" />
     <Compile Include="Controllers\Usuarios\UsuariosController.cs" />

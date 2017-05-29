@@ -100,11 +100,12 @@ namespace Agrobook.Server
         private static void OnPersistenceEnginesInitialized()
         {
             var userService = ServiceLocator.ResolveSingleton<UsuariosService>();
+            var userQueryService = ServiceLocator.ResolveSingleton<UsuariosQueryService>();
             var intentos = 0;
             var maxRetries = 3;
             try
             {
-                CrearUsuarioAdminSiHaceFalta(userService);
+                CrearUsuarioAdminSiHaceFalta(userQueryService, userService);
             }
             catch (Exception ex)
             {
@@ -115,7 +116,7 @@ namespace Agrobook.Server
                 if (intentos >= maxRetries)
                     throw;
                 Thread.Sleep(1500);
-                CrearUsuarioAdminSiHaceFalta(userService);
+                CrearUsuarioAdminSiHaceFalta(userQueryService, userService);
             }
 
             var usuariosDenormalizer = ServiceLocator.ResolveSingleton<UsuariosDenormalizer>();
@@ -125,9 +126,9 @@ namespace Agrobook.Server
             organizacionesDenormalizer.Start();
         }
 
-        private static void CrearUsuarioAdminSiHaceFalta(UsuariosService userService)
+        private static void CrearUsuarioAdminSiHaceFalta(UsuariosQueryService query, UsuariosService userService)
         {
-            if (!userService.ExisteUsuarioAdmin)
+            if (!query.ExisteUsuarioAdmin)
             {
                 Console.Write("Se detectó la ausencia del usuario admin. Creando uno...");
                 userService.CrearUsuarioAdminAsync().Wait();

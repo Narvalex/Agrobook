@@ -14,7 +14,7 @@ namespace Agrobook.Web.Controllers.Usuarios
         {
             this.client = ServiceLocator
                             .ResolveNewOf<UsuariosQueryClient>()
-                            .WithTokenProvider(this.GetToken);
+                            .WithTokenProvider(this.TokenProvider);
         }
 
         [HttpGet]

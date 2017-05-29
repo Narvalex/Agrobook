@@ -119,6 +119,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archivos\ArchivosQueryController.cs" />
     <Compile Include="Common\HttpActionExtensions.cs" />
     <Compile Include="Common\MensajeAuditableExtensions.cs" />
     <Compile Include="Filters\AutorizarAttribute.cs" />

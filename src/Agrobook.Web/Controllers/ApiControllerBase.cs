@@ -6,7 +6,7 @@ namespace Agrobook.Web.Controllers
 {
     public abstract class ApiControllerBase : ApiController
     {
-        protected string GetToken()
+        protected string TokenProvider()
         {
             IEnumerable<string> values;
             return this.ActionContext

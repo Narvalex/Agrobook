@@ -1,4 +1,5 @@
 ﻿using Agrobook.Client;
+using Agrobook.Client.Archivos;
 using Agrobook.Client.Login;
 using Agrobook.Client.Usuarios;
 using Agrobook.Core;
@@ -28,6 +29,7 @@ namespace Agrobook.Web
             container.Register<LoginClient>(() => new LoginClient(http));
             container.Register<UsuariosClient>(() => new UsuariosClient(http));
             container.Register<UsuariosQueryClient>(() => new UsuariosQueryClient(http));
+            container.Register<ArchivosQueryClient>(() => new ArchivosQueryClient(http));
         }
     }
 }

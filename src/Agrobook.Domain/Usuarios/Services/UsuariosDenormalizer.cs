@@ -11,21 +11,30 @@ namespace Agrobook.Domain.Usuarios.Services
         IEventHandler<AvatarUrlActualizado>,
         IEventHandler<NombreParaMostrarActualizado>
     {
-        public UsuariosDenormalizer(IEventStreamSubscriber subscriber, Func<AgrobookDbContext> contextFactory)
+        private readonly UsuariosQueryService queryService;
+
+        public UsuariosDenormalizer(IEventStreamSubscriber subscriber, Func<AgrobookDbContext> contextFactory, UsuariosQueryService queryService)
            : base(subscriber, contextFactory, 
                  typeof(UsuariosDenormalizer).Name, 
                  StreamCategoryAttribute.GetCategory<Usuario>().AsCategoryProjectionStream())
-        { }   
+        {
+            Ensure.NotNull(queryService, nameof(queryService));
+
+            this.queryService = queryService;
+        }   
 
         public async Task Handle(long eventNumber, NuevoUsuarioCreado e)
         {
+            var esProductor = this.queryService.EsProductor(e.LoginInfoEncriptado);
+
             await this.Denormalize(eventNumber, context =>
             {
                 context.Usuarios.Add(new UsuarioEntity
                 {
-                    NombreDeUsuario = e.Usuario,
-                    NombreParaMostrar = e.NombreParaMostrar,
-                    AvatarUrl = e.AvatarUrl
+                    Id = e.Usuario,
+                    Display = e.NombreParaMostrar,
+                    AvatarUrl = e.AvatarUrl,
+                    EsProductor = esProductor
                 });
             });
         }
@@ -34,7 +43,7 @@ namespace Agrobook.Domain.Usuarios.Services
         {
             await this.Denormalize(eventNumber, context =>
             {
-                var usuario = context.Usuarios.Single(u => u.NombreDeUsuario == e.Usuario);
+                var usuario = context.Usuarios.Single(u => u.Id == e.Usuario);
                 usuario.AvatarUrl = e.NuevoAvatarUrl;
             });
         }
@@ -43,8 +52,8 @@ namespace Agrobook.Domain.Usuarios.Services
         {
             await this.Denormalize(eventNumber, context =>
             {
-                var usuario = context.Usuarios.Single(u => u.NombreDeUsuario == e.Usuario);
-                usuario.NombreParaMostrar = e.NuevoNombreParaMostrar;
+                var usuario = context.Usuarios.Single(u => u.Id == e.Usuario);
+                usuario.Display = e.NuevoNombreParaMostrar;
             });
         }
     }

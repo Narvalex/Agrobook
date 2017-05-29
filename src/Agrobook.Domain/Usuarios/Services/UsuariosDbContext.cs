@@ -15,20 +15,23 @@ namespace Agrobook.Domain
 
     public class UsuarioEntity
     {
-        public string NombreDeUsuario { get; set; }
-        public string NombreParaMostrar { get; set; }
+        public string Id { get; set; }
+        public string Display { get; set; }
         public string AvatarUrl { get; set; }
+        public bool EsProductor { get; set; }
     }
 
     public class UsuariosEntityMap : EntityTypeConfiguration<UsuarioEntity>
     {
         public UsuariosEntityMap()
         {
-            this.HasKey(e => e.NombreDeUsuario);
+            this.HasKey(e => e.Id);
 
             this.ToTable("Usuarios");
-            this.Property(e => e.NombreDeUsuario).HasColumnName("NombreDeUsuario");
-            this.Property(e => e.NombreParaMostrar).HasColumnName("NombreCompleto");
+            this.Property(e => e.Id).HasColumnName("Id");
+            this.Property(e => e.Display).HasColumnName("Display");
+            this.Property(e => e.AvatarUrl).HasColumnName("AvatarUrl");
+            this.Property(e => e.EsProductor).HasColumnName("EsProductor");
         }
     }
 }

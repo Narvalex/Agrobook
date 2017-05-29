@@ -1,5 +1,6 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain;
+using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Common;
 using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Services;
@@ -52,13 +53,15 @@ namespace Agrobook.Server
             var usuariosService = new UsuariosService(eventSourcedRepository, dateTimeProvider, cryptoSerializer);
             AutorizarAttribute.SetTokenAuthProvider(usuariosService);
 
-            var usuariosDenormalizer = new UsuariosDenormalizer(eventStreamSubscriber, dbContextFactory);
+            var usuariosQueryService = new UsuariosQueryService(readOnlyDbContextFactory, eventSourcedRepository, cryptoSerializer);
 
-            var usuariosQueryService = new UsuariosQueryService(readOnlyDbContextFactory);
+            var usuariosDenormalizer = new UsuariosDenormalizer(eventStreamSubscriber, dbContextFactory, usuariosQueryService);
 
             var organizacionesDenormalizer = new OrganizacionesDenormalizer(eventStreamSubscriber, dbContextFactory);
 
-            var organizacionesQueryService = new OrganizacionesQueryService(readOnlyDbContextFactory);
+            var organizacionesQueryService = new OrganizacionesQueryService(readOnlyDbContextFactory, eventSourcedRepository);
+
+            var archivosQueryService = new ArchivosQueryService(readOnlyDbContextFactory, eventSourcedRepository);
 
             container.Register<IDateTimeProvider>(dateTimeProvider);
             container.Register<EventStoreManager>(es);
@@ -69,6 +72,7 @@ namespace Agrobook.Server
             container.Register<UsuariosDenormalizer>(usuariosDenormalizer);
             container.Register<OrganizacionesDenormalizer>(organizacionesDenormalizer);
             container.Register<OrganizacionesQueryService>(organizacionesQueryService);
+            container.Register<ArchivosQueryService>(archivosQueryService);
         }
     }
 }

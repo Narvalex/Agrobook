@@ -61,6 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archivos\Services\ArchivosQueryService.cs" />
+    <Compile Include="Archivos\Services\ArchivosQueryServiceDTOs.cs" />
     <Compile Include="Common\AgrobookDbContext.cs" />
     <Compile Include="Common\AgrobookDenormalizer.cs" />
     <Compile Include="Common\AgrobookQueryService.cs" />
