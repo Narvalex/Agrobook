@@ -1,5 +1,43 @@
-﻿<md-toolbar> 
-     <div class="md-toolbar-tools">
-        <h2>Productores</h2>
+﻿<div ng-controller="prodSidenavController as vm">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Productores</h2>
+            <div flex></div>
+            <md-button class="md-icon-button"
+                       hide-gt-sm
+                       ng-click="vm.toggleSideNav()"
+                       aria-label="Toggle side nav">
+                <ng-md-icon icon="close"></ng-md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+        <md-content layout-padding ng-hide="vm.loaded">
+        <div layout="row" layout-align="space-around">
+            <md-progress-circular md-mode="indeterminate"
+                                  ng-disabled="vm.loaded"></md-progress-circular>
+        </div>
+    </md-content>
+    <div layout-padding>
+        <md-autocomplete md-search-text="vm.searchText"
+                         md-items="item in vm.productores | filter: vm.searchText"
+                         md-item-text="item.id"
+                         md-min-length="100"
+                         placeholder="Buscar">
+            <md-not-found>
+                Ninguno coincide con "{{vm.searchText}}".
+            </md-not-found>
+        </md-autocomplete>
     </div>
-</md-toolbar>
+
+    <md-content class="scrollable-nav-content">
+        <md-list>
+            <!--Optional filter  | orderBy:'nombre'" -->
+            <md-list-item ng-repeat="productor in vm.productores | filter:vm.searchText"
+                          ng-click="vm.seleccionarProductor(productor)"
+                          ng-class="{'seleccionado': productor === vm.productorSeleccionado }">
+                <img ng-src="{{productor.avatarUrl}}" alt="Imagen de perfil" style="height:40px" />
+                &nbsp;{{productor.display}}
+            </md-list-item>
+        </md-list>
+    </md-content>
+</div>

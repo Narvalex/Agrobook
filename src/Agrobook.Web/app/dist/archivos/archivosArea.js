@@ -8,6 +8,7 @@ var archivosArea;
         .service('httpLite', common.httpLite)
         .service('loginService', login.loginService)
         .service('loginQueryService', login.loginQueryService)
+        .service('archivosQueryService', archivosArea.archivosQueryService)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
         .controller('sidenavController', archivosArea.sidenavController)
         .controller('prodSidenavController', archivosArea.prodSidenavController)

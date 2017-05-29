@@ -8,6 +8,7 @@ module archivosArea {
         .service('httpLite', common.httpLite)
         .service('loginService', login.loginService)
         .service('loginQueryService', login.loginQueryService)
+        .service('archivosQueryService', archivosQueryService)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
         .controller('sidenavController', sidenavController)
         .controller('prodSidenavController', prodSidenavController)

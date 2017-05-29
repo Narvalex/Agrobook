@@ -68,8 +68,8 @@ module usuariosArea {
         private cargarListaDeUsuarios() {
             this.usuariosQueryService.obtenerListaDeTodosLosUsuarios(
                 value => {
-                    this.loaded = true;
                     this.usuarios = value.data;
+                    this.loaded = true;
                 },
                 reason => {
                     this.toasterLite.error('Ocurrió un error al recuperar lista de usuarios', this.toasterLite.delayForever);

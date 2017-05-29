@@ -54,8 +54,8 @@ var usuariosArea;
         sidenavController.prototype.cargarListaDeUsuarios = function () {
             var _this = this;
             this.usuariosQueryService.obtenerListaDeTodosLosUsuarios(function (value) {
-                _this.loaded = true;
                 _this.usuarios = value.data;
+                _this.loaded = true;
             }, function (reason) {
                 _this.toasterLite.error('Ocurrió un error al recuperar lista de usuarios', _this.toasterLite.delayForever);
             });
