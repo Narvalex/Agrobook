@@ -715,10 +715,10 @@
     <Content Include="app\bower_components\toastr\toastr.js" />
     <Content Include="app\bower_components\toastr\toastr.min.css" />
     <Content Include="app\bower_components\toastr\toastr.min.js" />
-    <Content Include="app\dist\archivos\main-content.html" />
     <Content Include="app\dist\archivos\prod-sidenav.html" />
     <Content Include="app\dist\archivos\sidenav.html" />
     <Content Include="app\dist\archivos\toolbar-header.html" />
+    <Content Include="app\dist\archivos\views\main-content.html" />
     <Content Include="app\dist\common\toasts\toast-cerrable.html" />
     <Content Include="app\dist\common\userMenu\menu-items-template.html" />
     <Content Include="app\dist\common\userMenu\user-menu-widget.css" />
@@ -739,6 +739,7 @@
     <Content Include="app\dist\usuarios\views\perfil.html" />
     <Content Include="app\home.html" />
     <Content Include="app\maps.html" />
+    <TypeScriptCompile Include="app\src\archivos\routes.ts" />
     <TypeScriptCompile Include="app\src\usuarios\dialogs\nuevoGrupoDialogController.ts" />
     <TypeScriptCompile Include="app\src\archivos\prodSidenavController.ts" />
     <Content Include="app\usuarios.html" />
@@ -840,7 +841,7 @@
     <Content Include="app\bower_components\angular-material-icons\README.md" />
     <Content Include="typings\globals\googlemaps\typings.json" />
     <TypeScriptCompile Include="app\src\archivos\archivosArea.ts" />
-    <TypeScriptCompile Include="app\src\archivos\mainContentController.ts" />
+    <TypeScriptCompile Include="app\src\archivos\views\mainContentController.ts" />
     <TypeScriptCompile Include="app\src\archivos\sidenavController.ts" />
     <TypeScriptCompile Include="app\src\archivos\toolbarHeaderController.ts" />
     <TypeScriptCompile Include="app\src\common\commonDTOs.ts" />

@@ -31,5 +31,10 @@ module archivosArea {
                 .accentPalette('blue');
 
             common.registerHttpInterceptors($httpProvider);
+
+            getRouteConfigs().forEach(config => {
+                $routeProvider.when(config.path, config.route);
+            });
+            $routeProvider.otherwise({ redirectTo: '/' });
         }]);
 }

@@ -13,12 +13,18 @@ module archivosArea {
         }
 
         loaded: boolean = false;
-        productores: productorDto[];
+        productores: productorDto[]; 
+        productorSeleccionado: productorDto;
 
         toggleSideNav(): void {
             this.$mdSidenav('right').toggle();
         }
 
+        seleccionarProductor(productor: productorDto) {
+            this.productorSeleccionado = productor;
+            window.location.replace('#!/archivos/' + productor.id);
+            this.toggleSideNav(); 
+        }
 
         // Internal
 

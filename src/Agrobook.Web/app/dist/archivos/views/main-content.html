@@ -1,20 +1,20 @@
 ﻿<section layout="row" flex ng-controller="mainContentController as vm">
     <md-content flex>
-        <md-button class="md-fab md-fab-top-right" 
-                   ng-click="vm.toggleSideNav()" 
-                   ng-hide="vm.isSideNavOpen()" 
+        <md-button class="md-fab md-fab-top-right"
+                   ng-click="vm.toggleSideNav()"
+                   ng-hide="vm.isSideNavOpen()"
                    aria-label="Seleccionar productor">
             <md-tooltip md-direction="left">Seleccionar otro productor</md-tooltip>
             <ng-md-icon icon="people"></ng-md-icon>
         </md-button>
 
-      <div layout-padding>
-          <md-input-container md-no-float class="md-block" style="width:60%"> 
-              <md-icon md-svg-src="./assets/svg/search.svg" style="display:inline-block; margin-top:5px;"></md-icon>
-              <label>Buscar archivo</label>
-              <input ng-model="user.address" type="text">
-          </md-input-container>
-      </div>
+        <div layout-padding>
+            <md-input-container md-no-float class="md-block" style="width:60%">
+                <md-icon md-svg-src="./assets/svg/search.svg" style="display:inline-block; margin-top:5px;"></md-icon>
+                <label>Buscar archivo</label>
+                <input ng-model="user.address" type="text">
+            </md-input-container>
+        </div>
         <md-list>
             <md-list-item class="noright">
                 <ng-md-icon icon="save"></ng-md-icon>

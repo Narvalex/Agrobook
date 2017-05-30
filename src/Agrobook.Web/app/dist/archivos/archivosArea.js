@@ -24,6 +24,10 @@ var archivosArea;
                 .primaryPalette('green')
                 .accentPalette('blue');
             common.registerHttpInterceptors($httpProvider);
+            archivosArea.getRouteConfigs().forEach(function (config) {
+                $routeProvider.when(config.path, config.route);
+            });
+            $routeProvider.otherwise({ redirectTo: '/' });
         }]);
 })(archivosArea || (archivosArea = {}));
 //# sourceMappingURL=archivosArea.js.map

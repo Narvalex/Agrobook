@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
 <html lang="es-py" ng-app="archivosArea">
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2" />
 
@@ -11,7 +11,7 @@
     <link href="./bower_components/angular-material/angular-material.min.css" rel="stylesheet" />
     <link href="./bower_components/angular-material-icons/angular-material-icons.css" rel="stylesheet" />
 
-    <!-- Custom -->    
+    <!-- Custom -->
     <link href="./assets/spinner.css" rel="stylesheet" />
     <link href="./assets/view.css" rel="stylesheet" />
     <link href="./assets/md-toasts.css" rel="stylesheet" />
@@ -37,7 +37,8 @@
 
     <div layout="column" flex>
         <div ng-include="'./dist/archivos/toolbar-header.html'"></div>
-        <div ng-include="'./dist/archivos/main-content.html'"></div>
+        <!-- This content is routed -->
+        <div ng-view></div>
     </div>
 
     <script src="./bower_components/angular/angular.js"></script>
@@ -48,6 +49,7 @@
     <script src="./bower_components/angular-material-icons/angular-material-icons.min.js"></script>
     <!-- functions -->
     <script src="./dist/common/httpInterceptorRegistry.js"></script>
+    <script src="./dist/archivos/routes.js"></script>
     <!-- values -->
     <script src="./dist/config.js"></script>
     <!-- models -->
@@ -64,7 +66,7 @@
     <script src="./dist/archivos/sidenavController.js"></script>
     <script src="./dist/archivos/prodSidenavController.js"></script>
     <script src="./dist/archivos/toolbarHeaderController.js"></script>
-    <script src="./dist/archivos/mainContentController.js"></script>
+    <script src="./dist/archivos/views/mainContentController.js"></script>
     <!-- boot -->
     <script src="./dist/archivos/archivosArea.js"></script>
 </body>

@@ -12,6 +12,11 @@ var archivosArea;
         prodSidenavController.prototype.toggleSideNav = function () {
             this.$mdSidenav('right').toggle();
         };
+        prodSidenavController.prototype.seleccionarProductor = function (productor) {
+            this.productorSeleccionado = productor;
+            window.location.replace('#!/archivos/' + productor.id);
+            this.toggleSideNav();
+        };
         // Internal
         prodSidenavController.prototype.cargarListaDeProductores = function () {
             var _this = this;
