@@ -57,7 +57,7 @@
                 <div layout-gt-md="row" ng-show="vm.claimsLoaded">
                     <md-chips ng-hide="vm.claimsSeleccionados.length < 1">
                         <md-chip ng-repeat="claim in vm.claimsSeleccionados">
-                            {{claim.display}} <ng-md-icon icon="highlight_off" ng-click="vm.quitarClaim(claim)" style="cursor:pointer"></ng-md-icon>
+                            {{claim.display}} <ng-md-icon icon="clear" ng-click="vm.quitarClaim(claim)" style="font-size: 10px; cursor:pointer"></ng-md-icon>
                         </md-chip>
                     </md-chips>
                 </div>

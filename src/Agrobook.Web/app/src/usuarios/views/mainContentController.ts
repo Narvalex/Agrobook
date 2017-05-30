@@ -13,7 +13,7 @@ module usuariosArea {
             private $scope: ng.IScope,
             private config: common.config
         ) {
-            this.abrirElTabQueCorresponde(this.$routeParams['tab']);
+            this.abrirElTabQueCorrespondeDesdeUrl();
 
             let idUsuario = this.$routeParams['idUsuario'];
             if (idUsuario === undefined)
@@ -38,7 +38,7 @@ module usuariosArea {
                 });
 
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
-                this.abrirElTabQueCorresponde(this.$routeParams['tab']);
+                this.abrirElTabQueCorrespondeDesdeUrl();
             });
         }
 
@@ -61,7 +61,8 @@ module usuariosArea {
             window.location.replace('#!/usuario/' + this.usuario.nombre + '?tab=' + tabId);
         }
 
-        abrirElTabQueCorresponde(tabId: string) {
+        abrirElTabQueCorrespondeDesdeUrl() {
+            let tabId = this.$routeParams['tab'];
             switch (tabId) { 
                 case 'perfil': this.tabIndex = 0; break;
                 case 'permisos': this.tabIndex = 1; break;

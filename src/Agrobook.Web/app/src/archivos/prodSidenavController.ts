@@ -21,9 +21,9 @@ module archivosArea {
         }
 
         seleccionarProductor(productor: productorDto) {
+            this.toggleSideNav(); 
             this.productorSeleccionado = productor;
             window.location.replace('#!/archivos/' + productor.id);
-            this.toggleSideNav(); 
         }
 
         // Internal

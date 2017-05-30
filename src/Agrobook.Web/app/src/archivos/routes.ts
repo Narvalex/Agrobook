@@ -17,7 +17,7 @@ module archivosArea {
                 }
             },
             {
-                path: '/archivos/:idproductor',
+                path: '/archivos/:idProductor',
                 route: {
                     templateUrl: './dist/archivos/views/main-content.html',
                     reloadOnSearch: false

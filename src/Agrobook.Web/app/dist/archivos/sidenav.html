@@ -14,8 +14,16 @@
         </div>
     </md-toolbar>
 
-    Seleccionar año
-    <br />
-    Agregar nuevo archivo
 
+    <md-content>
+        <br />
+        <section layout="row">
+            <md-button ng-click="vm.nuevoArchivo()"
+                       ng-disabled="vm.idProductor === undefined"
+                       class="md-primary">
+                <ng-md-icon icon="add"></ng-md-icon>
+                Nuevo archivo
+            </md-button>
+        </section>
+    </md-content>
 </md-sidenav>

@@ -11,7 +11,7 @@ var usuariosArea;
             this.$scope = $scope;
             this.config = config;
             this.loaded = false;
-            this.abrirElTabQueCorresponde(this.$routeParams['tab']);
+            this.abrirElTabQueCorrespondeDesdeUrl();
             var idUsuario = this.$routeParams['idUsuario'];
             if (idUsuario === undefined)
                 idUsuario = this.loginQueryService.tryGetLocalLoginInfo().usuario;
@@ -25,7 +25,7 @@ var usuariosArea;
                 _this.usuario = new usuariosArea.usuarioInfoBasica(_this.usuario.nombre, args.nombreParaMostrar, args.avatarUrl);
             });
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
-                _this.abrirElTabQueCorresponde(_this.$routeParams['tab']);
+                _this.abrirElTabQueCorrespondeDesdeUrl();
             });
         }
         mainContentController.prototype.onTabSelect = function (tabIndex) {
@@ -49,7 +49,8 @@ var usuariosArea;
             }
             window.location.replace('#!/usuario/' + this.usuario.nombre + '?tab=' + tabId);
         };
-        mainContentController.prototype.abrirElTabQueCorresponde = function (tabId) {
+        mainContentController.prototype.abrirElTabQueCorrespondeDesdeUrl = function () {
+            var tabId = this.$routeParams['tab'];
             switch (tabId) {
                 case 'perfil':
                     this.tabIndex = 0;

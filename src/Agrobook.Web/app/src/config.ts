@@ -47,6 +47,9 @@ module common {
             usuarios: {
                 usuarioSeleccionado: 'usuarioSeleccionado',
                 perfilActualizado: 'perfilActualizado'
+            },
+            archivos: {
+                productorSeleccionado: 'productorSeleccionado'
             }
         }
 
