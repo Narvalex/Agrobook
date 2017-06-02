@@ -116,8 +116,9 @@ module archivosArea {
                 let xhr = new XMLHttpRequest();
                 if (xhr.upload) {
                     // start upload
-                    xhr.open("POST", '../archivos/upload', true);
+                    xhr.open("POST", 'archivos/upload', true);
                     xhr.setRequestHeader("X_FILENAME", file.name);
+                    xhr.setRequestHeader("Content-Type", "multipart/form-data");
                     xhr.send(file);
                 }
                 else {
