@@ -19,7 +19,7 @@ namespace Agrobook.Web.Controllers.Archivos
              * Another one: http://www.uncorkedstudios.com/blog/multipartformdata-file-upload-with-angularjs/
              * 
              * Help: https://docs.microsoft.com/en-us/aspnet/web-api/overview/advanced/sending-html-form-data-part-2
-             * Help2: https://docs.microsoft.com/en-us/aspnet/web-api/overview/advanced/sending-html-form-data-part-2
+             * Help2: https://stackoverflow.com/questions/15506648/how-to-upload-a-large-file-with-asp-net-mvc4-web-api-with-progressbar
              * 
              */
             if (!this.Request.Content.IsMimeMultipartContent())
