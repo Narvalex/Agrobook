@@ -739,6 +739,9 @@
     <Content Include="app\dist\usuarios\views\perfil.html" />
     <Content Include="app\home.html" />
     <Content Include="app\maps.html" />
+    <TypeScriptCompile Include="app\src\archivos\archivosDTOs.ts" />
+    <TypeScriptCompile Include="app\src\archivos\archivosQueryService.ts" />
+    <TypeScriptCompile Include="app\src\archivos\archivosService.ts" />
     <TypeScriptCompile Include="app\src\archivos\routes.ts" />
     <TypeScriptCompile Include="app\src\usuarios\dialogs\nuevoGrupoDialogController.ts" />
     <TypeScriptCompile Include="app\src\archivos\prodSidenavController.ts" />
@@ -847,8 +850,8 @@
     <TypeScriptCompile Include="app\src\common\commonDTOs.ts" />
     <TypeScriptCompile Include="app\src\common\httpInterceptorRegistry.ts" />
     <TypeScriptCompile Include="app\src\common\userMenu\widgetController.ts" />
-    <TypeScriptCompile Include="app\src\config.ts" />
-    <TypeScriptCompile Include="app\src\infrastructure.ts" />
+    <TypeScriptCompile Include="app\src\common\config.ts" />
+    <TypeScriptCompile Include="app\src\common\infrastructure.ts" />
     <TypeScriptCompile Include="app\src\login\loginDTOs.ts" />
     <TypeScriptCompile Include="app\src\login\loginQueryService.ts" />
     <TypeScriptCompile Include="app\src\login\loginService.ts" />

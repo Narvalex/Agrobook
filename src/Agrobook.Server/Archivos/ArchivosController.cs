@@ -14,7 +14,7 @@ namespace Agrobook.Server.Archivos
         [Route("upload")]
         public async Task<IHttpActionResult> Upload()
         {
-            throw new System.NotImplementedException();
+            return await Task.Run(() => this.BadRequest());
         }
     }
 }

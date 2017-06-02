@@ -73,7 +73,8 @@ module archivosArea {
             filedrag.style.display = "block";
 
             // remove submit button
-            submitbutton.style.display = "none";
+            //submitbutton.style.display = "none";
+            submitbutton.addEventListener("click", upload, false);
 
 
             function getById(id: string) {
@@ -96,17 +97,64 @@ module archivosArea {
                 for (var i = 0; i < files.length; i++) {
                     let f = files[i];
                     parseFile(f);
+                    uploadFile(f);
                 }
             }
 
             function fileDragHover(e) {
                 e.stopPropagation();
                 e.preventDefault();
-                e.target.className = (e.type == "dragover" ? "hover" : "");
+                e.target.className = (e.type === "dragover" ? "hover" : "");
             }
 
-            function parseFile(file) {
-                output('file processed');
+            function upload() {
+                console.log('drag and drop please');
+            }
+
+            function uploadFile(file: File) {
+                console.log('uploading...');
+                let xhr = new XMLHttpRequest();
+                if (xhr.upload) {
+                    // start upload
+                    xhr.open("POST", '../archivos/upload', true);
+                    xhr.setRequestHeader("X_FILENAME", file.name);
+                    xhr.send(file);
+                }
+                else {
+                    console.log('xhr.upload not available. could not send!');
+                }
+            }
+
+            function parseFile(file: File) {
+                output(
+                    "<p>File information: <strong>" + file.name +
+                    "</strong> type: <strong>" + file.type +
+                    "</strong> size: <strong>" + file.size +
+                    "</strong> bytes</p>"
+                );
+                // display text
+                if (file.type.indexOf("text") === 0) {
+                    var reader = new FileReader();
+                    reader.onload = (e: any) => {
+                        output(
+                            "<p><strong>" + file.name + ":</strong></p><pre>" +
+                            e.target.result.replace(/</g, "&lt;").replace(/>/g, "&gt;") +
+                            "</pre>"
+                        );
+                    };
+                    reader.readAsText(file);
+                }
+                // display an image
+                if (file.type.indexOf("image") === 0) {
+                    var reader = new FileReader();
+                    reader.onload = function (e: any) {
+                        output(
+                            "<p><strong>" + file.name + ":</strong><br />" +
+                            '<img src="' + e.target.result + '" style="height: 70px; width: 70px"/></p>'
+                        );
+                    }
+                    reader.readAsDataURL(file);
+                }
             }
         }
     }
