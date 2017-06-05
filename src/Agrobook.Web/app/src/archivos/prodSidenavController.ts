@@ -2,15 +2,28 @@
 
 module archivosArea {
     export class prodSidenavController {
-        static $inject = ['$mdSidenav', 'toasterLite', 'archivosQueryService'];
+        static $inject = ['$mdSidenav', 'toasterLite', 'archivosQueryService', '$routeParams'];
 
         constructor(
             private $mdSidenav: angular.material.ISidenavService,
             private toasterLite: common.toasterLite,
-            private archivosQueryService: archivosQueryService
+            private archivosQueryService: archivosQueryService,
+            private $routeParams: ng.route.IRouteParamsService
         ) {
+            var idProductor = this.$routeParams['idProductor'];
+            if (idProductor === undefined) {
+                // No hay productor seleccionado, pedir uno
+                this.toggleSideNav();
+                this.title = 'Seleccione un productor...'
+            }
+            else {
+                this.title = 'Productores'
+            }   
+
             this.cargarListaDeProductores();
         }
+
+        title = '';
 
         loaded: boolean = false;
         productores: productorDto[]; 

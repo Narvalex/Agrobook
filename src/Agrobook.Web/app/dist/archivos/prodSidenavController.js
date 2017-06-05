@@ -2,11 +2,22 @@
 var archivosArea;
 (function (archivosArea) {
     var prodSidenavController = (function () {
-        function prodSidenavController($mdSidenav, toasterLite, archivosQueryService) {
+        function prodSidenavController($mdSidenav, toasterLite, archivosQueryService, $routeParams) {
             this.$mdSidenav = $mdSidenav;
             this.toasterLite = toasterLite;
             this.archivosQueryService = archivosQueryService;
+            this.$routeParams = $routeParams;
+            this.title = '';
             this.loaded = false;
+            var idProductor = this.$routeParams['idProductor'];
+            if (idProductor === undefined) {
+                // No hay productor seleccionado, pedir uno
+                this.toggleSideNav();
+                this.title = 'Seleccione un productor...';
+            }
+            else {
+                this.title = 'Productores';
+            }
             this.cargarListaDeProductores();
         }
         prodSidenavController.prototype.toggleSideNav = function () {
@@ -29,7 +40,7 @@ var archivosArea;
         };
         return prodSidenavController;
     }());
-    prodSidenavController.$inject = ['$mdSidenav', 'toasterLite', 'archivosQueryService'];
+    prodSidenavController.$inject = ['$mdSidenav', 'toasterLite', 'archivosQueryService', '$routeParams'];
     archivosArea.prodSidenavController = prodSidenavController;
 })(archivosArea || (archivosArea = {}));
 //# sourceMappingURL=prodSidenavController.js.map

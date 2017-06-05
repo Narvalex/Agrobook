@@ -715,6 +715,7 @@
     <Content Include="app\bower_components\toastr\toastr.js" />
     <Content Include="app\bower_components\toastr\toastr.min.css" />
     <Content Include="app\bower_components\toastr\toastr.min.js" />
+    <Content Include="app\dist\archivos\dialogs\upload-center-dialog.html" />
     <Content Include="app\dist\archivos\prod-sidenav.html" />
     <Content Include="app\dist\archivos\sidenav.html" />
     <Content Include="app\dist\archivos\toolbar-header.html" />
@@ -742,6 +743,7 @@
     <TypeScriptCompile Include="app\src\archivos\archivosDTOs.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosQueryService.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosService.ts" />
+    <TypeScriptCompile Include="app\src\archivos\dialogs\uploadCenterController.ts" />
     <TypeScriptCompile Include="app\src\archivos\routes.ts" />
     <TypeScriptCompile Include="app\src\usuarios\dialogs\nuevoGrupoDialogController.ts" />
     <TypeScriptCompile Include="app\src\archivos\prodSidenavController.ts" />

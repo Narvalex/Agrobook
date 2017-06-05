@@ -2,15 +2,21 @@
 
 module archivosArea {
     export class mainContentController {
-        static $inject = ['$mdSidenav', '$rootScope', '$routeParams', 'config'];
+        static $inject = ['$mdSidenav', '$rootScope', '$routeParams', 'config', 'toasterLite'];
 
         constructor(
             private $mdSidenav: angular.material.ISidenavService,
             private $rooteScope: angular.IRootScopeService,
             private $routeParams: ng.route.IRouteParamsService,
-            private config: common.config
+            private config: common.config,
+            private toasterLite: common.toasterLite
         ) {
-            this.setearElProductorEnTodosLados();
+            this.idProductor = this.$routeParams['idProductor'];
+            if (this.idProductor === undefined) 
+                // No existe productor seleccionado, deberia elegir uno
+                this.pedirQueElUsuarioSeleccioneUnProductor();
+            else
+                this.publicarElIdProductorActual();
         }
 
         idProductor: string;
@@ -24,12 +30,17 @@ module archivosArea {
             return open;
         }
 
-        setearElProductorEnTodosLados() {
+        pedirQueElUsuarioSeleccioneUnProductor() {
+            // El side nav no esta disponible. Mejor le enviamos un mensaje al usuario
+            //this.toasterLite.info('Seleccione un productor por favor...');
+           // this.toggleSideNav();
+        }
+
+        publicarElIdProductorActual() {
             /*
             Esta es la unica forma de hacer, por que capturando el evento routeChanged solo se puede hacer dentro de los
             controles ng-view
             */
-            this.idProductor = this.$routeParams['idProductor'];
             this.$rooteScope.$broadcast(this.config.eventIndex.archivos.productorSeleccionado, this.idProductor);
         }
     }
