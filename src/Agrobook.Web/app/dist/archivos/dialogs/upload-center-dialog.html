@@ -1,1 +1,13 @@
-﻿<h1>Upload center</h1>
+﻿<md-dialog id="dragAndDropArea" aria-label="{{vm.title}}" ng-controller="uploadCenterController as vm">
+        <form>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>{{vm.title}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cerrar()" aria-label="cerrar">
+                        <ng-md-icon icon="close"></ng-md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+        </form>
+</md-dialog>

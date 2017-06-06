@@ -13,6 +13,7 @@ module archivosArea {
         .controller('sidenavController', sidenavController)
         .controller('prodSidenavController', prodSidenavController)
         .controller('toolbarHeaderController', toolbarHeaderController)
+        .controller('uploadCenterController', uploadCenterController)
         .controller('mainContentController', mainContentController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', (
             $mdIconProvider: angular.material.IIconProvider,

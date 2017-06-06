@@ -13,6 +13,7 @@ var archivosArea;
         .controller('sidenavController', archivosArea.sidenavController)
         .controller('prodSidenavController', archivosArea.prodSidenavController)
         .controller('toolbarHeaderController', archivosArea.toolbarHeaderController)
+        .controller('uploadCenterController', archivosArea.uploadCenterController)
         .controller('mainContentController', archivosArea.mainContentController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $routeProvider) {
             // most from flat icon dot com
