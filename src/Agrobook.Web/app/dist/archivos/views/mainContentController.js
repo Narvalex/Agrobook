@@ -12,8 +12,12 @@ var archivosArea;
             if (this.idProductor === undefined)
                 // No existe productor seleccionado, deberia elegir uno
                 this.pedirQueElUsuarioSeleccioneUnProductor();
-            else
-                this.publicarElIdProductorActual();
+            else {
+                if (location.hash.slice(3, 9) === 'upload')
+                    this.abrirCuadroDeCargaDeArchivos();
+                else
+                    this.publicarElIdProductorActual();
+            }
         }
         mainContentController.prototype.toggleSideNav = function () {
             this.$mdSidenav('right').toggle();
@@ -33,6 +37,9 @@ var archivosArea;
             controles ng-view
             */
             this.$rooteScope.$broadcast(this.config.eventIndex.archivos.productorSeleccionado, this.idProductor);
+        };
+        mainContentController.prototype.abrirCuadroDeCargaDeArchivos = function () {
+            this.$rooteScope.$broadcast(this.config.eventIndex.archivos.abrirCuadroDeCargaDeArchivos, this.idProductor);
         };
         return mainContentController;
     }());

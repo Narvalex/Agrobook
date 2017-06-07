@@ -12,11 +12,16 @@ module archivosArea {
             private toasterLite: common.toasterLite
         ) {
             this.idProductor = this.$routeParams['idProductor'];
-            if (this.idProductor === undefined) 
+            if (this.idProductor === undefined)
                 // No existe productor seleccionado, deberia elegir uno
                 this.pedirQueElUsuarioSeleccioneUnProductor();
-            else
-                this.publicarElIdProductorActual();
+            else {
+
+                if (location.hash.slice(3, 9) === 'upload')
+                    this.abrirCuadroDeCargaDeArchivos();
+                else
+                    this.publicarElIdProductorActual();
+            }
         }
 
         idProductor: string;
@@ -33,7 +38,7 @@ module archivosArea {
         pedirQueElUsuarioSeleccioneUnProductor() {
             // El side nav no esta disponible. Mejor le enviamos un mensaje al usuario
             //this.toasterLite.info('Seleccione un productor por favor...');
-           // this.toggleSideNav();
+            // this.toggleSideNav();
         }
 
         publicarElIdProductorActual() {
@@ -42,6 +47,10 @@ module archivosArea {
             controles ng-view
             */
             this.$rooteScope.$broadcast(this.config.eventIndex.archivos.productorSeleccionado, this.idProductor);
+        }
+
+        abrirCuadroDeCargaDeArchivos() {
+            this.$rooteScope.$broadcast(this.config.eventIndex.archivos.abrirCuadroDeCargaDeArchivos, this.idProductor);
         }
     }
 }

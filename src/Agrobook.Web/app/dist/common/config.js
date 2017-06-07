@@ -46,7 +46,8 @@ var common;
                     perfilActualizado: 'perfilActualizado'
                 },
                 archivos: {
-                    productorSeleccionado: 'productorSeleccionado'
+                    productorSeleccionado: 'productorSeleccionado',
+                    abrirCuadroDeCargaDeArchivos: 'abrirCuadroDeCargaDeArchivos'
                 }
             };
         }

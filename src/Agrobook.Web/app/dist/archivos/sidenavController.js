@@ -9,19 +9,32 @@ var archivosArea;
             this.$rootScope = $rootScope;
             this.config = config;
             this.$mdDialog = $mdDialog;
+            this.eventoCarga = null;
             this.$rootScope.$on(this.config.eventIndex.archivos.productorSeleccionado, function (e, args) {
                 _this.idProductor = args;
+            });
+            this.$rootScope.$on(this.config.eventIndex.archivos.abrirCuadroDeCargaDeArchivos, function (e, args) {
+                _this.idProductor = args;
+                _this.initializeUploadCenter();
             });
         }
         sidenavController.prototype.toggleSideNav = function () {
             this.$mdSidenav('left').toggle();
         };
-        sidenavController.prototype.mostrarUploadCenter = function ($event) {
+        sidenavController.prototype.mostrarDialogoDeCarga = function ($event) {
+            this.eventoCarga = $event;
+            if (location.hash.slice(3, 9) === 'upload')
+                this.initializeUploadCenter();
+            else
+                window.location.replace('#!/upload/' + this.idProductor);
+        };
+        // INTERNAL
+        sidenavController.prototype.initializeUploadCenter = function () {
             //this.toasterLite.info(`nuevo archivo para ${this.idProductor}!`);
             this.$mdDialog.show({
                 templateUrl: '../app/dist/archivos/dialogs/upload-center-dialog.html',
                 parent: angular.element(document.body),
-                targetEvent: $event,
+                targetEvent: this.eventoCarga,
                 clickOutsideToClose: false,
                 fullscreen: true
             })

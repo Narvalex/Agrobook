@@ -22,6 +22,13 @@ module archivosArea {
                     templateUrl: './dist/archivos/views/main-content.html',
                     reloadOnSearch: false
                 }
+            },
+            {
+                path: '/upload/:idProductor',
+                route: {
+                    templateUrl: './dist/archivos/views/main-content.html',
+                    reloadOnSearch: false
+                }
             }
         ];
     }
