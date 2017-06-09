@@ -10,7 +10,7 @@ namespace Agrobook.Server.Archivos
     [RoutePrefix("archivos")]
     public class ArchivosController : ApiController
     {
-        [HttpGet]
+        [HttpPost]
         [Route("upload")]
         public async Task<IHttpActionResult> Upload()
         {

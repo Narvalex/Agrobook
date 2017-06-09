@@ -29,6 +29,7 @@ namespace Agrobook.Web
             container.Register<LoginClient>(() => new LoginClient(http));
             container.Register<UsuariosClient>(() => new UsuariosClient(http));
             container.Register<UsuariosQueryClient>(() => new UsuariosQueryClient(http));
+            container.Register<ArchivosClient>(() => new ArchivosClient(http));
             container.Register<ArchivosQueryClient>(() => new ArchivosQueryClient(http));
         }
     }

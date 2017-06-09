@@ -1,5 +1,7 @@
 ﻿using Agrobook.Core;
 using System;
+using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Agrobook.Client
@@ -30,6 +32,11 @@ namespace Agrobook.Client
         protected async Task Post<TContent>(string uri, TContent content)
         {
             await this.http.Post<TContent>(this.BuildUri(uri), content, this.tokenProvider());
+        }
+
+        protected async Task Upload(string uri, Stream fileStream, string fileName)
+        {
+            await this.http.Upload(this.BuildUri(uri), fileStream, fileName, this.tokenProvider());
         }
 
         protected async Task<TResult> Get<TResult>(string uri)

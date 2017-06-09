@@ -23,8 +23,51 @@ module archivosArea {
         originalTitle = this.title;
         files = [];
 
+        // loading
+        progress: any;
+
         cerrar() {
             this.$mdDialog.cancel();
+        }
+
+        cargar(file: File) {
+
+            var controller = this;
+
+            function progress(e) {
+                controller.$scope.$apply(() => {
+                    if (e.lengthComputable) {
+                        controller.progress = Math.round(e.loaded * 100 / e.total);
+                    }
+                    else {
+                        controller.progress = 'unable to compute';
+                    }
+                });
+            }
+
+            function load(e) {
+                controller.toasterLite.success('El archivo fue cargado exitosamente');
+            }
+
+            function error() {
+                controller.toasterLite.error('Error al cargar archivo');
+            }
+
+            function abort() {
+                controller.toasterLite.info('Carga abortada');
+            }
+
+            var form = document.forms.namedItem('uploadForm');
+            var formData = new FormData(form);
+            formData.append('uploadedFile', file);
+
+            var xhr = new XMLHttpRequest();
+            xhr.upload.addEventListener("progress", progress, false);
+            xhr.upload.addEventListener("load", load, false);
+            xhr.addEventListener("error", error, false);
+            xhr.addEventListener("abort", abort, false);
+            xhr.open("POST", "./archivos/upload");
+            xhr.send(formData);
         }
 
         //
@@ -56,12 +99,11 @@ module archivosArea {
 
             function dragOver(e: Event) {
                // console.log('dragOver was called every 100 ms');
-                e.stopPropagation();
+                //e.stopPropagation();
                 e.preventDefault();
             }
 
             function drop(e) {
-                console.log('Drop event: ', JSON.parse(JSON.stringify(e.dataTransfer)));
                 e.stopPropagation();
                 e.preventDefault();
 
@@ -79,6 +121,7 @@ module archivosArea {
 
             var area = document.getElementById('dragAndDropArea');
             area.addEventListener("dragenter", dragEnter, false);
+            area.addEventListener("dragstart", dragEnter, false);
             area.addEventListener("dragleave", dragLeave, false);
             area.addEventListener("dragover", dragOver, false);
             area.addEventListener("dragend", dragLeave, false);

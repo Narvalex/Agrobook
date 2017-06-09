@@ -1,23 +1,41 @@
-﻿<md-dialog id="dragAndDropArea" aria-label="{{vm.title}}" ng-controller="uploadCenterController as vm">
-    <md-toolbar>
-        <div class="md-toolbar-tools">
-            <h2>{{vm.title}}</h2>
-            <span flex></span>
-            <md-button class="md-icon-button" ng-click="vm.cerrar()" aria-label="cerrar">
-                <ng-md-icon icon="close"></ng-md-icon>
-            </md-button>
-        </div>
-    </md-toolbar>
-    <md-list>
-        <md-list-item class="md-2-line" ng-repeat="file in vm.files">
-            <div class="md-list-item-text">
-                <h3>{{file.webkitRelativePath || file.name}}</h3>
-                <p ng-switch="file.size > 1024*1024">
-                    <span ng-switch-when="true">{{file.size / 1024 / 1024 | number : 2}} MB</span>
-                    <span ng-switch-default>{{file.size / 1024 | number : 2}} KB</span>
-                </p>
-            </div>
-            <md-button>Action</md-button>
-        </md-list-item>
-    </md-list>
-</md-dialog>
+﻿    <md-dialog id="dragAndDropArea" aria-label="{{vm.title}}" ng-controller="uploadCenterController as vm">
+        <form enctype="multipart/form-data" name="uploadForm" ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>{{vm.title}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cerrar()" aria-label="cerrar">
+                        <ng-md-icon icon="close"></ng-md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <p>Arrastre archivos para su carga</p>
+                    <md-list>
+                        <md-list-item class="md-3-line" ng-repeat="file in vm.files">
+                            <div class="md-list-item-text">
+                                <h3>{{file.webkitRelativePath || file.name}}</h3>
+                                <p ng-switch="file.size > 1024*1024"><span ng-show="vm.progress">{{vm.progress}}% de </span>
+                                    <span ng-switch-when="true">{{file.size / 1024 / 1024 | number : 2}} MB</span>
+                                    <span ng-switch-default>{{file.size / 1024 | number : 2}} KB</span>
+                                </p>
+                                <md-progress-linear md-mode="determinate" value="{{vm.progress}}"></md-progress-linear>
+                            </div>
+                            <md-button ng-click="vm.cargar(file)">Cargar</md-button>
+                        </md-list-item>
+                    </md-list>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+
+                <span flex></span>
+                <md-button ng-click="">
+                    Not Useful
+                </md-button>
+                <md-button ng-click="">
+                    Useful
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>

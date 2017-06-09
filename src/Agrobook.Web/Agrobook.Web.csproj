@@ -938,6 +938,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\dist\login\" />
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Agrobook.Client\Agrobook.Client.csproj">

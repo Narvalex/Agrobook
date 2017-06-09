@@ -1,5 +1,7 @@
 ﻿using Agrobook.Core;
 using System;
+using System.Globalization;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -51,20 +53,43 @@ namespace Agrobook.Client
             return responseContent;
         }
 
+        // to build a stream from a byte array = new MemoryStream(byteArray);
+        //
+        public async Task Upload(string uri, Stream fileStream, string fileName, string token = null)
+        {
+            // Reference: https://stackoverflow.com/questions/16416601/c-sharp-httpclient-4-5-multipart-form-data-upload?noredirect=1&lq=1
+
+            using (var client = this.CreateHttpClient(token, false))
+            {
+                using (var content = new MultipartFormDataContent($"Upload----{DateTime.Now.ToString(CultureInfo.InvariantCulture)}"))
+                {
+                    content.Add(new StreamContent(fileStream), "uploadedFile", fileName);
+
+                    var endpoint = new Uri(new Uri(this.hostUri), uri);
+                    var url = endpoint.AbsoluteUri;
+                    using (var response = await client.PostAsync(url, content))
+                    {
+                        if (!response.IsSuccessStatusCode)
+                            throw new Exception($"Error on posting to {uri}. Status Code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
+                    }
+                }
+            }
+        }
+
         public async Task Post<TContent>(string uri, TContent content, string token = null)
         {
-            await this.TryPost<TContent>(uri, content, token);
+            await this.TryPostAsJson<TContent>(uri, content, token);
         }
 
         public async Task<TResult> Post<TContent, TResult>(string uri, TContent content, string token = null)
         {
-            HttpResponseMessage response = await this.TryPost(uri, content, token);
+            HttpResponseMessage response = await this.TryPostAsJson(uri, content, token);
 
             var responseContent = await response.Content.ReadAsAsync<TResult>();
             return responseContent;
         }
 
-        private async Task<HttpResponseMessage> TryPost<TContent>(string uri, TContent content, string token)
+        private async Task<HttpResponseMessage> TryPostAsJson<TContent>(string uri, TContent content, string token)
         {
             HttpResponseMessage response;
             using (var client = this.CreateHttpClient(token))
@@ -78,10 +103,11 @@ namespace Agrobook.Client
             return response;
         }
 
-        private HttpClient CreateHttpClient(string token)
+        private HttpClient CreateHttpClient(string token, bool isJson = true)
         {
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            if (isJson)
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             if (token != null)
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             return client;
