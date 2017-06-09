@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Net.Http;
 using Agrobook.Client.Archivos;
 using Agrobook.Client;
+using System.IO;
 
 namespace Agrobook.Web.Controllers.Archivos
 {
