@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.IO;
-using System.Runtime.Serialization.Formatters;
 
 namespace Agrobook.Infrastructure.Serialization
 {
@@ -17,7 +16,8 @@ namespace Agrobook.Infrastructure.Serialization
                 // Allows deserializing to the actual runtime type
                 TypeNameHandling = TypeNameHandling.All,
                 // In a version resilient way
-                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple,
+                //TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple, [Deprecated]
+                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
         }

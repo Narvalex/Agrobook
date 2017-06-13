@@ -49,11 +49,11 @@ module archivosArea {
                 controller.toasterLite.success('El archivo fue cargado exitosamente');
             }
 
-            function error() {
+            function error(e) {
                 controller.toasterLite.error('Error al cargar archivo');
             }
 
-            function abort() {
+            function abort(e) {
                 controller.toasterLite.info('Carga abortada');
             }
 
