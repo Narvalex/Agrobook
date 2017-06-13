@@ -24,14 +24,19 @@ var archivosArea;
         uploadCenterController.prototype.cargar = function (file) {
             var controller = this;
             function progress(e) {
-                controller.$scope.$apply(function () {
-                    if (e.lengthComputable) {
-                        controller.progress = Math.round(e.loaded * 100 / e.total);
-                    }
-                    else {
-                        controller.progress = 'unable to compute';
-                    }
-                });
+                try {
+                    controller.$scope.$apply(function () {
+                        if (e.lengthComputable) {
+                            controller.progress = Math.round(e.loaded * 100 / e.total);
+                        }
+                        else {
+                            controller.progress = 'unable to compute';
+                        }
+                    });
+                }
+                catch (e) {
+                    console.log('error in progress handler');
+                }
             }
             function load(e) {
                 controller.toasterLite.success('El archivo fue cargado exitosamente');
@@ -42,6 +47,18 @@ var archivosArea;
             function abort(e) {
                 controller.toasterLite.info('Carga abortada');
             }
+            function timeout(e) {
+                console.log("timeout");
+            }
+            function readyStateChange(e) {
+                console.log("ready state change");
+            }
+            function loadStart(e) {
+                console.log("load start");
+            }
+            function loadEnd(e) {
+                console.log("load end");
+            }
             var form = document.forms.namedItem('uploadForm');
             var formData = new FormData(form);
             formData.append('uploadedFile', file);
@@ -50,8 +67,17 @@ var archivosArea;
             xhr.upload.addEventListener("load", load, false);
             xhr.addEventListener("error", error, false);
             xhr.addEventListener("abort", abort, false);
-            xhr.open("POST", "./archivos/upload");
-            xhr.send(formData);
+            xhr.addEventListener("timeout", timeout, false);
+            xhr.addEventListener("readystatechange", readyStateChange, false);
+            xhr.addEventListener("loadstart", loadStart, false);
+            xhr.addEventListener("loadend", loadEnd, false);
+            xhr.open("POST", "./archivos/upload", true);
+            try {
+                xhr.send(formData);
+            }
+            catch (e) {
+                console.log('error on send');
+            }
         };
         //
         // Internal
