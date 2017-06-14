@@ -20,5 +20,27 @@
             </div>
         </form>
     </md-content>
-   
+
+    <md-content layout-padding ng-hide="vm.loaded">
+        <div layout="row" layout-align="space-around">
+            <md-progress-circular md-mode="indeterminate"
+                                  ng-disabled="vm.loaded"></md-progress-circular>
+        </div>
+    </md-content>
+    <md-content ng-show="vm.loaded">
+        <md-autocomplete md-search-text="vm.searchText"
+                         md-items="item in vm.organizaciones | filter: vm.search"
+                         md-item-text="item.id"
+                         md-min-length="100"
+                         placeholder="Buscar organización">
+            <md-not-found>
+                Ninguno coincide con "{{vm.searchText}}".
+            </md-not-found>
+        </md-autocomplete>
+        <md-list>
+            <md-list-item ng-repeat="org in vm.organizaciones | filter:vm.searchText | orderBy:'display'">
+                {{org.display}}
+            </md-list-item>
+        </md-list>
+    </md-content>
 </div>

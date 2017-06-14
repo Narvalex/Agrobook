@@ -38,5 +38,14 @@ module usuariosArea {
         ) {
             super.get('organizaciones', onSuccess, onError);
         }
+
+        // TODO: Maybe? obtenerTodosLosGrupos
+        obtenerGrupos(
+            organizacionId: string,
+            onSuccess: (value: ng.IHttpPromiseCallbackArg<grupoDto[]>) => void,
+            onError?: (reason) => void
+        ) {
+            super.get('grupos/' + organizacionId, onSuccess, onError);
+        }
     }
 }

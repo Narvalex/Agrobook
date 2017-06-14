@@ -47,4 +47,12 @@ module usuariosArea {
         ) {
         }
     }
+
+    export class grupoDto {
+        constructor(
+            public id: string,
+            public display: string
+        ) {
+        }
+    }
 }

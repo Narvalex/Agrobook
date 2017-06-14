@@ -12,10 +12,16 @@ var usuariosArea;
             this.$q = $q;
             this.$log = $log;
             this.$rootScope = $rootScope;
+            // loading org
+            this.loaded = false;
+            // loading grupos for an org
+            this.gruposLoaded = true;
             this.filterFromServer = false;
             this.isDisabled = false;
             // list of `organizaciones` value/display objects
             this.organizaciones = [];
+            // list of grupos
+            this.grupos = [];
             this.recuperarListaDeOrganizaciones();
             this.$rootScope.gruposController = {};
         }
@@ -54,31 +60,31 @@ var usuariosArea;
         gruposController.prototype.recuperarListaDeOrganizaciones = function () {
             var _this = this;
             this.usuariosQueryService.obtenerOrganizaciones(function (response) {
-                _this.organizaciones = response.data.map(function (org) {
-                    return {
-                        value: org.id,
-                        display: org.display
-                    };
-                });
+                _this.organizaciones = response.data;
+                _this.loaded = true;
             }, function (reason) { return _this.toasterLite.error('Hubo un error al recuperar lista de organizaciones', _this.toasterLite.delayForever); });
         };
         gruposController.prototype.querySearch = function (query) {
-            var results = query ? this.organizaciones.filter(this.createFilterFor(query)) : this.organizaciones, deferred;
-            if (this.filterFromServer) {
-                // this just simulates from Server. Add your server filtering here.
-                deferred = this.$q.defer();
-                this.$timeout(function () { deferred.resolve(results); }, Math.random() * 1000, false);
-                return deferred.promise;
-            }
-            else {
-                return results;
-            }
+            var lowercaseQuery = angular.lowercase(query);
+            var results = query
+                ? this.organizaciones.filter(function (org) {
+                    var coincideConId = (angular.lowercase(org.id).indexOf(lowercaseQuery) > -1);
+                    var coincideConDisplay = (angular.lowercase(org.display).indexOf(lowercaseQuery) > -1);
+                    return coincideConId || coincideConDisplay;
+                })
+                : this.organizaciones;
+            return results;
         };
         gruposController.prototype.searchTextChange = function (text) {
             //this.$log.info('Text changed to ' + text);
         };
-        gruposController.prototype.selectedItemChange = function (item) {
-            this.$log.info('Item changed to ' + JSON.stringify(item));
+        gruposController.prototype.selectedItemChange = function (org) {
+            var _this = this;
+            this.gruposLoaded = false;
+            this.usuariosQueryService.obtenerGrupos(org.id, function (value) {
+                _this.gruposLoaded = true;
+                _this.grupos = value.data;
+            }, function (reason) { _this.toasterLite.error('Error al cargar grupos', _this.toasterLite.delayForever); });
         };
         /**
          * Create filter function for a query string

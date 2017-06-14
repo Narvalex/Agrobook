@@ -16,7 +16,7 @@ module usuariosArea {
             this.setDefaultSubmitText();
         }
 
-        orgSeleccionada: any;
+        orgSeleccionada: organizacionDto;
         bloquearSubmit: boolean = false;
         submitLabel: string;
 
@@ -24,8 +24,11 @@ module usuariosArea {
         nuevoGrupo: string;
 
         crearNuevoGrupo() {
-            this.usuariosService.crearNuevoGrupo(this.orgSeleccionada.value, this.nuevoGrupo,
-                response => { this.toasterLite.info(`Nuevo grupo ${this.nuevoGrupo} creado para ${this.orgSeleccionada.value}.`); },
+            this.usuariosService.crearNuevoGrupo(this.orgSeleccionada.id, this.nuevoGrupo,
+                response => {
+                    this.toasterLite.info(`Nuevo grupo ${this.nuevoGrupo} creado para ${this.orgSeleccionada.display}.`);
+                    this.$mdDialog.hide(this.nuevoGrupo);
+                },
                 reason => { this.toasterLite.error('Ocurrio un error!'); });
         }
 

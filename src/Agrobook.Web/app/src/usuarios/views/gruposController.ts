@@ -17,16 +17,23 @@ module usuariosArea {
             private $rootScope: ng.IRootScopeService
         ) {
             this.recuperarListaDeOrganizaciones();
-            this.$rootScope.gruposController = { };
+            this.$rootScope.gruposController = {};
         }
+        // loading org
+        loaded = false;
+        // loading grupos for an org
+        gruposLoaded = true;
 
         filterFromServer = false;
         isDisabled = false;
         searchText: string;
-        orgSeleccionada: any;
+        orgSeleccionada: organizacionDto;
 
         // list of `organizaciones` value/display objects
-        organizaciones = [];
+        organizaciones: organizacionDto[] = [];
+
+        // list of grupos
+        grupos: grupoDto[] = [];
 
         // ******************************
         // Public methods
@@ -48,8 +55,8 @@ module usuariosArea {
                 clickOutsideToClose: true
             }).then((nuevoGrupo: string) => {
                 // Agregar nuevo grupo a la lista, si fue exitosa
-                }, () => {
-                    this.toasterLite.info('Creación de grupo cancelada');
+            }, () => {
+                this.toasterLite.info('Creación de grupo cancelada');
             });
         }
 
@@ -67,39 +74,40 @@ module usuariosArea {
 
         private recuperarListaDeOrganizaciones() {
             this.usuariosQueryService.obtenerOrganizaciones(
-                response =>
-                {
-                    this.organizaciones = response.data.map(org => {
-                        return {
-                            value: org.id,
-                            display: org.display
-                        }
-                    });
+                response => {
+                    this.organizaciones = response.data;
+                    this.loaded = true;
                 },
                 reason => this.toasterLite.error('Hubo un error al recuperar lista de organizaciones', this.toasterLite.delayForever)
             );
         }
 
         private querySearch(query) {
-            var results = query ? this.organizaciones.filter(this.createFilterFor(query)) : this.organizaciones,
-                deferred;
-            if (this.filterFromServer) {
-                // this just simulates from Server. Add your server filtering here.
-                deferred = this.$q.defer();
-                this.$timeout(function () { deferred.resolve(results); }, Math.random() * 1000, false);
-                return deferred.promise;
-            } else {
-                return results;
-            }
+            var lowercaseQuery = angular.lowercase(query);
+
+            let results = query
+                ? this.organizaciones.filter(org => {
+                    let coincideConId = (angular.lowercase(org.id).indexOf(lowercaseQuery) > -1);
+                    let coincideConDisplay = (angular.lowercase(org.display).indexOf(lowercaseQuery) > -1);
+                    return coincideConId || coincideConDisplay;
+                })
+                : this.organizaciones;
+
+            return results;
         }
 
         private searchTextChange(text) {
             //this.$log.info('Text changed to ' + text);
         }
 
-        private selectedItemChange(item) {
-            this.$log.info('Item changed to ' + JSON.stringify(item));
-            
+        private selectedItemChange(org: organizacionDto) {
+            this.gruposLoaded = false;
+            this.usuariosQueryService.obtenerGrupos(org.id,
+                value => {
+                    this.gruposLoaded = true;
+                    this.grupos = value.data;
+                },
+                reason => { this.toasterLite.error('Error al cargar grupos', this.toasterLite.delayForever); });
         }
 
         /**

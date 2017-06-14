@@ -1,5 +1,5 @@
 ﻿<div class="padding-all" layout="column" ng-controller="gruposController as vm">
-    <md-content class="md-padding">
+    <md-content class="md-padding" ng-show="vm.loaded">
         <form ng-submit="$event.preventDefault()">
             <div layout-gt-xs="row">
                 <md-autocomplete class="md-block"
@@ -18,8 +18,7 @@
                         <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{item.display}}</span>
                     </md-item-template>
                     <md-not-found>
-                        No existe ninguna organización que suene a "{{vm.searchText}}".
-                        <a ng-click="vm.crearOrganizacion()">¡Intenta crearla!</a>
+                        <a ng-click="vm.crearOrganizacion()">No existe ninguna organización que suene a "{{vm.searchText}}".</a>
                     </md-not-found>
                 </md-autocomplete>
                 <div class="md-actions">
@@ -28,7 +27,19 @@
                         Nuevo grupo
                     </md-button>
                 </div>
+              
+                <md-list>
+                    <md-list-item ng-repeat="grupo in vm.grupos | filter:vm.searchText | orderBy:'display'">
+                        {{grupo.display}}
+                    </md-list-item>
+                </md-list>
             </div>
         </form>
+    </md-content>
+    <md-content layout-padding ng-hide="vm.loaded && vm.gruposLoaded">
+        <div layout="row" layout-align="space-around">
+            <md-progress-circular md-mode="indeterminate"
+                                  ng-disabled="vm.loaded && vm.gruposLoaded"></md-progress-circular>
+        </div>
     </md-content>
 </div>

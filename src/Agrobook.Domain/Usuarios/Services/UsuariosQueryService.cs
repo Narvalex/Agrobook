@@ -13,7 +13,7 @@ namespace Agrobook.Domain.Usuarios.Services
     {
         private readonly IJsonSerializer cryptoSerializer;
 
-        public UsuariosQueryService(Func<AgrobookDbContext> contextFactory, IEventSourcedReader reader, IJsonSerializer crytoSerializer) 
+        public UsuariosQueryService(Func<AgrobookDbContext> contextFactory, IEventSourcedReader reader, IJsonSerializer crytoSerializer)
             : base(contextFactory, reader)
         {
             Ensure.NotNull(crytoSerializer, nameof(crytoSerializer));
@@ -85,6 +85,23 @@ namespace Agrobook.Domain.Usuarios.Services
                                     Display = o.NombreParaMostrar
                                 })
                                 .ToListAsync();
+                return dto;
+            });
+        }
+
+        public async Task<IList<GrupoDto>> ObtenerGrupos(string idOrganizacion)
+        {
+            return await this.QueryAsync(async context =>
+            {
+                var dto = await context
+                                .Grupos
+                                .Select(g => new GrupoDto
+                                {
+                                    Id = g.Id,
+                                    Display = g.Display
+                                })
+                                .ToListAsync();
+
                 return dto;
             });
         }

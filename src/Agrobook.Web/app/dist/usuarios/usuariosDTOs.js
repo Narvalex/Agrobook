@@ -49,5 +49,13 @@ var usuariosArea;
         return organizacionDto;
     }());
     usuariosArea.organizacionDto = organizacionDto;
+    var grupoDto = (function () {
+        function grupoDto(id, display) {
+            this.id = id;
+            this.display = display;
+        }
+        return grupoDto;
+    }());
+    usuariosArea.grupoDto = grupoDto;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=usuariosDTOs.js.map

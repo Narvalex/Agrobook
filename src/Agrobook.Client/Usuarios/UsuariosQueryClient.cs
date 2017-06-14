@@ -8,7 +8,7 @@ namespace Agrobook.Client.Usuarios
 {
     public class UsuariosQueryClient : ClientBase
     {
-        public UsuariosQueryClient(HttpLite http, Func<string> tokenProvider = null) 
+        public UsuariosQueryClient(HttpLite http, Func<string> tokenProvider = null)
             : base(http, tokenProvider, "usuarios/query")
         {
         }
@@ -34,6 +34,12 @@ namespace Agrobook.Client.Usuarios
         public async Task<IList<Claim>> ObtenerClaims()
         {
             var dto = await base.Get<IList<Claim>>("claims");
+            return dto;
+        }
+
+        public async Task<IList<GrupoDto>> ObtenerGrupos(string idOrganizacion)
+        {
+            var dto = await base.Get<IList<GrupoDto>>($"grupos/{idOrganizacion}");
             return dto;
         }
     }

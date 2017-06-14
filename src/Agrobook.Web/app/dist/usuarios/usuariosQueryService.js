@@ -30,6 +30,10 @@ var usuariosArea;
         usuariosQueryService.prototype.obtenerOrganizaciones = function (onSuccess, onError) {
             _super.prototype.get.call(this, 'organizaciones', onSuccess, onError);
         };
+        // TODO: Maybe? obtenerTodosLosGrupos
+        usuariosQueryService.prototype.obtenerGrupos = function (organizacionId, onSuccess, onError) {
+            _super.prototype.get.call(this, 'grupos/' + organizacionId, onSuccess, onError);
+        };
         return usuariosQueryService;
     }(common.httpLite));
     usuariosQueryService.$inject = ['$http'];

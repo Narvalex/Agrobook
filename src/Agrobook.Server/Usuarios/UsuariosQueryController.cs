@@ -1,5 +1,4 @@
 ﻿using Agrobook.Domain.Usuarios;
-using Agrobook.Domain.Usuarios.Login;
 using Agrobook.Domain.Usuarios.Services;
 using Agrobook.Server.Filters;
 using System.Threading.Tasks;
@@ -45,6 +44,14 @@ namespace Agrobook.Server.Usuarios
         public async Task<IHttpActionResult> ObtenerOrganizaciones()
         {
             var dto = await this.service.ObtenerOrganizaciones();
+            return this.Ok(dto);
+        }
+
+        [HttpGet]
+        [Route("grupos/{idOrganizacion}")]
+        public async Task<IHttpActionResult> ObtenerGrupos([FromUri]string idOrganizacion)
+        {
+            var dto = await this.service.ObtenerGrupos(idOrganizacion);
             return this.Ok(dto);
         }
     }
