@@ -169,7 +169,7 @@ namespace Agrobook.Domain.Usuarios
             var idGrupo = cmd.GrupoDisplayName.ToLowerTrimmedAndWhiteSpaceless();
             if (org.YaTieneGrupoConId(idGrupo))
                 throw new InvalidOperationException($"Ya existe el grupo con id {idGrupo} en la organización {org.NombreParaMostrar}");
-            org.Emit(new NuevoGrupoCreado(cmd.Metadatos, idGrupo, cmd.GrupoDisplayName));
+            org.Emit(new NuevoGrupoCreado(cmd.Metadatos, idGrupo, cmd.GrupoDisplayName, cmd.IdOrganizacion));
             await this.repository.SaveAsync(org);
         }
 

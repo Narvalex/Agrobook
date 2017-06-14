@@ -6,7 +6,7 @@ namespace Agrobook.Core
     {
         protected void Dispatch(long eventNumber, object @event)
         {
-            ((dynamic)this).Handle(eventNumber, (dynamic)@event);
+            ((dynamic)this).Handle(eventNumber, (dynamic)@event).Wait();
         }
 
         protected virtual async Task Handle(long eventNumber, object @event)

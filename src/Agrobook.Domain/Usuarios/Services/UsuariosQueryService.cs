@@ -72,38 +72,5 @@ namespace Agrobook.Domain.Usuarios.Services
                 return dto;
             });
         }
-
-        public async Task<IList<OrganizacionDto>> ObtenerOrganizaciones()
-        {
-            return await this.QueryAsync(async context =>
-            {
-                var dto = await context
-                                .Organizaciones
-                                .Select(o => new OrganizacionDto
-                                {
-                                    Id = o.OrganizacionId,
-                                    Display = o.NombreParaMostrar
-                                })
-                                .ToListAsync();
-                return dto;
-            });
-        }
-
-        public async Task<IList<GrupoDto>> ObtenerGrupos(string idOrganizacion)
-        {
-            return await this.QueryAsync(async context =>
-            {
-                var dto = await context
-                                .Grupos
-                                .Select(g => new GrupoDto
-                                {
-                                    Id = g.Id,
-                                    Display = g.Display
-                                })
-                                .ToListAsync();
-
-                return dto;
-            });
-        }
     }
 }

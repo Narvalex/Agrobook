@@ -27,14 +27,13 @@
                         Nuevo grupo
                     </md-button>
                 </div>
-              
-                <md-list>
-                    <md-list-item ng-repeat="grupo in vm.grupos | filter:vm.searchText | orderBy:'display'">
-                        {{grupo.display}}
-                    </md-list-item>
-                </md-list>
             </div>
         </form>
+        <md-list>
+            <md-list-item ng-repeat="grupo in vm.grupos | orderBy:'display'">
+                {{grupo.display}}
+            </md-list-item>
+        </md-list>
     </md-content>
     <md-content layout-padding ng-hide="vm.loaded && vm.gruposLoaded">
         <div layout="row" layout-align="space-around">

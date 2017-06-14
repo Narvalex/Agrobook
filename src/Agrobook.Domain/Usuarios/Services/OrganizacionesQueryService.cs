@@ -1,6 +1,10 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Common;
 using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Usuarios.Services
 {
@@ -8,5 +12,39 @@ namespace Agrobook.Domain.Usuarios.Services
     {
         public OrganizacionesQueryService(Func<AgrobookDbContext> contextFactory, IEventSourcedReader esReader) : base(contextFactory, esReader)
         { }
+
+        public async Task<IList<OrganizacionDto>> ObtenerOrganizaciones()
+        {
+            return await this.QueryAsync(async context =>
+            {
+                var dto = await context
+                                .Organizaciones
+                                .Select(o => new OrganizacionDto
+                                {
+                                    Id = o.OrganizacionId,
+                                    Display = o.NombreParaMostrar
+                                })
+                                .ToListAsync();
+                return dto;
+            });
+        }
+
+        public async Task<IList<GrupoDto>> ObtenerGrupos(string idOrganizacion)
+        {
+            return await this.QueryAsync(async context =>
+            {
+                var dto = await context
+                                .Grupos
+                                .Where(g => g.OrganizacionId == idOrganizacion)
+                                .Select(g => new GrupoDto
+                                {
+                                    Id = g.Id,
+                                    Display = g.Display
+                                })
+                                .ToListAsync();
+
+                return dto;
+            });
+        }
     }
 }

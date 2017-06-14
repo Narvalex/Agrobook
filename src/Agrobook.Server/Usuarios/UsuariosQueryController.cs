@@ -12,6 +12,7 @@ namespace Agrobook.Server.Usuarios
     {
         private readonly UsuariosQueryService service = ServiceLocator.ResolveSingleton<UsuariosQueryService>();
         private readonly UsuariosService usuariosService = ServiceLocator.ResolveSingleton<UsuariosService>();
+        private readonly OrganizacionesQueryService organizacionesQueryService = ServiceLocator.ResolveSingleton<OrganizacionesQueryService>();
 
         [Autorizar(Roles.Gerente)]
         [HttpGet]
@@ -43,7 +44,7 @@ namespace Agrobook.Server.Usuarios
         [Route("organizaciones")]
         public async Task<IHttpActionResult> ObtenerOrganizaciones()
         {
-            var dto = await this.service.ObtenerOrganizaciones();
+            var dto = await this.organizacionesQueryService.ObtenerOrganizaciones();
             return this.Ok(dto);
         }
 
@@ -51,7 +52,7 @@ namespace Agrobook.Server.Usuarios
         [Route("grupos/{idOrganizacion}")]
         public async Task<IHttpActionResult> ObtenerGrupos([FromUri]string idOrganizacion)
         {
-            var dto = await this.service.ObtenerGrupos(idOrganizacion);
+            var dto = await this.organizacionesQueryService.ObtenerGrupos(idOrganizacion);
             return this.Ok(dto);
         }
     }

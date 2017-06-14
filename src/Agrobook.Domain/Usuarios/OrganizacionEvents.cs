@@ -16,13 +16,15 @@ namespace Agrobook.Domain.Usuarios
 
     public class NuevoGrupoCreado : MensajeAuditable
     {
-        public NuevoGrupoCreado(Metadatos metadatos, string grupoId, string grupoDisplayName) : base(metadatos)
+        public NuevoGrupoCreado(Metadatos metadatos, string grupoId, string grupoDisplayName, string organizacionId) : base(metadatos)
         {
             this.GrupoId = grupoId;
             this.GrupoDisplayName = grupoDisplayName;
+            this.OrganizacionId = organizacionId;
         }
 
         public string GrupoId { get; }
         public string GrupoDisplayName { get; }
+        public string OrganizacionId { get; }
     }
 }

@@ -80,6 +80,11 @@ var usuariosArea;
         };
         gruposController.prototype.selectedItemChange = function (org) {
             var _this = this;
+            if (org === undefined) {
+                // dejo en blanco el filtro
+                this.grupos = [];
+                return;
+            }
             this.gruposLoaded = false;
             this.usuariosQueryService.obtenerGrupos(org.id, function (value) {
                 _this.gruposLoaded = true;

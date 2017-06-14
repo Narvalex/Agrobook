@@ -24,8 +24,8 @@ namespace Agrobook.Domain
     public class GrupoEntity
     {
         public string Id { get; set; }
-        public string Display { get; set; }
         public string OrganizacionId { get; set; }
+        public string Display { get; set; }
     }
 
     public class OrganizacionEntityMap : EntityTypeConfiguration<OrganizacionEntity>
@@ -44,7 +44,7 @@ namespace Agrobook.Domain
     {
         public GrupoEntityMap()
         {
-            this.HasKey(e => e.Id);
+            this.HasKey(e => new { e.Id, e.OrganizacionId });
 
             this.ToTable("Grupos");
         }

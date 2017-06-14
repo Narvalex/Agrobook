@@ -101,6 +101,12 @@ module usuariosArea {
         }
 
         private selectedItemChange(org: organizacionDto) {
+            if (org === undefined) {
+                // dejo en blanco el filtro
+                this.grupos = [];
+                return;
+            }
+
             this.gruposLoaded = false;
             this.usuariosQueryService.obtenerGrupos(org.id,
                 value => {

@@ -50,7 +50,7 @@ namespace Agrobook.Web.Controllers.Usuarios
         }
 
         [HttpGet]
-        [Route("grupos/idOrganizacion")]
+        [Route("grupos/{idOrganizacion}")]
         public async Task<IHttpActionResult> ObtenerGrupos([FromUri] string idOrganizacion)
         {
             var dto = await this.client.ObtenerGrupos(idOrganizacion);

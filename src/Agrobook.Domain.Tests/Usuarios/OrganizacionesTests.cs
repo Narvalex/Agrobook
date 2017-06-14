@@ -68,6 +68,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             });
         }
 
+        #region GRUPOS
         [TestMethod]
         public void DadaOrganizacionSinGruposSePuedeCrearPrimerGrupo()
         {
@@ -84,6 +85,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                 var e = events.OfType<NuevoGrupoCreado>().Single();
                 Assert.AreEqual("grupodeadmines", e.GrupoId);
                 Assert.AreEqual("Grupo de Admines", e.GrupoDisplayName);
+                Assert.AreEqual("coop", e.OrganizacionId);
             })
             .And<OrganizacionSnapshot>(s =>
             {
@@ -103,7 +105,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             this.sut
             .Given<Organizacion>("coop",
                 new NuevaOrganizacionCreada(TestMeta.New, "coop", "Coop"),
-                new NuevoGrupoCreado(TestMeta.New, "grupoadmin", "Grupo Admin"))
+                new NuevoGrupoCreado(TestMeta.New, "grupoadmin", "Grupo Admin", "coop"))
             .When(s =>
             {
                 Assert.ThrowsException<InvalidOperationException>(() =>
@@ -119,5 +121,6 @@ namespace Agrobook.Domain.Tests.Usuarios
                 });
             });
         }
+        #endregion
     }
 }

@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 namespace Agrobook.Domain.Usuarios.Services
 {
     public class OrganizacionesDenormalizer : AgrobookDenormalizer,
-        IEventHandler<NuevaOrganizacionCreada>
+        IEventHandler<NuevaOrganizacionCreada>,
+        IEventHandler<NuevoGrupoCreado>
     {
         public OrganizacionesDenormalizer(IEventStreamSubscriber subscriber, Func<AgrobookDbContext> contextFactory)
             : base(subscriber, contextFactory,
-                  typeof(OrganizacionesDenormalizer).Name, 
+                  typeof(OrganizacionesDenormalizer).Name,
                   StreamCategoryAttribute.GetCategory<Organizacion>().AsCategoryProjectionStream())
         { }
 
@@ -22,6 +23,19 @@ namespace Agrobook.Domain.Usuarios.Services
                 {
                     OrganizacionId = e.Identificador,
                     NombreParaMostrar = e.NombreParaMostrar
+                });
+            });
+        }
+
+        public async Task Handle(long eventNumber, NuevoGrupoCreado e)
+        {
+            await this.Denormalize(eventNumber, context =>
+            {
+                context.Grupos.Add(new GrupoEntity
+                {
+                    Id = e.GrupoId,
+                    Display = e.GrupoDisplayName,
+                    OrganizacionId = e.OrganizacionId
                 });
             });
         }
