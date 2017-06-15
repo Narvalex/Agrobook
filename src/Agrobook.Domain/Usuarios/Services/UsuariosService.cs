@@ -138,6 +138,17 @@ namespace Agrobook.Domain.Usuarios
             await this.repository.SaveAsync(usuario);
         }
 
+        public async Task HandleAsync(AgregarUsuarioALaOrganizacion cmd)
+        {
+            var org = await this.IntentarRecuperarOrganizacionAsync(cmd.OrganizacionId);
+            if (org.YaTieneAlUsuarioComoMiembro(cmd.UsuarioId))
+                throw new InvalidOperationException("El usuario ya pertenece a la organización");
+
+            org.Emit(new UsuarioAgregadoALaOrganizacion(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId));
+
+            await this.repository.SaveAsync(org);
+        }
+
         public async Task HandleAsync(ResetearPassword cmd)
         {
             var usuario = await this.IntentarRecuperarUsuarioAsync(cmd.Usuario);
@@ -165,7 +176,7 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task HandleAsync(CrearNuevoGrupo cmd)
         {
-            var org = await this.repository.GetAsync<Organizacion>(cmd.IdOrganizacion);
+            var org = await this.IntentarRecuperarOrganizacionAsync(cmd.IdOrganizacion);
             var idGrupo = cmd.GrupoDisplayName.ToLowerTrimmedAndWhiteSpaceless();
             if (org.YaTieneGrupoConId(idGrupo))
                 throw new InvalidOperationException($"Ya existe el grupo con id {idGrupo} en la organización {org.NombreParaMostrar}");
@@ -173,10 +184,32 @@ namespace Agrobook.Domain.Usuarios
             await this.repository.SaveAsync(org);
         }
 
+        public async Task HandleAsync(AgregarUsuarioAUnGrupo cmd)
+        {
+            var org = await this.IntentarRecuperarOrganizacionAsync(cmd.OrganizacionId);
+
+            if (!org.YaTieneAlUsuarioComoMiembro(cmd.UsuarioId))
+                throw new InvalidOperationException("El usuario todavia no es miembro de la organizacion");
+
+            if (!org.YaTieneGrupoConId(cmd.GrupoId))
+                throw new InvalidOperationException("No existe el grupo al que se quiere agregar el usuario");
+
+            org.Emit(new UsuarioAgregadoAUnGrupo(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId, cmd.GrupoId));
+
+            await this.repository.SaveAsync(org);
+        }
+
         private async Task<Usuario> IntentarRecuperarUsuarioAsync(string usuario)
         {
             var state = await this.repository.GetAsync<Usuario>(usuario);
             if (state is null) throw new InvalidOperationException($"El usuario {usuario} no existe");
+            return state;
+        }
+
+        private async Task<Organizacion> IntentarRecuperarOrganizacionAsync(string id)
+        {
+            var state = await this.repository.GetAsync<Organizacion>(id);
+            if (state is null) throw new InvalidOperationException($"La organización {id} no existe");
             return state;
         }
 

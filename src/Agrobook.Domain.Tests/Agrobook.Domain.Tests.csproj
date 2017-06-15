@@ -63,6 +63,7 @@
     <Compile Include="Usuarios\OrganizacionesTests.cs" />
     <Compile Include="Usuarios\UsuariosServiceTestBase.cs" />
     <Compile Include="Usuarios\UsuariosTests.cs" />
+    <Compile Include="Utils\SnapshotExtensions.cs" />
     <Compile Include="Utils\FakeMeta.cs" />
     <Compile Include="Utils\FakeOneWayEncryptor.cs" />
     <Compile Include="Utils\SimpleDateTimeProvider.cs" />

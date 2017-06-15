@@ -23,4 +23,30 @@ namespace Agrobook.Domain.Usuarios
         public string IdOrganizacion { get; }
         public string GrupoDisplayName { get; }
     }
+
+    public class AgregarUsuarioALaOrganizacion : MensajeAuditable
+    {
+        public AgregarUsuarioALaOrganizacion(Metadatos metadatos, string organizacionId, string usuarioId) : base(metadatos)
+        {
+            this.OrganizacionId = organizacionId;
+            this.UsuarioId = usuarioId;
+        }
+
+        public string OrganizacionId { get; }
+        public string UsuarioId { get; }
+    }
+
+    public class AgregarUsuarioAUnGrupo : MensajeAuditable
+    {
+        public AgregarUsuarioAUnGrupo(Metadatos metadatos, string organizacionId, string usuarioId, string grupoId) : base(metadatos)
+        {
+            this.OrganizacionId = organizacionId;
+            this.UsuarioId = usuarioId;
+            this.GrupoId = grupoId;
+        }
+
+        public string OrganizacionId { get; }
+        public string UsuarioId { get; }
+        public string GrupoId { get; }
+    }
 }
