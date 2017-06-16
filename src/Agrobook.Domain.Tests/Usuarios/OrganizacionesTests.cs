@@ -340,7 +340,8 @@ namespace Agrobook.Domain.Tests.Usuarios
                     new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X"),
                     new UsuarioAgregadoALaOrganizacion(TestMeta.New, "cooperativax", "prod"),
                     new NuevoGrupoCreado(TestMeta.New, "grupito", "Grupito", "cooperativax"),
-                    new UsuarioAgregadoAUnGrupo(TestMeta.New, "cooperativax", "prod", "grupito")
+                    new UsuarioAgregadoAUnGrupo(TestMeta.New, "cooperativax", "prod", "grupito"),
+                    new UsuarioAgregadoALaOrganizacion(TestMeta.New, "cooperativax", "prod2")
                 )
                .When(s =>
                {
