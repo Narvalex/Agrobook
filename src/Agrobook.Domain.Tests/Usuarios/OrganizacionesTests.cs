@@ -92,7 +92,6 @@ namespace Agrobook.Domain.Tests.Usuarios
             .And<OrganizacionSnapshot>(s =>
             {
                 Assert.AreEqual("grupodeadmines", s.Grupos.Single().Key);
-                Assert.AreEqual("Grupo de Admines", s.Grupos.Single().Value);
 
                 IEventSourced rehidratado = new Organizacion();
                 rehidratado.Rehydrate(s);
@@ -330,6 +329,39 @@ namespace Agrobook.Domain.Tests.Usuarios
                            throw ex.InnerException;
                        }
                    });
+               });
+        }
+
+        [TestMethod]
+        public void DadaOrganizacionConUsuarioYGrupoCuandoSeQuiereAgregarVariosUsuariosAlGrupoEntoncesSucede()
+        {
+            this.sut
+               .Given<Organizacion>("cooperativax",
+                    new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X"),
+                    new UsuarioAgregadoALaOrganizacion(TestMeta.New, "cooperativax", "prod"),
+                    new NuevoGrupoCreado(TestMeta.New, "grupito", "Grupito", "cooperativax"),
+                    new UsuarioAgregadoAUnGrupo(TestMeta.New, "cooperativax", "prod", "grupito")
+                )
+               .When(s =>
+               {
+                   s.HandleAsync(new AgregarUsuarioAUnGrupo(TestMeta.New, "cooperativax", "prod2", "grupito")).Wait();
+               })
+               .Then(events =>
+               {
+                   Assert.AreEqual(1, events.Count);
+
+                   var e = events.OfType<UsuarioAgregadoAUnGrupo>().Single();
+                   Assert.AreEqual("grupito", e.GrupoId);
+                   Assert.AreEqual("prod2", e.UsuarioId);
+                   Assert.AreEqual("cooperativax", e.OrganizacionId);
+               })
+               .And<OrganizacionSnapshot>(s =>
+               {
+                   Assert.AreEqual(1, s.Grupos.Length);
+
+                   var org = s.Rehydrate<Organizacion>();
+                   Assert.IsTrue(org.YaTieneUsuarioDentroDelGrupo("grupito", "prod"));
+                   Assert.IsTrue(org.YaTieneUsuarioDentroDelGrupo("grupito", "prod2"));
                });
         }
 

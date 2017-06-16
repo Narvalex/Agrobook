@@ -41,7 +41,13 @@ namespace Agrobook.Domain.Usuarios
 
         public bool YaTieneUsuarioDentroDelGrupo(string grupoId, string usuarioId)
         {
-            throw new System.NotImplementedException();
+            if (this.YaTieneAlUsuarioComoMiembro(usuarioId) && this.YaTieneGrupoConId(grupoId))
+            {
+                if (this.usuariosPorGrupo[grupoId].Any(x => x == usuarioId))
+                    return true;
+            }
+
+            return false;
         }
 
         protected override void Rehydrate(ISnapshot snapshot)

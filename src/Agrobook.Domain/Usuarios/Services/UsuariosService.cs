@@ -194,6 +194,9 @@ namespace Agrobook.Domain.Usuarios
             if (!org.YaTieneGrupoConId(cmd.GrupoId))
                 throw new InvalidOperationException("No existe el grupo al que se quiere agregar el usuario");
 
+            if (org.YaTieneUsuarioDentroDelGrupo(cmd.GrupoId, cmd.UsuarioId))
+                throw new InvalidOperationException("El usuario ya esta dentro del grupo");
+
             org.Emit(new UsuarioAgregadoAUnGrupo(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId, cmd.GrupoId));
 
             await this.repository.SaveAsync(org);

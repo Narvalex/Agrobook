@@ -38,8 +38,11 @@
             </md-not-found>
         </md-autocomplete>
         <md-list>
-            <md-list-item ng-repeat="org in vm.organizaciones | filter:vm.searchText | orderBy:'display'">
-                {{org.display}}
+            <md-list-item class="secondary-buuton-padding" ng-repeat="org in vm.organizaciones | filter:vm.searchText | orderBy:'display'">
+                <p>{{org.display}}</p>
+                <md-button title="Agregar a {{vm.idUsuario}} a la organización {{org.display}}" class="md-secondary" ng-click="vm.agregarAOrganizacion($event, org)" aria-label="Agregar a la organizacion">
+                    <ng-md-icon icon="add"></ng-md-icon>
+                </md-button>
             </md-list-item>
         </md-list>
     </md-content>

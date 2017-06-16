@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Agrobook.Infrastructure.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Agrobook.Infrastructure.Files;
 
 namespace Agrobook.Infrastructure.Tests.Files
 {
@@ -15,6 +14,7 @@ namespace Agrobook.Infrastructure.Tests.Files
         }
 
         [TestMethod]
+        [Ignore]
         public void WhenCheckingFolderIfNotExistsThenCreatesANewOne()
         {
             this.sut.EnsureFolterExists();

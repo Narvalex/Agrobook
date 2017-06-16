@@ -56,5 +56,12 @@ namespace Agrobook.Web.Controllers.Usuarios
             await this.client.CrearNuevoGrupo(idOrg, displayGrupoName);
             return this.Ok();
         }
+
+        [HttpPost]
+        [Route("agregar-usuario-a-la-organizacion/{idUsuario}/{idOrganizacion}")]
+        public async Task<IHttpActionResult> AgregarUsuarioALaOrganizacion([FromUri]string idUsuario, [FromUri]string idOrganizacion)
+        {
+            return this.Ok();
+        }
     }
 }

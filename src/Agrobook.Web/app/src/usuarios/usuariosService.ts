@@ -50,5 +50,14 @@ module usuariosArea {
         ) {
             this.post('crear-nuevo-grupo/' + orgId + '/' + displayGrupoName, {}, onSuccess, onError);
         }
+
+        agregarUsuarioALaOrganizacion(
+            idUsuario: string,
+            idOrganizacion: string,
+            onSuccess: (value: ng.IHttpPromiseCallback<{}>) => void,
+            onError: (reason: any) => void
+        ) {
+            this.post(`agregar-usuario-a-la-organizacion/${idUsuario}/${idOrganizacion}`, {}, onSuccess, onError);
+        }
     }
 }
