@@ -3,7 +3,7 @@
 module usuariosArea {
     export class gruposController {
         static $inject = ['usuariosService', 'usuariosQueryService', 'loginQueryService', 'toasterLite',
-            '$mdDialog', '$timeout', '$q', '$log', '$rootScope'];
+            '$mdDialog', '$timeout', '$q', '$log', '$rootScope', '$routeParams'];
 
         constructor(
             private usuariosService: usuariosService,
@@ -14,8 +14,13 @@ module usuariosArea {
             private $timeout: ng.ITimeoutService,
             private $q: ng.IQService,
             private $log: ng.ILogService,
-            private $rootScope: ng.IRootScopeService
+            private $rootScope: ng.IRootScopeService,
+            private $routeParams: ng.route.IRouteParamsService
         ) {
+            this.idUsuario = this.$routeParams['idUsuario'];
+            if (this.idUsuario === undefined)
+                this.idUsuario = this.loginQueryService.tryGetLocalLoginInfo().usuario;
+
             this.recuperarListaDeOrganizaciones();
             this.$rootScope.gruposController = {};
         }
@@ -23,6 +28,8 @@ module usuariosArea {
         loaded = false;
         // loading grupos for an org
         gruposLoaded = true;
+
+        idUsuario: string;
 
         filterFromServer = false;
         isDisabled = false;
@@ -73,7 +80,8 @@ module usuariosArea {
         // ******************************
 
         private recuperarListaDeOrganizaciones() {
-            this.usuariosQueryService.obtenerOrganizaciones(
+            this.usuariosQueryService.obtenerOrganizacionesDelUsuario(
+                this.idUsuario,
                 response => {
                     this.organizaciones = response.data;
                     this.loaded = true;

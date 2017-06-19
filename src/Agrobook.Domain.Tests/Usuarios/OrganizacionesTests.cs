@@ -10,7 +10,7 @@ namespace Agrobook.Domain.Tests.Usuarios
     [TestClass]
     public class OrganizacionesTests : UsuariosServiceTestBase
     {
-        #region ABM
+        #region ABM Organizaciones
         [TestMethod]
         public void SiNoExisteNingunaOrganizacionEntoncesSePuedeCrearUnaCualquieraYElIdEsEnLowerCase()
         {
@@ -70,7 +70,29 @@ namespace Agrobook.Domain.Tests.Usuarios
         }
         #endregion
 
-        #region GRUPOS
+        #region ABM GRUPOS
+        [TestMethod]
+        public void DadaOrganizacionNoSePuedeCrearGrupoLlamadoIgualAlPorDefecto()
+        {
+            this.sut
+            .Given<Organizacion>("coop", new NuevaOrganizacionCreada(TestMeta.New, "coop", "Coop"))
+            .When(s =>
+            {
+                Assert.ThrowsException<InvalidOperationException>(() =>
+                {
+                    try
+                    {
+                        s.HandleAsync(new CrearNuevoGrupo(TestMeta.New, "coop", "ToDos")).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex.InnerException;
+                    }
+                });
+
+            });
+        }
+
         [TestMethod]
         public void DadaOrganizacionSinGruposSePuedeCrearPrimerGrupo()
         {
@@ -364,6 +386,35 @@ namespace Agrobook.Domain.Tests.Usuarios
                    Assert.IsTrue(org.YaTieneUsuarioDentroDelGrupo("grupito", "prod"));
                    Assert.IsTrue(org.YaTieneUsuarioDentroDelGrupo("grupito", "prod2"));
                });
+        }
+
+        [TestMethod]
+        public void DadoUnaOrganizacionNuevaCuandoSeAgregaSuPrimerUsuarioEntoncesSeCreaElPrimerGrupoPorDefectoYSeAgregaUsuario()
+        {
+            this.sut
+                .Given<Organizacion>("cooperativax", new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X"))
+                .When(s =>
+                {
+                    s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestMeta.New, "cooperativax", "prod")).Wait();
+                })
+                .Then(events =>
+                {
+                    Assert.AreEqual(3, events.Count);
+
+                    var e1 = events.OfType<UsuarioAgregadoALaOrganizacion>().Single();
+                    var e2 = events.OfType<NuevoGrupoCreado>().Single();
+                    var e3 = events.OfType<UsuarioAgregadoAUnGrupo>().Single();
+
+                    Assert.AreEqual("Todos", e2.GrupoDisplayName);
+                    Assert.AreEqual("todos", e2.GrupoId);
+                    Assert.AreEqual("todos", e3.GrupoId);
+                    Assert.AreEqual("prod", e3.UsuarioId);
+
+                })
+                .And<OrganizacionSnapshot>(s =>
+                {
+
+                });
         }
 
         #endregion

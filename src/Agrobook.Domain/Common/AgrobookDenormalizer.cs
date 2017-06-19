@@ -59,5 +59,14 @@ namespace Agrobook.Domain.Common
                 await context.SaveChangesAsync(this.subName, checkpoint);
             }
         }
+
+        protected async Task Denormalize(long checkpoint, Func<AgrobookDbContext, Task> denormAsync)
+        {
+            using (var context = this.contextFactory.Invoke())
+            {
+                await denormAsync.Invoke(context);
+                await context.SaveChangesAsync(this.subName, checkpoint);
+            }
+        }
     }
 }

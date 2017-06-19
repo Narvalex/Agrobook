@@ -2,7 +2,7 @@
 var usuariosArea;
 (function (usuariosArea) {
     var gruposController = (function () {
-        function gruposController(usuariosService, usuariosQueryService, loginQueryService, toasterLite, $mdDialog, $timeout, $q, $log, $rootScope) {
+        function gruposController(usuariosService, usuariosQueryService, loginQueryService, toasterLite, $mdDialog, $timeout, $q, $log, $rootScope, $routeParams) {
             this.usuariosService = usuariosService;
             this.usuariosQueryService = usuariosQueryService;
             this.loginQueryService = loginQueryService;
@@ -12,6 +12,7 @@ var usuariosArea;
             this.$q = $q;
             this.$log = $log;
             this.$rootScope = $rootScope;
+            this.$routeParams = $routeParams;
             // loading org
             this.loaded = false;
             // loading grupos for an org
@@ -22,6 +23,9 @@ var usuariosArea;
             this.organizaciones = [];
             // list of grupos
             this.grupos = [];
+            this.idUsuario = this.$routeParams['idUsuario'];
+            if (this.idUsuario === undefined)
+                this.idUsuario = this.loginQueryService.tryGetLocalLoginInfo().usuario;
             this.recuperarListaDeOrganizaciones();
             this.$rootScope.gruposController = {};
         }
@@ -59,7 +63,7 @@ var usuariosArea;
         // ******************************
         gruposController.prototype.recuperarListaDeOrganizaciones = function () {
             var _this = this;
-            this.usuariosQueryService.obtenerOrganizaciones(function (response) {
+            this.usuariosQueryService.obtenerOrganizacionesDelUsuario(this.idUsuario, function (response) {
                 _this.organizaciones = response.data;
                 _this.loaded = true;
             }, function (reason) { return _this.toasterLite.error('Hubo un error al recuperar lista de organizaciones', _this.toasterLite.delayForever); });
@@ -103,7 +107,7 @@ var usuariosArea;
         return gruposController;
     }());
     gruposController.$inject = ['usuariosService', 'usuariosQueryService', 'loginQueryService', 'toasterLite',
-        '$mdDialog', '$timeout', '$q', '$log', '$rootScope'];
+        '$mdDialog', '$timeout', '$q', '$log', '$rootScope', '$routeParams'];
     usuariosArea.gruposController = gruposController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=gruposController.js.map

@@ -12,6 +12,9 @@ namespace Agrobook.Domain.Usuarios
     {
         public const string UsuarioAdmin = "admin";
         public const string DefaultPassword = "1234";
+
+        public const string DefaultGrupoId = "todos";
+        public const string DefaultGrupoDisplayName = "Todos";
     }
 
     public class UsuariosService : EventSourcedService, ITokenAuthorizationProvider, IProveedorDeMetadatosDelUsuario
@@ -141,10 +144,20 @@ namespace Agrobook.Domain.Usuarios
         public async Task HandleAsync(AgregarUsuarioALaOrganizacion cmd)
         {
             var org = await this.IntentarRecuperarOrganizacionAsync(cmd.OrganizacionId);
-            if (org.YaTieneAlUsuarioComoMiembro(cmd.UsuarioId))
-                throw new InvalidOperationException("El usuario ya pertenece a la organización");
 
-            org.Emit(new UsuarioAgregadoALaOrganizacion(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId));
+            if (org.LaOrganizacionNoTieneTodaviaUsuarios)
+            {
+                org.Emit(new UsuarioAgregadoALaOrganizacion(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId));
+                org.Emit(new NuevoGrupoCreado(cmd.Metadatos, DefaultGrupoId, DefaultGrupoDisplayName, cmd.OrganizacionId));
+                org.Emit(new UsuarioAgregadoAUnGrupo(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId, DefaultGrupoId));
+            }
+            else
+            {
+                if (org.YaTieneAlUsuarioComoMiembro(cmd.UsuarioId))
+                    throw new InvalidOperationException("El usuario ya pertenece a la organización");
+
+                org.Emit(new UsuarioAgregadoALaOrganizacion(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId));
+            }
 
             await this.repository.SaveAsync(org);
         }
@@ -176,6 +189,8 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task HandleAsync(CrearNuevoGrupo cmd)
         {
+            ValidarQue.ElNombreDelGrupoSeLlameIgualAlPorDefecto(cmd.GrupoDisplayName);
+
             var org = await this.IntentarRecuperarOrganizacionAsync(cmd.IdOrganizacion);
             var idGrupo = cmd.GrupoDisplayName.ToLowerTrimmedAndWhiteSpaceless();
             if (org.YaTieneGrupoConId(idGrupo))
@@ -234,6 +249,12 @@ namespace Agrobook.Domain.Usuarios
             {
                 if (nombreDeUsuario.Contains(' '))
                     throw new ArgumentException("El nombre de usuario no debe contener espacios en blanco");
+            }
+
+            public static void ElNombreDelGrupoSeLlameIgualAlPorDefecto(string nombrePropuestoDelGrupo)
+            {
+                if (nombrePropuestoDelGrupo.ToLowerTrimmedAndWhiteSpaceless() == UsuariosConstants.DefaultGrupoId)
+                    throw new InvalidOperationException($"El nombre del grupo no puede ser {nombrePropuestoDelGrupo}");
             }
         }
     }

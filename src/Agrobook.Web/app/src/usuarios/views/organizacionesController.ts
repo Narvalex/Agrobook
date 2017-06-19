@@ -2,15 +2,19 @@
 
 module usuariosArea {
     export class organizacionesController {
-        static $inject = ['usuariosService', 'usuariosQueryService', 'toasterLite', '$routeParams'];
+        static $inject = ['usuariosService', 'usuariosQueryService', 'toasterLite', '$routeParams', 'loginQueryService'];
 
         constructor(
             private usuariosService: usuariosService,
             private usuariosQueryService: usuariosQueryService,
             private toasterLite: common.toasterLite,
-            private $routeParams: ng.route.IRouteParamsService
+            private $routeParams: ng.route.IRouteParamsService,
+            private loginQueryService: login.loginQueryService
         ) {
             this.idUsuario = this.$routeParams['idUsuario'];
+            if (this.idUsuario === undefined)
+                this.idUsuario = this.loginQueryService.tryGetLocalLoginInfo().usuario;
+
             this.obtenerOrganizaciones();
         }
 

@@ -35,6 +35,8 @@ namespace Agrobook.Domain.Usuarios
         public string Nombre { get; private set; }
         public string NombreParaMostrar { get; private set; }
 
+        public bool LaOrganizacionNoTieneTodaviaUsuarios => this.usuarios.Count == 0;
+
         public bool YaTieneGrupoConId(string idGrupo) => this.usuariosPorGrupo.ContainsKey(idGrupo);
 
         public bool YaTieneAlUsuarioComoMiembro(string usuarioId) => this.usuarios.Any(x => x == usuarioId);

@@ -1,12 +1,16 @@
 ﻿using Agrobook.Core;
+using Agrobook.Infrastructure.Log;
 using EventStore.ClientAPI;
 using System;
 using System.Text;
+using System.Threading;
 
 namespace Agrobook.Infrastructure.Subscription
 {
     public class EventStreamSubscription : IEventStreamSubscription
     {
+        private ILogLite log = LogManager.GetLoggerFor<EventStreamSubscription>();
+
         private readonly IEventStoreConnection resilientConnection;
         private readonly IJsonSerializer serializer;
         private readonly string streamName;
@@ -42,6 +46,7 @@ namespace Agrobook.Infrastructure.Subscription
                 if (this.lastCheckpoint == null)
                     this.lastCheckpoint = this.lazyLastCheckpoint.Value;
             }
+            this.log.Info($"Starting subscription of {this.streamName} from checkpoint {this.lastCheckpoint}");
             this.DoStart();
         }
 
@@ -74,20 +79,25 @@ namespace Agrobook.Infrastructure.Subscription
                                    var deserialized = this.serializer.Deserialize(serialized);
                                    this.handler.Invoke(eventAppeared.OriginalEventNumber, deserialized);
                                    this.lastCheckpoint = eventAppeared.OriginalEventNumber;
-                               } 
+                               }
                            }
                        },
-                       sub => { },
+                       sub => { this.log.Info($"The subscription of {this.streamName} has caught-up on checkpoint {this.lastCheckpoint}!"); },
                        (sub, reason, ex) =>
                        {
-                           if (reason == SubscriptionDropReason.CatchUpError || reason == SubscriptionDropReason.ConnectionClosed)
+                           if (reason == SubscriptionDropReason.ConnectionClosed || reason == SubscriptionDropReason.CatchUpError)
                            {
+                               var seconds = 30;
+                               this.log.Error($"The subscription of {this.streamName} stopped because of {reason} on checkpoint {this.lastCheckpoint}. Restarting in {seconds} seconds.");
+                               Thread.Sleep(TimeSpan.FromSeconds(seconds));
+                               this.log.Info($"Restarting subscription of {this.streamName} on checkpoint {this.lastCheckpoint}");
                                this.DoStart();
                                return;
                            }
                            else if (reason == SubscriptionDropReason.UserInitiated)
                                return;
 
+                           sub.Stop();
                            throw ex;
                        });
             }

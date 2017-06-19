@@ -27,6 +27,9 @@ var usuariosArea;
         usuariosQueryService.prototype.obtenerInfoBasicaDeUsuario = function (usuario, onSuccess, onError) {
             _super.prototype.get.call(this, 'info-basica/' + usuario, onSuccess, onError);
         };
+        usuariosQueryService.prototype.obtenerOrganizacionesDelUsuario = function (usuarioId, onSuccess, onError) {
+            _super.prototype.get.call(this, 'organizaciones/' + usuarioId, onSuccess, onError);
+        };
         usuariosQueryService.prototype.obtenerOrganizaciones = function (onSuccess, onError) {
             _super.prototype.get.call(this, 'organizaciones', onSuccess, onError);
         };

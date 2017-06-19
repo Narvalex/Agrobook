@@ -2,14 +2,17 @@
 var usuariosArea;
 (function (usuariosArea) {
     var organizacionesController = (function () {
-        function organizacionesController(usuariosService, usuariosQueryService, toasterLite, $routeParams) {
+        function organizacionesController(usuariosService, usuariosQueryService, toasterLite, $routeParams, loginQueryService) {
             this.usuariosService = usuariosService;
             this.usuariosQueryService = usuariosQueryService;
             this.toasterLite = toasterLite;
             this.$routeParams = $routeParams;
+            this.loginQueryService = loginQueryService;
             // lista de organizaciones
             this.organizaciones = [];
             this.idUsuario = this.$routeParams['idUsuario'];
+            if (this.idUsuario === undefined)
+                this.idUsuario = this.loginQueryService.tryGetLocalLoginInfo().usuario;
             this.obtenerOrganizaciones();
         }
         organizacionesController.prototype.crearNuevaOrganizacion = function () {
@@ -34,7 +37,7 @@ var usuariosArea;
         };
         return organizacionesController;
     }());
-    organizacionesController.$inject = ['usuariosService', 'usuariosQueryService', 'toasterLite', '$routeParams'];
+    organizacionesController.$inject = ['usuariosService', 'usuariosQueryService', 'toasterLite', '$routeParams', 'loginQueryService'];
     usuariosArea.organizacionesController = organizacionesController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=organizacionesController.js.map

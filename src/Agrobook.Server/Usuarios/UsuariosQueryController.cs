@@ -48,6 +48,15 @@ namespace Agrobook.Server.Usuarios
             return this.Ok(dto);
         }
 
+        [Autorizar(Roles.Gerente, Permisos.AdministrarOrganizaciones)]
+        [HttpGet]
+        [Route("organizaciones/{usuarioId}")]
+        public async Task<IHttpActionResult> ObtenerOrganizaciones([FromUri]string usuarioId)
+        {
+            var dto = await this.organizacionesQueryService.ObtenerOrganizaciones(usuarioId);
+            return this.Ok(dto);
+        }
+
         [HttpGet]
         [Route("grupos/{idOrganizacion}")]
         public async Task<IHttpActionResult> ObtenerGrupos([FromUri]string idOrganizacion)

@@ -38,5 +38,11 @@ namespace Agrobook.Client.Usuarios
             var command = new CrearNuevoGrupo(null, idOrg, displayGrupoName);
             await base.Post("crear-nuevo-grupo", command);
         }
+
+        public async Task AgregarUsuarioALaOrganizacion(string idUsuario, string idOrganizacion)
+        {
+            var command = new AgregarUsuarioALaOrganizacion(null, idOrganizacion, idUsuario);
+            await base.Post("agregar-usuario-a-la-organizacion", command);
+        }
     }
 }

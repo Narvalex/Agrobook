@@ -1,5 +1,4 @@
 ﻿using Agrobook.Domain.Usuarios;
-using Agrobook.Domain.Usuarios.Login;
 using Agrobook.Server.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -48,6 +47,14 @@ namespace Agrobook.Server.Usuarios
         [HttpPost]
         [Route("crear-nuevo-grupo")]
         public async Task<IHttpActionResult> CrearNuevoGrupo([FromBody]CrearNuevoGrupo command)
+        {
+            await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            return this.Ok();
+        }
+
+        [HttpPost]
+        [Route("agregar-usuario-a-la-organizacion")]
+        public async Task<IHttpActionResult> AgregarUsaurioALaOrganizacion([FromBody]AgregarUsuarioALaOrganizacion command)
         {
             await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
             return this.Ok();
