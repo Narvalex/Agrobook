@@ -36,19 +36,19 @@ namespace Agrobook.Server
               handler: signal =>
               {
                   OnExit();
-                    // Shutdown right away
-                    Environment.Exit(-1);
+                  // Shutdown right away
+                  Environment.Exit(-1);
                   return true;
               });
 
             // Dependency Container
-            _log.Info("Starting Agrobook Server");
-            Console.Write("Resolving dependencies...");
+            Console.WriteLine("Agrobook Server");
+            _log.Verbose("Resolving dependencies...");
             ServiceLocator.Initialize();
-            Console.WriteLine("Done");
+            _log.Verbose("All dependencies were resolved successfully");
 
             // EventStore
-            Console.Write("Initializing EventStore...");
+            _log.Verbose("Initializing EventStore...");
             var es = ServiceLocator.ResolveSingleton<EventStoreManager>();
 #if DROP_DB
             _log.Info("The database initializer configuration is DROP AND CREATE");
@@ -58,7 +58,7 @@ namespace Agrobook.Server
             _log.Info("The database initializer configuration is CREATE IF NOT EXISTS");
             es.CreateDbIfNotExists();
 #endif
-            Console.WriteLine("Done");
+            _log.Verbose("Event Store is ready");
 
             // SQL
             var sqlInit = ServiceLocator.ResolveSingleton<SqlDbInitializer<AgrobookDbContext>>();
@@ -68,15 +68,16 @@ namespace Agrobook.Server
 #if !DROP_DB
             sqlInit.CreateDatabaseIfNoExists();
 #endif
+            _log.Verbose("SQL Compact is ready");
 
             OnPersistenceEnginesInitialized();
 
-            Console.Write("Starting web server...");
+            _log.Verbose("Starting web server...");
             // Web Api
             var baseUri = "http://localhost:8081";
             WebApiStartup.OnAppDisposing = () => OnExit();
             WebApp.Start<WebApiStartup>(baseUri);
-            Console.WriteLine("Done");
+            _log.Verbose("Web server is ready");
             Console.WriteLine($"Server running at {baseUri} - press Enter to quit");
 
             string line;
@@ -110,9 +111,9 @@ namespace Agrobook.Server
             catch (Exception ex)
             {
                 intentos++;
-                Console.WriteLine("Error al verificar usuario admin");
+                _log.Warning("Error al verificar usuario admin");
                 Console.WriteLine(ex.Message);
-                Console.WriteLine($"Intento {intentos}/{maxRetries}");
+                _log.Warning($"Intento {intentos}/{maxRetries}");
                 if (intentos >= maxRetries)
                     throw;
                 Thread.Sleep(1500);
@@ -130,9 +131,9 @@ namespace Agrobook.Server
         {
             if (!query.ExisteUsuarioAdmin)
             {
-                Console.Write("Se detectó la ausencia del usuario admin. Creando uno...");
+                _log.Verbose("Se detectó la ausencia del usuario admin. Creando uno...");
                 userService.CrearUsuarioAdminAsync().Wait();
-                Console.WriteLine("Listo!");
+                _log.Verbose("Listo!");
             }
         }
     }

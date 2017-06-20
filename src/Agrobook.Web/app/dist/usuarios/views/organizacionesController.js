@@ -17,7 +17,15 @@ var usuariosArea;
         }
         organizacionesController.prototype.crearNuevaOrganizacion = function () {
             var _this = this;
-            this.usuariosService.crearNuevaOrganizacion(this.orgNombre, function (value) { return _this.toasterLite.success("La organización " + _this.orgNombre + " fue creada exitosamente"); }, function (reason) { return _this.toasterLite.error('Ocurrió un error inesperado al intentar crear la organización ' + _this.orgNombre); });
+            this.creandoOrg = true;
+            this.usuariosService.crearNuevaOrganizacion(this.orgNombre, function (value) {
+                _this.organizaciones.push(value.data);
+                _this.toasterLite.success("La organización " + _this.orgNombre + " fue creada exitosamente");
+                _this.creandoOrg = false;
+            }, function (reason) {
+                _this.toasterLite.error('Ocurrió un error inesperado al intentar crear la organización ' + _this.orgNombre);
+                _this.creandoOrg = false;
+            });
         };
         organizacionesController.prototype.agregarAOrganizacion = function ($event, org) {
             var _this = this;
@@ -30,7 +38,7 @@ var usuariosArea;
         //-------------------
         organizacionesController.prototype.obtenerOrganizaciones = function () {
             var _this = this;
-            this.usuariosQueryService.obtenerOrganizaciones(function (value) {
+            this.usuariosQueryService.obtenerOrganizacionesMarcadasDelUsuario(this.idUsuario, function (value) {
                 _this.organizaciones = value.data;
                 _this.loaded = true;
             }, function (reason) { return _this.toasterLite.error('Ocurrió un error al recuperar lista de organizaciones', _this.toasterLite.delayForever); });

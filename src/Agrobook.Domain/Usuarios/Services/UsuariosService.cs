@@ -1,6 +1,7 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Common;
 using Agrobook.Domain.Usuarios.Login;
+using Agrobook.Domain.Usuarios.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -173,7 +174,7 @@ namespace Agrobook.Domain.Usuarios
             await this.repository.SaveAsync(usuario);
         }
 
-        public async Task<CrearNuevaOrganizacionResult> HandleAsync(CrearNuevaOrganizacion cmd)
+        public async Task<OrganizacionDto> HandleAsync(CrearNuevaOrganizacion cmd)
         {
             var organizacion = new Organizacion();
 
@@ -184,7 +185,7 @@ namespace Agrobook.Domain.Usuarios
 
             await this.repository.SaveAsync(organizacion);
 
-            return new CrearNuevaOrganizacionResult(nombreFormateado, nombreCompletoConTrim);
+            return new OrganizacionDto { Id = nombreCompletoConTrim, Display = nombreFormateado };
         }
 
         public async Task HandleAsync(CrearNuevoGrupo cmd)

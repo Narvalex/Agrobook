@@ -11,6 +11,10 @@
     {
         public string Id { get; set; }
         public string Display { get; set; }
+        /// <summary>
+        /// Sirve para indicar si el usuario seleccionado es miembro
+        /// </summary>
+        public bool UsuarioEsMiembro { get; set; }
     }
 
     public class GrupoDto

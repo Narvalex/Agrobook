@@ -19,6 +19,7 @@ module usuariosArea {
         }
 
         loaded: boolean;
+        creandoOrg: boolean;
 
         idUsuario: string;
 
@@ -29,9 +30,18 @@ module usuariosArea {
         organizaciones : organizacionDto[] = [];
 
         crearNuevaOrganizacion() {
+            this.creandoOrg = true;
             this.usuariosService.crearNuevaOrganizacion(this.orgNombre,
-                value => this.toasterLite.success("La organización " + this.orgNombre + " fue creada exitosamente"),
-                reason => this.toasterLite.error('Ocurrió un error inesperado al intentar crear la organización ' + this.orgNombre)
+                value => {
+                    this.organizaciones.push(value.data);
+                    this.toasterLite.success("La organización " + this.orgNombre + " fue creada exitosamente");
+                    this.creandoOrg = false;
+                    
+                },
+                reason => {
+                    this.toasterLite.error('Ocurrió un error inesperado al intentar crear la organización ' + this.orgNombre);
+                    this.creandoOrg = false;
+                }
             );
         }
 
@@ -49,7 +59,7 @@ module usuariosArea {
         //-------------------
 
         private obtenerOrganizaciones() {
-            this.usuariosQueryService.obtenerOrganizaciones(
+            this.usuariosQueryService.obtenerOrganizacionesMarcadasDelUsuario(this.idUsuario,
                 value =>
                 {
                     this.organizaciones = value.data;

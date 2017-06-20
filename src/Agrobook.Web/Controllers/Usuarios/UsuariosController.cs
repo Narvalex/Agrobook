@@ -45,8 +45,8 @@ namespace Agrobook.Web.Controllers.Usuarios
         [Route("crear-nueva-organizacion/{nombreOrg}")]
         public async Task<IHttpActionResult> CrearNuevaOrganizacion([FromUri]string nombreOrg)
         {
-            await this.client.CrearNuevaOrganización(nombreOrg);
-            return this.Ok();
+            var org = await this.client.CrearNuevaOrganización(nombreOrg);
+            return this.Ok(org);
         }
 
         [HttpPost]

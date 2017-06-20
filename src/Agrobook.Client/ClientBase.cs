@@ -1,7 +1,6 @@
 ﻿using Agrobook.Core;
 using System;
 using System.IO;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Agrobook.Client
@@ -27,6 +26,11 @@ namespace Agrobook.Client
         protected async Task<TResult> Post<TResult>(string uri, string jsonContent)
         {
             return await this.http.Post<TResult>(this.BuildUri(uri), jsonContent, this.tokenProvider.Invoke());
+        }
+
+        protected async Task<TResult> Post<TContent, TResult>(string uri, TContent payload)
+        {
+            return await this.http.Post<TContent, TResult>(this.BuildUri(uri), payload, this.tokenProvider.Invoke());
         }
 
         protected async Task Post<TContent>(string uri, TContent content)

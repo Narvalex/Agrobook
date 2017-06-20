@@ -11,6 +11,7 @@ namespace Agrobook.Infrastructure.Log
         private const string FATAL_level = "FATAL";
         private const string INFO_level = "info";
         private const string VERBOSE_level = "verbose";
+        private const string WARNING_level = "warning";
 
         private static object lockObject = new object();
 
@@ -46,9 +47,14 @@ namespace Agrobook.Infrastructure.Log
             this.WriteWithLock(this.messageBuilder.BuildMessage(INFO_level, message));
         }
 
+        public void Warning(string message)
+        {
+            this.WriteWithLock(this.messageBuilder.BuildMessage(WARNING_level, message), ConsoleColor.Yellow);
+        }
+
         public void Verbose(string message)
         {
-            this.WriteWithLock(this.messageBuilder.BuildMessage(VERBOSE_level, message), ConsoleColor.Gray);
+            this.WriteWithLock(this.messageBuilder.BuildMessage(VERBOSE_level, message), ConsoleColor.DarkGray);
         }
 
         private void WriteWithLock(string message)

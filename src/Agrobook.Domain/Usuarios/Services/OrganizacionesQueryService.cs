@@ -46,6 +46,39 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
+        public async Task<IList<OrganizacionDto>> ObtenerOrganizacionesMarcadasDelUsuario(string idUsuario)
+        {
+            return await this.QueryAsync(async context =>
+            {
+                var orgsDelUsuario = await context
+                                 .OrganizacionesDeUsuarios
+                                 .Where(o => o.UsuarioId == idUsuario)
+                                 .Select(o => new OrganizacionDto
+                                 {
+                                     Id = o.OrganizacionId,
+                                     Display = o.OrganizacionDisplay,
+                                     UsuarioEsMiembro = true
+                                 })
+                                 .ToListAsync();
+
+                var orgsRestantes = await context
+                                 .Organizaciones
+                                 .Select(o => new OrganizacionDto
+                                 {
+                                     Id = o.OrganizacionId,
+                                     Display = o.NombreParaMostrar,
+                                     UsuarioEsMiembro = false
+                                 })
+                                 .ToListAsync();
+
+                var orgRestantesFiltrado = orgsRestantes.Where(o => !orgsDelUsuario.Any(ou => ou.Id == o.Id));
+
+                orgsDelUsuario.AddRange(orgRestantesFiltrado);
+
+                return orgsDelUsuario;
+            });
+        }
+
 
         public async Task<IList<GrupoDto>> ObtenerGrupos(string idOrganizacion)
         {

@@ -41,8 +41,8 @@ namespace Agrobook.Domain.Tests.Usuarios
             {
                 var result = s.HandleAsync(new CrearNuevaOrganizacion(TestMeta.New, "Cooperativa Equis")).Result;
 
-                Assert.AreEqual("cooperativaequis", result.OrgId);
-                Assert.AreEqual("Cooperativa Equis", result.NombreParaMostrar);
+                Assert.AreEqual("cooperativaequis", result.Id);
+                Assert.AreEqual("Cooperativa Equis", result.Display);
             });
         }
 

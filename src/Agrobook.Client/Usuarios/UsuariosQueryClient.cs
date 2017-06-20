@@ -48,5 +48,11 @@ namespace Agrobook.Client.Usuarios
             var dto = await base.Get<IList<OrganizacionDto>>($"organizaciones/{usuarioId}");
             return dto;
         }
+
+        public async Task<IList<OrganizacionDto>> ObtenerOrganizacionesMarcadasDelUsuario(string usuarioId)
+        {
+            var dto = await base.Get<IList<OrganizacionDto>>($"organizaciones-marcadas-del-usuario/{usuarioId}");
+            return dto;
+        }
     }
 }

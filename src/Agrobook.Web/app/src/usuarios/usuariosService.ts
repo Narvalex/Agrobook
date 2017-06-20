@@ -36,7 +36,7 @@ module usuariosArea {
 
         crearNuevaOrganizacion(
             nombreOrg: string,
-            onSuccess: (value: ng.IHttpPromiseCallback<{}>) => void,
+            onSuccess: (value: ng.IHttpPromiseCallbackArg<organizacionDto>) => void,
             onError: (reason: any) => void
         ) {
             this.post('crear-nueva-organizacion/' + nombreOrg, {}, onSuccess, onError);

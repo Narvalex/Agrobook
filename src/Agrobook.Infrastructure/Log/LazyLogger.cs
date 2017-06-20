@@ -39,6 +39,11 @@ namespace Agrobook.Infrastructure.Log
             this.log.Value.Info(message);
         }
 
+        public void Warning(string message)
+        {
+            this.log.Value.Warning(message);
+        }
+
         public void Verbose(string message)
         {
             this.log.Value.Verbose(message);

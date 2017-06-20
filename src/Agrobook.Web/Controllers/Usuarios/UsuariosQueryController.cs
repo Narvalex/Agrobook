@@ -42,6 +42,14 @@ namespace Agrobook.Web.Controllers.Usuarios
         }
 
         [HttpGet]
+        [Route("organizaciones")]
+        public async Task<IHttpActionResult> ObtenerOrganizaciones()
+        {
+            var dto = await this.client.ObtenerOrganizaciones();
+            return this.Ok(dto);
+        }
+
+        [HttpGet]
         [Route("organizaciones/{usuarioId}")]
         public async Task<IHttpActionResult> ObtenerOrganizaciones([FromUri]string usuarioId)
         {
@@ -50,10 +58,10 @@ namespace Agrobook.Web.Controllers.Usuarios
         }
 
         [HttpGet]
-        [Route("organizaciones")]
-        public async Task<IHttpActionResult> ObtenerOrganizaciones()
+        [Route("organizaciones-marcadas-del-usuario/{usuarioId}")]
+        public async Task<IHttpActionResult> ObtenerOrganizacionesMarcadasDelUsuario([FromUri]string usuarioId)
         {
-            var dto = await this.client.ObtenerOrganizaciones();
+            var dto = await this.client.ObtenerOrganizacionesMarcadasDelUsuario(usuarioId);
             return this.Ok(dto);
         }
 

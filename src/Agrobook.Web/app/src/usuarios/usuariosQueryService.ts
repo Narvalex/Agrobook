@@ -40,6 +40,14 @@ module usuariosArea {
             super.get('organizaciones/' + usuarioId, onSuccess, onError);
         }
 
+        obtenerOrganizacionesMarcadasDelUsuario(
+            usuarioId: string,
+            onSuccess: (value: ng.IHttpPromiseCallbackArg<organizacionDto[]>) => void,
+            onError?: (reason) => void
+        ) {
+            super.get('organizaciones-marcadas-del-usuario/' + usuarioId, onSuccess, onError);
+        }
+
         obtenerOrganizaciones(
             onSuccess: (value: ng.IHttpPromiseCallbackArg<organizacionDto[]>) => void,
             onError?: (reason) => void

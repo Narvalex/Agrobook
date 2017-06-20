@@ -40,8 +40,8 @@ namespace Agrobook.Server.Usuarios
         [Route("crear-nueva-organizacion")]
         public async Task<IHttpActionResult> CrearNuevaOrganizacion([FromBody]CrearNuevaOrganizacion command)
         {
-            await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
-            return this.Ok();
+            var result = await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            return this.Ok(result);
         }
 
         [HttpPost]

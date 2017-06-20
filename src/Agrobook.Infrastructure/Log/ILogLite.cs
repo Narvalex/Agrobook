@@ -10,5 +10,6 @@ namespace Agrobook.Infrastructure.Log
         void Fatal(Exception ex, string message);
         void Info(string message);
         void Verbose(string message);
+        void Warning(string message);
     }
 }

@@ -30,6 +30,9 @@ var usuariosArea;
         usuariosQueryService.prototype.obtenerOrganizacionesDelUsuario = function (usuarioId, onSuccess, onError) {
             _super.prototype.get.call(this, 'organizaciones/' + usuarioId, onSuccess, onError);
         };
+        usuariosQueryService.prototype.obtenerOrganizacionesMarcadasDelUsuario = function (usuarioId, onSuccess, onError) {
+            _super.prototype.get.call(this, 'organizaciones-marcadas-del-usuario/' + usuarioId, onSuccess, onError);
+        };
         usuariosQueryService.prototype.obtenerOrganizaciones = function (onSuccess, onError) {
             _super.prototype.get.call(this, 'organizaciones', onSuccess, onError);
         };

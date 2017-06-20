@@ -42,9 +42,10 @@ var usuariosArea;
     }());
     usuariosArea.actualizarPerfilDto = actualizarPerfilDto;
     var organizacionDto = (function () {
-        function organizacionDto(id, display) {
+        function organizacionDto(id, display, usuarioEsMiembro) {
             this.id = id;
             this.display = display;
+            this.usuarioEsMiembro = usuarioEsMiembro;
         }
         return organizacionDto;
     }());

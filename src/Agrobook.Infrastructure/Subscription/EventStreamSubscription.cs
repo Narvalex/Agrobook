@@ -82,13 +82,18 @@ namespace Agrobook.Infrastructure.Subscription
                                }
                            }
                        },
-                       sub => { this.log.Info($"The subscription of {this.streamName} has caught-up on checkpoint {this.lastCheckpoint}!"); },
+                       sub => { this.log.Verbose($"The subscription of {this.streamName} has caught-up on checkpoint {this.lastCheckpoint}!"); },
                        (sub, reason, ex) =>
                        {
                            if (reason == SubscriptionDropReason.ConnectionClosed || reason == SubscriptionDropReason.CatchUpError)
                            {
                                var seconds = 30;
-                               this.log.Error($"The subscription of {this.streamName} stopped because of {reason} on checkpoint {this.lastCheckpoint}. Restarting in {seconds} seconds.");
+                               var message = $"The subscription of {this.streamName} stopped because of {reason} on checkpoint {this.lastCheckpoint}. Restarting in {seconds} seconds.";
+                               if (reason == SubscriptionDropReason.ConnectionClosed)
+                                   this.log.Warning(message);
+                               else
+                                   this.log.Error(message);
+
                                Thread.Sleep(TimeSpan.FromSeconds(seconds));
                                this.log.Info($"Restarting subscription of {this.streamName} on checkpoint {this.lastCheckpoint}");
                                this.DoStart();
@@ -97,6 +102,7 @@ namespace Agrobook.Infrastructure.Subscription
                            else if (reason == SubscriptionDropReason.UserInitiated)
                                return;
 
+                           // This should be handled better
                            sub.Stop();
                            throw ex;
                        });

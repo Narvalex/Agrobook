@@ -1,4 +1,5 @@
 ﻿using Agrobook.Domain.Usuarios;
+using Agrobook.Domain.Usuarios.Services;
 using System;
 using System.Threading.Tasks;
 
@@ -27,10 +28,11 @@ namespace Agrobook.Client.Usuarios
             await base.Post("resetear-password", command);
         }
 
-        public async Task CrearNuevaOrganización(string nombreOrg)
+        public async Task<OrganizacionDto> CrearNuevaOrganización(string nombreOrg)
         {
             var command = new CrearNuevaOrganizacion(null, nombreOrg);
-            await base.Post("crear-nueva-organizacion", command);
+            var dto = await base.Post<CrearNuevaOrganizacion, OrganizacionDto>("crear-nueva-organizacion", command);
+            return dto;
         }
 
         public async Task CrearNuevoGrupo(string idOrg, string displayGrupoName)

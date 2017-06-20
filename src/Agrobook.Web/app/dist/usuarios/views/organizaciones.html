@@ -13,7 +13,7 @@
                 <div class="md-actions">
                     <md-button class="md-primary md-raised date-row"
                                type="submit"
-                               ng-disabled="nuevaOrgForm.$invalid">
+                               ng-disabled="nuevaOrgForm.$invalid || vm.creandoOrg">
                         Crear
                     </md-button>
                 </div>
@@ -38,9 +38,13 @@
             </md-not-found>
         </md-autocomplete>
         <md-list>
-            <md-list-item class="secondary-buuton-padding" ng-repeat="org in vm.organizaciones | filter:vm.searchText | orderBy:'display'">
+            <md-list-item class="secondary-buuton-padding" ng-repeat="org in vm.organizaciones | filter:vm.searchText | orderBy:'!usuarioEsMiembro'">
                 <p>{{org.display}}</p>
-                <md-button title="Agregar a {{vm.idUsuario}} a la organización {{org.display}}" class="md-secondary" ng-click="vm.agregarAOrganizacion($event, org)" aria-label="Agregar a la organizacion">
+                <md-button title="Agregar a {{vm.idUsuario}} a la organización {{org.display}}" 
+                           ng-hide="org.usuarioEsMiembro"
+                           class="md-secondary"
+                           ng-click="vm.agregarAOrganizacion($event, org)" 
+                           aria-label="Agregar a la organizacion">
                     <ng-md-icon icon="add"></ng-md-icon>
                 </md-button>
             </md-list-item>
