@@ -43,7 +43,8 @@ var common;
                 },
                 usuarios: {
                     usuarioSeleccionado: 'usuarioSeleccionado',
-                    perfilActualizado: 'perfilActualizado'
+                    perfilActualizado: 'perfilActualizado',
+                    usuarioAgregadoAOrganizacion: 'usuarioAgregadoAOrganizacion'
                 },
                 archivos: {
                     productorSeleccionado: 'productorSeleccionado',

@@ -3,7 +3,7 @@
 module usuariosArea {
     export class gruposController {
         static $inject = ['usuariosService', 'usuariosQueryService', 'loginQueryService', 'toasterLite',
-            '$mdDialog', '$timeout', '$q', '$log', '$rootScope', '$routeParams'];
+            '$mdDialog', '$timeout', '$q', '$log', '$rootScope', '$routeParams', 'config'];
 
         constructor(
             private usuariosService: usuariosService,
@@ -15,7 +15,8 @@ module usuariosArea {
             private $q: ng.IQService,
             private $log: ng.ILogService,
             private $rootScope: ng.IRootScopeService,
-            private $routeParams: ng.route.IRouteParamsService
+            private $routeParams: ng.route.IRouteParamsService,
+            private config: common.config
         ) {
             this.idUsuario = this.$routeParams['idUsuario'];
             if (this.idUsuario === undefined)
@@ -23,6 +24,14 @@ module usuariosArea {
 
             this.recuperarListaDeOrganizaciones();
             this.$rootScope.gruposController = {};
+
+            this.$rootScope.$on(this.config.eventIndex.usuarios.usuarioAgregadoAOrganizacion, (e, args: { idUsuario: string, org: organizacionDto }) => {
+                if (this.idUsuario === args.idUsuario) {
+                    // angular le da una propiedad nueva al objeto que parece que le corrompe. Por eso creo uno  nuevo.
+                    var dto = new organizacionDto(args.org.id, args.org.display, false);
+                    this.organizaciones.push(dto);
+                }
+            });
         }
         // loading org
         loaded = false;
@@ -30,6 +39,8 @@ module usuariosArea {
         gruposLoaded = true;
 
         idUsuario: string;
+
+        creandoGrupo = false;
 
         filterFromServer = false;
         isDisabled = false;
@@ -52,6 +63,7 @@ module usuariosArea {
         }
 
         crearNuevoGrupo($event) {
+            this.creandoGrupo = true;
             this.$rootScope.gruposController.orgSeleccionada = this.orgSeleccionada;
             this.$mdDialog.show({
                 templateUrl: '../app/dist/usuarios/dialogs/nuevo-grupo-dialog.html',
@@ -62,18 +74,16 @@ module usuariosArea {
                 clickOutsideToClose: true
             }).then((nuevoGrupo: string) => {
                 // Agregar nuevo grupo a la lista, si fue exitosa
+                this.creandoGrupo = false;
             }, () => {
                 this.toasterLite.info('Creación de grupo cancelada');
+                this.creandoGrupo = false;
             });
         }
 
         //********************************
         // Internal
         //********************************
-
-        noSePuedeCrearGrupo() {
-            return this.orgSeleccionada === null || this.orgSeleccionada === undefined;
-        }
 
         // ******************************
         // Autocomplete stuff
@@ -83,25 +93,15 @@ module usuariosArea {
             this.usuariosQueryService.obtenerOrganizacionesDelUsuario(
                 this.idUsuario,
                 response => {
-                    this.organizaciones = response.data;
+                    let lista: organizacionDto[] = [];
+                    for (var i = 0; i < response.data.length; i++) {
+                        lista.push(new organizacionDto(response.data[i].id, response.data[i].display, response.data[i].usuarioEsMiembro)); 
+                    }
+                    this.organizaciones = lista;
                     this.loaded = true;
                 },
                 reason => this.toasterLite.error('Hubo un error al recuperar lista de organizaciones', this.toasterLite.delayForever)
             );
-        }
-
-        private querySearch(query) {
-            var lowercaseQuery = angular.lowercase(query);
-
-            let results = query
-                ? this.organizaciones.filter(org => {
-                    let coincideConId = (angular.lowercase(org.id).indexOf(lowercaseQuery) > -1);
-                    let coincideConDisplay = (angular.lowercase(org.display).indexOf(lowercaseQuery) > -1);
-                    return coincideConId || coincideConDisplay;
-                })
-                : this.organizaciones;
-
-            return results;
         }
 
         private searchTextChange(text) {
@@ -124,16 +124,8 @@ module usuariosArea {
                 reason => { this.toasterLite.error('Error al cargar grupos', this.toasterLite.delayForever); });
         }
 
-        /**
-         * Create filter function for a query string
-         */
-        private createFilterFor(query) {
-            var lowercaseQuery = angular.lowercase(query);
-
-            return function filterFn(state) {
-                return (state.value.indexOf(lowercaseQuery) === 0);
-            };
-
+        private refreshOrgList(): organizacionDto[] {
+            return this.organizaciones;
         }
     }
 }

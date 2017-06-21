@@ -2,12 +2,14 @@
 var usuariosArea;
 (function (usuariosArea) {
     var organizacionesController = (function () {
-        function organizacionesController(usuariosService, usuariosQueryService, toasterLite, $routeParams, loginQueryService) {
+        function organizacionesController(usuariosService, usuariosQueryService, toasterLite, $routeParams, loginQueryService, $rootScope, config) {
             this.usuariosService = usuariosService;
             this.usuariosQueryService = usuariosQueryService;
             this.toasterLite = toasterLite;
             this.$routeParams = $routeParams;
             this.loginQueryService = loginQueryService;
+            this.$rootScope = $rootScope;
+            this.config = config;
             // lista de organizaciones
             this.organizaciones = [];
             this.idUsuario = this.$routeParams['idUsuario'];
@@ -29,9 +31,25 @@ var usuariosArea;
         };
         organizacionesController.prototype.agregarAOrganizacion = function ($event, org) {
             var _this = this;
+            this.agregandoUsuario = true;
             this.usuariosService.agregarUsuarioALaOrganizacion(this.idUsuario, org.id, function (value) {
+                // Actualizar la interfaz
+                for (var i = 0; i < _this.organizaciones.length; i++) {
+                    if (_this.organizaciones[i].id === org.id) {
+                        _this.organizaciones[i].usuarioEsMiembro = true;
+                        break;
+                    }
+                }
+                _this.$rootScope.$broadcast(_this.config.eventIndex.usuarios.usuarioAgregadoAOrganizacion, {
+                    idUsuario: _this.idUsuario,
+                    org: org
+                });
                 _this.toasterLite.success("Usuario agregado exitosamente a " + org.display);
-            }, function (reason) { return _this.toasterLite.error('Hubo un error al incorporar el usuario a la organizacion', _this.toasterLite.delayForever); });
+                _this.agregandoUsuario = false;
+            }, function (reason) {
+                _this.toasterLite.error('Hubo un error al incorporar el usuario a la organizacion', _this.toasterLite.delayForever);
+                _this.agregandoUsuario = false;
+            });
         };
         //-------------------
         // INTERNAL
@@ -45,7 +63,8 @@ var usuariosArea;
         };
         return organizacionesController;
     }());
-    organizacionesController.$inject = ['usuariosService', 'usuariosQueryService', 'toasterLite', '$routeParams', 'loginQueryService'];
+    organizacionesController.$inject = ['usuariosService', 'usuariosQueryService', 'toasterLite', '$routeParams', 'loginQueryService', '$rootScope',
+        'config'];
     usuariosArea.organizacionesController = organizacionesController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=organizacionesController.js.map

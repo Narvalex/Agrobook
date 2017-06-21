@@ -178,14 +178,14 @@ namespace Agrobook.Domain.Usuarios
         {
             var organizacion = new Organizacion();
 
-            var nombreCompletoConTrim = cmd.NombreCrudo.Trim();
-            var nombreFormateado = cmd.NombreCrudo.ToLowerTrimmedAndWhiteSpaceless();
+            var nombreFormateadoParaDisplay = cmd.NombreCrudo.Trim();
+            var nombreFormateadoParaId = cmd.NombreCrudo.ToLowerTrimmedAndWhiteSpaceless();
 
-            organizacion.Emit(new NuevaOrganizacionCreada(cmd.Metadatos, nombreFormateado, nombreCompletoConTrim));
+            organizacion.Emit(new NuevaOrganizacionCreada(cmd.Metadatos, nombreFormateadoParaId, nombreFormateadoParaDisplay));
 
             await this.repository.SaveAsync(organizacion);
 
-            return new OrganizacionDto { Id = nombreCompletoConTrim, Display = nombreFormateado };
+            return new OrganizacionDto { Id = nombreFormateadoParaId, Display = nombreFormateadoParaDisplay };
         }
 
         public async Task HandleAsync(CrearNuevoGrupo cmd)

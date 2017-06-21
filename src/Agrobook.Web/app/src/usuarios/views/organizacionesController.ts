@@ -2,14 +2,17 @@
 
 module usuariosArea {
     export class organizacionesController {
-        static $inject = ['usuariosService', 'usuariosQueryService', 'toasterLite', '$routeParams', 'loginQueryService'];
+        static $inject = ['usuariosService', 'usuariosQueryService', 'toasterLite', '$routeParams', 'loginQueryService', '$rootScope',
+        'config'];
 
         constructor(
             private usuariosService: usuariosService,
             private usuariosQueryService: usuariosQueryService,
             private toasterLite: common.toasterLite,
             private $routeParams: ng.route.IRouteParamsService,
-            private loginQueryService: login.loginQueryService
+            private loginQueryService: login.loginQueryService,
+            private $rootScope: ng.IRootScopeService,
+            private config: common.config
         ) {
             this.idUsuario = this.$routeParams['idUsuario'];
             if (this.idUsuario === undefined)
@@ -20,6 +23,7 @@ module usuariosArea {
 
         loaded: boolean;
         creandoOrg: boolean;
+        agregandoUsuario: boolean;
 
         idUsuario: string;
 
@@ -46,11 +50,29 @@ module usuariosArea {
         }
 
         agregarAOrganizacion($event, org: organizacionDto) {
+            this.agregandoUsuario = true;
             this.usuariosService.agregarUsuarioALaOrganizacion(this.idUsuario, org.id,
                 value => {
+                    // Actualizar la interfaz
+                    for (var i = 0; i < this.organizaciones.length; i++) {
+                        if (this.organizaciones[i].id === org.id) {
+                            this.organizaciones[i].usuarioEsMiembro = true;
+                            break;
+                        }
+                    }
+                    this.$rootScope.$broadcast(this.config.eventIndex.usuarios.usuarioAgregadoAOrganizacion,
+                        {
+                            idUsuario: this.idUsuario,
+                            org: org
+                        });
+
                     this.toasterLite.success(`Usuario agregado exitosamente a ${org.display}`);
+                    this.agregandoUsuario = false;
                 },
-                reason => this.toasterLite.error('Hubo un error al incorporar el usuario a la organizacion', this.toasterLite.delayForever)
+                reason => {
+                    this.toasterLite.error('Hubo un error al incorporar el usuario a la organizacion', this.toasterLite.delayForever);
+                    this.agregandoUsuario = false;
+                }
             );
         }
 

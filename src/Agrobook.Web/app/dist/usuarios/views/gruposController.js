@@ -2,7 +2,8 @@
 var usuariosArea;
 (function (usuariosArea) {
     var gruposController = (function () {
-        function gruposController(usuariosService, usuariosQueryService, loginQueryService, toasterLite, $mdDialog, $timeout, $q, $log, $rootScope, $routeParams) {
+        function gruposController(usuariosService, usuariosQueryService, loginQueryService, toasterLite, $mdDialog, $timeout, $q, $log, $rootScope, $routeParams, config) {
+            var _this = this;
             this.usuariosService = usuariosService;
             this.usuariosQueryService = usuariosQueryService;
             this.loginQueryService = loginQueryService;
@@ -13,10 +14,12 @@ var usuariosArea;
             this.$log = $log;
             this.$rootScope = $rootScope;
             this.$routeParams = $routeParams;
+            this.config = config;
             // loading org
             this.loaded = false;
             // loading grupos for an org
             this.gruposLoaded = true;
+            this.creandoGrupo = false;
             this.filterFromServer = false;
             this.isDisabled = false;
             // list of `organizaciones` value/display objects
@@ -28,6 +31,13 @@ var usuariosArea;
                 this.idUsuario = this.loginQueryService.tryGetLocalLoginInfo().usuario;
             this.recuperarListaDeOrganizaciones();
             this.$rootScope.gruposController = {};
+            this.$rootScope.$on(this.config.eventIndex.usuarios.usuarioAgregadoAOrganizacion, function (e, args) {
+                if (_this.idUsuario === args.idUsuario) {
+                    // angular le da una propiedad nueva al objeto que parece que le corrompe. Por eso creo uno  nuevo.
+                    var dto = new usuariosArea.organizacionDto(args.org.id, args.org.display, false);
+                    _this.organizaciones.push(dto);
+                }
+            });
         }
         // ******************************
         // Public methods
@@ -38,6 +48,7 @@ var usuariosArea;
         };
         gruposController.prototype.crearNuevoGrupo = function ($event) {
             var _this = this;
+            this.creandoGrupo = true;
             this.$rootScope.gruposController.orgSeleccionada = this.orgSeleccionada;
             this.$mdDialog.show({
                 templateUrl: '../app/dist/usuarios/dialogs/nuevo-grupo-dialog.html',
@@ -48,36 +59,28 @@ var usuariosArea;
                 clickOutsideToClose: true
             }).then(function (nuevoGrupo) {
                 // Agregar nuevo grupo a la lista, si fue exitosa
+                _this.creandoGrupo = false;
             }, function () {
                 _this.toasterLite.info('Creación de grupo cancelada');
+                _this.creandoGrupo = false;
             });
         };
         //********************************
         // Internal
         //********************************
-        gruposController.prototype.noSePuedeCrearGrupo = function () {
-            return this.orgSeleccionada === null || this.orgSeleccionada === undefined;
-        };
         // ******************************
         // Autocomplete stuff
         // ******************************
         gruposController.prototype.recuperarListaDeOrganizaciones = function () {
             var _this = this;
             this.usuariosQueryService.obtenerOrganizacionesDelUsuario(this.idUsuario, function (response) {
-                _this.organizaciones = response.data;
+                var lista = [];
+                for (var i = 0; i < response.data.length; i++) {
+                    lista.push(new usuariosArea.organizacionDto(response.data[i].id, response.data[i].display, response.data[i].usuarioEsMiembro));
+                }
+                _this.organizaciones = lista;
                 _this.loaded = true;
             }, function (reason) { return _this.toasterLite.error('Hubo un error al recuperar lista de organizaciones', _this.toasterLite.delayForever); });
-        };
-        gruposController.prototype.querySearch = function (query) {
-            var lowercaseQuery = angular.lowercase(query);
-            var results = query
-                ? this.organizaciones.filter(function (org) {
-                    var coincideConId = (angular.lowercase(org.id).indexOf(lowercaseQuery) > -1);
-                    var coincideConDisplay = (angular.lowercase(org.display).indexOf(lowercaseQuery) > -1);
-                    return coincideConId || coincideConDisplay;
-                })
-                : this.organizaciones;
-            return results;
         };
         gruposController.prototype.searchTextChange = function (text) {
             //this.$log.info('Text changed to ' + text);
@@ -95,19 +98,13 @@ var usuariosArea;
                 _this.grupos = value.data;
             }, function (reason) { _this.toasterLite.error('Error al cargar grupos', _this.toasterLite.delayForever); });
         };
-        /**
-         * Create filter function for a query string
-         */
-        gruposController.prototype.createFilterFor = function (query) {
-            var lowercaseQuery = angular.lowercase(query);
-            return function filterFn(state) {
-                return (state.value.indexOf(lowercaseQuery) === 0);
-            };
+        gruposController.prototype.refreshOrgList = function () {
+            return this.organizaciones;
         };
         return gruposController;
     }());
     gruposController.$inject = ['usuariosService', 'usuariosQueryService', 'loginQueryService', 'toasterLite',
-        '$mdDialog', '$timeout', '$q', '$log', '$rootScope', '$routeParams'];
+        '$mdDialog', '$timeout', '$q', '$log', '$rootScope', '$routeParams', 'config'];
     usuariosArea.gruposController = gruposController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=gruposController.js.map

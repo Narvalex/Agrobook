@@ -5,12 +5,12 @@
                 <md-autocomplete class="md-block"
                                  flex-gt-xs
                                  ng-disabled="vm.isDisabled"
-                                 md-no-cache="vm.noCache"
                                  md-selected-item="vm.orgSeleccionada"
+                                 md-no-cache="true"
                                  md-search-text-change="vm.searchTextChange(vm.searchText)"
                                  md-search-text="vm.searchText"
                                  md-selected-item-change="vm.selectedItemChange(item)"
-                                 md-items="item in vm.querySearch(vm.searchText)"
+                                 md-items="item in vm.refreshOrgList() | filter: vm.searchText | orderBy: 'display'"
                                  md-item-text="item.display"
                                  md-min-length="0"
                                  placeholder="Seleccionar organización">
@@ -22,7 +22,8 @@
                     </md-not-found>
                 </md-autocomplete>
                 <div class="md-actions">
-                    <md-button class="md-primary md-raised date-row" ng-disabled="vm.noSePuedeCrearGrupo()"
+                    <md-button class="md-primary md-raised date-row" 
+                               ng-disabled="(vm.orgSeleccionada === null || vm.orgSeleccionada === undefined) || vm.creandoGrupo"
                                ng-click="vm.crearNuevoGrupo($event)">
                         Nuevo grupo
                     </md-button>

@@ -29,7 +29,7 @@
     </md-content>
     <md-content ng-show="vm.loaded">
         <md-autocomplete md-search-text="vm.searchText"
-                         md-items="item in vm.organizaciones | filter: vm.search"
+                         md-items="item in vm.organizaciones | filter: vm.searchText"
                          md-item-text="item.id"
                          md-min-length="100"
                          placeholder="Buscar organización">
@@ -38,12 +38,17 @@
             </md-not-found>
         </md-autocomplete>
         <md-list>
-            <md-list-item class="secondary-buuton-padding" ng-repeat="org in vm.organizaciones | filter:vm.searchText | orderBy:'!usuarioEsMiembro'">
+            <md-list-item class="secondary-buuton-padding" ng-repeat="org in vm.organizaciones | filter:vm.searchText | orderBy:'display'">
                 <p>{{org.display}}</p>
-                <md-button title="Agregar a {{vm.idUsuario}} a la organización {{org.display}}" 
+                <md-chips>
+                    <md-chip title="{{vm.idUsuario}} es miembro de la organización {{org.display}}"
+                             ng-show="org.usuarioEsMiembro">Miembro</md-chip>
+                </md-chips>
+                <md-button title="Agregar a {{vm.idUsuario}} a la organización {{org.display}}"
                            ng-hide="org.usuarioEsMiembro"
                            class="md-secondary"
-                           ng-click="vm.agregarAOrganizacion($event, org)" 
+                           ng-disabled="vm.agregandoUsuario"
+                           ng-click="vm.agregarAOrganizacion($event, org)"
                            aria-label="Agregar a la organizacion">
                     <ng-md-icon icon="add"></ng-md-icon>
                 </md-button>
