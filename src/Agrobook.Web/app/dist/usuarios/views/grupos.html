@@ -18,7 +18,8 @@
                         <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{item.display}}</span>
                     </md-item-template>
                     <md-not-found>
-                        <a ng-click="vm.crearOrganizacion()">No existe ninguna organización que suene a "{{vm.searchText}}".</a>
+                        <a ng-show="vm.organizaciones.length > 0">No existe ninguna organización que suene a "{{vm.searchText}}".</a>
+                        <a ng-show="vm.organizaciones.length === 0">El usuario {{vm.idUsuario}} no está en ninguna organización.</a>
                     </md-not-found>
                 </md-autocomplete>
                 <div class="md-actions">
@@ -31,8 +32,20 @@
             </div>
         </form>
         <md-list>
-            <md-list-item ng-repeat="grupo in vm.grupos | orderBy:'display'">
-                {{grupo.display}}
+            <md-list-item class="secondary-button-padding" ng-repeat="grupo in vm.grupos | orderBy:'display'">
+                <p>{{grupo.display}}</p>
+                <md-chips>
+                    <md-chip title="{{vm.idUsuario}} es miembro del grupo {{grupo.display}} en la organización {{vm.orgSeleccionada.display}}."
+                             ng-show="grupo.usuarioEsMiembro">Miembro</md-chip>
+                </md-chips>
+                <md-button title="Agregar a {{vm.idUsuario}} al grupo {{grupo.display}}"
+                           ng-hide="grupo.usuarioEsMiembro"
+                           class="md-secondary"
+                           ng-disabled="vm.agregandoAGrupo"
+                           aria-label="Agregar a grupo"
+                           ng-click="vm.agregarAGrupo($event, grupo)">
+                    <ng-md-icon icon="add"></ng-md-icon>
+                </md-button>
             </md-list-item>
         </md-list>
     </md-content>

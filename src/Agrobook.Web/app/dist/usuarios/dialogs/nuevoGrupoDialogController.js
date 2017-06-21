@@ -14,8 +14,8 @@ var usuariosArea;
         nuevoGrupoDialogController.prototype.crearNuevoGrupo = function () {
             var _this = this;
             this.usuariosService.crearNuevoGrupo(this.orgSeleccionada.id, this.nuevoGrupo, function (response) {
-                _this.toasterLite.info("Nuevo grupo " + _this.nuevoGrupo + " creado para " + _this.orgSeleccionada.display + ".");
-                _this.$mdDialog.hide(_this.nuevoGrupo);
+                _this.toasterLite.success("Nuevo grupo " + _this.nuevoGrupo + " creado para " + _this.orgSeleccionada.display + ".");
+                _this.$mdDialog.hide(response.data);
             }, function (reason) { _this.toasterLite.error('Ocurrio un error!'); });
         };
         nuevoGrupoDialogController.prototype.cancelar = function () {

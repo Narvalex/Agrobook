@@ -173,6 +173,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                 });
         }
 
+
         [TestMethod]
         public void DadoUnOrganizacionConUsuarioCuandoSeIntentaAgregarAlUsuarioPorSegundaVezEntoncesFalla()
         {
@@ -410,9 +411,31 @@ namespace Agrobook.Domain.Tests.Usuarios
                     Assert.AreEqual("todos", e3.GrupoId);
                     Assert.AreEqual("prod", e3.UsuarioId);
 
-                })
-                .And<OrganizacionSnapshot>(s =>
+                });
+        }
+
+        [TestMethod]
+        public void DadoOrganizacionCuandoSeAgregaUnSegundoUsuarioEntoncesSeAgregaAlGrupoPorDefecto()
+        {
+            this.sut
+                .Given<Organizacion>("cooperativax",
+                        new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X"),
+                        new UsuarioAgregadoALaOrganizacion(TestMeta.New, "cooperativax", "prod1"),
+                        new NuevoGrupoCreado(TestMeta.New, "todos", "Todos", "cooperativax"),
+                        new UsuarioAgregadoAUnGrupo(TestMeta.New, "cooperativax", "prod1", "todos"))
+                .When(s =>
                 {
+                    s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestMeta.New, "cooperativax", "prod2")).Wait();
+                })
+                .Then(events =>
+                {
+                    var e1 = events.OfType<UsuarioAgregadoALaOrganizacion>().Single();
+                    var e2 = events.OfType<UsuarioAgregadoAUnGrupo>().Single();
+
+                    Assert.AreEqual(2, events.Count);
+
+                    Assert.AreEqual("todos", e2.GrupoId);
+                    Assert.AreEqual("prod2", e2.UsuarioId);
 
                 });
         }

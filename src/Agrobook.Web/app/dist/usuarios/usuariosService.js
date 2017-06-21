@@ -36,6 +36,9 @@ var usuariosArea;
         usuariosService.prototype.agregarUsuarioALaOrganizacion = function (idUsuario, idOrganizacion, onSuccess, onError) {
             this.post("agregar-usuario-a-la-organizacion/" + idUsuario + "/" + idOrganizacion, {}, onSuccess, onError);
         };
+        usuariosService.prototype.agregarUsuarioAGrupo = function (idUsuario, idOrganizacion, idGrupo, onSuccess, onError) {
+            this.post("agregar-usuario-a-grupo/" + idUsuario + "/" + idOrganizacion + "/" + idGrupo, {}, onSuccess, onError);
+        };
         return usuariosService;
     }(common.httpLite));
     usuariosService.$inject = ['$http'];

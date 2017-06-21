@@ -37,9 +37,9 @@ namespace Agrobook.Client.Usuarios
             return dto;
         }
 
-        public async Task<IList<GrupoDto>> ObtenerGrupos(string idOrganizacion)
+        public async Task<IList<GrupoDto>> ObtenerGrupos(string idOrganizacion, string idUsuario)
         {
-            var dto = await base.Get<IList<GrupoDto>>($"grupos/{idOrganizacion}");
+            var dto = await base.Get<IList<GrupoDto>>($"grupos/{idOrganizacion}/{idUsuario}");
             return dto;
         }
 

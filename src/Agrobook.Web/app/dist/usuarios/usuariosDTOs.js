@@ -51,9 +51,10 @@ var usuariosArea;
     }());
     usuariosArea.organizacionDto = organizacionDto;
     var grupoDto = (function () {
-        function grupoDto(id, display) {
+        function grupoDto(id, display, usuarioEsMiembro) {
             this.id = id;
             this.display = display;
+            this.usuarioEsMiembro = usuarioEsMiembro;
         }
         return grupoDto;
     }());

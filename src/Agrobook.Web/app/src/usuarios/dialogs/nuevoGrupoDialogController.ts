@@ -26,8 +26,8 @@ module usuariosArea {
         crearNuevoGrupo() {
             this.usuariosService.crearNuevoGrupo(this.orgSeleccionada.id, this.nuevoGrupo,
                 response => {
-                    this.toasterLite.info(`Nuevo grupo ${this.nuevoGrupo} creado para ${this.orgSeleccionada.display}.`);
-                    this.$mdDialog.hide(this.nuevoGrupo);
+                    this.toasterLite.success(`Nuevo grupo ${this.nuevoGrupo} creado para ${this.orgSeleccionada.display}.`);
+                    this.$mdDialog.hide(response.data);
                 },
                 reason => { this.toasterLite.error('Ocurrio un error!'); });
         }

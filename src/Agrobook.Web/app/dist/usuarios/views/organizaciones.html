@@ -38,7 +38,7 @@
             </md-not-found>
         </md-autocomplete>
         <md-list>
-            <md-list-item class="secondary-buuton-padding" ng-repeat="org in vm.organizaciones | filter:vm.searchText | orderBy:'display'">
+            <md-list-item class="secondary-button-padding" ng-repeat="org in vm.organizaciones | filter:vm.searchText | orderBy:'display'">
                 <p>{{org.display}}</p>
                 <md-chips>
                     <md-chip title="{{vm.idUsuario}} es miembro de la organización {{org.display}}"

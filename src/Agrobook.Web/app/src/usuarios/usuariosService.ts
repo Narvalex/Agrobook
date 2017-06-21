@@ -45,7 +45,7 @@ module usuariosArea {
         crearNuevoGrupo(
             orgId: string,
             displayGrupoName: string,
-            onSuccess: (value: ng.IHttpPromiseCallback<{}>) => void,
+            onSuccess: (value: ng.IHttpPromiseCallbackArg<grupoDto>) => void,
             onError: (reason: any) => void
         ) {
             this.post('crear-nuevo-grupo/' + orgId + '/' + displayGrupoName, {}, onSuccess, onError);
@@ -59,5 +59,16 @@ module usuariosArea {
         ) {
             this.post(`agregar-usuario-a-la-organizacion/${idUsuario}/${idOrganizacion}`, {}, onSuccess, onError);
         }
+
+        agregarUsuarioAGrupo(
+            idUsuario: string,
+            idOrganizacion: string,
+            idGrupo: string,
+            onSuccess: (value: ng.IHttpPromiseCallback<{}>) => void,
+            onError: (reason: any) => void
+        ) {
+            this.post(`agregar-usuario-a-grupo/${idUsuario}/${idOrganizacion}/${idGrupo}`, {}, onSuccess, onError);
+        }
+
     }
 }

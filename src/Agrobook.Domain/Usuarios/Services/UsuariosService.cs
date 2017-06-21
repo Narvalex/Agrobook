@@ -158,6 +158,7 @@ namespace Agrobook.Domain.Usuarios
                     throw new InvalidOperationException("El usuario ya pertenece a la organización");
 
                 org.Emit(new UsuarioAgregadoALaOrganizacion(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId));
+                org.Emit(new UsuarioAgregadoAUnGrupo(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId, UsuariosConstants.DefaultGrupoId));
             }
 
             await this.repository.SaveAsync(org);
@@ -188,7 +189,7 @@ namespace Agrobook.Domain.Usuarios
             return new OrganizacionDto { Id = nombreFormateadoParaId, Display = nombreFormateadoParaDisplay };
         }
 
-        public async Task HandleAsync(CrearNuevoGrupo cmd)
+        public async Task<GrupoDto> HandleAsync(CrearNuevoGrupo cmd)
         {
             ValidarQue.ElNombreDelGrupoSeLlameIgualAlPorDefecto(cmd.GrupoDisplayName);
 
@@ -198,6 +199,7 @@ namespace Agrobook.Domain.Usuarios
                 throw new InvalidOperationException($"Ya existe el grupo con id {idGrupo} en la organización {org.NombreParaMostrar}");
             org.Emit(new NuevoGrupoCreado(cmd.Metadatos, idGrupo, cmd.GrupoDisplayName, cmd.IdOrganizacion));
             await this.repository.SaveAsync(org);
+            return new GrupoDto { Id = idGrupo, Display = cmd.GrupoDisplayName };
         }
 
         public async Task HandleAsync(AgregarUsuarioAUnGrupo cmd)

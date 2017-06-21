@@ -37,8 +37,8 @@ var usuariosArea;
             _super.prototype.get.call(this, 'organizaciones', onSuccess, onError);
         };
         // TODO: Maybe? obtenerTodosLosGrupos
-        usuariosQueryService.prototype.obtenerGrupos = function (organizacionId, onSuccess, onError) {
-            _super.prototype.get.call(this, 'grupos/' + organizacionId, onSuccess, onError);
+        usuariosQueryService.prototype.obtenerGrupos = function (organizacionId, idUsuario, onSuccess, onError) {
+            _super.prototype.get.call(this, "grupos/" + organizacionId + "/" + idUsuario, onSuccess, onError);
         };
         return usuariosQueryService;
     }(common.httpLite));

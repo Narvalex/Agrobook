@@ -65,10 +65,10 @@ namespace Agrobook.Server.Usuarios
         }
 
         [HttpGet]
-        [Route("grupos/{idOrganizacion}")]
-        public async Task<IHttpActionResult> ObtenerGrupos([FromUri]string idOrganizacion)
+        [Route("grupos/{idOrganizacion}/{idUsuario}")]
+        public async Task<IHttpActionResult> ObtenerGrupos([FromUri]string idOrganizacion, [FromUri]string idUsuario)
         {
-            var dto = await this.organizacionesQueryService.ObtenerGrupos(idOrganizacion);
+            var dto = await this.organizacionesQueryService.ObtenerGrupos(idOrganizacion, idUsuario);
             return this.Ok(dto);
         }
     }

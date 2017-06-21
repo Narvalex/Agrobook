@@ -80,21 +80,30 @@ namespace Agrobook.Domain.Usuarios.Services
         }
 
 
-        public async Task<IList<GrupoDto>> ObtenerGrupos(string idOrganizacion)
+        public async Task<IList<GrupoDto>> ObtenerGrupos(string idOrganizacion, string idUsuario)
         {
             return await this.QueryAsync(async context =>
             {
-                var dto = await context
+                var todosLosGruposDeLaOrg = await context
                                 .Grupos
                                 .Where(g => g.OrganizacionId == idOrganizacion)
-                                .Select(g => new GrupoDto
-                                {
-                                    Id = g.Id,
-                                    Display = g.Display
-                                })
                                 .ToListAsync();
 
-                return dto;
+                var gruposDelUsuario = await context
+                                                .GruposDeUsuarios
+                                                .Where(x => x.OrganizacionId == idOrganizacion && x.UsuarioId == idUsuario)
+                                                .ToListAsync();
+
+                var lista = todosLosGruposDeLaOrg.Select(x =>
+                            new GrupoDto
+                            {
+                                Id = x.Id,
+                                Display = x.Display,
+                                UsuarioEsMiembro = gruposDelUsuario.Any(g => g.GrupoId == x.Id)
+                            })
+                            .ToList();
+
+                return lista;
             });
         }
     }

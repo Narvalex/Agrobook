@@ -53,8 +53,8 @@ namespace Agrobook.Web.Controllers.Usuarios
         [Route("crear-nuevo-grupo/{idOrg}/{displayGrupoName}")]
         public async Task<IHttpActionResult> CrearNuevoGrupo([FromUri]string idOrg, [FromUri]string displayGrupoName)
         {
-            await this.client.CrearNuevoGrupo(idOrg, displayGrupoName);
-            return this.Ok();
+            var grupo = await this.client.CrearNuevoGrupo(idOrg, displayGrupoName);
+            return this.Ok(grupo);
         }
 
         [HttpPost]
@@ -62,6 +62,14 @@ namespace Agrobook.Web.Controllers.Usuarios
         public async Task<IHttpActionResult> AgregarUsuarioALaOrganizacion([FromUri]string idUsuario, [FromUri]string idOrganizacion)
         {
             await this.client.AgregarUsuarioALaOrganizacion(idUsuario, idOrganizacion);
+            return this.Ok();
+        }
+
+        [HttpPost]
+        [Route("agregar-usuario-a-grupo/{idUsuario}/{idOrganizacion}/{idGrupo}")]
+        public async Task<IHttpActionResult> AgregarUsuarioAGrupo([FromUri]string idUsuario, [FromUri]string idOrganizacion, [FromUri]string idGrupo)
+        {
+            await this.client.AgregarUsuarioAGrupo(idUsuario, idOrganizacion, idGrupo);
             return this.Ok();
         }
     }

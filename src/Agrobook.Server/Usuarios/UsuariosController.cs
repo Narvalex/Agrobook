@@ -48,13 +48,21 @@ namespace Agrobook.Server.Usuarios
         [Route("crear-nuevo-grupo")]
         public async Task<IHttpActionResult> CrearNuevoGrupo([FromBody]CrearNuevoGrupo command)
         {
+            var grupo = await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            return this.Ok(grupo);
+        }
+
+        [HttpPost]
+        [Route("agregar-usuario-a-la-organizacion")]
+        public async Task<IHttpActionResult> AgregarUsuarioALaOrganizacion([FromBody]AgregarUsuarioALaOrganizacion command)
+        {
             await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
             return this.Ok();
         }
 
         [HttpPost]
-        [Route("agregar-usuario-a-la-organizacion")]
-        public async Task<IHttpActionResult> AgregarUsaurioALaOrganizacion([FromBody]AgregarUsuarioALaOrganizacion command)
+        [Route("agregar-usuario-a-grupo")]
+        public async Task<IHttpActionResult> AgregarUsuarioAGrupo([FromBody]AgregarUsuarioAUnGrupo command)
         {
             await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
             return this.Ok();
