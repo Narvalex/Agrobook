@@ -2,9 +2,10 @@
 var archivosArea;
 (function (archivosArea) {
     var sidenavController = (function () {
-        function sidenavController($mdSidenav, toasterLite, $rootScope, config, $mdDialog) {
+        function sidenavController($mdSidenav, usuariosQueryService, toasterLite, $rootScope, config, $mdDialog) {
             var _this = this;
             this.$mdSidenav = $mdSidenav;
+            this.usuariosQueryService = usuariosQueryService;
             this.toasterLite = toasterLite;
             this.$rootScope = $rootScope;
             this.config = config;
@@ -12,9 +13,11 @@ var archivosArea;
             this.eventoCarga = null;
             this.$rootScope.$on(this.config.eventIndex.archivos.productorSeleccionado, function (e, args) {
                 _this.idProductor = args;
+                _this.recuperarInfoDelProductor();
             });
             this.$rootScope.$on(this.config.eventIndex.archivos.abrirCuadroDeCargaDeArchivos, function (e, args) {
                 _this.idProductor = args;
+                _this.recuperarInfoDelProductor();
                 _this.initializeUploadCenter();
             });
         }
@@ -43,9 +46,17 @@ var archivosArea;
             }, function () {
             });
         };
+        sidenavController.prototype.recuperarInfoDelProductor = function () {
+            var _this = this;
+            this.usuariosQueryService.obtenerInfoBasicaDeUsuario(this.idProductor, function (value) {
+                _this.productor = new archivosArea.productorDto(value.data.nombre, value.data.nombreParaMostrar, value.data.avatarUrl);
+            }, function (reason) {
+                _this.toasterLite.error('Ocurrió un error al recuperar información del usuario', _this.toasterLite.delayForever);
+            });
+        };
         return sidenavController;
     }());
-    sidenavController.$inject = ['$mdSidenav', 'toasterLite', '$rootScope', 'config', '$mdDialog'];
+    sidenavController.$inject = ['$mdSidenav', 'usuariosQueryService', 'toasterLite', '$rootScope', 'config', '$mdDialog'];
     archivosArea.sidenavController = sidenavController;
 })(archivosArea || (archivosArea = {}));
 //# sourceMappingURL=sidenavController.js.map

@@ -8,10 +8,11 @@ module archivosArea {
     }
 
     export class sidenavController {
-        static $inject = ['$mdSidenav', 'toasterLite', '$rootScope', 'config', '$mdDialog'];
+        static $inject = ['$mdSidenav', 'usuariosQueryService', 'toasterLite', '$rootScope', 'config', '$mdDialog'];
 
         constructor(
             private $mdSidenav: angular.material.ISidenavService,
+            private usuariosQueryService: usuariosArea.usuariosQueryService,
             private toasterLite: common.toasterLite,
             private $rootScope: ng.IRootScopeService,
             private config: common.config,
@@ -19,14 +20,17 @@ module archivosArea {
         ) {
             this.$rootScope.$on(this.config.eventIndex.archivos.productorSeleccionado, (e, args) => {
                 this.idProductor = args;
+                this.recuperarInfoDelProductor();
             });
             this.$rootScope.$on(this.config.eventIndex.archivos.abrirCuadroDeCargaDeArchivos, (e, args) => {
                 this.idProductor = args;
+                this.recuperarInfoDelProductor();
                 this.initializeUploadCenter();
             });
         }
 
         idProductor: string;
+        productor: productorDto;
         eventoCarga = null;
 
         toggleSideNav(): void {
@@ -55,6 +59,16 @@ module archivosArea {
                 .then(answer => {
                     console.log('Modal aceptado...');
                 }, () => {
+                });
+        }
+
+        private recuperarInfoDelProductor() {
+            this.usuariosQueryService.obtenerInfoBasicaDeUsuario(this.idProductor,
+                value => {
+                    this.productor = new productorDto(value.data.nombre, value.data.nombreParaMostrar, value.data.avatarUrl);
+                },
+                reason => {
+                    this.toasterLite.error('Ocurrió un error al recuperar información del usuario', this.toasterLite.delayForever);
                 });
         }
     }

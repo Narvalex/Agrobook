@@ -3,7 +3,8 @@
             md-is-locked-open="$mdMedia('gt-sm')">
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>Archivos</h2>
+            <h2 ng-show="vm.productor.display">Archivos de {{vm.productor.display}}</h2>
+            <h5 ng-hide="vm.productor.display">Cargando información del productor...</h5>
             <div flex></div>
             <md-button class="md-icon-button"
                        hide-gt-sm

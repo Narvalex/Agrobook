@@ -742,9 +742,9 @@
     <Content Include="app\maps.html" />
     <TypeScriptCompile Include="app\src\archivos\archivosDTOs.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosQueryService.ts" />
-    <TypeScriptCompile Include="app\src\archivos\archivosService.ts" />
     <TypeScriptCompile Include="app\src\archivos\dialogs\uploadCenterController.ts" />
     <TypeScriptCompile Include="app\src\archivos\routes.ts" />
+    <TypeScriptCompile Include="app\src\archivos\uploadService.ts" />
     <TypeScriptCompile Include="app\src\usuarios\dialogs\nuevoGrupoDialogController.ts" />
     <TypeScriptCompile Include="app\src\archivos\prodSidenavController.ts" />
     <Content Include="app\usuarios.html" />
