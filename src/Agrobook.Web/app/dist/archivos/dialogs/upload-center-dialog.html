@@ -11,30 +11,50 @@
             </md-toolbar>
             <md-dialog-content>
                 <div class="md-dialog-content">
-                    <p>Arrastre archivos para su carga</p>
+                    <p>Arrastre archivos aquí o bien haga click <a href="" ng-click="vm.seleccionarArchivos()">aquí y seleccione archivos para cargar.</a></p>
+                    <input id="fileInputBtn" hidden type="file" multiple onchange="angular.element(this).scope().prepararArchivosSeleccionados(this)"/>
                     <md-list>
-                        <md-list-item class="md-3-line" ng-repeat="file in vm.uploader.files">
+                        <md-list-item class="md-3-line" ng-repeat="unit in vm.uploader.uploadUnits">
                             <div class="md-list-item-text">
-                                <h3>{{file.webkitRelativePath || file.name}}</h3>
-                                <p ng-switch="file.size > 1024*1024"><span ng-show="vm.uploader.progress">{{vm.uploader.progress}}% de </span>
-                                    <span ng-switch-when="true">{{file.size / 1024 / 1024 | number : 2}} MB</span>
-                                    <span ng-switch-default>{{file.size / 1024 | number : 2}} KB</span>
+                                <h3>{{unit.file.webkitRelativePath || unit.file.name}}</h3>
+                                <p ng-switch="unit.file.size > 1024*1024"><span ng-show="unit.progress">{{unit.progress}}% de </span>
+                                    <span ng-switch-when="true">{{unit.file.size / 1024 / 1024 | number : 2}} MB</span>
+                                    <span ng-switch-default>{{unit.file.size / 1024 | number : 2}} KB</span>
                                 </p>
-                                <md-progress-linear md-mode="determinate" value="{{vm.uploader.progress}}"></md-progress-linear>
+
+                                <md-progress-linear md-mode="determinate" value="{{unit.progress}}"></md-progress-linear>
                             </div>
-                            <md-button ng-click="vm.cargar(file)">Cargar</md-button>
+                            <!--<div layout="column">
+                                <div layout="row">
+                                    <span flex></span>
+                                    <md-button class="md-icon-button" ng-click="vm.cerrar()" aria-label="cerrar">
+                                        <ng-md-icon icon="close"></ng-md-icon>
+                                    </md-button>
+                                </div>-->
+                            <div class="md-secondary">
+                                <md-button class="md-icon-button md-primary"
+                                           ng-click="unit.startUpload()"
+                                           title="Cargar archivo al servidor"
+                                           aria-label="cargar">
+                                    <ng-md-icon icon="file_upload"></ng-md-icon>
+                                </md-button>
+                                <md-button class="md-icon-button"
+                                           ng-click="vm.quitarArchivo(unit)"
+                                           title="Quitar archivo de la lista de carga"
+                                           aria-label="cerrar">
+                                    <ng-md-icon icon="close"></ng-md-icon>
+                                </md-button>
+                            </div>
+                            <!--</div>-->
+                            <br />
                         </md-list-item>
                     </md-list>
                 </div>
             </md-dialog-content>
-            <md-dialog-actions layout="row">
-
+            <md-dialog-actions layout="row" class="padding-all">
                 <span flex></span>
-                <md-button ng-click="">
-                    Not Useful
-                </md-button>
-                <md-button ng-click="">
-                    Useful
+                <md-button ng-click="vm.cerrar()">
+                    Ocultar
                 </md-button>
             </md-dialog-actions>
         </form>

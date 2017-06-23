@@ -18,14 +18,27 @@ var archivosArea;
                 _this.initDragAndDrop(_this);
             }, 0);
             this.idProductor = this.$routeParams['idProductor'];
-            this.uploader.scopeListener = this.$scope;
+            this.uploader.setScope(this.$scope);
+            this.$scope.prepararArchivosSeleccionados = this.prepararArchivosSeleccionados;
         }
+        uploadCenterController.prototype.seleccionarArchivos = function () {
+            this.$timeout(function () {
+                angular.element('#fileInputBtn').trigger('click');
+            }, 0);
+        };
+        uploadCenterController.prototype.prepararArchivosSeleccionados = function (element) {
+            var vm = angular.element(this)[0].vm;
+            vm.$scope.$apply(function (scope) {
+                console.log("Se seleccionaron " + element.files.length + " archivos");
+                vm.uploader.prepareFiles(element.files);
+            });
+        };
         uploadCenterController.prototype.cerrar = function () {
             this.$mdDialog.cancel();
             window.location.replace('#!/archivos/' + this.idProductor);
         };
-        uploadCenterController.prototype.cargar = function (file) {
-            this.uploader.uploadFile(file);
+        uploadCenterController.prototype.quitarArchivo = function (unit) {
+            this.uploader.removeFile(unit.file);
         };
         //
         // Internal

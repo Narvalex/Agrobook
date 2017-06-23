@@ -38,7 +38,7 @@ var archivosArea;
                 templateUrl: '../app/dist/archivos/dialogs/upload-center-dialog.html',
                 parent: angular.element(document.body),
                 targetEvent: this.eventoCarga,
-                clickOutsideToClose: false,
+                clickOutsideToClose: true,
                 fullscreen: true
             })
                 .then(function (answer) {

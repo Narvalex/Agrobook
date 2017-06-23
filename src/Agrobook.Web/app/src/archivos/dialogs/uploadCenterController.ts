@@ -22,20 +22,36 @@ module archivosArea {
 
             this.idProductor = this.$routeParams['idProductor'];
 
-            this.uploader.scopeListener = this.$scope;
+            this.uploader.setScope(this.$scope);
+
+            this.$scope.prepararArchivosSeleccionados = this.prepararArchivosSeleccionados;
         }
 
         idProductor: string;
 
         title = 'Centro de carga de archivos';
 
+        seleccionarArchivos() {
+            this.$timeout(() => {
+                angular.element('#fileInputBtn').trigger('click');
+            }, 0);
+        }
+
+        prepararArchivosSeleccionados(element) {
+            var vm = (angular.element(this)[0] as any).vm;
+            vm.$scope.$apply(scope => {
+                console.log(`Se seleccionaron ${element.files.length} archivos`);
+                vm.uploader.prepareFiles(element.files);
+            });
+        }
+
         cerrar() {
             this.$mdDialog.cancel();
             window.location.replace('#!/archivos/' + this.idProductor);
         }
 
-        cargar(file: File) {
-            this.uploader.uploadFile(file);
+        quitarArchivo(unit: uploadUnit) {
+            this.uploader.removeFile(unit.file);
         }
 
         //
