@@ -1,61 +1,105 @@
-﻿    <md-dialog id="dragAndDropArea" aria-label="{{vm.title}}" ng-controller="uploadCenterController as vm">
-        <form enctype="multipart/form-data" name="uploadForm" ng-cloak>
-            <md-toolbar>
-                <div class="md-toolbar-tools">
-                    <h2>{{vm.title}}</h2>
-                    <span flex></span>
-                    <md-button class="md-icon-button" ng-click="vm.cerrar()" aria-label="cerrar">
-                        <ng-md-icon icon="close"></ng-md-icon>
-                    </md-button>
+﻿<md-dialog id="dragAndDropArea" aria-label="{{vm.title}}" ng-controller="uploadCenterController as vm">
+    <form enctype="multipart/form-data" name="uploadForm" ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 md-truncate>{{vm.title}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" 
+                           title="Agregar archivos..."
+                           aria-label="Agregar archivos..."
+                           ng-click="vm.seleccionarArchivos()">
+                    <ng-md-icon icon="add"></ng-md-icon>
+                </md-button>
+                <md-button ng-disabled="!vm.uploader.thereArePendingFiles()"
+                           class="md-icon-button"
+                           title="Cargar todo"
+                           aria-label="Cargar todo"
+                           ng-click="vm.uploader.uploadAll()">
+                    <ng-md-icon icon="file_upload"></ng-md-icon>
+                </md-button>
+                <md-button ng-disabled="!vm.uploader.thereAreUploadsInProcess()"
+                           class="md-icon-button md-warn"
+                           title="Parar todo"
+                           aria-label="Parar todo"
+                           ng-click="vm.uploader.stopAll()">
+                    <ng-md-icon icon="stop"></ng-md-icon>
+                </md-button>
+                <md-button class="md-icon-button"
+                           ng-disabled="!vm.uploader.thereAreFilesToBeCleansed()"
+                           title="Limpiar"
+                           aria-label="Limpiar"
+                           ng-click="vm.limpiar()">
+                    <ng-md-icon icon="delete_sweep"></ng-md-icon>
+                </md-button>
+                <md-button class="md-icon-button" ng-click="vm.cerrar()" aria-label="cerrar" title="Ocultar el centro de carga">
+                    <ng-md-icon icon="close"></ng-md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div ng-show="vm.uploader.uploadUnits.length === 0">
+                    <br /><br />
+                    <p style="text-align: center">Arrastre archivos aquí o bien haga click <a href="" ng-click="vm.seleccionarArchivos()">aquí y seleccione archivos para cargar.</a></p>
+                    <br /><br />
                 </div>
-            </md-toolbar>
-            <md-dialog-content>
-                <div class="md-dialog-content">
-                    <p>Arrastre archivos aquí o bien haga click <a href="" ng-click="vm.seleccionarArchivos()">aquí y seleccione archivos para cargar.</a></p>
-                    <input id="fileInputBtn" hidden type="file" multiple onchange="angular.element(this).scope().prepararArchivosSeleccionados(this)"/>
-                    <md-list>
-                        <md-list-item class="md-3-line" ng-repeat="unit in vm.uploader.uploadUnits">
-                            <div class="md-list-item-text">
-                                <h3>{{unit.file.webkitRelativePath || unit.file.name}}</h3>
-                                <p ng-switch="unit.file.size > 1024*1024"><span ng-show="unit.progress">{{unit.progress}}% de </span>
-                                    <span ng-switch-when="true">{{unit.file.size / 1024 / 1024 | number : 2}} MB</span>
-                                    <span ng-switch-default>{{unit.file.size / 1024 | number : 2}} KB</span>
-                                </p>
+                <div id="fileInputContainer">
+                    <input id="fileInputBtn" hidden type="file" multiple onchange="angular.element(this).scope().prepararArchivosSeleccionados(this)" />
+                </div>
+                <md-list>
+                    <md-list-item class="md-3-line" ng-repeat="unit in vm.uploader.uploadUnits">
+                        <div class="md-list-item-text">
+                            <h3><ng-md-icon ng-show="unit.failed" title="Error al cargar el archivo" style="color:red" icon="warning"></ng-md-icon> {{unit.file.webkitRelativePath || unit.file.name}}</h3>
+                            <p ng-switch="unit.file.size > 1024*1024">
+                                <span ng-show="unit.progress">{{unit.progress}}% de </span>
+                                <span ng-switch-when="true">{{unit.file.size / 1024 / 1024 | number : 2}} MB</span>
+                                <span ng-switch-default>{{unit.file.size / 1024 | number : 2}} KB</span>
+                            </p>
 
-                                <md-progress-linear md-mode="determinate" value="{{unit.progress}}"></md-progress-linear>
-                            </div>
-                            <!--<div layout="column">
-                                <div layout="row">
-                                    <span flex></span>
-                                    <md-button class="md-icon-button" ng-click="vm.cerrar()" aria-label="cerrar">
-                                        <ng-md-icon icon="close"></ng-md-icon>
-                                    </md-button>
-                                </div>-->
-                            <div class="md-secondary">
-                                <md-button class="md-icon-button md-primary"
-                                           ng-click="unit.startUpload()"
-                                           title="Cargar archivo al servidor"
-                                           aria-label="cargar">
-                                    <ng-md-icon icon="file_upload"></ng-md-icon>
-                                </md-button>
-                                <md-button class="md-icon-button"
-                                           ng-click="vm.quitarArchivo(unit)"
-                                           title="Quitar archivo de la lista de carga"
-                                           aria-label="cerrar">
+                            <md-progress-linear ng-hide="unit.uploaded" md-mode="determinate" value="{{unit.progress}}"></md-progress-linear>
+                        </div>
+                        <!--<div layout="column">
+                            <div layout="row">
+                                <span flex></span>
+                                <md-button class="md-icon-button" ng-click="vm.cerrar()" aria-label="cerrar">
                                     <ng-md-icon icon="close"></ng-md-icon>
                                 </md-button>
-                            </div>
-                            <!--</div>-->
-                            <br />
-                        </md-list-item>
-                    </md-list>
-                </div>
-            </md-dialog-content>
-            <md-dialog-actions layout="row" class="padding-all">
-                <span flex></span>
-                <md-button ng-click="vm.cerrar()">
-                    Ocultar
-                </md-button>
-            </md-dialog-actions>
-        </form>
-    </md-dialog>
+                            </div>-->
+                        <div class="md-secondary">
+                            <md-button class="md-icon-button md-primary"
+                                       ng-click="unit.startUpload()"
+                                       ng-hide="unit.uploading || unit.uploaded"
+                                       title="Cargar archivo al servidor"
+                                       aria-label="cargar">
+                                <ng-md-icon icon="file_upload"></ng-md-icon>
+                            </md-button>
+                            <md-button class="md-icon-button md-warn"
+                                       ng-show="unit.uploading"
+                                       ng-click="unit.stopUpload()"
+                                       title="Cargar archivo al servidor"
+                                       aria-label="cargar">
+                                <ng-md-icon icon="stop"></ng-md-icon>
+                            </md-button>
+                            <md-button ng-show="unit.uploaded"
+                                       class="md-icon-button md-raised md-primary"
+                                       ng-click=""
+                                       title="Carga exitosa"
+                                       aria-label="Carga exitosa">
+                                <ng-md-icon icon="done"></ng-md-icon>
+                            </md-button>
+                            <md-button class="md-icon-button"
+                                       ng-click="vm.quitarArchivo(unit)"
+                                       title="Quitar archivo de la lista de carga"
+                                       ng-disabled="unit.uploading"
+                                       aria-label="cerrar">
+                                <ng-md-icon icon="close"></ng-md-icon>
+                            </md-button>
+                        </div>
+                        <!--</div>-->
+                        <br />
+                    </md-list-item>
+                </md-list>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

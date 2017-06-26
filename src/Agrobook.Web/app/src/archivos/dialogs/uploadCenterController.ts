@@ -29,7 +29,7 @@ module archivosArea {
 
         idProductor: string;
 
-        title = 'Centro de carga de archivos';
+        title = 'Centro de carga';
 
         seleccionarArchivos() {
             this.$timeout(() => {
@@ -39,6 +39,11 @@ module archivosArea {
 
         prepararArchivosSeleccionados(element) {
             var vm = (angular.element(this)[0] as any).vm;
+            // reset suff 
+            var container = document.getElementById('fileInputContainer');
+            var content = container.innerHTML;
+            container.innerHTML = content;
+            //
             vm.$scope.$apply(scope => {
                 console.log(`Se seleccionaron ${element.files.length} archivos`);
                 vm.uploader.prepareFiles(element.files);
@@ -51,7 +56,11 @@ module archivosArea {
         }
 
         quitarArchivo(unit: uploadUnit) {
-            this.uploader.removeFile(unit.file);
+            this.uploader.removeFile(unit);
+        }
+
+        limpiar() {
+            this.uploader.clear();
         }
 
         //

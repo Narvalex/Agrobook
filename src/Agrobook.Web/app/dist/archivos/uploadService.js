@@ -44,12 +44,67 @@ var archivosArea;
                 this.uploadUnits.push(unit);
             }
         };
-        uploadService.prototype.removeFile = function (file) {
+        uploadService.prototype.removeFile = function (unit) {
+            if (unit.uploading) {
+                this.toasterLite.error('No se puede remover una carga en progreso. Debe detenerla primero');
+                return;
+            }
+            var file = unit.file;
             for (var i = 0; i < this.uploadUnits.length; i++) {
                 if (this.uploadUnits[i].file.name === file.name && this.uploadUnits[i].file.webkitRelativePath === file.webkitRelativePath) {
-                    this.uploadUnits[i].xhr.abort();
                     this.uploadUnits.splice(i, 1);
                     break;
+                }
+            }
+        };
+        uploadService.prototype.clear = function () {
+            var unit;
+            for (var i = 0; i < this.uploadUnits.length; i++) {
+                if (!this.uploadUnits[i].uploading) {
+                    unit = this.uploadUnits[i];
+                    break;
+                }
+            }
+            if (unit) {
+                this.removeFile(unit);
+                this.clear();
+            }
+        };
+        uploadService.prototype.thereArePendingFiles = function () {
+            for (var i = 0; i < this.uploadUnits.length; i++) {
+                if (!this.uploadUnits[i].uploading && !this.uploadUnits[i].uploaded) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        uploadService.prototype.thereAreFilesToBeCleansed = function () {
+            for (var i = 0; i < this.uploadUnits.length; i++) {
+                if (!this.uploadUnits[i].uploading || this.uploadUnits[i].uploaded) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        uploadService.prototype.thereAreUploadsInProcess = function () {
+            for (var i = 0; i < this.uploadUnits.length; i++) {
+                if (this.uploadUnits[i].uploading === true) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        uploadService.prototype.uploadAll = function () {
+            for (var i = 0; i < this.uploadUnits.length; i++) {
+                if (!this.uploadUnits[i].uploading && !this.uploadUnits[i].uploaded) {
+                    this.uploadUnits[i].startUpload();
+                }
+            }
+        };
+        uploadService.prototype.stopAll = function () {
+            for (var i = 0; i < this.uploadUnits.length; i++) {
+                if (this.uploadUnits[i].uploading && !this.uploadUnits[i].uploaded) {
+                    this.uploadUnits[i].stopUpload();
                 }
             }
         };
@@ -62,21 +117,27 @@ var archivosArea;
             this.file = file;
             this.scope = scope;
             this.toasterLite = toasterLite;
-            this.success = false;
+            this.uploaded = false;
             this.failed = false;
             this.uploading = false;
-            this.successNotified = false;
-            this.failureNotified = false;
             this.progress = 0;
         }
         uploadUnit.prototype.setNewScope = function (scope) {
             this.scope = scope;
         };
+        uploadUnit.prototype.stopUpload = function () {
+            if (!this.xhr)
+                return;
+            this.uploading = false;
+            this.xhr.abort();
+            this.progress = 0;
+        };
         uploadUnit.prototype.startUpload = function () {
             var self = this;
+            self.uploading = true;
             function progress(e) {
                 try {
-                    if (!self.scope)
+                    if (!self.scope || !self.uploading)
                         return;
                     updateProgress(e);
                     self.scope.$apply(function () { return updateProgress(e); });
@@ -100,27 +161,37 @@ var archivosArea;
                 self.toasterLite.error('Error al cargar archivo');
             }
             function abort(e) {
-                self.toasterLite.info('Carga abortada');
+                console.log('Carga abortada');
             }
             function timeout(e) {
                 console.log("timeout");
+            }
+            function setUploaded() {
+                self.uploaded = true;
+                self.failed = false;
+                self.uploading = false;
+            }
+            function setFailure() {
+                self.failed = true;
+                self.uploaded = false;
+                self.uploading = false;
+                self.progress = 0;
             }
             function readyStateChange(e) {
                 console.log("ready state change. status:" + e.target.status + " " + e.target.statusText);
                 switch (e.target.status) {
                     case 500:
-                        if (self.failureNotified)
-                            break;
-                        self.failed = true;
-                        self.failureNotified = true;
-                        self.toasterLite.error('El archivo no se pudo alzar en el servidor');
+                        setFailure();
+                        self.scope.$apply(function () {
+                            setFailure();
+                        });
                         break;
                     case 200:
-                        if (self.successNotified)
-                            break;
-                        self.success = true;
-                        self.successNotified = true;
-                        self.toasterLite.success('El archivo se recibio correctamente en el servidor');
+                        setUploaded();
+                        self.scope.$apply(function () {
+                            setUploaded();
+                        });
+                        console.log('El archivo se recibio correctamente en el servidor');
                         break;
                     case 0:
                     case '':

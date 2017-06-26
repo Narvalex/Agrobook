@@ -44,12 +44,78 @@ module archivosArea {
             }
         }
 
-        public removeFile(file: File) {
+        public removeFile(unit: uploadUnit) {
+            if (unit.uploading) {
+                this.toasterLite.error('No se puede remover una carga en progreso. Debe detenerla primero');
+                return;
+            }
+
+            var file = unit.file;
             for (var i = 0; i < this.uploadUnits.length; i++) {
                 if (this.uploadUnits[i].file.name === file.name && this.uploadUnits[i].file.webkitRelativePath === file.webkitRelativePath) {
-                    this.uploadUnits[i].xhr.abort();
                     this.uploadUnits.splice(i, 1);
                     break;
+                }
+            }
+        }
+
+        public clear() {
+            var unit: uploadUnit;
+            for (var i = 0; i < this.uploadUnits.length; i++) {
+                if (!this.uploadUnits[i].uploading) {
+                    unit = this.uploadUnits[i];
+                    break;
+                }
+            }
+
+            if (unit) {
+                this.removeFile(unit);
+                this.clear();
+            }
+        }
+
+        public thereArePendingFiles(): boolean {
+            for (var i = 0; i < this.uploadUnits.length; i++) {
+                if (!this.uploadUnits[i].uploading && !this.uploadUnits[i].uploaded) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public thereAreFilesToBeCleansed(): boolean {
+            for (var i = 0; i < this.uploadUnits.length; i++) {
+                if (!this.uploadUnits[i].uploading || this.uploadUnits[i].uploaded) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public thereAreUploadsInProcess(): boolean {
+            for (var i = 0; i < this.uploadUnits.length; i++) {
+                if (this.uploadUnits[i].uploading === true) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public uploadAll() {
+            for (var i = 0; i < this.uploadUnits.length; i++) {
+                if (!this.uploadUnits[i].uploading && !this.uploadUnits[i].uploaded) {
+                    this.uploadUnits[i].startUpload();
+                }
+            }
+        }
+
+        public stopAll() {
+            for (var i = 0; i < this.uploadUnits.length; i++) {
+                if (this.uploadUnits[i].uploading && !this.uploadUnits[i].uploaded) {
+                    this.uploadUnits[i].stopUpload();
                 }
             }
         }
@@ -66,22 +132,27 @@ module archivosArea {
 
         public xhr: XMLHttpRequest;
         public progress: any;
-        public success: boolean = false;
+        public uploaded: boolean = false;
         public failed: boolean = false;
         public uploading: boolean = false;
-
-        private successNotified = false;
-        private failureNotified = false;
 
         public setNewScope(scope: ng.IScope) {
             this.scope = scope;
         }
 
+        public stopUpload() {
+            if (!this.xhr) return;
+            this.uploading = false;
+            this.xhr.abort();
+            this.progress = 0;
+        }
+
         public startUpload() {
             var self = this;
+            self.uploading = true;
             function progress(e) {
                 try {
-                    if (!self.scope)
+                    if (!self.scope || !self.uploading)
                         return;
 
                     updateProgress(e);
@@ -109,30 +180,44 @@ module archivosArea {
             }
 
             function abort(e) {
-                self.toasterLite.info('Carga abortada');
+                console.log('Carga abortada');
             }
 
             function timeout(e) {
                 console.log("timeout");
             }
 
+            function setUploaded() {
+                self.uploaded = true;
+                self.failed = false;
+                self.uploading = false;
+            }
+
+            function setFailure() {
+                self.failed = true;
+                self.uploaded = false;
+                self.uploading = false;
+                self.progress = 0;
+            }
+
             function readyStateChange(e) {
                 console.log("ready state change. status:" + e.target.status + " " + e.target.statusText);
                 switch (e.target.status) {
                     case 500:
-                        if (self.failureNotified) break;
-
-                        self.failed = true;
-                        self.failureNotified = true;
-                        self.toasterLite.error('El archivo no se pudo alzar en el servidor');
+                        setFailure()
+                        self.scope.$apply(() => {
+                            setFailure();
+                        });
                         break;
 
                     case 200:
-                        if (self.successNotified) break;
 
-                        self.success = true;
-                        self.successNotified = true;
-                        self.toasterLite.success('El archivo se recibio correctamente en el servidor');
+                        setUploaded()
+                        self.scope.$apply(() => {
+                            setUploaded();
+                        });
+
+                        console.log('El archivo se recibio correctamente en el servidor');
                         break;
 
                     case 0:

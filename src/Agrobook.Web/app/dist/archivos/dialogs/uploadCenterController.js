@@ -13,7 +13,7 @@ var archivosArea;
             this.toasterLite = toasterLite;
             this.$routeParams = $routeParams;
             this.uploader = uploader;
-            this.title = 'Centro de carga de archivos';
+            this.title = 'Centro de carga';
             this.$timeout(function () {
                 _this.initDragAndDrop(_this);
             }, 0);
@@ -28,6 +28,11 @@ var archivosArea;
         };
         uploadCenterController.prototype.prepararArchivosSeleccionados = function (element) {
             var vm = angular.element(this)[0].vm;
+            // reset suff 
+            var container = document.getElementById('fileInputContainer');
+            var content = container.innerHTML;
+            container.innerHTML = content;
+            //
             vm.$scope.$apply(function (scope) {
                 console.log("Se seleccionaron " + element.files.length + " archivos");
                 vm.uploader.prepareFiles(element.files);
@@ -38,7 +43,10 @@ var archivosArea;
             window.location.replace('#!/archivos/' + this.idProductor);
         };
         uploadCenterController.prototype.quitarArchivo = function (unit) {
-            this.uploader.removeFile(unit.file);
+            this.uploader.removeFile(unit);
+        };
+        uploadCenterController.prototype.limpiar = function () {
+            this.uploader.clear();
         };
         //
         // Internal
