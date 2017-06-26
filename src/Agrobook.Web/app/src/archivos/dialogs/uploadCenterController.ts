@@ -63,6 +63,9 @@ module archivosArea {
             this.uploader.clear();
         }
 
+        editarMetadatos(unit: uploadUnit) {
+        }
+
         //
         // Internal
         //

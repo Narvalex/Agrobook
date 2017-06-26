@@ -164,7 +164,8 @@ module archivosArea {
 
             function updateProgress(e) {
                 if (e.lengthComputable) {
-                    self.progress = Math.round(e.loaded * 100 / e.total);
+                    var value = Math.round(e.loaded * 100 / e.total);
+                    self.progress = value === 100 ? 99 : value;
                 }
                 else {
                     self.progress = 'unable to compute';
@@ -188,6 +189,7 @@ module archivosArea {
             }
 
             function setUploaded() {
+                self.progress = 100;
                 self.uploaded = true;
                 self.failed = false;
                 self.uploading = false;

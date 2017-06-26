@@ -48,6 +48,8 @@ var archivosArea;
         uploadCenterController.prototype.limpiar = function () {
             this.uploader.clear();
         };
+        uploadCenterController.prototype.editarMetadatos = function (unit) {
+        };
         //
         // Internal
         //
