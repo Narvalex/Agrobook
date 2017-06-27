@@ -127,7 +127,18 @@ module archivosArea {
             private scope: ng.IScope,
             private toasterLite: common.toasterLite
         ) {
-            this.progress = 0;
+           // this.progress = 0;
+            var deconstruido = file.name.split('.');
+            var extension = deconstruido.pop();
+            var nombre = deconstruido.join('.');
+
+            this.metadatos = {
+                nombre: nombre,
+                extension: extension,
+                fecha: file.lastModifiedDate,
+                desc: '',
+                fileSizeInBytes: file.size
+            }
         }
 
         public xhr: XMLHttpRequest;
@@ -135,6 +146,13 @@ module archivosArea {
         public uploaded: boolean = false;
         public failed: boolean = false;
         public uploading: boolean = false;
+        public editMode: boolean = false;
+
+        public metadatos: { nombre: string, extension: string, fecha: Date, desc: string, fileSizeInBytes: number };
+
+        public toggleEditMode() {
+            this.editMode = !this.editMode;
+        }
 
         public setNewScope(scope: ng.IScope) {
             this.scope = scope;

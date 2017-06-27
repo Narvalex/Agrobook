@@ -95,7 +95,7 @@ module common {
         }
 
         seleccionarItem(item: menuItem): void {
-            window.location.href = item.link;
+            window.location.href = item.link; 
         }
 
         menuItemList: menuItem[] = [

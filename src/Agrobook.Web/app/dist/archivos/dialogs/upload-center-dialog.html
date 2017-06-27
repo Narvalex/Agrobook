@@ -38,23 +38,10 @@
         </md-toolbar>
         <md-dialog-content>
             <div class="md-dialog-content">
-                <div layout-gt-xs="row">
-                    <md-input-container class="md-block" flex-gt-xs>
-                        <label>Company (Disabled)</label>
-                        <input ng-model="user.company" disabled>
-                    </md-input-container>
-
-                    <md-input-container>
-                        <label>Elegir fecha</label>
-                        <md-datepicker ng-model="user.submissionDate"></md-datepicker>
-                    </md-input-container>
-                </div>
-
-                <div ng-show="vm.uploader.uploadUnits.length === 0">
-                    <br /><br />
+                <div>
                     <p style="text-align: center">Arrastre archivos aquí o bien haga click <a href="" ng-click="vm.seleccionarArchivos()">aquí y seleccione archivos para cargar.</a></p>
-                    <br /><br />
                 </div>
+
                 <div id="fileInputContainer">
                     <input id="fileInputBtn" hidden type="file" multiple onchange="angular.element(this).scope().prepararArchivosSeleccionados(this)" />
                 </div>
@@ -62,29 +49,31 @@
                 <md-list>
                     <md-list-item class="md-3-line" ng-repeat="unit in vm.uploader.uploadUnits">
                         <div class="md-list-item-text">
-                            <h3 style="cursor:pointer" ng-click="vm.editarMetadatos(unit)">
+                            <h3 style="cursor:pointer;" ng-click="unit.toggleEditMode()">
                                 <ng-md-icon ng-show="unit.failed" title="Error al cargar el archivo" style="color:red" icon="warning"></ng-md-icon>
                                 <ng-md-icon ng-show="unit.uploaded" title="Carga completada" style="color:#4caf50" icon="check_circle"></ng-md-icon>
-                                {{unit.file.webkitRelativePath || unit.file.name}}
+                                {{unit.metadatos.nombre}}.{{unit.metadatos.extension}}
                                 <ng-md-icon ng-hide="unit.uploaded || unit.uploading" title="Editar metadatos del archivo" style="color:#808080" icon="mode_edit"></ng-md-icon>
                             </h3>
-                            <p ng-switch="unit.file.size > 1024*1024">
+                            <p ng-switch="unit.metadatos.fileSizeInBytes > 1024*1024">
                                 <span ng-show="unit.progress">{{unit.progress}}% de </span>
-                                <span ng-switch-when="true">{{unit.file.size / 1024 / 1024 | number : 2}} MB</span>
-                                <span ng-switch-default>{{unit.file.size / 1024 | number : 2}} KB</span>
+                                <span ng-switch-when="true">{{unit.metadatos.fileSizeInBytes / 1024 / 1024 | number : 2}} MB</span>
+                                <span ng-switch-default>{{unit.metadatos.fileSizeInBytes / 1024 | number : 2}} KB</span>
                             </p>
 
-                            <md-progress-linear ng-hide="unit.uploaded" md-mode="determinate" value="{{unit.progress}}"></md-progress-linear>
+                            <md-progress-linear class="animated fadeIn" ng-hide="unit.uploaded" md-mode="determinate" value="{{unit.progress}}"></md-progress-linear>
 
-                            <div layout-gt-xs="row">
+                            <div ng-show="unit.editMode"
+                                 layout-gt-xs="row">
                                 <md-input-container class="md-block" flex-gt-xs>
-                                    <label>Company (Disabled)</label>
-                                    <input ng-model="user.company" disabled>
+                                    <label>Nombre del archivo</label>
+                                    <input ng-model="unit.metadatos.nombre"
+                                           required>
                                 </md-input-container>
 
                                 <md-input-container>
                                     <label>Enter date</label>
-                                    <md-datepicker ng-model="user.submissionDate"></md-datepicker>
+                                    <md-datepicker ng-model="unit.metadatos.fecha"></md-datepicker>
                                 </md-input-container>
                             </div>
 

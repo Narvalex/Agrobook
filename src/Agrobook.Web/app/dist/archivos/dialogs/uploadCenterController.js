@@ -13,11 +13,11 @@ var archivosArea;
             this.toasterLite = toasterLite;
             this.$routeParams = $routeParams;
             this.uploader = uploader;
-            this.title = 'Centro de carga';
             this.$timeout(function () {
                 _this.initDragAndDrop(_this);
             }, 0);
             this.idProductor = this.$routeParams['idProductor'];
+            this.title = 'Centro de carga - ' + this.idProductor;
             this.uploader.setScope(this.$scope);
             this.$scope.prepararArchivosSeleccionados = this.prepararArchivosSeleccionados;
         }
@@ -47,8 +47,6 @@ var archivosArea;
         };
         uploadCenterController.prototype.limpiar = function () {
             this.uploader.clear();
-        };
-        uploadCenterController.prototype.editarMetadatos = function (unit) {
         };
         //
         // Internal

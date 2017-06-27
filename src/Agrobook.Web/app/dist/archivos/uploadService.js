@@ -120,8 +120,22 @@ var archivosArea;
             this.uploaded = false;
             this.failed = false;
             this.uploading = false;
-            this.progress = 0;
+            this.editMode = false;
+            // this.progress = 0;
+            var deconstruido = file.name.split('.');
+            var extension = deconstruido.pop();
+            var nombre = deconstruido.join('.');
+            this.metadatos = {
+                nombre: nombre,
+                extension: extension,
+                fecha: file.lastModifiedDate,
+                desc: '',
+                fileSizeInBytes: file.size
+            };
         }
+        uploadUnit.prototype.toggleEditMode = function () {
+            this.editMode = !this.editMode;
+        };
         uploadUnit.prototype.setNewScope = function (scope) {
             this.scope = scope;
         };

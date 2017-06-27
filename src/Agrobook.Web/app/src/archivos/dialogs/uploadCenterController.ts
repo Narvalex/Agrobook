@@ -21,6 +21,7 @@ module archivosArea {
             }, 0);
 
             this.idProductor = this.$routeParams['idProductor'];
+            this.title = 'Centro de carga - ' + this.idProductor;
 
             this.uploader.setScope(this.$scope);
 
@@ -29,7 +30,7 @@ module archivosArea {
 
         idProductor: string;
 
-        title = 'Centro de carga';
+        title: string
 
         seleccionarArchivos() {
             this.$timeout(() => {
@@ -63,13 +64,9 @@ module archivosArea {
             this.uploader.clear();
         }
 
-        editarMetadatos(unit: uploadUnit) {
-        }
-
         //
         // Internal
         //
-
         private initDragAndDrop(scope: uploadCenterController) {
 
             function dragEnter(e: Event) {
