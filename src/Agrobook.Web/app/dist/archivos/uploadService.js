@@ -121,6 +121,7 @@ var archivosArea;
             this.failed = false;
             this.uploading = false;
             this.editMode = false;
+            this.blockEdition = false;
             // this.progress = 0;
             var deconstruido = file.name.split('.');
             var extension = deconstruido.pop();
@@ -143,12 +144,15 @@ var archivosArea;
             if (!this.xhr)
                 return;
             this.uploading = false;
+            this.blockEdition = false;
             this.xhr.abort();
             this.progress = 0;
         };
         uploadUnit.prototype.startUpload = function () {
             var self = this;
             self.uploading = true;
+            self.failed = false;
+            self.blockEdition = true;
             function progress(e) {
                 try {
                     if (!self.scope || !self.uploading)
@@ -192,6 +196,7 @@ var archivosArea;
                 self.uploaded = false;
                 self.uploading = false;
                 self.progress = 0;
+                self.blockEdition = false;
             }
             function readyStateChange(e) {
                 console.log("ready state change. status:" + e.target.status + " " + e.target.statusText);

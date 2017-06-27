@@ -147,6 +147,7 @@ module archivosArea {
         public failed: boolean = false;
         public uploading: boolean = false;
         public editMode: boolean = false;
+        public blockEdition: boolean = false;
 
         public metadatos: { nombre: string, extension: string, fecha: Date, desc: string, fileSizeInBytes: number };
 
@@ -161,6 +162,7 @@ module archivosArea {
         public stopUpload() {
             if (!this.xhr) return;
             this.uploading = false;
+            this.blockEdition = false;
             this.xhr.abort();
             this.progress = 0;
         }
@@ -168,6 +170,9 @@ module archivosArea {
         public startUpload() {
             var self = this;
             self.uploading = true;
+            self.failed = false;
+            self.blockEdition = true;
+
             function progress(e) {
                 try {
                     if (!self.scope || !self.uploading)
@@ -218,6 +223,7 @@ module archivosArea {
                 self.uploaded = false;
                 self.uploading = false;
                 self.progress = 0;
+                self.blockEdition = false;
             }
 
             function readyStateChange(e) {
