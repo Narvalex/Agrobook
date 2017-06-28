@@ -76,7 +76,6 @@
     <Compile Include="Cryptography\MD5OneWayEncryptor.cs" />
     <Compile Include="Cryptography\FauxCrypto.cs" />
     <Compile Include="Cryptography\StringCipher.cs" />
-    <Compile Include="Files\FileManager.cs" />
     <Compile Include="Persistence\SqlDbInitializer.cs" />
     <Compile Include="Persistence\EventSourcedRepository.cs" />
     <Compile Include="Persistence\EventStoreManager.cs" />

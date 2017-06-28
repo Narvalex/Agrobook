@@ -35,7 +35,7 @@ var archivosArea;
             //
             vm.$scope.$apply(function (scope) {
                 console.log("Se seleccionaron " + element.files.length + " archivos");
-                vm.uploader.prepareFiles(element.files);
+                vm.uploader.prepareFiles(element.files, vm.idProductor);
             });
         };
         uploadCenterController.prototype.cerrar = function () {
@@ -73,7 +73,7 @@ var archivosArea;
                 var files = e.dataTransfer.files;
                 if (files.length > 0) {
                     scope.$scope.$apply(function () {
-                        scope.uploader.prepareFiles(files);
+                        scope.uploader.prepareFiles(files, scope.idProductor);
                     });
                 }
             }

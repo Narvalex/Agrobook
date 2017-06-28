@@ -74,7 +74,6 @@
     <Compile Include="EventSourcing\Fakes\ComplexAggregate.cs" />
     <Compile Include="EventSourcing\Fakes\TestableSnapshotCache.cs" />
     <Compile Include="EventSourcing\SnapshotCacheTests.cs" />
-    <Compile Include="Files\FileMangerTests.cs" />
     <Compile Include="IoC\SimpleContainerTests.cs" />
     <Compile Include="Kml\GivenAKmlStringInMemory.cs" />
     <Compile Include="Kml\XmlAndJsonTests.cs" />

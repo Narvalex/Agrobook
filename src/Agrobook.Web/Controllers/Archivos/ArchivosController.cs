@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
-using System.Net.Http;
+﻿using Agrobook.Client;
 using Agrobook.Client.Archivos;
-using Agrobook.Client;
-using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace Agrobook.Web.Controllers.Archivos
 {
@@ -38,11 +34,12 @@ namespace Agrobook.Web.Controllers.Archivos
 
             var streamProvider = await this.Request.Content.ReadAsMultipartAsync();
             var content = streamProvider.Contents.First();
+            var metadatos = await streamProvider.Contents[1].ReadAsStringAsync();
 
             var fileName = content.Headers.ContentDisposition.FileName;
             using (var stream = await content.ReadAsStreamAsync())
             {
-                await this.client.Upload(stream, fileName);
+                await this.client.Upload(stream, fileName, metadatos);
             }
             return this.Ok();
 

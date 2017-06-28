@@ -26,7 +26,7 @@ var archivosArea;
                 this.uploadUnits[i].setNewScope(scope);
             }
         };
-        uploadService.prototype.prepareFiles = function (files) {
+        uploadService.prototype.prepareFiles = function (files, idProductor) {
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
                 var yaExiste = false;
@@ -40,7 +40,7 @@ var archivosArea;
                 }
                 if (yaExiste)
                     continue;
-                var unit = new uploadUnit(files[i], this.scope, this.toasterLite);
+                var unit = new uploadUnit(files[i], idProductor, this.scope, this.toasterLite);
                 this.uploadUnits.push(unit);
             }
         };
@@ -113,8 +113,9 @@ var archivosArea;
     uploadService.$inject = ['$http', 'toasterLite'];
     archivosArea.uploadService = uploadService;
     var uploadUnit = (function () {
-        function uploadUnit(file, scope, toasterLite) {
+        function uploadUnit(file, idProductor, scope, toasterLite) {
             this.file = file;
+            this.idProductor = idProductor;
             this.scope = scope;
             this.toasterLite = toasterLite;
             this.uploaded = false;
@@ -131,7 +132,8 @@ var archivosArea;
                 extension: extension,
                 fecha: file.lastModifiedDate,
                 desc: '',
-                fileSizeInBytes: file.size
+                size: file.size,
+                idProductor: this.idProductor
             };
         }
         uploadUnit.prototype.toggleEditMode = function () {
@@ -231,6 +233,7 @@ var archivosArea;
             var form = document.forms.namedItem('uploadForm');
             var formData = new FormData(form);
             formData.append('uploadedFile', self.file);
+            formData.append('metadatos', JSON.stringify(this.metadatos));
             self.xhr = new XMLHttpRequest();
             self.xhr.upload.addEventListener("progress", progress, false);
             self.xhr.upload.addEventListener("load", load, false);

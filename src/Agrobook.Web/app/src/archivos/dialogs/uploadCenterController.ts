@@ -39,7 +39,7 @@ module archivosArea {
         }
 
         prepararArchivosSeleccionados(element) {
-            var vm = (angular.element(this)[0] as any).vm;
+            var vm = (angular.element(this)[0] as any).vm as uploadCenterController;
             // reset suff 
             var container = document.getElementById('fileInputContainer');
             var content = container.innerHTML;
@@ -47,7 +47,7 @@ module archivosArea {
             //
             vm.$scope.$apply(scope => {
                 console.log(`Se seleccionaron ${element.files.length} archivos`);
-                vm.uploader.prepareFiles(element.files);
+                vm.uploader.prepareFiles(element.files, vm.idProductor);
             });
         }
 
@@ -97,7 +97,7 @@ module archivosArea {
                 var files = e.dataTransfer.files;
                 if (files.length > 0) {
                     scope.$scope.$apply(() => {
-                        scope.uploader.prepareFiles(files);
+                        scope.uploader.prepareFiles(files, scope.idProductor);
                     });
                 }
             }

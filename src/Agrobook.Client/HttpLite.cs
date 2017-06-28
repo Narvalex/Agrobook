@@ -55,7 +55,7 @@ namespace Agrobook.Client
 
         // to build a stream from a byte array = new MemoryStream(byteArray);
         //
-        public async Task Upload(string uri, Stream fileStream, string fileName, string token = null)
+        public async Task Upload(string uri, Stream fileStream, string fileName, string metadatos, string token = null)
         {
             // Reference: https://stackoverflow.com/questions/16416601/c-sharp-httpclient-4-5-multipart-form-data-upload?noredirect=1&lq=1
 
@@ -64,6 +64,7 @@ namespace Agrobook.Client
                 using (var content = new MultipartFormDataContent($"Upload----{DateTime.Now.ToString(CultureInfo.InvariantCulture)}"))
                 {
                     content.Add(new StreamContent(fileStream), "uploadedFile", fileName);
+                    content.Add(new StringContent(metadatos));
 
                     var endpoint = new Uri(new Uri(this.hostUri), uri);
                     var url = endpoint.AbsoluteUri;

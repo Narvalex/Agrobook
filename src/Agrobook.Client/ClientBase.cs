@@ -38,9 +38,9 @@ namespace Agrobook.Client
             await this.http.Post<TContent>(this.BuildUri(uri), content, this.tokenProvider());
         }
 
-        protected async Task Upload(string uri, Stream fileStream, string fileName)
+        protected async Task Upload(string uri, Stream fileStream, string fileName, string metadatos)
         {
-            await this.http.Upload(this.BuildUri(uri), fileStream, fileName, this.tokenProvider());
+            await this.http.Upload(this.BuildUri(uri), fileStream, fileName, metadatos, this.tokenProvider());
         }
 
         protected async Task<TResult> Get<TResult>(string uri)

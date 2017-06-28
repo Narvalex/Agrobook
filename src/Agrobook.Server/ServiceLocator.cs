@@ -61,6 +61,8 @@ namespace Agrobook.Server
 
             var organizacionesQueryService = new OrganizacionesQueryService(readOnlyDbContextFactory, eventSourcedRepository);
 
+            var archivosService = new ArchivosService(eventSourcedRepository, dateTimeProvider, jsonSerializer);
+
             var archivosQueryService = new ArchivosQueryService(readOnlyDbContextFactory, eventSourcedRepository);
 
             container.Register<IDateTimeProvider>(dateTimeProvider);
@@ -72,6 +74,7 @@ namespace Agrobook.Server
             container.Register<UsuariosDenormalizer>(usuariosDenormalizer);
             container.Register<OrganizacionesDenormalizer>(organizacionesDenormalizer);
             container.Register<OrganizacionesQueryService>(organizacionesQueryService);
+            container.Register<ArchivosService>(archivosService);
             container.Register<ArchivosQueryService>(archivosQueryService);
         }
     }

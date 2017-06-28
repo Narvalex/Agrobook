@@ -23,7 +23,7 @@ module archivosArea {
             }
         }
 
-        public prepareFiles(files: File[]) {
+        public prepareFiles(files: File[], idProductor: string) {
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
 
@@ -39,7 +39,7 @@ module archivosArea {
 
                 if (yaExiste) continue;
 
-                var unit = new uploadUnit(files[i], this.scope, this.toasterLite);
+                var unit = new uploadUnit(files[i], idProductor, this.scope, this.toasterLite);
                 this.uploadUnits.push(unit);
             }
         }
@@ -124,6 +124,7 @@ module archivosArea {
     export class uploadUnit {
         constructor(
             public file: File,
+            private idProductor: string,
             private scope: ng.IScope,
             private toasterLite: common.toasterLite
         ) {
@@ -137,7 +138,8 @@ module archivosArea {
                 extension: extension,
                 fecha: file.lastModifiedDate,
                 desc: '',
-                fileSizeInBytes: file.size
+                size: file.size, // in bytes
+                idProductor: this.idProductor
             }
         }
 
@@ -149,7 +151,7 @@ module archivosArea {
         public editMode: boolean = false;
         public blockEdition: boolean = false;
 
-        public metadatos: { nombre: string, extension: string, fecha: Date, desc: string, fileSizeInBytes: number };
+        public metadatos: { nombre: string, extension: string, fecha: Date, desc: string, size: number, idProductor: string };
 
         public toggleEditMode() {
             this.editMode = !this.editMode;
@@ -267,6 +269,7 @@ module archivosArea {
             var form = document.forms.namedItem('uploadForm');
             var formData = new FormData(form);
             formData.append('uploadedFile', self.file);
+            formData.append('metadatos', JSON.stringify(this.metadatos));
 
             self.xhr = new XMLHttpRequest();
             self.xhr.upload.addEventListener("progress", progress, false);

@@ -53,6 +53,7 @@
       <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Archivos\Services\ArchivosQueryService.cs" />
     <Compile Include="Archivos\Services\ArchivosQueryServiceDTOs.cs" />
+    <Compile Include="Archivos\Services\ArchivosService.cs" />
     <Compile Include="Common\AgrobookDbContext.cs" />
     <Compile Include="Common\AgrobookDenormalizer.cs" />
     <Compile Include="Common\AgrobookQueryService.cs" />
