@@ -39,6 +39,7 @@ namespace Agrobook.Domain.Archivos.Services
                 var path = @"\files";
                 var current = Directory.GetCurrentDirectory();
                 var fullPath = current + path + formattedFileName;
+                if (File.Exists(fullPath)) throw new FileAlreadyExistsException();
                 using (var fileStream = File.Create(fullPath))
                 {
                     stream.Seek(0, SeekOrigin.Begin);
@@ -66,5 +67,9 @@ namespace Agrobook.Domain.Archivos.Services
 
         public NotMimeMultipartException(string message) : base(message)
         { }
+    }
+
+    public class FileAlreadyExistsException : Exception
+    {
     }
 }

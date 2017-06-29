@@ -1,4 +1,5 @@
 ﻿using Agrobook.Domain.Archivos.Services;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -19,7 +20,11 @@ namespace Agrobook.Server.Archivos
             }
             catch (NotMimeMultipartException)
             {
-                throw new HttpResponseException(System.Net.HttpStatusCode.UnsupportedMediaType);
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
+            catch (FileAlreadyExistsException)
+            {
+                throw new HttpResponseException(HttpStatusCode.Conflict);
             }
 
             return this.Ok();
