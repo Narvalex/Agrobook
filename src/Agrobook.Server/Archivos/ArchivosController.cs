@@ -1,4 +1,5 @@
-﻿using Agrobook.Domain.Archivos.Services;
+﻿using Agrobook.Domain.Archivos;
+using Agrobook.Domain.Archivos.Services;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -14,9 +15,10 @@ namespace Agrobook.Server.Archivos
         [Route("upload")]
         public async Task<IHttpActionResult> Upload()
         {
+            Metadatos metadatos;
             try
             {
-                await this.service.PersistirArchivoDelProductor(this.Request.Content);
+                metadatos = await this.service.PersistirArchivoDelProductor(this.Request.Content);
             }
             catch (NotMimeMultipartException)
             {
@@ -26,6 +28,16 @@ namespace Agrobook.Server.Archivos
             {
                 throw new HttpResponseException(HttpStatusCode.Conflict);
             }
+
+            var command = new AgregarArchivoAColeccion(null, metadatos.IdProductor,
+                                new Archivo(metadatos.Nombre,
+                                            metadatos.Extension,
+                                            metadatos.Fecha,
+                                            metadatos.Desc,
+                                            metadatos.Size))
+                            .ConMetadatos(this.ActionContext);
+
+            await this.service.HandleAsync(command);
 
             return this.Ok();
         }

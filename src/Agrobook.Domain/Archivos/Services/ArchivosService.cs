@@ -26,34 +26,6 @@ namespace Agrobook.Domain.Archivos.Services
             //this.path = @".\archivos";
         }
 
-        public async Task PersistirArchivoDelProductor(HttpContent content)
-        {
-            if (!content.IsMimeMultipartContent())
-                throw new NotMimeMultipartException();
-
-            var streamProvider = await content.ReadAsMultipartAsync();
-            var fileContent = streamProvider.Contents.First();
-
-            var metadatosSerializados = await streamProvider.Contents[1].ReadAsStringAsync();
-            var metadatos = this.serializer.Deserialize<Metadatos>(metadatosSerializados);
-
-            //var fileName = new string(fileContent.Headers.ContentDisposition.FileName.Trim().Where(c => c != '"').ToArray());
-            var fileName = $"{metadatos.Nombre}.{metadatos.Extension}";
-
-            using (var stream = await fileContent.ReadAsStreamAsync())
-            {
-                var formattedFileName = @"\" + fileName;
-
-                var fullPath = this.path + formattedFileName;
-                if (File.Exists(fullPath)) throw new ElArchivoYaExisteException();
-                using (var fileStream = File.Create(fullPath))
-                {
-                    stream.Seek(0, SeekOrigin.Begin);
-                    stream.CopyTo(fileStream);
-                }
-            }
-        }
-
         public void CrearDirectoriosSiFaltan()
         {
             if (Directory.Exists(this.path))
@@ -82,17 +54,51 @@ namespace Agrobook.Domain.Archivos.Services
 
             this.CrearDirectoriosSiFaltan();
         }
-    }
 
-    public class Metadatos
-    {
-        public string Nombre { get; set; }
-        public string Extension { get; set; }
-        public DateTime Fecha { get; set; }
-        public string Desc { get; set; }
-        // En Bytes
-        public int Size { get; set; }
-        public string IdProductor { get; set; }
+        public async Task<Metadatos> PersistirArchivoDelProductor(HttpContent content)
+        {
+            if (!content.IsMimeMultipartContent())
+                throw new NotMimeMultipartException();
+
+            var streamProvider = await content.ReadAsMultipartAsync();
+            var fileContent = streamProvider.Contents.First();
+
+            var metadatosSerializados = await streamProvider.Contents[1].ReadAsStringAsync();
+            var metadatos = this.serializer.Deserialize<Metadatos>(metadatosSerializados);
+
+            //var fileName = new string(fileContent.Headers.ContentDisposition.FileName.Trim().Where(c => c != '"').ToArray());
+            var fileName = $"{metadatos.Nombre}.{metadatos.Extension}";
+
+            var coleccionPath = $"{this.path}\\{metadatos.IdProductor}";
+            if (!Directory.Exists(coleccionPath))
+            {
+                this.log.Info($"Creando el directorio para la nueva colección de archivos de {metadatos.IdProductor}...");
+                Directory.CreateDirectory(coleccionPath);
+                this.log.Info($"Creacion exitosa del directorio {metadatos.IdProductor}");
+            }
+
+            using (var stream = await fileContent.ReadAsStreamAsync())
+            {
+                var fullPath = $"{coleccionPath}\\{fileName}";
+                if (File.Exists(fullPath)) throw new ElArchivoYaExisteException();
+                using (var fileStream = File.Create(fullPath))
+                {
+                    stream.Seek(0, SeekOrigin.Begin);
+                    await stream.CopyToAsync(fileStream);
+                }
+            }
+
+            return metadatos;
+        }
+
+        public async Task HandleAsync(AgregarArchivoAColeccion cmd)
+        {
+            var coleccion = await this.repository.GetAsync<ColeccionDeArchivos>(cmd.IdProductor);
+            if (coleccion == null)
+            {
+                coleccion = new ColeccionDeArchivos();
+            }
+        }
     }
 
     public class NotMimeMultipartException : Exception

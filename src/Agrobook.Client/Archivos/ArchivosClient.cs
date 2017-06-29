@@ -10,9 +10,10 @@ namespace Agrobook.Client.Archivos
             : base(http, tokenProvider, "archivos")
         { }
 
-        public async Task Upload(Stream fileStream, string fileName, string metadatos)
+        // Los metadatos estan serializados de la forma simple { prop1: '', prop2: ''}
+        public async Task Upload(Stream fileStream, string fileName, string metadatosSerializados)
         {
-            await base.Upload("upload", fileStream, fileName, metadatos);
+            await base.Upload("upload", fileStream, fileName, metadatosSerializados);
         }
     }
 }

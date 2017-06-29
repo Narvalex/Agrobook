@@ -62,7 +62,7 @@ namespace Agrobook.Domain.Usuarios
 
             var loginInfo = this.cryptoSerializer.Deserialize<LoginInfo>(token);
 
-            var usuarioActualizado = await this.IntentarRecuperarUsuarioAsync(loginInfo.Usuario);
+            var usuarioActualizado = await this.repository.GetOrFailAsync<Usuario>(loginInfo.Usuario);
 
             //  Refrescamos la info
             loginInfo = this.ExtraerElLoginInfo(usuarioActualizado);
@@ -119,7 +119,7 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task HandleAsync(ActualizarPerfil cmd)
         {
-            var usuario = await IntentarRecuperarUsuarioAsync(cmd.Usuario);
+            var usuario = await this.repository.GetOrFailAsync<Usuario>(cmd.Usuario);
 
             if (cmd.AvatarUrl != null && usuario.AvatarUrl != cmd.AvatarUrl)
                 usuario.Emit(new AvatarUrlActualizado(cmd.Metadatos, cmd.Usuario, cmd.AvatarUrl));
@@ -144,7 +144,7 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task HandleAsync(AgregarUsuarioALaOrganizacion cmd)
         {
-            var org = await this.IntentarRecuperarOrganizacionAsync(cmd.OrganizacionId);
+            var org = await this.repository.GetOrFailAsync<Organizacion>(cmd.OrganizacionId);
 
             if (org.LaOrganizacionNoTieneTodaviaUsuarios)
             {
@@ -166,7 +166,7 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task HandleAsync(ResetearPassword cmd)
         {
-            var usuario = await this.IntentarRecuperarUsuarioAsync(cmd.Usuario);
+            var usuario = await this.repository.GetOrFailAsync<Usuario>(cmd.Usuario);
             var loginInfo = this.ExtraerElLoginInfo(usuario);
             loginInfo.ActualizarPassword(DefaultPassword);
             var encriptado = this.EncriptarLoginInfo(loginInfo);
@@ -193,7 +193,7 @@ namespace Agrobook.Domain.Usuarios
         {
             ValidarQue.ElNombreDelGrupoSeLlameIgualAlPorDefecto(cmd.GrupoDisplayName);
 
-            var org = await this.IntentarRecuperarOrganizacionAsync(cmd.IdOrganizacion);
+            var org = await this.repository.GetOrFailAsync<Organizacion>(cmd.IdOrganizacion);
             var idGrupo = cmd.GrupoDisplayName.ToLowerTrimmedAndWhiteSpaceless();
             if (org.YaTieneGrupoConId(idGrupo))
                 throw new InvalidOperationException($"Ya existe el grupo con id {idGrupo} en la organización {org.NombreParaMostrar}");
@@ -204,7 +204,7 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task HandleAsync(AgregarUsuarioAUnGrupo cmd)
         {
-            var org = await this.IntentarRecuperarOrganizacionAsync(cmd.OrganizacionId);
+            var org = await this.repository.GetOrFailAsync<Organizacion>(cmd.OrganizacionId);
 
             if (!org.YaTieneAlUsuarioComoMiembro(cmd.UsuarioId))
                 throw new InvalidOperationException("El usuario todavia no es miembro de la organizacion");
@@ -218,20 +218,6 @@ namespace Agrobook.Domain.Usuarios
             org.Emit(new UsuarioAgregadoAUnGrupo(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId, cmd.GrupoId));
 
             await this.repository.SaveAsync(org);
-        }
-
-        private async Task<Usuario> IntentarRecuperarUsuarioAsync(string usuario)
-        {
-            var state = await this.repository.GetAsync<Usuario>(usuario);
-            if (state is null) throw new InvalidOperationException($"El usuario {usuario} no existe");
-            return state;
-        }
-
-        private async Task<Organizacion> IntentarRecuperarOrganizacionAsync(string id)
-        {
-            var state = await this.repository.GetAsync<Organizacion>(id);
-            if (state is null) throw new InvalidOperationException($"La organización {id} no existe");
-            return state;
         }
 
         private string EncriptarLoginInfo(LoginInfo loginInfo)

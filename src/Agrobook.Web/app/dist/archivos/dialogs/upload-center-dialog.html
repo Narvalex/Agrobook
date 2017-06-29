@@ -43,8 +43,8 @@
                     <md-list-item class="md-3-line" ng-repeat="unit in vm.uploader.uploadUnits">
                         <div class="md-list-item-text">
                             <h3 style="cursor:pointer;" ng-click="unit.toggleEditMode()">
-                                <ng-md-icon ng-show="unit.failed" title="Error al cargar el archivo" style="color:red" icon="warning"></ng-md-icon>
-                                <ng-md-icon ng-show="unit.uploaded" title="Carga completada" style="color:#4caf50" icon="check_circle"></ng-md-icon>
+                                <ng-md-icon class="animated bounceIn" ng-show="unit.failed" title="Error al cargar el archivo" style="color:red" icon="warning"></ng-md-icon>
+                                <ng-md-icon class="animated bounceIn" ng-show="unit.uploaded" title="Carga completada" style="color:#4caf50" icon="check_circle"></ng-md-icon>
                                 {{unit.metadatos.nombre}}.{{unit.metadatos.extension}}
                                 <ng-md-icon ng-hide="unit.uploaded || unit.uploading" title="Editar metadatos del archivo" style="color:#808080" icon="mode_edit"></ng-md-icon>
                             </h3>
@@ -101,9 +101,10 @@
                             </md-button>
                             <md-button class="md-icon-button md-warn"
                                        ng-show="unit.uploading"
+                                       ng-disabled="unit.esperandoAlServidor"
                                        ng-click="unit.stopUpload()"
                                        title="Cargar archivo al servidor"
-                                       aria-label="cargar">
+                                       aria-label="parar">
                                 <ng-md-icon icon="stop"></ng-md-icon>
                             </md-button>
                             <md-button class="md-icon-button"

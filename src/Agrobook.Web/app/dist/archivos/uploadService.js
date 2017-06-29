@@ -13,11 +13,14 @@ var archivosArea;
 (function (archivosArea) {
     var uploadService = (function (_super) {
         __extends(uploadService, _super);
-        function uploadService($http, toasterLite) {
+        function uploadService($http, toasterLite, localStorageLite, config) {
             var _this = _super.call(this, $http, 'archivos/upload') || this;
             _this.$http = $http;
             _this.toasterLite = toasterLite;
+            _this.localStorageLite = localStorageLite;
+            _this.config = config;
             _this.uploadUnits = [];
+            _this.loginInfo = _this.localStorageLite.get(_this.config.repoIndex.login.usuarioActual);
             return _this;
         }
         uploadService.prototype.setScope = function (scope) {
@@ -40,7 +43,7 @@ var archivosArea;
                 }
                 if (yaExiste)
                     continue;
-                var unit = new uploadUnit(files[i], idProductor, this.scope, this.toasterLite);
+                var unit = new uploadUnit(files[i], idProductor, this.scope, this.toasterLite, this.loginInfo.token);
                 this.uploadUnits.push(unit);
             }
         };
@@ -110,19 +113,21 @@ var archivosArea;
         };
         return uploadService;
     }(common.httpLite));
-    uploadService.$inject = ['$http', 'toasterLite'];
+    uploadService.$inject = ['$http', 'toasterLite', 'localStorageLite', 'config'];
     archivosArea.uploadService = uploadService;
     var uploadUnit = (function () {
-        function uploadUnit(file, idProductor, scope, toasterLite) {
+        function uploadUnit(file, idProductor, scope, toasterLite, authToken) {
             this.file = file;
             this.idProductor = idProductor;
             this.scope = scope;
             this.toasterLite = toasterLite;
+            this.authToken = authToken;
             this.uploaded = false;
             this.failed = false;
             this.uploading = false;
             this.editMode = false;
             this.blockEdition = false;
+            this.esperandoAlServidor = false;
             // this.progress = 0;
             var deconstruido = file.name.split('.');
             var extension = deconstruido.pop();
@@ -145,6 +150,12 @@ var archivosArea;
         uploadUnit.prototype.stopUpload = function () {
             if (!this.xhr)
                 return;
+            if (this.esperandoAlServidor) {
+                var message = 'No de detuvo la carga de ' + this.metadatos.nombre + ' porque esta esperando respuesta del servidor';
+                this.toasterLite.info(message);
+                console.log(message);
+                return;
+            }
             this.uploading = false;
             this.blockEdition = false;
             this.xhr.abort();
@@ -177,6 +188,8 @@ var archivosArea;
             }
             function load(e) {
                 console.log('El archivo fue cargado exitosamente en el portal. falta en el servidor');
+                self.scope.$apply(function () { return setEsperandoAlServidor(); });
+                setEsperandoAlServidor();
             }
             function error(e) {
                 self.toasterLite.error('Error al cargar archivo');
@@ -187,11 +200,15 @@ var archivosArea;
             function timeout(e) {
                 console.log("timeout");
             }
+            function setEsperandoAlServidor() {
+                self.esperandoAlServidor = true;
+            }
             function setUploaded() {
                 self.progress = 100;
                 self.uploaded = true;
                 self.failed = false;
                 self.uploading = false;
+                self.esperandoAlServidor = false;
             }
             function setFailure() {
                 self.failed = true;
@@ -199,6 +216,7 @@ var archivosArea;
                 self.uploading = false;
                 self.progress = 0;
                 self.blockEdition = false;
+                self.esperandoAlServidor = false;
             }
             function readyStateChange(e) {
                 console.log("ready state change. status:" + e.target.status + " " + e.target.statusText);
@@ -244,6 +262,7 @@ var archivosArea;
             self.xhr.addEventListener("loadstart", loadStart, false);
             self.xhr.addEventListener("loadend", loadEnd, false);
             self.xhr.open("POST", "./archivos/upload", true);
+            self.xhr.setRequestHeader("Authorization", this.authToken);
             try {
                 self.xhr.send(formData);
             }

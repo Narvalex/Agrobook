@@ -90,7 +90,7 @@ namespace Agrobook.Infrastructure.Subscription
                                var seconds = 30;
                                var message = $"The subscription of {this.streamName} stopped because of {reason} on checkpoint {this.lastCheckpoint}. Restarting in {seconds} seconds.";
                                if (reason == SubscriptionDropReason.ConnectionClosed)
-                                   this.log.Warning(message);
+                                   this.log.Info(message);
                                else
                                    this.log.Error(message);
 

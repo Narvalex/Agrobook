@@ -2,15 +2,20 @@
 
 module archivosArea {
     export class uploadService extends common.httpLite {
-        static $inject = ['$http', 'toasterLite'];
+        static $inject = ['$http', 'toasterLite', 'localStorageLite', 'config'];
 
         constructor(
             private $http: ng.IHttpService,
-            private toasterLite: common.toasterLite
+            private toasterLite: common.toasterLite,
+            private localStorageLite: common.localStorageLite,
+            private config: common.config
         ) {
             super($http, 'archivos/upload');
+
+            this.loginInfo = this.localStorageLite.get<login.loginResult>(this.config.repoIndex.login.usuarioActual);
         }
 
+        private loginInfo: login.loginResult;
         public uploadUnits: uploadUnit[] = [];
         public progress: any;
 
@@ -39,7 +44,7 @@ module archivosArea {
 
                 if (yaExiste) continue;
 
-                var unit = new uploadUnit(files[i], idProductor, this.scope, this.toasterLite);
+                var unit = new uploadUnit(files[i], idProductor, this.scope, this.toasterLite, this.loginInfo.token);
                 this.uploadUnits.push(unit);
             }
         }
@@ -126,7 +131,8 @@ module archivosArea {
             public file: File,
             private idProductor: string,
             private scope: ng.IScope,
-            private toasterLite: common.toasterLite
+            private toasterLite: common.toasterLite,
+            private authToken: string
         ) {
            // this.progress = 0;
             var deconstruido = file.name.split('.');
@@ -150,6 +156,7 @@ module archivosArea {
         public uploading: boolean = false;
         public editMode: boolean = false;
         public blockEdition: boolean = false;
+        public esperandoAlServidor: boolean = false;
 
         public metadatos: { nombre: string, extension: string, fecha: Date, desc: string, size: number, idProductor: string };
 
@@ -163,6 +170,13 @@ module archivosArea {
 
         public stopUpload() {
             if (!this.xhr) return;
+            if (this.esperandoAlServidor) {
+                var message = 'No de detuvo la carga de ' + this.metadatos.nombre + ' porque esta esperando respuesta del servidor';
+                this.toasterLite.info(message);
+                console.log(message);
+                return;
+            }
+
             this.uploading = false;
             this.blockEdition = false;
             this.xhr.abort();
@@ -199,6 +213,9 @@ module archivosArea {
 
             function load(e) {
                 console.log('El archivo fue cargado exitosamente en el portal. falta en el servidor');
+                self.scope.$apply(() => setEsperandoAlServidor());
+                setEsperandoAlServidor();
+                
             }
 
             function error(e) {
@@ -213,11 +230,16 @@ module archivosArea {
                 console.log("timeout");
             }
 
+            function setEsperandoAlServidor() {
+                self.esperandoAlServidor = true;
+            }
+
             function setUploaded() {
                 self.progress = 100;
                 self.uploaded = true;
                 self.failed = false;
                 self.uploading = false;
+                self.esperandoAlServidor = false;
             }
 
             function setFailure() {
@@ -226,6 +248,7 @@ module archivosArea {
                 self.uploading = false;
                 self.progress = 0;
                 self.blockEdition = false;
+                self.esperandoAlServidor = false;
             }
 
             function readyStateChange(e) {
@@ -272,6 +295,7 @@ module archivosArea {
             formData.append('metadatos', JSON.stringify(this.metadatos));
 
             self.xhr = new XMLHttpRequest();
+
             self.xhr.upload.addEventListener("progress", progress, false);
             self.xhr.upload.addEventListener("load", load, false);
             self.xhr.addEventListener("error", error, false);
@@ -280,7 +304,9 @@ module archivosArea {
             self.xhr.addEventListener("readystatechange", readyStateChange, false);
             self.xhr.addEventListener("loadstart", loadStart, false);
             self.xhr.addEventListener("loadend", loadEnd, false);
+
             self.xhr.open("POST", "./archivos/upload", true);
+            self.xhr.setRequestHeader("Authorization", this.authToken);
             try {
                 self.xhr.send(formData);
             } catch (e) {
