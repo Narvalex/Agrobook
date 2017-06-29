@@ -85,7 +85,6 @@
     <Compile Include="IoC\SimpleContainer.cs" />
     <Compile Include="Login\TokenManager.cs" />
     <Compile Include="Log\ConsoleLogger.cs" />
-    <Compile Include="Log\ILogLite.cs" />
     <Compile Include="Log\LazyLogger.cs" />
     <Compile Include="Log\LogManager.cs" />
     <Compile Include="Log\LogMessageBuilder.cs" />

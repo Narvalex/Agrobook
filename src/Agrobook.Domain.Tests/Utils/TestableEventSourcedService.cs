@@ -1,6 +1,7 @@
 ﻿using Agrobook.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Tests.Utils
@@ -55,7 +56,7 @@ namespace Agrobook.Domain.Tests.Utils
 
     internal class FakeRepo : IEventSourcedRepository
     {
-        private readonly IDictionary<string, object[]> eventStore = new Dictionary<string, object[]>();
+        private readonly IDictionary<string, List<object>> eventStore = new Dictionary<string, List<object>>();
 
         internal List<object> NewEventsCommitted { get; private set; } = new List<object>();
         internal ISnapshot Snapshot { get; private set; }
@@ -64,7 +65,7 @@ namespace Agrobook.Domain.Tests.Utils
         {
             if (@events.Length < 1) return;
 
-            this.eventStore[streamName] = @events;
+            this.eventStore[streamName] = @events.ToList();
         }
 
         public async Task<T> GetAsync<T>(string streamName) where T : class, IEventSourced, new()
@@ -78,7 +79,7 @@ namespace Agrobook.Domain.Tests.Utils
 
             var state = new T();
 
-            for (int i = 0; i < stream.Length; i++)
+            for (int i = 0; i < stream.Count; i++)
                 state.Apply(stream[i]);
 
             return await Task.FromResult(state);
@@ -96,7 +97,14 @@ namespace Agrobook.Domain.Tests.Utils
 
             this.NewEventsCommitted.AddRange(await Task.FromResult(eventSourced.NewEvents));
             this.Snapshot = eventSourced.TakeSnapshot();
+
+            if (this.eventStore.ContainsKey(eventSourced.StreamName))
+                this.eventStore[eventSourced.StreamName].AddRange(eventSourced.NewEvents);
+            else
+                this.eventStore[eventSourced.StreamName] = eventSourced.NewEvents.ToList();
+
             eventSourced.MarkAsCommited();
+
         }
     }
 

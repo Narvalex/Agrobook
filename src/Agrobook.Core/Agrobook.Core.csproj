@@ -55,6 +55,7 @@
     <Compile Include="EventSourcedService.cs" />
     <Compile Include="Ensure.cs" />
     <Compile Include="ExpectedVersion.cs" />
+    <Compile Include="ILogLite.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Cryptography.cs" />
     <Compile Include="IEventStreamSubscriber.cs" />

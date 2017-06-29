@@ -1,4 +1,5 @@
 ﻿using Agrobook.Domain;
+using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Services;
 using Agrobook.Infrastructure.Log;
@@ -69,6 +70,16 @@ namespace Agrobook.Server
             sqlInit.CreateDatabaseIfNoExists();
 #endif
             _log.Verbose("SQL Compact is ready");
+
+
+            var archivosService = ServiceLocator.ResolveSingleton<ArchivosService>();
+#if DROP_DB
+            archivosService.BorrarTodoYEmpezarDeNuevo();
+#endif
+#if !DROP_DB
+            archivosService.CrearDirectoriosSiFaltan();
+#endif
+
 
             OnPersistenceEnginesInitialized();
 

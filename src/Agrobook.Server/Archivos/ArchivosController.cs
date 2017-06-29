@@ -22,7 +22,7 @@ namespace Agrobook.Server.Archivos
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
-            catch (FileAlreadyExistsException)
+            catch (ElArchivoYaExisteException)
             {
                 throw new HttpResponseException(HttpStatusCode.Conflict);
             }

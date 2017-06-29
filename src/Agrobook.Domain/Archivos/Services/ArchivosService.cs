@@ -1,4 +1,5 @@
 ﻿using Agrobook.Core;
+using Agrobook.Infrastructure.Log;
 using System;
 using System.IO;
 using System.Linq;
@@ -9,13 +10,20 @@ namespace Agrobook.Domain.Archivos.Services
 {
     public class ArchivosService : EventSourcedService
     {
+        private readonly ILogLite log;
         private readonly IJsonSerializer serializer;
+        private readonly string path;
 
-        public ArchivosService(IEventSourcedRepository repository, IDateTimeProvider dateTime, IJsonSerializer serializer) : base(repository, dateTime)
+        public ArchivosService(IEventSourcedRepository repository, IDateTimeProvider dateTime, ILogLite log, IJsonSerializer serializer) : base(repository, dateTime)
         {
             Ensure.NotNull(serializer, nameof(serializer));
+            Ensure.NotNull(log, nameof(log));
 
             this.serializer = serializer;
+            this.log = log;
+
+            this.path = Directory.GetCurrentDirectory() + @"\archivos";
+            //this.path = @".\archivos";
         }
 
         public async Task PersistirArchivoDelProductor(HttpContent content)
@@ -36,16 +44,43 @@ namespace Agrobook.Domain.Archivos.Services
             {
                 var formattedFileName = @"\" + fileName;
 
-                var path = @"\files";
-                var current = Directory.GetCurrentDirectory();
-                var fullPath = current + path + formattedFileName;
-                if (File.Exists(fullPath)) throw new FileAlreadyExistsException();
+                var fullPath = this.path + formattedFileName;
+                if (File.Exists(fullPath)) throw new ElArchivoYaExisteException();
                 using (var fileStream = File.Create(fullPath))
                 {
                     stream.Seek(0, SeekOrigin.Begin);
                     stream.CopyTo(fileStream);
                 }
             }
+        }
+
+        public void CrearDirectoriosSiFaltan()
+        {
+            if (Directory.Exists(this.path))
+            {
+                this.log.Verbose($"El directorio {this.path} existe en el sistema");
+                return;
+            }
+
+            this.log.Verbose($"Creando el directorio {this.path}...");
+            Directory.CreateDirectory(this.path);
+            this.log.Verbose($"El directorio {this.path} fué creado exitosamente");
+        }
+
+        public void BorrarTodoYEmpezarDeNuevo()
+        {
+            this.log.Warning($"Borrando todo los archivos en {this.path}");
+            if (!Directory.Exists(this.path))
+            {
+                this.log.Warning($"El directorio {this.path} no existe. No se borró nada.");
+            }
+            else
+            {
+                Directory.Delete(this.path, true);
+                this.log.Warning($"Fueron borrados todos los archivos en {this.path}");
+            }
+
+            this.CrearDirectoriosSiFaltan();
         }
     }
 
@@ -69,7 +104,7 @@ namespace Agrobook.Domain.Archivos.Services
         { }
     }
 
-    public class FileAlreadyExistsException : Exception
+    public class ElArchivoYaExisteException : Exception
     {
     }
 }

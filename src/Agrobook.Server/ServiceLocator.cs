@@ -7,6 +7,7 @@ using Agrobook.Domain.Usuarios.Services;
 using Agrobook.Infrastructure;
 using Agrobook.Infrastructure.Cryptography;
 using Agrobook.Infrastructure.IoC;
+using Agrobook.Infrastructure.Log;
 using Agrobook.Infrastructure.Persistence;
 using Agrobook.Infrastructure.Serialization;
 using Agrobook.Infrastructure.Subscription;
@@ -61,7 +62,7 @@ namespace Agrobook.Server
 
             var organizacionesQueryService = new OrganizacionesQueryService(readOnlyDbContextFactory, eventSourcedRepository);
 
-            var archivosService = new ArchivosService(eventSourcedRepository, dateTimeProvider, jsonSerializer);
+            var archivosService = new ArchivosService(eventSourcedRepository, dateTimeProvider, LogManager.GetLoggerFor<ArchivosService>(), jsonSerializer);
 
             var archivosQueryService = new ArchivosQueryService(readOnlyDbContextFactory, eventSourcedRepository);
 

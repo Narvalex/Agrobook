@@ -203,16 +203,16 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             this.sut
                .Given<Organizacion>("cooperativax",
-                    new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X"),
-                    new UsuarioAgregadoALaOrganizacion(TestMeta.New, "cooperativax", "prod")
+                    new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X")
                 )
                .When(s =>
                {
+                   s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestMeta.New, "cooperativax", "prod")).Wait();
                    s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestMeta.New, "cooperativax", "prod2")).Wait();
                })
                .Then(events =>
                {
-                   var e = events.OfType<UsuarioAgregadoALaOrganizacion>().Single();
+                   var e = events.OfType<UsuarioAgregadoALaOrganizacion>().ToArray()[1];
                    Assert.AreEqual("prod2", e.UsuarioId);
                })
                .And<OrganizacionSnapshot>(s =>
