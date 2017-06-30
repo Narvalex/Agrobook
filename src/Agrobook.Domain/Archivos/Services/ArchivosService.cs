@@ -1,116 +1,55 @@
 ﻿using Agrobook.Core;
-using Agrobook.Infrastructure.Log;
-using System;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Archivos.Services
 {
     public class ArchivosService : EventSourcedService
     {
-        private readonly ILogLite log;
-        private readonly IJsonSerializer serializer;
-        private readonly string path;
+        private readonly IArchivosDelProductorFileManager fileWriter;
 
-        public ArchivosService(IEventSourcedRepository repository, IDateTimeProvider dateTime, ILogLite log, IJsonSerializer serializer) : base(repository, dateTime)
+        public ArchivosService(IArchivosDelProductorFileManager fileWriter, IEventSourcedRepository repository, IDateTimeProvider dateTime) : base(repository, dateTime)
         {
-            Ensure.NotNull(serializer, nameof(serializer));
-            Ensure.NotNull(log, nameof(log));
+            Ensure.NotNull(fileWriter, nameof(fileWriter));
 
-            this.serializer = serializer;
-            this.log = log;
-
-            this.path = Directory.GetCurrentDirectory() + @"\archivos";
-            //this.path = @".\archivos";
+            this.fileWriter = fileWriter;
         }
 
-        public void CrearDirectoriosSiFaltan()
+        public async Task<ResultadoDelUpload> HandleAsync(AgregarArchivoAColeccion cmd)
         {
-            if (Directory.Exists(this.path))
-            {
-                this.log.Verbose($"El directorio {this.path} existe en el sistema");
-                return;
-            }
-
-            this.log.Verbose($"Creando el directorio {this.path}...");
-            Directory.CreateDirectory(this.path);
-            this.log.Verbose($"El directorio {this.path} fué creado exitosamente");
-        }
-
-        public void BorrarTodoYEmpezarDeNuevo()
-        {
-            this.log.Warning($"Borrando todo los archivos en {this.path}");
-            if (!Directory.Exists(this.path))
-            {
-                this.log.Warning($"El directorio {this.path} no existe. No se borró nada.");
-            }
-            else
-            {
-                Directory.Delete(this.path, true);
-                this.log.Warning($"Fueron borrados todos los archivos en {this.path}");
-            }
-
-            this.CrearDirectoriosSiFaltan();
-        }
-
-        public async Task<Metadatos> PersistirArchivoDelProductor(HttpContent content)
-        {
-            if (!content.IsMimeMultipartContent())
-                throw new NotMimeMultipartException();
-
-            var streamProvider = await content.ReadAsMultipartAsync();
-            var fileContent = streamProvider.Contents.First();
-
-            var metadatosSerializados = await streamProvider.Contents[1].ReadAsStringAsync();
-            var metadatos = this.serializer.Deserialize<Metadatos>(metadatosSerializados);
-
-            //var fileName = new string(fileContent.Headers.ContentDisposition.FileName.Trim().Where(c => c != '"').ToArray());
-            var fileName = $"{metadatos.Nombre}.{metadatos.Extension}";
-
-            var coleccionPath = $"{this.path}\\{metadatos.IdProductor}";
-            if (!Directory.Exists(coleccionPath))
-            {
-                this.log.Info($"Creando el directorio para la nueva colección de archivos de {metadatos.IdProductor}...");
-                Directory.CreateDirectory(coleccionPath);
-                this.log.Info($"Creacion exitosa del directorio {metadatos.IdProductor}");
-            }
-
-            using (var stream = await fileContent.ReadAsStreamAsync())
-            {
-                var fullPath = $"{coleccionPath}\\{fileName}";
-                if (File.Exists(fullPath)) throw new ElArchivoYaExisteException();
-                using (var fileStream = File.Create(fullPath))
-                {
-                    stream.Seek(0, SeekOrigin.Begin);
-                    await stream.CopyToAsync(fileStream);
-                }
-            }
-
-            return metadatos;
-        }
-
-        public async Task HandleAsync(AgregarArchivoAColeccion cmd)
-        {
-            var coleccion = await this.repository.GetAsync<ColeccionDeArchivos>(cmd.IdProductor);
+            var coleccion = await this.repository.GetAsync<ColeccionDeArchivosDelProductor>(cmd.IdProductor);
             if (coleccion == null)
             {
-                coleccion = new ColeccionDeArchivos();
+                coleccion = new ColeccionDeArchivosDelProductor();
+                coleccion.Emit(new NuevaColeccionDeArchivosDelProductorCreada(cmd.Metadatos, cmd.IdProductor));
             }
+            else if (coleccion.YaTieneArchivo(cmd.Archivo.Nombre))
+                return ResultadoDelUpload.ResponderQueYaExiste();
+
+
+            if (await this.fileWriter.TryWriteUnindexedIfNotExists(cmd.FileContent, cmd.IdProductor, cmd.Archivo))
+            {
+                coleccion.Emit(new NuevoArchivoAgregadoALaColeccion(cmd.Metadatos, cmd.IdProductor, cmd.Archivo));
+                await this.repository.SaveAsync(coleccion);
+                return ResultadoDelUpload.ResponderExitoso();
+            }
+            else
+                return ResultadoDelUpload.ResponderQueYaExiste();
+
         }
     }
 
-    public class NotMimeMultipartException : Exception
+    public class ResultadoDelUpload
     {
-        public NotMimeMultipartException()
-        { }
+        public ResultadoDelUpload(bool exitoso, bool yaExiste)
+        {
+            this.Exitoso = exitoso;
+            this.YaExiste = yaExiste;
+        }
 
-        public NotMimeMultipartException(string message) : base(message)
-        { }
-    }
+        public bool Exitoso { get; }
+        public bool YaExiste { get; }
 
-    public class ElArchivoYaExisteException : Exception
-    {
+        public static ResultadoDelUpload ResponderExitoso() => new ResultadoDelUpload(true, false);
+        public static ResultadoDelUpload ResponderQueYaExiste() => new ResultadoDelUpload(false, true);
     }
 }

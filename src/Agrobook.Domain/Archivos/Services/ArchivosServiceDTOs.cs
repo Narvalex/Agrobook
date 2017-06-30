@@ -2,7 +2,7 @@
 
 namespace Agrobook.Domain.Archivos.Services
 {
-    public class Metadatos
+    public class MetadatosDelArchivo
     {
         public string Nombre { get; set; }
         public string Extension { get; set; }

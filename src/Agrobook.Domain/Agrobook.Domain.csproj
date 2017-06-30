@@ -63,11 +63,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archivos\ArchivosCommands.cs" />
-    <Compile Include="Archivos\ColeccionDeArchivos.cs" />
+    <Compile Include="Archivos\ArchivosEvents.cs" />
+    <Compile Include="Archivos\ColeccionDeArchivosDelProductor.cs" />
+    <Compile Include="Archivos\Services\ArchivosIndexerService.cs" />
     <Compile Include="Archivos\Services\ArchivosQueryService.cs" />
     <Compile Include="Archivos\Services\ArchivosQueryServiceDTOs.cs" />
     <Compile Include="Archivos\Services\ArchivosService.cs" />
     <Compile Include="Archivos\Services\ArchivosServiceDTOs.cs" />
+    <Compile Include="Archivos\Services\DurableArchivosDelProductorFileManager.cs" />
+    <Compile Include="Archivos\Services\IArchivosDelProductorFileManager.cs" />
     <Compile Include="Common\AgrobookDbContext.cs" />
     <Compile Include="Common\AgrobookDenormalizer.cs" />
     <Compile Include="Common\AgrobookQueryService.cs" />

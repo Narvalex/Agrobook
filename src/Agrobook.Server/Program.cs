@@ -72,12 +72,12 @@ namespace Agrobook.Server
             _log.Verbose("SQL Compact is ready");
 
 
-            var archivosService = ServiceLocator.ResolveSingleton<ArchivosService>();
+            var fileManager = ServiceLocator.ResolveSingleton<IArchivosDelProductorFileManager>();
 #if DROP_DB
-            archivosService.BorrarTodoYEmpezarDeNuevo();
+            fileManager.BorrarTodoYEmpezarDeNuevo();
 #endif
 #if !DROP_DB
-            archivosService.CrearDirectoriosSiFaltan();
+            fileManager.CrearDirectoriosSiFaltan();
 #endif
 
 
@@ -133,9 +133,11 @@ namespace Agrobook.Server
 
             var usuariosDenormalizer = ServiceLocator.ResolveSingleton<UsuariosDenormalizer>();
             var organizacionesDenormalizer = ServiceLocator.ResolveSingleton<OrganizacionesDenormalizer>();
+            var fileIndexer = ServiceLocator.ResolveSingleton<ArchivosIndexerService>();
 
             usuariosDenormalizer.Start();
             organizacionesDenormalizer.Start();
+            fileIndexer.Start();
         }
 
         private static void CrearUsuarioAdminSiHaceFalta(UsuariosQueryService query, UsuariosService userService)
