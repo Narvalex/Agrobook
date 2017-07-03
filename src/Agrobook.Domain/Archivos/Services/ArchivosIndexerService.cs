@@ -25,6 +25,19 @@ namespace Agrobook.Domain.Archivos.Services
         public async Task Handle(long eventNumber, NuevoArchivoAgregadoALaColeccion e)
         {
             var renombrado = this.fileManager.SetFileAsIndexedIfNeeded(e.IdProductor, e.Archivo);
+
+            await this.Denormalize(eventNumber, context =>
+            {
+                context.Archivos.Add(new ArchivosEntity
+                {
+                    IdProductor = e.IdProductor,
+                    Nombre = e.Archivo.Nombre,
+                    Fecha = e.Archivo.Fecha,
+                    Extension = e.Archivo.Extension,
+                    Descripcion = e.Archivo.Descripcion,
+                    Size = e.Archivo.Size
+                });
+            });
         }
     }
 }

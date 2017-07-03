@@ -65,6 +65,7 @@
     <Compile Include="Archivos\ArchivosCommands.cs" />
     <Compile Include="Archivos\ArchivosEvents.cs" />
     <Compile Include="Archivos\ColeccionDeArchivosDelProductor.cs" />
+    <Compile Include="Archivos\Services\ArchivosDbContext.cs" />
     <Compile Include="Archivos\Services\ArchivosIndexerService.cs" />
     <Compile Include="Archivos\Services\ArchivosQueryService.cs" />
     <Compile Include="Archivos\Services\ArchivosQueryServiceDTOs.cs" />

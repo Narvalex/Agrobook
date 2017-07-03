@@ -6,7 +6,7 @@ namespace Agrobook.Domain
 {
     public partial class AgrobookDbContext : DbContext
     {
-        public AgrobookDbContext(bool isReadonly, string nameOrConnectionString) 
+        public AgrobookDbContext(bool isReadonly, string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
             if (isReadonly)
@@ -21,6 +21,7 @@ namespace Agrobook.Domain
 
             this.OnUsuariosModelCreating(modelBuilder);
             this.OnOrganizacionesModelCreating(modelBuilder);
+            this.OnArchivosModelCreating(modelBuilder);
         }
 
         public async Task<int> SaveChangesAsync(string subscriptionName, long? lastCheckpoint)
