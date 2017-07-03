@@ -46,6 +46,7 @@ module archivosArea {
 
                 var unit = new uploadUnit(files[i], idProductor, this.scope, this.toasterLite, this.loginInfo.token);
                 this.uploadUnits.push(unit);
+                unit.showPreview();
             }
         }
 
@@ -134,7 +135,7 @@ module archivosArea {
             private toasterLite: common.toasterLite,
             private authToken: string
         ) {
-           // this.progress = 0;
+            // this.progress = 0;
             var deconstruido = file.name.split('.');
             var extension = deconstruido.pop();
             var nombre = deconstruido.join('.');
@@ -158,6 +159,8 @@ module archivosArea {
         public blockEdition: boolean = false;
         public esperandoAlServidor: boolean = false;
 
+        public filePreviewSrc = '';
+
         public metadatos: { nombre: string, extension: string, fecha: Date, desc: string, size: number, idProductor: string };
 
         public toggleEditMode() {
@@ -166,6 +169,31 @@ module archivosArea {
 
         public setNewScope(scope: ng.IScope) {
             this.scope = scope;
+        }
+
+        public showPreview() {
+            // Establecer preview
+            var self = this;
+            var nombre = this.metadatos.nombre;
+            var elementId = '#preview-' + nombre;
+            let ext = this.metadatos.extension;
+            if (ext === 'jpg' || ext === 'JPG'
+                || ext === 'png' || ext === 'PNG'
+            ) {
+                let reader = new FileReader();
+                reader.onload = (e: any) => {
+                    this.scope.$apply(() => {
+                        //$(elementId).attr('src', e.target.result);
+                        self.filePreviewSrc = e.target.result;
+                    });
+                }
+
+                reader.readAsDataURL(this.file);
+            }
+            else {
+                var url = './assets/img/fileIcons/file.png';
+                self.filePreviewSrc = url;
+            }
         }
 
         public stopUpload() {
@@ -215,7 +243,7 @@ module archivosArea {
                 console.log('El archivo fue cargado exitosamente en el portal. falta en el servidor');
                 self.scope.$apply(() => setEsperandoAlServidor());
                 setEsperandoAlServidor();
-                
+
             }
 
             function error(e) {

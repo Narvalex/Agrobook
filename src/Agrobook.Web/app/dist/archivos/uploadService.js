@@ -45,6 +45,7 @@ var archivosArea;
                     continue;
                 var unit = new uploadUnit(files[i], idProductor, this.scope, this.toasterLite, this.loginInfo.token);
                 this.uploadUnits.push(unit);
+                unit.showPreview();
             }
         };
         uploadService.prototype.removeFile = function (unit) {
@@ -128,6 +129,7 @@ var archivosArea;
             this.editMode = false;
             this.blockEdition = false;
             this.esperandoAlServidor = false;
+            this.filePreviewSrc = '';
             // this.progress = 0;
             var deconstruido = file.name.split('.');
             var extension = deconstruido.pop();
@@ -146,6 +148,29 @@ var archivosArea;
         };
         uploadUnit.prototype.setNewScope = function (scope) {
             this.scope = scope;
+        };
+        uploadUnit.prototype.showPreview = function () {
+            var _this = this;
+            // Establecer preview
+            var self = this;
+            var nombre = this.metadatos.nombre;
+            var elementId = '#preview-' + nombre;
+            var ext = this.metadatos.extension;
+            if (ext === 'jpg' || ext === 'JPG'
+                || ext === 'png' || ext === 'PNG') {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    _this.scope.$apply(function () {
+                        //$(elementId).attr('src', e.target.result);
+                        self.filePreviewSrc = e.target.result;
+                    });
+                };
+                reader.readAsDataURL(this.file);
+            }
+            else {
+                var url = './assets/img/fileIcons/file.png';
+                self.filePreviewSrc = url;
+            }
         };
         uploadUnit.prototype.stopUpload = function () {
             if (!this.xhr)

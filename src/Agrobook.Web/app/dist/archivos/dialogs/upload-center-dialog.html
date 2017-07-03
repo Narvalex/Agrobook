@@ -41,8 +41,11 @@
                 <md-list>
                     <md-subheader style="background-color:rgba(255, 255, 255, 0.00)">Arrastre archivos aquí o bien haga click <a href="" ng-click="vm.seleccionarArchivos()">aquí y seleccione archivos para cargar.</a></md-subheader>
                     <md-list-item class="md-3-line" ng-repeat="unit in vm.uploader.uploadUnits">
+                        <img id="preview-{{unit.metadatos.nombre}}" ng-src="{{unit.filePreviewSrc}}" class="md-avatar animated bounceIn" />
                         <div class="md-list-item-text">
-                            <h3 style="cursor:pointer;" ng-click="unit.toggleEditMode()">
+                            <h3 style="cursor:pointer;" 
+                                md-truncate
+                                ng-click="unit.toggleEditMode()">
                                 <ng-md-icon class="animated bounceIn" ng-show="unit.failed" title="Error al cargar el archivo" style="color:red" icon="warning"></ng-md-icon>
                                 <ng-md-icon class="animated bounceIn" ng-show="unit.uploaded" title="Carga completada" style="color:#4caf50" icon="check_circle"></ng-md-icon>
                                 {{unit.metadatos.nombre}}.{{unit.metadatos.extension}}

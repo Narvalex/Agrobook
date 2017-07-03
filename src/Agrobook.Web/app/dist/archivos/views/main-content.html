@@ -8,39 +8,69 @@
             <ng-md-icon icon="people"></ng-md-icon>
         </md-button>
 
-        <div layout-padding>
-            <md-input-container md-no-float class="md-block" style="width:60%">
-                <md-icon md-svg-src="./assets/svg/search.svg" style="display:inline-block; margin-top:5px;"></md-icon>
-                <label>Buscar archivo</label>
-                <input ng-model="user.address" type="text">
-            </md-input-container>
+        <div layout-gt-sm="row" layout="column">
+
+            <div flex-gt-sm="50" flex>
+                <div layout-padding flex-sm="80" flex-xs="70">
+                    <md-autocomplete md-search-text="vm.searchText"
+                                     md-items="item in vm.productores | filter: vm.searchText"
+                                     md-item-text="item.id"
+                                     md-min-length="100"
+                                     placeholder="Buscar">
+                        <md-not-found>
+                            Ninguno coincide con "{{vm.searchText}}".
+                        </md-not-found>
+                    </md-autocomplete>
+                </div>
+                <md-content>
+                    <md-list flex>
+                        <md-list-item class="md-3-line" ng-click="null">
+                            <img ng-src="" class="md-avatar" alt="pic" />
+                            <div class="md-list-item-text" layout="column">
+                                <h3>Who sadf sadf</h3>
+                                <h4>What adsf sadfdsf dsf dsafdfdsa</h4>
+                                <p>Notes ds fsafdsfasffaf  sfasdf sfas</p>
+                            </div>
+                        </md-list-item>
+                        <md-list-item class="md-3-line" ng-click="null">
+                            <img ng-src="" class="md-avatar" alt="pic" />
+                            <div class="md-list-item-text" layout="column">
+                                <h3>Who sadf sadf</h3>
+                                <h4>What adsf sadfdsf dsf dsafdfdsa</h4>
+                                <p>Notes ds fsafdsfasffaf  sfasdf sfas</p>
+                            </div>
+                        </md-list-item>
+                        <md-list-item class="md-3-line" ng-click="null">
+                            <img ng-src="" class="md-avatar" alt="pic" />
+                            <div class="md-list-item-text" layout="column">
+                                <h3>Who sadf sadf</h3>
+                                <h4>What adsf sadfdsf dsf dsafdfdsa</h4>
+                                <p>Notes ds fsafdsfasffaf  sfasdf sfas</p>
+                            </div>
+                        </md-list-item>
+                        <md-list-item class="md-3-line" ng-click="null">
+                            <img ng-src="" class="md-avatar" alt="pic" />
+                            <div class="md-list-item-text" layout="column">
+                                <h3>Who sadf sadf</h3>
+                                <h4>What adsf sadfdsf dsf dsafdfdsa</h4>
+                                <p>Notes ds fsafdsfasffaf  sfasdf sfas</p>
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                </md-content>
+            </div>
+
+            <md-divider></md-divider>
+
+            <div flex-gt-sm="50" hide-sm flex>
+                <md-content>
+
+                    <h1>PREVIEW</h1>
+                </md-content>
+            </div>
+
         </div>
-        <md-list>
-            <md-list-item class="noright">
-                <ng-md-icon icon="save"></ng-md-icon>
-                <p>Archivito</p>
-                <md-checkbox class="md-secondary"></md-checkbox>
-                <ng-md-icon icon="delete"></ng-md-icon>
-            </md-list-item>
-            <md-list-item class="noright">
-                <ng-md-icon icon="save"></ng-md-icon>
-                <p>Archivito</p>
-                <md-checkbox class="md-secondary"></md-checkbox>
-                <ng-md-icon icon="delete"></ng-md-icon>
-            </md-list-item>
-            <md-list-item class="noright">
-                <ng-md-icon icon="save"></ng-md-icon>
-                <p>Archivito</p>
-                <md-checkbox class="md-secondary"></md-checkbox>
-                <ng-md-icon icon="delete"></ng-md-icon>
-            </md-list-item>
-            <md-list-item class="noright">
-                <ng-md-icon icon="save"></ng-md-icon>
-                <p>Archivito</p>
-                <md-checkbox class="md-secondary"></md-checkbox>
-                <ng-md-icon icon="delete"></ng-md-icon>
-            </md-list-item>
-        </md-list>
+
         <div flex></div>
     </md-content>
 
