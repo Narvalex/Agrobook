@@ -8,10 +8,10 @@
             <ng-md-icon icon="people"></ng-md-icon>
         </md-button>
 
-        <div layout-gt-sm="row" layout="column">
+        <div layout-gt-xs="row" layout="column">
 
             <div flex-gt-sm="50" flex>
-                <div layout-padding flex-sm="80" flex-xs="70">
+                <div layout-padding flex-xs="70">
                     <md-autocomplete md-search-text="vm.searchText"
                                      md-items="item in vm.productores | filter: vm.searchText"
                                      md-item-text="item.id"
@@ -24,37 +24,18 @@
                 </div>
                 <md-content>
                     <md-list flex>
-                        <md-list-item class="md-3-line" ng-click="null">
-                            <img ng-src="" class="md-avatar" alt="pic" />
+                        <md-list-item class="md-3-line" 
+                                      ng-click="null"
+                                      ng-repeat="archivo in vm.archivos">
+                            <img ng-src="./assets/img/fileIcons/file.png" class="md-avatar" alt="pic" />
                             <div class="md-list-item-text" layout="column">
-                                <h3>Who sadf sadf</h3>
-                                <h4>What adsf sadfdsf dsf dsafdfdsa</h4>
-                                <p>Notes ds fsafdsfasffaf  sfasdf sfas</p>
+                                <h3>{{archivo.nombre}}</h3>
+                                <h4>{{archivo.fecha}} | {{archivo.extension}}</h4>
+                                <p>{{archivo.desc}}</p>
                             </div>
-                        </md-list-item>
-                        <md-list-item class="md-3-line" ng-click="null">
-                            <img ng-src="" class="md-avatar" alt="pic" />
-                            <div class="md-list-item-text" layout="column">
-                                <h3>Who sadf sadf</h3>
-                                <h4>What adsf sadfdsf dsf dsafdfdsa</h4>
-                                <p>Notes ds fsafdsfasffaf  sfasdf sfas</p>
-                            </div>
-                        </md-list-item>
-                        <md-list-item class="md-3-line" ng-click="null">
-                            <img ng-src="" class="md-avatar" alt="pic" />
-                            <div class="md-list-item-text" layout="column">
-                                <h3>Who sadf sadf</h3>
-                                <h4>What adsf sadfdsf dsf dsafdfdsa</h4>
-                                <p>Notes ds fsafdsfasffaf  sfasdf sfas</p>
-                            </div>
-                        </md-list-item>
-                        <md-list-item class="md-3-line" ng-click="null">
-                            <img ng-src="" class="md-avatar" alt="pic" />
-                            <div class="md-list-item-text" layout="column">
-                                <h3>Who sadf sadf</h3>
-                                <h4>What adsf sadfdsf dsf dsafdfdsa</h4>
-                                <p>Notes ds fsafdsfasffaf  sfasdf sfas</p>
-                            </div>
+                            <md-button class="md-secondary md-icon-button" ng-click="doSecondaryAction($event)">
+                                <ng-md-icon icon="file_download"></ng-md-icon>
+                            </md-button>
                         </md-list-item>
                     </md-list>
                 </md-content>
@@ -62,7 +43,7 @@
 
             <md-divider></md-divider>
 
-            <div flex-gt-sm="50" hide-sm flex>
+            <div flex-gt-xs="50" hide-xs flex>
                 <md-content>
 
                     <h1>PREVIEW</h1>

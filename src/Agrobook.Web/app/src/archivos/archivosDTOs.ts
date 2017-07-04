@@ -8,4 +8,14 @@ module archivosArea {
             public avatarUrl: string,
         ) { }
     }
+
+    export class archivoDto {
+        constructor(
+            public nombre: string,
+            public extension: string,
+            public fecha: string,
+            public desc: string
+        ) {
+        }
+    }
 }

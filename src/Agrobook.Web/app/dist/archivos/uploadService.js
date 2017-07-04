@@ -129,7 +129,7 @@ var archivosArea;
             this.editMode = false;
             this.blockEdition = false;
             this.esperandoAlServidor = false;
-            this.filePreviewSrc = '';
+            this.iconUrl = '';
             // this.progress = 0;
             var deconstruido = file.name.split('.');
             var extension = deconstruido.pop();
@@ -162,14 +162,14 @@ var archivosArea;
                 reader.onload = function (e) {
                     _this.scope.$apply(function () {
                         //$(elementId).attr('src', e.target.result);
-                        self.filePreviewSrc = e.target.result;
+                        self.iconUrl = e.target.result;
                     });
                 };
                 reader.readAsDataURL(this.file);
             }
             else {
                 var url = './assets/img/fileIcons/file.png';
-                self.filePreviewSrc = url;
+                self.iconUrl = url;
             }
         };
         uploadUnit.prototype.stopUpload = function () {

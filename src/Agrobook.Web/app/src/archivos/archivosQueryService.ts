@@ -16,5 +16,13 @@ module archivosArea {
         ) {
             super.get('productores', onSuccess, onError);
         }
+
+        obtenerArchivosDelProductor(
+            idProductor: string,
+            onSuccess: (value: ng.IHttpPromiseCallbackArg<archivoDto[]>) => void,
+            onError?: (reason: any) => void
+        ) {
+            super.get('archivos-del-productor/' + idProductor, onSuccess, onError);
+        }
     }
 }

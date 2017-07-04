@@ -39,11 +39,13 @@
         <md-dialog-content>
             <div class="md-dialog-content">
                 <md-list>
-                    <md-subheader style="background-color:rgba(255, 255, 255, 0.00)">Arrastre archivos aquí o bien haga click <a href="" ng-click="vm.seleccionarArchivos()">aquí y seleccione archivos para cargar.</a></md-subheader>
+                    <md-subheader style="background-color:rgba(255, 255, 255, 0.00)">
+                        Arrastre archivos aquí para prepararlos para la carga o bien <a href="" ng-click="vm.seleccionarArchivos()">haga click</a> en el símbolo<ng-md-icon icon="add"></ng-md-icon>de arriba.
+                    </md-subheader>
                     <md-list-item class="md-3-line" ng-repeat="unit in vm.uploader.uploadUnits">
-                        <img id="preview-{{unit.metadatos.nombre}}" ng-src="{{unit.filePreviewSrc}}" class="md-avatar animated bounceIn" />
+                        <img id="preview-{{unit.metadatos.nombre}}" ng-src="{{unit.iconUrl}}" class="md-avatar animated bounceIn" />
                         <div class="md-list-item-text">
-                            <h3 style="cursor:pointer;" 
+                            <h3 style="cursor:pointer;"
                                 md-truncate
                                 ng-click="unit.toggleEditMode()">
                                 <ng-md-icon class="animated bounceIn" ng-show="unit.failed" title="Error al cargar el archivo" style="color:red" icon="warning"></ng-md-icon>
@@ -77,14 +79,14 @@
                                                    ng-disabled="unit.blockEdition"></md-datepicker>
                                 </md-input-container>
                             </div>
-                                <md-input-container style="top:-32px;" ng-show="unit.editMode" class="md-block">
-                                    <label>Descripción</label>
-                                    <textarea ng-model="unit.metadatos.desc" 
-                                              md-maxlength="150" 
-                                              rows="3"
-                                              ng-disabled="unit.blockEdition"
-                                              md-select-on-focus></textarea>
-                                </md-input-container>
+                            <md-input-container style="top:-32px;" ng-show="unit.editMode" class="md-block">
+                                <label>Descripción</label>
+                                <textarea ng-model="unit.metadatos.desc"
+                                          md-maxlength="150"
+                                          rows="3"
+                                          ng-disabled="unit.blockEdition"
+                                          md-select-on-focus></textarea>
+                            </md-input-container>
 
                         </div>
                         <!--<div layout="column">

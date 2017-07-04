@@ -10,5 +10,15 @@ var archivosArea;
         return productorDto;
     }());
     archivosArea.productorDto = productorDto;
+    var archivoDto = (function () {
+        function archivoDto(nombre, extension, fecha, desc) {
+            this.nombre = nombre;
+            this.extension = extension;
+            this.fecha = fecha;
+            this.desc = desc;
+        }
+        return archivoDto;
+    }());
+    archivosArea.archivoDto = archivoDto;
 })(archivosArea || (archivosArea = {}));
 //# sourceMappingURL=archivosDTOs.js.map

@@ -21,6 +21,9 @@ var archivosArea;
         archivosQueryService.prototype.obtenerListaDeProductores = function (onSuccess, onError) {
             _super.prototype.get.call(this, 'productores', onSuccess, onError);
         };
+        archivosQueryService.prototype.obtenerArchivosDelProductor = function (idProductor, onSuccess, onError) {
+            _super.prototype.get.call(this, 'archivos-del-productor/' + idProductor, onSuccess, onError);
+        };
         return archivosQueryService;
     }(common.httpLite));
     archivosQueryService.$inject = ['$http'];

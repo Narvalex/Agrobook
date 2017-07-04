@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Archivos.Services
@@ -17,7 +16,7 @@ namespace Agrobook.Domain.Archivos.Services
 
         public async Task<IList<ProductorDto>> ObtenerProductores()
         {
-            return await this.QueryAsync<IList<ProductorDto>>(async context =>
+            return await this.QueryAsync(async context =>
             {
                 return await context.Usuarios.Where(u => u.EsProductor).Select(u =>
                 new ProductorDto
@@ -27,6 +26,25 @@ namespace Agrobook.Domain.Archivos.Services
                     AvatarUrl = u.AvatarUrl
                 })
                 .ToListAsync();
+            });
+        }
+
+        public async Task<IList<ArchivoDto>> ObtenerArchivosDelProductor(string idProductor)
+        {
+            return await this.QueryAsync(async context =>
+            {
+                var rawlist = await context.Archivos.Where(x => x.IdProductor == idProductor)
+                .ToArrayAsync();
+
+                return rawlist.Select(x =>
+                new ArchivoDto
+                {
+                    Nombre = x.Nombre,
+                    Extension = x.Extension,
+                    Fecha = x.Fecha.ToShortDateString(),
+                    Desc = x.Descripcion
+                })
+                .ToList();
             });
         }
     }

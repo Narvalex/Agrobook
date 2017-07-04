@@ -159,7 +159,7 @@ module archivosArea {
         public blockEdition: boolean = false;
         public esperandoAlServidor: boolean = false;
 
-        public filePreviewSrc = '';
+        public iconUrl = '';
 
         public metadatos: { nombre: string, extension: string, fecha: Date, desc: string, size: number, idProductor: string };
 
@@ -184,7 +184,7 @@ module archivosArea {
                 reader.onload = (e: any) => {
                     this.scope.$apply(() => {
                         //$(elementId).attr('src', e.target.result);
-                        self.filePreviewSrc = e.target.result;
+                        self.iconUrl = e.target.result;
                     });
                 }
 
@@ -192,7 +192,7 @@ module archivosArea {
             }
             else {
                 var url = './assets/img/fileIcons/file.png';
-                self.filePreviewSrc = url;
+                self.iconUrl = url;
             }
         }
 
