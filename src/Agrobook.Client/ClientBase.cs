@@ -49,6 +49,12 @@ namespace Agrobook.Client
             return result;
         }
 
+        protected async Task<Stream> Get(string uri)
+        {
+            var stream = await this.http.Get(this.BuildUri(uri), this.tokenProvider());
+            return stream;
+        }
+
         public void SetupTokenProvider(Func<string> tokenProvider)
         {
             this.tokenProvider = tokenProvider;

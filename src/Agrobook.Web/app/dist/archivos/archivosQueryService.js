@@ -24,6 +24,10 @@ var archivosArea;
         archivosQueryService.prototype.obtenerArchivosDelProductor = function (idProductor, onSuccess, onError) {
             _super.prototype.get.call(this, 'archivos-del-productor/' + idProductor, onSuccess, onError);
         };
+        archivosQueryService.prototype.download = function (idProductor, nombre, extension) {
+            // Could be improved here: https://stackoverflow.com/questions/24080018/download-file-from-an-asp-net-web-api-method-using-angularjs
+            window.open("./archivos/query/download/" + idProductor + "/" + nombre + "/" + extension, '_blank', '');
+        };
         return archivosQueryService;
     }(common.httpLite));
     archivosQueryService.$inject = ['$http'];

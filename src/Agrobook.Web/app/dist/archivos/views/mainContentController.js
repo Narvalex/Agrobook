@@ -48,6 +48,9 @@ var archivosArea;
             }, function (reason) {
             });
         };
+        mainContentController.prototype.download = function (archivo) {
+            this.archivosQueryService.download(this.idProductor, archivo.nombre, archivo.extension);
+        };
         return mainContentController;
     }());
     mainContentController.$inject = ['$mdSidenav', '$rootScope', '$routeParams', 'config', 'toasterLite', 'archivosQueryService'];

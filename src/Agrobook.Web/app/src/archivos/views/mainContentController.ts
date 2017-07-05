@@ -63,5 +63,9 @@ module archivosArea {
                 }
             );
         }
+
+        download(archivo: archivoDto) {
+            this.archivosQueryService.download(this.idProductor, archivo.nombre, archivo.extension);
+        }
     }
 }

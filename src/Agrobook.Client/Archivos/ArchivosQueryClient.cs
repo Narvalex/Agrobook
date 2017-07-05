@@ -1,6 +1,7 @@
 ﻿using Agrobook.Domain.Archivos.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Agrobook.Client.Archivos
@@ -21,6 +22,12 @@ namespace Agrobook.Client.Archivos
         {
             var lista = await base.Get<IList<ArchivoDto>>("archivos-del-productor/" + idProductor);
             return lista;
+        }
+
+        public async Task<Stream> Download(string idProductor, string nombreArchivo, string extension)
+        {
+            var stream = await base.Get($"download/{idProductor}/{nombreArchivo}/{extension}");
+            return stream;
         }
     }
 }

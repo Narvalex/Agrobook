@@ -31,9 +31,24 @@ namespace Agrobook.Client
             }
 
             if (!response.IsSuccessStatusCode)
-                throw new Exception($"Error on posting to {uri}. Status Code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
+                throw new Exception($"Error on GET to {uri}. Status Code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
             var result = await response.Content.ReadAsAsync<TResult>();
             return result;
+        }
+
+        public async Task<Stream> Get(string uri, string token = null)
+        {
+            HttpResponseMessage response;
+            using (var client = this.CreateHttpClient(token))
+            {
+                var endpoint = new Uri(new Uri(this.hostUri), uri);
+                response = await client.GetAsync(endpoint.AbsoluteUri);
+            }
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Error on GET to {uri}. Status Code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
+            var stream = await response.Content.ReadAsStreamAsync();
+            return stream;
         }
 
         public async Task<TResult> Post<TResult>(string uri, string jsonContent, string token = null)

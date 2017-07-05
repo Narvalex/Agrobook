@@ -3,6 +3,7 @@ using Agrobook.Domain.Archivos.Services;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Agrobook.Domain.Tests.Archivos
 {
@@ -16,6 +17,11 @@ namespace Agrobook.Domain.Tests.Archivos
         }
 
         public void CrearDirectoriosSiFaltan()
+        {
+            throw new NotImplementedException();
+        }
+
+        public FileStream GetFile(string idProductor, string nombreArchivo, string extension)
         {
             throw new NotImplementedException();
         }

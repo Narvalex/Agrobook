@@ -1,5 +1,8 @@
 ﻿using Agrobook.Client;
 using Agrobook.Client.Archivos;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -29,6 +32,20 @@ namespace Agrobook.Web.Controllers.Archivos
         {
             var dto = await this.client.ObtenerArchivosDelProductor(idProductor);
             return this.Ok(dto);
+        }
+
+        [HttpGet]
+        [Route("download/{idProductor}/{nombreArchivo}/{extension}")]
+        public async Task<HttpResponseMessage> Download([FromUri]string idProductor, [FromUri] string nombreArchivo, [FromUri] string extension)
+        {
+            var stream = await this.client.Download(idProductor, nombreArchivo, extension);
+
+            var result = this.Request.CreateResponse(HttpStatusCode.OK);
+            result.Content = new StreamContent(stream);
+            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+            result.Content.Headers.ContentDisposition.FileName = $"{nombreArchivo}.{extension}";
+
+            return result;
         }
     }
 }

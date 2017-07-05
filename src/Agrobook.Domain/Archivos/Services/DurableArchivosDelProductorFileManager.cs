@@ -99,5 +99,11 @@ namespace Agrobook.Domain.Archivos.Services
             File.Move(fullUnindexedPath, fullIndexedPath);
             return true;
         }
+
+        public FileStream GetFile(string idProductor, string nombreArchivo, string extension)
+        {
+            var fileStream = new FileStream($"{this.path}\\{idProductor}\\{nombreArchivo}.{extension}", FileMode.Open, FileAccess.Read);
+            return fileStream;
+        }
     }
 }

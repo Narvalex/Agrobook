@@ -24,5 +24,11 @@ module archivosArea {
         ) {
             super.get('archivos-del-productor/' + idProductor, onSuccess, onError);
         }
+
+        download(idProductor: string, nombre: string, extension: string) {
+            // Could be improved here: https://stackoverflow.com/questions/24080018/download-file-from-an-asp-net-web-api-method-using-angularjs
+
+            window.open(`./archivos/query/download/${idProductor}/${nombre}/${extension}`, '_blank', '');
+        }
     }
 }

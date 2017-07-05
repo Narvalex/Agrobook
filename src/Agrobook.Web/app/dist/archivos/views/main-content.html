@@ -33,7 +33,9 @@
                                 <h4>{{archivo.fecha}} | {{archivo.extension}}</h4>
                                 <p>{{archivo.desc}}</p>
                             </div>
-                            <md-button class="md-secondary md-icon-button" ng-click="doSecondaryAction($event)">
+                            <md-button class="md-secondary md-icon-button"
+                                       aria-label="download"
+                                       ng-click="vm.download(archivo)">
                                 <ng-md-icon icon="file_download"></ng-md-icon>
                             </md-button>
                         </md-list-item>
