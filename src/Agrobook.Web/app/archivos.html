@@ -39,7 +39,9 @@
     <div layout="column" flex>
         <div ng-include="'./dist/archivos/toolbar-header.html'"></div>
         <!-- This content is routed -->
-        <div ng-view></div>
+        <md-content flex style="overflow:hidden">
+            <div ng-view></div>
+        </md-content>
     </div>
 
     <script src="./bower_components/jquery/dist/jquery.js"></script>

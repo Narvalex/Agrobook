@@ -1,36 +1,35 @@
-﻿<section layout="row" flex ng-controller="mainContentController as vm">
-    <md-content flex>
-        <md-button class="md-fab md-fab-top-right"
-                   ng-click="vm.toggleSideNav()"
-                   ng-hide="vm.isSideNavOpen()"
-                   aria-label="Seleccionar productor">
-            <md-tooltip md-direction="left">Seleccionar otro productor</md-tooltip>
-            <ng-md-icon icon="people"></ng-md-icon>
-        </md-button>
+﻿<div ng-controller="mainContentController as vm">
+    <md-button class="md-fab md-fab-top-right"
+               ng-click="vm.toggleSideNav()"
+               ng-hide="vm.isSideNavOpen()"
+               aria-label="Seleccionar productor">
+        <md-tooltip md-direction="left">Seleccionar otro productor</md-tooltip>
+        <ng-md-icon icon="people"></ng-md-icon>
+    </md-button>
 
-        <div layout-gt-xs="row" layout="column">
+    <div layout-gt-xs="row" layout="column">
 
-            <div flex-gt-sm="50" flex>
-                <div layout-padding flex-xs="70">
-                    <md-autocomplete md-search-text="vm.searchText"
-                                     md-items="item in vm.productores | filter: vm.searchText"
-                                     md-item-text="item.id"
-                                     md-min-length="100"
-                                     placeholder="Buscar">
-                        <md-not-found>
-                            Ninguno coincide con "{{vm.searchText}}".
-                        </md-not-found>
-                    </md-autocomplete>
-                </div>
-                <md-content>
+        <div flex-gt-sm="50" flex>
+            <div layout-padding flex-xs="70">
+                <md-autocomplete md-search-text="vm.searchText"
+                                 md-items="item in vm.productores | filter: vm.searchText"
+                                 md-item-text="item.id"
+                                 md-min-length="100"
+                                 placeholder="Buscar">
+                    <md-not-found>
+                        Ninguno coincide con "{{vm.searchText}}".
+                    </md-not-found>
+                </md-autocomplete>
+            </div>
+            <md-content layout="column" style="overflow-y:scroll;height:calc(100vh - 135px);">
                     <md-list flex>
-                        <md-list-item class="md-3-line" 
+                        <md-list-item class="md-3-line"
                                       ng-click="null"
                                       ng-repeat="archivo in vm.archivos">
                             <img ng-src="./assets/img/fileIcons/file.png" class="md-avatar" alt="pic" />
                             <div class="md-list-item-text" layout="column">
-                                <h3>{{archivo.nombre}}</h3>
-                                <h4>{{archivo.fecha}} | {{archivo.extension}}</h4>
+                                <p style="color: black;font-weight:100">{{archivo.nombre}}</p>
+                                <h4 style="color:#7a7a7a;">{{archivo.fecha}}</h4>
                                 <p>{{archivo.desc}}</p>
                             </div>
                             <md-button class="md-secondary md-icon-button"
@@ -40,24 +39,23 @@
                             </md-button>
                         </md-list-item>
                     </md-list>
-                </md-content>
-            </div>
-
-            <md-divider></md-divider>
-
-            <div flex-gt-xs="50" hide-xs flex>
-                <md-content>
-
-                    <h1>PREVIEW</h1>
-                </md-content>
-            </div>
-
+            </md-content>
         </div>
 
-        <div flex></div>
-    </md-content>
+        <md-divider></md-divider>
 
-    <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
-        <div ng-include="'./dist/archivos/prod-sidenav.html'"></div>
-    </md-sidenav>
-</section>
+        <div flex-gt-xs="50" hide-xs flex>
+            <md-content>
+
+                <h1>PREVIEW</h1>
+            </md-content>
+        </div>
+
+    </div>
+
+    <div flex></div>
+</div>
+
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+    <div ng-include="'./dist/archivos/prod-sidenav.html'"></div>
+</md-sidenav>
