@@ -48,6 +48,9 @@ var archivosArea;
             }, function (reason) {
             });
         };
+        mainContentController.prototype.seleccionarArchivo = function (archivo) {
+            this.archivoSeleccionado = archivo;
+        };
         mainContentController.prototype.download = function (archivo) {
             this.archivosQueryService.download(this.idProductor, archivo.nombre, archivo.extension);
         };

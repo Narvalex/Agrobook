@@ -18,6 +18,7 @@
     <link href="./assets/md-toasts.css" rel="stylesheet" />
     <link href="./dist/common/userMenu/user-menu-widget.css" rel="stylesheet" />
     <link href="./assets/sidenav.css" rel="stylesheet" />
+    <link href="./assets/area-archivos.css" rel="stylesheet" />
 
     <style type="text/css">
         [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -42,6 +43,9 @@
         <md-content flex style="overflow:hidden">
             <div ng-view></div>
         </md-content>
+        <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+            <div ng-include="'./dist/archivos/prod-sidenav.html'"></div>
+        </md-sidenav>
     </div>
 
     <script src="./bower_components/jquery/dist/jquery.js"></script>

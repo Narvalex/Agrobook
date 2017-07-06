@@ -22,23 +22,27 @@
                 </md-autocomplete>
             </div>
             <md-content layout="column" style="overflow-y:scroll;height:calc(100vh - 135px);">
-                    <md-list flex>
-                        <md-list-item class="md-3-line"
-                                      ng-click="null"
-                                      ng-repeat="archivo in vm.archivos">
-                            <img ng-src="./assets/img/fileIcons/file.png" class="md-avatar" alt="pic" />
-                            <div class="md-list-item-text" layout="column">
-                                <p style="color: black;font-weight:100">{{archivo.nombre}}</p>
-                                <h4 style="color:#7a7a7a;">{{archivo.fecha}}</h4>
-                                <p>{{archivo.desc}}</p>
-                            </div>
-                            <md-button class="md-secondary md-icon-button"
-                                       aria-label="download"
-                                       ng-click="vm.download(archivo)">
-                                <ng-md-icon icon="file_download"></ng-md-icon>
-                            </md-button>
-                        </md-list-item>
-                    </md-list>
+                <md-list flex><!--class="md-dense"-->
+                    <md-list-item class="md-3-line"
+                                  ng-click="vm.seleccionarArchivo(archivo)"
+                                  ng-repeat="archivo in vm.archivos">
+                        <img ng-src="./assets/img/fileIcons/file.png" class="md-avatar" alt="pic" />
+                        <div class="md-list-item-text" layout="column">
+                            <p style="color: black;font-weight:100"
+                               ng-class="{'archivo-seleccionado': vm.archivoSeleccionado === archivo}">
+                                {{archivo.nombre}}
+                            </p>
+                            <h4 style="color:#7a7a7a;">{{archivo.fecha}}</h4>
+                            <p>{{archivo.desc}}</p>
+                        </div>
+                        <md-button class="md-secondary md-icon-button"
+                                   style="color: rgb(76, 175, 80);"
+                                   aria-label="download"
+                                   ng-click="vm.download(archivo)">
+                            <ng-md-icon icon="file_download"></ng-md-icon>
+                        </md-button>
+                    </md-list-item>
+                </md-list>
             </md-content>
         </div>
 
@@ -55,7 +59,3 @@
 
     <div flex></div>
 </div>
-
-<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
-    <div ng-include="'./dist/archivos/prod-sidenav.html'"></div>
-</md-sidenav>

@@ -1,5 +1,5 @@
 ﻿md-list-item.seleccionado {
-    color: rgb(76, 175, 80);
+    color: rgb(76, 175, 80) !important;
 }
 
 .scrollable-nav-content {

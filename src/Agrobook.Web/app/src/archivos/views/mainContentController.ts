@@ -32,6 +32,7 @@ module archivosArea {
 
         idProductor: string;
         archivos: archivoDto[];
+        archivoSeleccionado: archivoDto;
 
         toggleSideNav(): void {
             this.$mdSidenav('right').toggle();
@@ -62,6 +63,10 @@ module archivosArea {
                 reason => {
                 }
             );
+        }
+
+        seleccionarArchivo(archivo: archivoDto) {
+            this.archivoSeleccionado = archivo;
         }
 
         download(archivo: archivoDto) {
