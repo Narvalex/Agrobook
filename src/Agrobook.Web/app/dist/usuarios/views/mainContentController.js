@@ -37,12 +37,9 @@ var usuariosArea;
                     tabId = 'perfil';
                     break;
                 case 1:
-                    tabId = 'permisos';
-                    break;
-                case 2:
                     tabId = 'grupos';
                     break;
-                case 3:
+                case 2:
                     tabId = 'organizaciones';
                     break;
                 default: tabId = "perfil";
@@ -55,14 +52,11 @@ var usuariosArea;
                 case 'perfil':
                     this.tabIndex = 0;
                     break;
-                case 'permisos':
+                case 'grupos':
                     this.tabIndex = 1;
                     break;
-                case 'grupos':
-                    this.tabIndex = 2;
-                    break;
                 case 'organizaciones':
-                    this.tabIndex = 3;
+                    this.tabIndex = 2;
                     break;
                 default:
                     this.tabIndex = 0;

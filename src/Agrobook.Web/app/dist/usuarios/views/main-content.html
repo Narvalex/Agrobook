@@ -22,16 +22,10 @@
             <md-tab label="Perfil" md-on-select="vm.onTabSelect(0)">
                 <div ng-include="'./dist/usuarios/views/perfil.html'"></div>
             </md-tab>
-            <md-tab label="Permisos" md-on-select="vm.onTabSelect(1)">
-                <div class="padding-all">
-                    <h1>Permisos</h1>
-                    <p>Aquí estaría básicamente el mismo formulario de crear nuevo usuario en la parte donde con chips se ven los permisos y con un combo se quitan, así entonces al quitar se quitan en tiempo real y así por el estilo</p>
-                </div>
-            </md-tab>
-            <md-tab label="Grupos" md-on-select="vm.onTabSelect(2)">
+            <md-tab label="Grupos" md-on-select="vm.onTabSelect(1)">
                 <div ng-include="'./dist/usuarios/views/grupos.html'"></div>
             </md-tab>
-            <md-tab label="Organizaciones" md-on-select="vm.onTabSelect(3)">
+            <md-tab label="Organizaciones" md-on-select="vm.onTabSelect(2)">
                 <div ng-include="'./dist/usuarios/views/organizaciones.html'"></div>
             </md-tab>
         </md-tabs>

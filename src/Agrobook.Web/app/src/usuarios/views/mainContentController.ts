@@ -52,9 +52,8 @@ module usuariosArea {
             let tabId: string;
             switch (tabIndex) {
                 case 0: tabId = 'perfil'; break
-                case 1: tabId = 'permisos'; break;
-                case 2: tabId = 'grupos'; break;
-                case 3: tabId = 'organizaciones'; break;
+                case 1: tabId = 'grupos'; break;
+                case 2: tabId = 'organizaciones'; break;
                 default: tabId = "perfil"
             }
 
@@ -65,9 +64,8 @@ module usuariosArea {
             let tabId = this.$routeParams['tab'];
             switch (tabId) { 
                 case 'perfil': this.tabIndex = 0; break;
-                case 'permisos': this.tabIndex = 1; break;
-                case 'grupos': this.tabIndex = 2; break;
-                case 'organizaciones': this.tabIndex = 3; break;
+                case 'grupos': this.tabIndex = 1; break;
+                case 'organizaciones': this.tabIndex = 2; break;
                 default: this.tabIndex = 0; break;
             }
         }
