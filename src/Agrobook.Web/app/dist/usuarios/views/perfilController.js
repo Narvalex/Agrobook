@@ -12,7 +12,10 @@ var usuariosArea;
             this.config = config;
             this.$rootScope = $rootScope;
             this.$scope = $scope;
-            this.loaded = false;
+            this.infoBasicaLoaded = false;
+            this.claimsLoaded = false;
+            this.permisosOtorgadosLoaded = false;
+            this.permisosOtorgados = []; // parece que debe estar inicializado para que los chips aparezcan
             this.avatarUrls = [];
             this.avatarUrls = config.avatarUrls;
             this.usuarioLogueado = this.loginQueryService.tryGetLocalLoginInfo();
@@ -22,14 +25,29 @@ var usuariosArea;
                 idUsuario = this.usuarioLogueado.usuario;
             this.usuariosQueryService.obtenerInfoBasicaDeUsuario(idUsuario, function (value) {
                 _this.inicializarEdicionDeInfoBasica(value.data);
-                _this.loaded = true;
+                _this.infoBasicaLoaded = true;
             }, function (reason) {
                 _this.toasterLite.error('Ocurrió un error al recuperar información del usuario ' + idUsuario, _this.toasterLite.delayForever);
             });
+            this.usuariosQueryService.obtenerListaDeClaims(function (value) {
+                _this.claims = value.data;
+                _this.claimsLoaded = true;
+            }, function (reason) {
+                _this.toasterLite.error("Error! Ver logs");
+            });
+            this.usuariosQueryService.obtenerClaimsDelUsuario(idUsuario, new common.callbackLite(function (value) {
+                value.data.forEach(function (x) {
+                    _this.permisosOtorgados.push(x); // tenemos que pushear, no reemplazar
+                });
+                _this.permisosOtorgadosLoaded = true;
+            }, function (reason) {
+                _this.toasterLite.error("Error al recuperar claims");
+            }));
             this.$scope.$on(this.config.eventIndex.usuarios.perfilActualizado, function (e, args) {
                 _this.inicializarEdicionDeInfoBasica(new usuariosArea.usuarioInfoBasica(args.usuario, args.nombreParaMostrar, args.avatarUrl));
             });
         }
+        perfilController.prototype.allLoaded = function () { return this.infoBasicaLoaded && this.claimsLoaded && this.permisosOtorgadosLoaded; };
         perfilController.prototype.actualizarPerfil = function () {
             var _this = this;
             if (!this.perfilEstaEditado) {
@@ -48,12 +66,10 @@ var usuariosArea;
             var _this = this;
             this.usuariosService.resetearPassword(this.usuarioRecuperado.nombre, function (value) { return _this.toasterLite.success('Password reseteado exitosamente'); }, function (reason) { return _this.toasterLite.error('Ocurrió un error al intentar resetear el password'); });
         };
-        perfilController.prototype.inicializarEdicionDeInfoBasica = function (usuarioRecuperado) {
-            this.usuarioRecuperado = usuarioRecuperado;
-            this.usuarioEditado = new usuariosArea.usuarioInfoBasica(usuarioRecuperado.nombre, usuarioRecuperado.nombreParaMostrar, usuarioRecuperado.avatarUrl);
-        };
         Object.defineProperty(perfilController.prototype, "perfilEstaEditado", {
             get: function () {
+                if (this.usuarioRecuperado === undefined)
+                    return false;
                 if (this.usuarioRecuperado.avatarUrl !== this.usuarioEditado.avatarUrl)
                     return true;
                 if (this.usuarioRecuperado.nombreParaMostrar !== this.usuarioEditado.nombreParaMostrar)
@@ -65,6 +81,10 @@ var usuariosArea;
             enumerable: true,
             configurable: true
         });
+        perfilController.prototype.inicializarEdicionDeInfoBasica = function (usuarioRecuperado) {
+            this.usuarioRecuperado = usuarioRecuperado;
+            this.usuarioEditado = new usuariosArea.usuarioInfoBasica(usuarioRecuperado.nombre, usuarioRecuperado.nombreParaMostrar, usuarioRecuperado.avatarUrl);
+        };
         Object.defineProperty(perfilController.prototype, "seQuiereActualizarPassword", {
             get: function () {
                 if (this.nuevoPassword !== undefined

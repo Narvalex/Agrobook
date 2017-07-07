@@ -108,9 +108,15 @@ var common;
             return this.$httpService.get(this.buildUrl(url))
                 .then(successCallback, errorCallback);
         };
-        httpLite.prototype.post = function (url, dto, successCallback, erroCallback) {
+        httpLite.prototype.getWithCallback = function (url, callback) {
+            this.get(url, callback.onSuccess, callback.onError);
+        };
+        httpLite.prototype.post = function (url, dto, successCallback, errorCallback) {
             this.$httpService.post(this.buildUrl(url), dto)
-                .then(successCallback, erroCallback);
+                .then(successCallback, errorCallback);
+        };
+        httpLite.prototype.postWithCallback = function (url, callback) {
+            this.post(url, callback.onSuccess, callback.onError);
         };
         httpLite.prototype.buildUrl = function (url) {
             return this.prefix + '/' + url;
@@ -118,5 +124,13 @@ var common;
         return httpLite;
     }());
     common.httpLite = httpLite;
+    var callbackLite = (function () {
+        function callbackLite(onSuccess, onError) {
+            this.onSuccess = onSuccess;
+            this.onError = onError;
+        }
+        return callbackLite;
+    }());
+    common.callbackLite = callbackLite;
 })(common || (common = {}));
 //# sourceMappingURL=infrastructure.js.map

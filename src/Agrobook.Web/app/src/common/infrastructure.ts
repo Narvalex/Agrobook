@@ -95,7 +95,7 @@ module common {
         ) {
         }
 
-        get<TResult>(
+        protected get<TResult>(
             url: string,
             successCallback: (value: ng.IHttpPromiseCallbackArg<TResult>) => any,
             errorCallback?: (reason: any) => any
@@ -104,18 +104,34 @@ module common {
                 .then<TResult>(successCallback, errorCallback);
         }
 
-        post<TResult>(
+        protected getWithCallback<TResult>(url: string, callback: callbackLite<TResult>) {
+            this.get<TResult>(url, callback.onSuccess, callback.onError);
+        }
+
+        protected post<TResult>(
             url: string,
             dto,
             successCallback: (value: ng.IHttpPromiseCallbackArg<TResult>) => any,
-            erroCallback?: (reason: any) => any
+            errorCallback?: (reason: any) => any
         ) {
             this.$httpService.post<TResult>(this.buildUrl(url), dto)
-                .then<TResult>(successCallback, erroCallback);
+                .then<TResult>(successCallback, errorCallback);
+        }
+
+        protected postWithCallback<TResult>(url: string, callback: callbackLite<TResult>) {
+            this.post<TResult>(url, callback.onSuccess, callback.onError);
         }
 
         private buildUrl(url: string) : string {
             return this.prefix + '/' + url;
+        }
+    }
+
+    export class callbackLite<TResult> {
+        constructor(
+            public onSuccess: (value: ng.IHttpPromiseCallbackArg<TResult>) => any,
+            public onError: (reason: any) => any
+        ) {
         }
     }
 }

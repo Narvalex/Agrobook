@@ -42,6 +42,14 @@ namespace Agrobook.Web.Controllers.Usuarios
         }
 
         [HttpGet]
+        [Route("claims/{idUsuario}")]
+        public async Task<IHttpActionResult> ObtenerClaimsDelUsuario([FromUri] string idUsuario)
+        {
+            var lista = await this.client.ObtenerClaims(idUsuario);
+            return this.Ok(lista);
+        }
+
+        [HttpGet]
         [Route("organizaciones")]
         public async Task<IHttpActionResult> ObtenerOrganizaciones()
         {

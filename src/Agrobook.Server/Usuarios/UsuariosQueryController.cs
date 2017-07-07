@@ -10,7 +10,7 @@ namespace Agrobook.Server.Usuarios
     [RoutePrefix("usuarios/query")]
     public class UsuariosQueryController : ApiController
     {
-        private readonly UsuariosQueryService service = ServiceLocator.ResolveSingleton<UsuariosQueryService>();
+        private readonly UsuariosQueryService usuarioQueryService = ServiceLocator.ResolveSingleton<UsuariosQueryService>();
         private readonly UsuariosService usuariosService = ServiceLocator.ResolveSingleton<UsuariosService>();
         private readonly OrganizacionesQueryService organizacionesQueryService = ServiceLocator.ResolveSingleton<OrganizacionesQueryService>();
 
@@ -19,7 +19,7 @@ namespace Agrobook.Server.Usuarios
         [Route("todos")]
         public async Task<IHttpActionResult> ObtenerTodosLosUsuarios()
         {
-            var lista = await this.service.ObtenerTodosLosUsuarios();
+            var lista = await this.usuarioQueryService.ObtenerTodosLosUsuarios();
             return this.Ok(lista);
         }
 
@@ -27,7 +27,7 @@ namespace Agrobook.Server.Usuarios
         [Route("info-basica/{usuario}")]
         public async Task<IHttpActionResult> ObtenerInfoBasica([FromUri] string usuario)
         {
-            var dto = await this.service.ObtenerUsuarioInfoBasica(usuario);
+            var dto = await this.usuarioQueryService.ObtenerUsuarioInfoBasica(usuario);
             return this.Ok(dto);
         }
 
@@ -36,6 +36,14 @@ namespace Agrobook.Server.Usuarios
         public async Task<IHttpActionResult> ObtenerClaims()
         {
             var claims = await this.usuariosService.ObtenerListaDeClaimsDisponiblesParaElUsuario(this.ActionContext.GetToken());
+            return this.Ok(claims);
+        }
+
+        [HttpGet]
+        [Route("claims/{idUsuario}")]
+        public async Task<IHttpActionResult> ObtenerClaims([FromUri] string idUsuario)
+        {
+            var claims = await this.usuariosService.ObtenerClaimsDelUsuario(idUsuario);
             return this.Ok(claims);
         }
 

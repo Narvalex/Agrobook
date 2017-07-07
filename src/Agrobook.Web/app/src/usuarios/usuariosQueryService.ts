@@ -24,6 +24,13 @@ module usuariosArea {
             super.get('claims', onSuccess, onError);
         }
 
+        obtenerClaimsDelUsuario(
+            idUsuario: string,
+            callback: common.callbackLite<claimDto[]>
+        ) {
+            super.getWithCallback('claims/' + idUsuario, callback);
+        }
+
         obtenerInfoBasicaDeUsuario(
             usuario: string,
             onSuccess: (value: ng.IHttpPromiseCallbackArg<usuarioInfoBasica>) => void,

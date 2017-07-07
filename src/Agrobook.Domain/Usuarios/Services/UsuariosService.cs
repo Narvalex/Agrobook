@@ -3,6 +3,7 @@ using Agrobook.Domain.Common;
 using Agrobook.Domain.Usuarios.Login;
 using Agrobook.Domain.Usuarios.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static Agrobook.Domain.Usuarios.UsuariosConstants;
@@ -69,6 +70,15 @@ namespace Agrobook.Domain.Usuarios
 
             var claimsPermitidos = ClaimProvider.ObtenerClaimsPermitidosParaCrearNuevoUsuario(loginInfo.Claims);
             return claimsPermitidos;
+        }
+
+        public async Task<IList<Claim>> ObtenerClaimsDelUsuario(string idUsuario)
+        {
+            var usuario = await this.repository.GetOrFailAsync<Usuario>(idUsuario);
+
+            var loginInfo = this.ExtraerElLoginInfo(usuario);
+            var claims = ClaimProvider.Transformar(loginInfo.Claims).ToList();
+            return claims;
         }
 
         public bool TryAuthorize(string token, params string[] claimsRequired)

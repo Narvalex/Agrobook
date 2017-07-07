@@ -1,19 +1,26 @@
 ﻿<div class="padding-all md-inline-form" ng-controller="perfilController as vm">
     <md-content layout-padding>
-        <div>
+        <md-content layout-padding ng-hide="vm.allLoaded()">
+            <div layout="row">
+                <md-progress-circular md-mode="indeterminate"
+                                      ng-disabled="vm.allLoaded()"></md-progress-circular>
+            </div>
+        </md-content>
+
+        <div ng-show="vm.allLoaded()">
             <form name="perfilForm" ng-submit="vm.actualizarPerfil()">
                 <div layout-gt-md="row">
                     <!--Avatar-->
-                      <md-input-container class="md-block" flex-gt-md>
+                    <md-input-container class="md-block" flex-gt-md>
                         <label>Imagen de perfil</label>
                         <md-select ng-model="vm.usuarioEditado.avatarUrl" name="avatar" required>
                             <md-option ng-repeat="url in vm.avatarUrls" ng-value="url">
                                 <img style="height: 50px;" ng-src="{{url}}" alt="Imagen de perfil" />
                             </md-option>
                         </md-select>
-                          <div ng-messages="perfilForm.avatar.$error">
-                              <div ng-message="required">Debe elegir una imagen de perfil.</div>
-                          </div>
+                        <div ng-messages="perfilForm.avatar.$error">
+                            <div ng-message="required">Debe elegir una imagen de perfil.</div>
+                        </div>
                     </md-input-container>
                     <br />
                     <!--Nombre para mostrar-->
@@ -21,13 +28,29 @@
                         <label>Nombre para mostrar</label>
                         <input ng-model="vm.usuarioEditado.nombreParaMostrar"
                                name="nombreParaMostrar"
-                               required/>
+                               required />
                         <div ng-messages="perfilForm.nombreParaMostrar.$error">
                             <div ng-message="required">Debe especificar un nombre para mostrar.</div>
                         </div>
                     </md-input-container>
                 </div>
                 <div layout="column">
+                    <!-- Roles y permisos -->
+                    <md-input-container class="md-block" flex-gt-md>
+                        <label>Roles y permisos</label>
+                        <md-select ng-model="vm.tipoDeCuenta">
+                            <md-option ng-repeat="claim in vm.claims" ng-value="claim" ng-click="vm.otorgarPermiso(claim)">
+                                {{claim.display}} <ng-md-icon title="{{claim.info}}" icon="help_outline"></ng-md-icon>
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-chips class="custom-chips" ng-model="vm.permisosOtorgados" readonly="true" md-removable="false">
+                        <md-chip-template ng-repeat="claim in vm.permisosOtorgados">
+                            {{claim.display}} <ng-md-icon style="cursor:pointer" title="Remover permiso de {{claim.display}}" icon="close"></ng-md-icon>
+                        </md-chip-template>
+                    </md-chips>
+
                     <!-- Password-->
                     <md-input-container class="md-block" flex-gt-md>
                         <label>Contraseña actual</label>
@@ -46,7 +69,7 @@
                 </div>
                 <div layout-gt-xs="row">
                     <!-- Botones -->
-                    <md-button type="submit" class="md-primary">Actualizar perfil</md-button>
+                    <md-button type="submit" class="md-primary" ng-disabled="!vm.perfilEstaEditado">Actualizar perfil</md-button>
                     <md-button ng-click="vm.resetearPassword()" class="md-warn">Resetear password</md-button>
                 </div>
             </form>

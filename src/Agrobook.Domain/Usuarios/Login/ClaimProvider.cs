@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Agrobook.Domain.Usuarios.Login.ClaimsDefs;
 
 namespace Agrobook.Domain.Usuarios.Login
@@ -25,6 +22,11 @@ namespace Agrobook.Domain.Usuarios.Login
         public static int ClaimCount => _claims.Count();
 
         public static IDictionary<string, Claim> Todos => _claims;
+
+        public static IEnumerable<Claim> Transformar(string[] claims)
+        {
+            return claims.Select(x => _claims[x]);
+        }
 
         public static Claim[] ObtenerClaimsPermitidosParaCrearNuevoUsuario(string claim)
         {

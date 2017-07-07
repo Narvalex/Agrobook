@@ -28,11 +28,33 @@ module usuariosArea {
                 idUsuario,
                 (value) => {
                     this.inicializarEdicionDeInfoBasica(value.data);
-                    this.loaded = true;
+                    this.infoBasicaLoaded = true;
                 },
                 (reason) => {
                     this.toasterLite.error('Ocurrió un error al recuperar información del usuario ' + idUsuario, this.toasterLite.delayForever);
                 });
+
+            this.usuariosQueryService.obtenerListaDeClaims(
+                value => {
+                    this.claims = value.data;
+                    this.claimsLoaded = true;
+                },
+                reason => {
+                    this.toasterLite.error("Error! Ver logs");
+                });
+
+            this.usuariosQueryService.obtenerClaimsDelUsuario(idUsuario,
+                new common.callbackLite<claimDto[]>(
+                    value => {
+                        value.data.forEach(x => {
+                            this.permisosOtorgados.push(x); // tenemos que pushear, no reemplazar
+                        });
+                        this.permisosOtorgadosLoaded = true;
+                    },
+                    reason => {
+                        this.toasterLite.error("Error al recuperar claims");
+                    })
+            );
 
             this.$scope.$on(this.config.eventIndex.usuarios.perfilActualizado,
                 (e, args: common.perfilActualizado) => {
@@ -41,7 +63,15 @@ module usuariosArea {
                 });
         }
 
-        loaded: boolean = false;
+        infoBasicaLoaded: boolean = false;
+        claimsLoaded: boolean = false;
+        permisosOtorgadosLoaded: boolean = false;
+        allLoaded(): boolean { return this.infoBasicaLoaded && this.claimsLoaded && this.permisosOtorgadosLoaded; }
+
+        // Claim Adding / Removal
+        claims: claimDto[];
+        permisosOtorgados: claimDto[] = []; // parece que debe estar inicializado para que los chips aparezcan
+
         avatarUrls = [];
         usuarioRecuperado: usuarioInfoBasica;
         usuarioEditado: usuarioInfoBasica;
@@ -71,7 +101,7 @@ module usuariosArea {
                 dto,
                 value => {
                     this.$rootScope.$broadcast(this.config.eventIndex.usuarios.perfilActualizado,
-                    new common.perfilActualizado(dto.usuario, dto.avatarUrl, dto.nombreParaMostrar));
+                        new common.perfilActualizado(dto.usuario, dto.avatarUrl, dto.nombreParaMostrar));
                     this.toasterLite.info('El perfil se ha actualizado exitosamente. Atención: si actualizó su contraseña entonces usted debe volver a iniciar sesión.');
                 },
                 reason => this.toasterLite.error('Ocurrió un error al intentar actualizar el perfil')
@@ -84,15 +114,9 @@ module usuariosArea {
                 reason => this.toasterLite.error('Ocurrió un error al intentar resetear el password'));
         }
 
-        private inicializarEdicionDeInfoBasica(usuarioRecuperado: usuarioInfoBasica) {
-            this.usuarioRecuperado = usuarioRecuperado;
-            this.usuarioEditado = new usuarioInfoBasica(
-                usuarioRecuperado.nombre,
-                usuarioRecuperado.nombreParaMostrar,
-                usuarioRecuperado.avatarUrl);
-        }
-
-        private get perfilEstaEditado(): boolean {
+        public get perfilEstaEditado(): boolean {
+            if (this.usuarioRecuperado === undefined)
+                return false;
             if (this.usuarioRecuperado.avatarUrl !== this.usuarioEditado.avatarUrl)
                 return true;
             if (this.usuarioRecuperado.nombreParaMostrar !== this.usuarioEditado.nombreParaMostrar)
@@ -100,6 +124,15 @@ module usuariosArea {
             if (this.seQuiereActualizarPassword)
                 return true;
             return false;
+        }
+
+
+        private inicializarEdicionDeInfoBasica(usuarioRecuperado: usuarioInfoBasica) {
+            this.usuarioRecuperado = usuarioRecuperado;
+            this.usuarioEditado = new usuarioInfoBasica(
+                usuarioRecuperado.nombre,
+                usuarioRecuperado.nombreParaMostrar,
+                usuarioRecuperado.avatarUrl);
         }
 
         private get seQuiereActualizarPassword(): boolean {
