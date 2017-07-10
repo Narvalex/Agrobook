@@ -41,11 +41,11 @@ namespace Agrobook.Domain.Usuarios
         public ActualizarPerfil(
             Metadatos metadatos,
             string usuario,
-            string avatarUrl, 
+            string avatarUrl,
             string nombreParaMostrar,
             string passwordActual,
             string nuevoPassword
-            ) 
+            )
             : base(metadatos)
         {
             this.Usuario = usuario;
@@ -89,5 +89,29 @@ namespace Agrobook.Domain.Usuarios
         }
 
         public string Usuario { get; }
+    }
+
+    public class OtorgarPermiso : MensajeAuditable
+    {
+        public OtorgarPermiso(Metadatos metadatos, string idUsuario, string permiso) : base(metadatos)
+        {
+            this.IdUsuario = idUsuario;
+            this.Permiso = permiso;
+        }
+
+        public string IdUsuario { get; }
+        public string Permiso { get; }
+    }
+
+    public class RetirarPermiso : MensajeAuditable
+    {
+        public RetirarPermiso(Metadatos metadatos, string idUsuario, string permiso) : base(metadatos)
+        {
+            this.IdUsuario = idUsuario;
+            this.Permiso = permiso;
+        }
+
+        public string IdUsuario { get; }
+        public string Permiso { get; }
     }
 }

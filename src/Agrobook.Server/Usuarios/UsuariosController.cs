@@ -2,7 +2,7 @@
 using Agrobook.Server.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
-using static Agrobook.Domain.Usuarios.Login.ClaimsDefs;
+using static Agrobook.Domain.Usuarios.Login.ClaimDef;
 
 namespace Agrobook.Server.Usuarios
 {
@@ -65,6 +65,22 @@ namespace Agrobook.Server.Usuarios
         public async Task<IHttpActionResult> AgregarUsuarioAGrupo([FromBody]AgregarUsuarioAUnGrupo command)
         {
             await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            return this.Ok();
+        }
+
+        [HttpPost]
+        [Route("otorgar-permiso")]
+        public async Task<IHttpActionResult> OtorgarPermiso([FromBody]OtorgarPermiso cmd)
+        {
+            await this.service.HandleAsync(cmd.ConMetadatos(this.ActionContext));
+            return this.Ok();
+        }
+
+        [HttpPost]
+        [Route("retirar-permiso")]
+        public async Task<IHttpActionResult> RetirarPermiso([FromBody]RetirarPermiso cmd)
+        {
+            await this.service.HandleAsync(cmd.ConMetadatos(this.ActionContext));
             return this.Ok();
         }
     }

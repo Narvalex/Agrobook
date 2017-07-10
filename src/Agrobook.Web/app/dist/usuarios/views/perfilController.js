@@ -16,6 +16,7 @@ var usuariosArea;
             this.claimsLoaded = false;
             this.permisosOtorgadosLoaded = false;
             this.permisosOtorgados = []; // parece que debe estar inicializado para que los chips aparezcan
+            this.aplicandoPermisos = false;
             this.avatarUrls = [];
             this.avatarUrls = config.avatarUrls;
             this.usuarioLogueado = this.loginQueryService.tryGetLocalLoginInfo();
@@ -81,6 +82,38 @@ var usuariosArea;
             enumerable: true,
             configurable: true
         });
+        perfilController.prototype.otorgarPermiso = function (claim) {
+            var _this = this;
+            this.aplicandoPermisos = true;
+            this.usuariosService.otorgarPermiso(this.usuarioRecuperado.nombre, claim.id, new common.callbackLite(function (value) {
+                _this.permisosOtorgados.push(claim);
+                _this.toasterLite.success('Permiso otorgado');
+                _this.aplicandoPermisos = false;
+            }, function (reason) {
+                _this.toasterLite.error('No se pudo otorgar el permiso');
+                _this.aplicandoPermisos = false;
+            }));
+        };
+        perfilController.prototype.retirarPermiso = function (claim) {
+            var _this = this;
+            this.aplicandoPermisos = true;
+            this.usuariosService.retirarPermiso(this.usuarioRecuperado.nombre, claim.id, new common.callbackLite(function (value) {
+                for (var i = 0; i < _this.permisosOtorgados.length; i++) {
+                    if (_this.permisosOtorgados[i].id === claim.id) {
+                        _this.permisosOtorgados.splice(i, 1);
+                        break;
+                    }
+                }
+                if (_this.permisosOtorgados.length === 0) {
+                    _this.permisosOtorgados.push(new usuariosArea.claimDto('rol-invitado', 'Invitado', 'Los invitados pueden ver los trabajos realizados a productores de su organización.'));
+                }
+                _this.toasterLite.success('Permiso retirado');
+                _this.aplicandoPermisos = false;
+            }, function (reason) {
+                _this.toasterLite.error('No se pudo retirar el permiso');
+                _this.aplicandoPermisos = false;
+            }));
+        };
         perfilController.prototype.inicializarEdicionDeInfoBasica = function (usuarioRecuperado) {
             this.usuarioRecuperado = usuarioRecuperado;
             this.usuarioEditado = new usuariosArea.usuarioInfoBasica(usuarioRecuperado.nombre, usuarioRecuperado.nombreParaMostrar, usuarioRecuperado.avatarUrl);

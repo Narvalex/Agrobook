@@ -43,7 +43,7 @@ namespace Agrobook.Domain.Usuarios
         public async Task CrearUsuarioAdminAsync()
         {
             var admin = new Usuario();
-            var loginInfo = new LoginInfo(UsuarioAdmin, DefaultPassword, new string[] { ClaimsDefs.Roles.Admin });
+            var loginInfo = new LoginInfo(UsuarioAdmin, DefaultPassword, new string[] { ClaimDef.Roles.Admin });
             var encryptedLoginInfo = this.EncriptarLoginInfo(loginInfo);
             admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), UsuarioAdmin, UsuarioAdmin, this.adminAvatarUrl, encryptedLoginInfo));
             await this.repository.SaveAsync(admin);
@@ -94,7 +94,7 @@ namespace Agrobook.Domain.Usuarios
             if (token != usuario.LoginInfoEncriptado)
                 return false;
 
-            if (tokenInfo.Claims.Any(c => c == ClaimsDefs.Roles.Admin))
+            if (tokenInfo.Claims.Any(c => c == ClaimDef.Roles.Admin))
                 return true;
 
             var tienePermiso = tokenInfo.Claims.Any(x => claimsRequired.Any(r => r == x));
@@ -103,10 +103,11 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task HandleAsync(CrearNuevoUsuario cmd)
         {
-            ValidarQue.ElNombreDeUsuarioNoContengaEspaciosEnBlanco(cmd.Usuario);
+            if (cmd.Usuario.Contains(' '))
+                throw new ArgumentException("El nombre de usuario no debe contener espacios en blanco");
 
             var state = new Usuario();
-            var loginInfo = new LoginInfo(cmd.Usuario, cmd.PasswordCrudo, cmd.Claims ?? new string[0]);
+            var loginInfo = new LoginInfo(cmd.Usuario, cmd.PasswordCrudo, cmd.Claims ?? new string[] { ClaimDef.Roles.Invitado });
             var eLoginInfo = this.EncriptarLoginInfo(loginInfo);
             state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario, cmd.NombreParaMostrar, cmd.AvatarUrl, eLoginInfo));
             await this.repository.SaveAsync(state);
@@ -201,7 +202,8 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task<GrupoDto> HandleAsync(CrearNuevoGrupo cmd)
         {
-            ValidarQue.ElNombreDelGrupoSeLlameIgualAlPorDefecto(cmd.GrupoDisplayName);
+            if (cmd.GrupoDisplayName.ToLowerTrimmedAndWhiteSpaceless() == UsuariosConstants.DefaultGrupoId)
+                throw new InvalidOperationException($"El nombre del grupo no puede ser {cmd.GrupoDisplayName}");
 
             var org = await this.repository.GetOrFailAsync<Organizacion>(cmd.IdOrganizacion);
             var idGrupo = cmd.GrupoDisplayName.ToLowerTrimmedAndWhiteSpaceless();
@@ -230,6 +232,62 @@ namespace Agrobook.Domain.Usuarios
             await this.repository.SaveAsync(org);
         }
 
+        public async Task HandleAsync(RetirarPermiso cmd)
+        {
+            // verificamos que no se quiera quitar permiso de admin al usuario de nombre admin
+            if (cmd.IdUsuario.EqualsIgnoringCase(UsuariosConstants.UsuarioAdmin)
+                && cmd.Permiso.EqualsIgnoringCase(ClaimDef.Roles.Admin))
+                throw new InvalidOperationException("No se puede retirar el permiso de admin al usuario admin.");
+
+            var usuario = await this.repository.GetOrFailAsync<Usuario>(cmd.IdUsuario);
+            var loginInfo = this.ExtraerElLoginInfo(usuario);
+
+            // obtengo los roles y permisos actuales del usuario
+            var rolesYPermisos = ClaimProvider.Transformar(loginInfo.Claims);
+
+            // verificamos que el usuario tenga ese rol o permiso
+            if (!rolesYPermisos.Any(x => x.Id == cmd.Permiso))
+                throw new InvalidOperationException("El usuario no tiene luego ese permiso o rol");
+
+            // procedemos a retirar el permiso o rol
+            loginInfo.RemoverClaim(cmd.Permiso);
+            var loginInfoActualizado = this.EncriptarLoginInfo(loginInfo);
+            usuario.Emit(new PermisoRetiradoDelUsuario(cmd.Metadatos, cmd.IdUsuario, cmd.Permiso, loginInfoActualizado));
+
+            // verificamos si tiene algun rol todavia
+            var solamenteRoles = ClaimProvider.ObtenerRoles(loginInfo.Claims);
+            if (!solamenteRoles.Any())
+            {
+                // si se quedo sin rol entonces verificamos que lo que se quiso quitar no fue por si acaso el rol por defecto
+                // que es el de invitado
+                if (cmd.Permiso.EqualsIgnoringCase(ClaimDef.Roles.Invitado))
+                    throw new InvalidOperationException("No se puede quitar el rol de invitado si es el unico que le queda");
+
+                // o entonces queda como invitado el pobrecito....
+                loginInfo.AddClaim(ClaimDef.Roles.Invitado);
+                var encriptado = this.EncriptarLoginInfo(loginInfo);
+                usuario.Emit(new PermisoOtorgadoAlUsuario(cmd.Metadatos, cmd.IdUsuario, ClaimDef.Roles.Invitado, encriptado));
+            }
+
+            await this.repository.SaveAsync(usuario);
+        }
+
+        public async Task HandleAsync(OtorgarPermiso cmd)
+        {
+            var usuario = await this.repository.GetOrFailAsync<Usuario>(cmd.IdUsuario);
+            var loginInfo = this.ExtraerElLoginInfo(usuario);
+
+            if (loginInfo.Claims.Any(x => x.EqualsIgnoringCase(cmd.Permiso)))
+                throw new InvalidOperationException("El usuario ya tiene ese permiso");
+
+            loginInfo.AddClaim(cmd.Permiso);
+            var encriptado = this.EncriptarLoginInfo(loginInfo);
+            usuario.Emit(new PermisoOtorgadoAlUsuario(cmd.Metadatos, cmd.IdUsuario, cmd.Permiso, encriptado));
+
+            await this.repository.SaveAsync(usuario);
+        }
+
+        #region Helpers
         private string EncriptarLoginInfo(LoginInfo loginInfo)
         {
             var encriptado = this.cryptoSerializer.Serialize(loginInfo);
@@ -241,20 +299,6 @@ namespace Agrobook.Domain.Usuarios
             var info = this.cryptoSerializer.Deserialize<LoginInfo>(usuario.LoginInfoEncriptado);
             return info;
         }
-
-        public static class ValidarQue
-        {
-            public static void ElNombreDeUsuarioNoContengaEspaciosEnBlanco(string nombreDeUsuario)
-            {
-                if (nombreDeUsuario.Contains(' '))
-                    throw new ArgumentException("El nombre de usuario no debe contener espacios en blanco");
-            }
-
-            public static void ElNombreDelGrupoSeLlameIgualAlPorDefecto(string nombrePropuestoDelGrupo)
-            {
-                if (nombrePropuestoDelGrupo.ToLowerTrimmedAndWhiteSpaceless() == UsuariosConstants.DefaultGrupoId)
-                    throw new InvalidOperationException($"El nombre del grupo no puede ser {nombrePropuestoDelGrupo}");
-            }
-        }
+        #endregion
     }
 }

@@ -34,7 +34,7 @@ namespace Agrobook.Domain.Usuarios.Services
         {
             var loginInfo = this.cryptoSerializer.Deserialize<LoginInfo>(loginInfoEncriptado);
 
-            var esProductor = loginInfo.Claims.Any(x => x == ClaimsDefs.Roles.Productor);
+            var esProductor = loginInfo.Claims.Any(x => x == ClaimDef.Roles.Productor);
             return esProductor;
         }
 

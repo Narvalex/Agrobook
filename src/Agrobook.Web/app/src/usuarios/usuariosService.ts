@@ -70,5 +70,20 @@ module usuariosArea {
             this.post(`agregar-usuario-a-grupo/${idUsuario}/${idOrganizacion}/${idGrupo}`, {}, onSuccess, onError);
         }
 
+        otorgarPermiso(
+            idUsuario: string,
+            permiso: string,
+            callback: common.callbackLite<{}>
+        ) {
+            super.postWithCallback(`otorgar-permiso?usuario=${idUsuario}&permiso=${permiso}`, {}, callback); 
+        }
+
+        retirarPermiso(
+            idUsuario: string,
+            permiso: string,
+            callback: common.callbackLite<{}>
+        ) {
+            super.postWithCallback(`retirar-permiso?usuario=${idUsuario}&permiso=${permiso}`, {}, callback);
+        }
     }
 }

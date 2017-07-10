@@ -1,4 +1,6 @@
-﻿namespace Agrobook.Domain.Usuarios.Login
+﻿using System.Linq;
+
+namespace Agrobook.Domain.Usuarios.Login
 {
     public class LoginInfo
     {
@@ -11,11 +13,23 @@
 
         public string Usuario { get; }
         public string Password { get; private set; }
-        public string[] Claims { get; }
+        public string[] Claims { get; private set; }
 
         public void ActualizarPassword(string nuevoPassword)
         {
             this.Password = nuevoPassword;
+        }
+
+        public void RemoverClaim(string claim)
+        {
+            this.Claims = this.Claims.Where(x => x != claim).ToArray();
+        }
+
+        public void AddClaim(string claim)
+        {
+            var lista = this.Claims.ToList();
+            lista.Add(claim);
+            this.Claims = lista.ToArray();
         }
     }
 }

@@ -5,7 +5,7 @@ using Agrobook.Domain.Usuarios.Login;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-using static Agrobook.Domain.Usuarios.Login.ClaimsDefs;
+using static Agrobook.Domain.Usuarios.Login.ClaimDef;
 
 namespace Agrobook.Domain.Tests.Usuarios
 {
@@ -65,7 +65,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         //}
 
         [TestMethod]
-        public void SePuedeCrearUsuarioNuevoSinNingunPermiso()
+        public void SePuedeCrearUsuarioNuevoSinEspecificarNingunPermisoPeroElMismoQuedaraComoInvitado()
         {
             var avatarUrl = "app/avatar.png";
             this.sut.Given()
@@ -91,7 +91,8 @@ namespace Agrobook.Domain.Tests.Usuarios
             void TestearInfo(string loginInfoEncriptado)
             {
                 var info = this.crypto.Deserialize<LoginInfo>(loginInfoEncriptado);
-                Assert.AreEqual(0, info.Claims.Length);
+                Assert.AreEqual(1, info.Claims.Length);
+                Assert.AreEqual(ClaimDef.Roles.Invitado, info.Claims[0]);
                 Assert.AreEqual("123", info.Password);
                 Assert.AreEqual("user1", info.Usuario);
             }
@@ -166,7 +167,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void SiElUsuarioExisteYLasCredencialesSonValidasSePuedeIniciarSesion()
         {
             var now = DateTime.Now;
-            var loginInfo = new LoginInfo("user1", "123", new string[] { ClaimsDefs.Roles.Admin });
+            var loginInfo = new LoginInfo("user1", "123", new string[] { ClaimDef.Roles.Admin });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
             this.sut
                 .Given("user1".AsStreamNameOf<Usuario>(), new NuevoUsuarioCreado(TestMeta.New, "user1", "User Name", "", eLoginInfo))
@@ -186,7 +187,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         [TestMethod]
         public void SiElUsuarioExisteYLasCredencialesNoSonValidasEntoncesNoSePuedeIniciarSesion()
         {
-            var loginInfo = new LoginInfo("user1", "123", new string[] { ClaimsDefs.Roles.Admin });
+            var loginInfo = new LoginInfo("user1", "123", new string[] { ClaimDef.Roles.Admin });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
             this.sut
                 .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", "Name Lastname", "", eLoginInfo))
@@ -215,7 +216,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                 .Given("productor", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
-                    var autorizado = s.TryAuthorize(eLoginInfo, ClaimsDefs.Roles.Tecnico);
+                    var autorizado = s.TryAuthorize(eLoginInfo, ClaimDef.Roles.Tecnico);
                     Assert.IsFalse(autorizado);
                 });
         }
@@ -224,14 +225,14 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void CuandoSeQuiereAutorizarAUnUsuarioQueTienePermisosPeroNoElNecesarioEntoncesSeLeNiega()
         {
             var now = DateTime.Now;
-            var loginInfo = new LoginInfo("productor", "123", new string[] { ClaimsDefs.Roles.Productor, "permiso-i" });
+            var loginInfo = new LoginInfo("productor", "123", new string[] { ClaimDef.Roles.Productor, "permiso-i" });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
                 .Given("productor", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
-                    var autorizado = s.TryAuthorize(eLoginInfo, ClaimsDefs.Roles.Tecnico);
+                    var autorizado = s.TryAuthorize(eLoginInfo, ClaimDef.Roles.Tecnico);
                     Assert.IsFalse(autorizado);
                 });
         }
@@ -240,14 +241,14 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void CuandoSeQuiereAutorizarAUnUsuarioQueSiTienePermisosEntoncesSeLeConcede()
         {
             var now = DateTime.Now;
-            var loginInfo = new LoginInfo("productor", "123", new string[] { ClaimsDefs.Roles.Tecnico, "permisito", ClaimsDefs.Roles.Productor });
+            var loginInfo = new LoginInfo("productor", "123", new string[] { ClaimDef.Roles.Tecnico, "permisito", ClaimDef.Roles.Productor });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
                 .Given("productor".AsStreamNameOf<Usuario>(), new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
-                    var autorizado = s.TryAuthorize(eLoginInfo, ClaimsDefs.Roles.Tecnico);
+                    var autorizado = s.TryAuthorize(eLoginInfo, ClaimDef.Roles.Tecnico);
                     Assert.IsTrue(autorizado);
                 });
         }
@@ -256,20 +257,20 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void SiElUsuarioEsAdminSiempreEsAutorizado()
         {
             var now = DateTime.Now;
-            var loginInfo = new LoginInfo("admin", "123", new string[] { ClaimsDefs.Roles.Admin });
+            var loginInfo = new LoginInfo("admin", "123", new string[] { ClaimDef.Roles.Admin });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
                 .Given("admin".AsStreamNameOf<Usuario>(), new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
-                    var autorizado = s.TryAuthorize(eLoginInfo, ClaimsDefs.Roles.Tecnico);
+                    var autorizado = s.TryAuthorize(eLoginInfo, ClaimDef.Roles.Tecnico);
                     Assert.IsTrue(autorizado);
                 });
         }
         #endregion
 
-        #region DadaUnaActualizacionDePerfilSolicitada
+        #region Actualizacion de Perfil
 
         [TestMethod]
         public void CuandoElUsuarioNoExisteEntoncesError()
@@ -577,5 +578,233 @@ namespace Agrobook.Domain.Tests.Usuarios
         }
 
         #endregion
+
+        #region Edicion de Roles y Permisos
+
+        // REMOVER ROLES Y PERMISOS
+
+        [TestMethod]
+        public void DadoUsuarioAdminNoSePuedeRemoverPermisoDeAdminPorQueEsElAdmin()
+        {
+            var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo("admin", "pass", new string[] { ClaimDef.Roles.Admin }));
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, "admin", "admin", "avatar.png", loginInfoEncriptado);
+            this.sut
+                .Given("admin".AsStreamNameOf<Usuario>(), eventoUsuarioCreado)
+                .When(s =>
+                {
+                    Assert.ThrowsException<InvalidOperationException>(() =>
+                    {
+                        try
+                        {
+                            s.HandleAsync(new RetirarPermiso(TestMeta.New, "admin", ClaimDef.Roles.Admin)).Wait();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex.InnerException;
+                        }
+                    });
+                });
+        }
+
+        [TestMethod]
+        public void DadoUsuarioConUnicoRolDeProductorSeLePuedeRetirarElRolYQuedaraComoInvitado()
+        {
+            var nombreDeUsuario = "jorgito";
+            var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Productor }));
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            this.sut
+                .Given(nombreDeUsuario.AsStreamNameOf<Usuario>(), eventoUsuarioCreado)
+                .When(s =>
+                {
+                    s.HandleAsync(new RetirarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Productor))
+                    .Wait();
+                })
+                .Then(events =>
+                {
+                    Assert.AreEqual(2, events.Count);
+
+                    var retirado = events.OfType<PermisoRetiradoDelUsuario>().Single();
+                    var otorgado = events.OfType<PermisoOtorgadoAlUsuario>().Single();
+
+                    Assert.AreEqual(ClaimDef.Roles.Productor, retirado.Permiso);
+                    Assert.AreEqual(ClaimDef.Roles.Invitado, otorgado.Permiso);
+                });
+        }
+
+        [TestMethod]
+        public void DadoUsuarioConUnicoRolDeTecnicoSeLePuedeRetirarElRolYQuedaraComoInvitado()
+        {
+            var nombreDeUsuario = "jorgito";
+            var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Tecnico }));
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            this.sut
+                .Given(nombreDeUsuario.AsStreamNameOf<Usuario>(), eventoUsuarioCreado)
+                .When(s =>
+                {
+                    s.HandleAsync(new RetirarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Tecnico))
+                    .Wait();
+                })
+                .Then(events =>
+                {
+                    Assert.AreEqual(2, events.Count);
+
+                    var retirado = events.OfType<PermisoRetiradoDelUsuario>().Single();
+                    var otorgado = events.OfType<PermisoOtorgadoAlUsuario>().Single();
+
+                    Assert.AreEqual(ClaimDef.Roles.Tecnico, retirado.Permiso);
+                    Assert.AreEqual(ClaimDef.Roles.Invitado, otorgado.Permiso);
+                });
+        }
+
+        [TestMethod]
+        public void DadoUsuarioConUnicoRolDeGerenteSeLePuedeRetirarElRolYQuedaraComoInvitado()
+        {
+
+            var nombreDeUsuario = "jorgito";
+            var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Gerente }));
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            this.sut
+                .Given(nombreDeUsuario.AsStreamNameOf<Usuario>(), eventoUsuarioCreado)
+                .When(s =>
+                {
+                    s.HandleAsync(new RetirarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Gerente))
+                    .Wait();
+                })
+                .Then(events =>
+                {
+                    Assert.AreEqual(2, events.Count);
+
+                    var retirado = events.OfType<PermisoRetiradoDelUsuario>().Single();
+                    var otorgado = events.OfType<PermisoOtorgadoAlUsuario>().Single();
+
+                    Assert.AreEqual(ClaimDef.Roles.Gerente, retirado.Permiso);
+                    Assert.AreEqual(ClaimDef.Roles.Invitado, otorgado.Permiso);
+                });
+        }
+
+        [TestMethod]
+        public void DadoUsuarioConUnicoRolDeAdminSeLePuedeRetirarElRolYQuedaraComoInvitado()
+        {
+            var nombreDeUsuario = "jorgito";
+            var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Admin }));
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            this.sut
+                .Given(nombreDeUsuario.AsStreamNameOf<Usuario>(), eventoUsuarioCreado)
+                .When(s =>
+                {
+                    s.HandleAsync(new RetirarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Admin))
+                    .Wait();
+                })
+                .Then(events =>
+                {
+                    Assert.AreEqual(2, events.Count);
+
+                    var retirado = events.OfType<PermisoRetiradoDelUsuario>().Single();
+                    var otorgado = events.OfType<PermisoOtorgadoAlUsuario>().Single();
+
+                    Assert.AreEqual(ClaimDef.Roles.Admin, retirado.Permiso);
+                    Assert.AreEqual(ClaimDef.Roles.Invitado, otorgado.Permiso);
+                });
+        }
+
+        [TestMethod]
+        public void DadoUsuarioConRolDeGerenteYAdminSiSeLeQuitaAdminEntoncesQuedaraComoGerente()
+        {
+            var nombreDeUsuario = "jorgito";
+            var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Gerente, ClaimDef.Roles.Admin }));
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            this.sut
+                .Given(nombreDeUsuario.AsStreamNameOf<Usuario>(), eventoUsuarioCreado)
+                .When(s =>
+                {
+                    s.HandleAsync(new RetirarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Admin))
+                    .Wait();
+                })
+                .Then(events =>
+                {
+                    Assert.AreEqual(1, events.Count);
+
+                    var retirado = events.OfType<PermisoRetiradoDelUsuario>().Single();
+
+                    Assert.AreEqual(ClaimDef.Roles.Admin, retirado.Permiso);
+                });
+        }
+
+        [TestMethod]
+        public void DadoUsuarioQueSoloEsInvitadoNoSeLePuedeRetirarEseRolPorQueEsElUnicoQueTiene()
+        {
+            var nombreDeUsuario = "jorgito";
+            var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Invitado }));
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            this.sut
+                .Given(nombreDeUsuario.AsStreamNameOf<Usuario>(), eventoUsuarioCreado)
+                .When(s =>
+                {
+                    Assert.ThrowsException<InvalidOperationException>(() =>
+                    {
+                        try
+                        {
+                            s.HandleAsync(new RetirarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Invitado))
+                            .Wait();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex.InnerException;
+                        }
+                    });
+                });
+        }
+
+        // OTORGAR ROLES Y PERMISOS
+
+        [TestMethod]
+        public void SiElUsuarioYaTieneUnRolOPermisoQueSeQuiereOtorgarEntoncesThrows()
+        {
+            var nombreDeUsuario = "jorgito";
+            var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Invitado }));
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            this.sut
+                .Given(nombreDeUsuario.AsStreamNameOf<Usuario>(), eventoUsuarioCreado)
+                .When(s =>
+                {
+                    Assert.ThrowsException<InvalidOperationException>(() =>
+                    {
+                        try
+                        {
+                            s.HandleAsync(new OtorgarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Invitado))
+                            .Wait();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex.InnerException;
+                        }
+                    });
+                });
+        }
+
+        [TestMethod]
+        public void SiElUsuarioNoTieneUnPermisoYSeLeQuiereOtorgarEntoncesFunciona()
+        {
+            var nombreDeUsuario = "jorgito";
+            var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Invitado }));
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            this.sut
+                .Given(nombreDeUsuario.AsStreamNameOf<Usuario>(), eventoUsuarioCreado)
+                .When(s =>
+                {
+                    s.HandleAsync(new OtorgarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Admin))
+                    .Wait();
+                })
+                .Then(events =>
+                {
+                    Assert.AreEqual(1, events.Count);
+
+                    var e = events.OfType<PermisoOtorgadoAlUsuario>().Single();
+
+                    Assert.AreEqual(ClaimDef.Roles.Admin, e.Permiso);
+                });
+        }
+
+        #endregion 
     }
 }

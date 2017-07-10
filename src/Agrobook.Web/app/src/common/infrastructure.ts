@@ -118,8 +118,8 @@ module common {
                 .then<TResult>(successCallback, errorCallback);
         }
 
-        protected postWithCallback<TResult>(url: string, callback: callbackLite<TResult>) {
-            this.post<TResult>(url, callback.onSuccess, callback.onError);
+        protected postWithCallback<TResult>(url: string, dto: any, callback: callbackLite<TResult>) {
+            this.post<TResult>(url, dto, callback.onSuccess, callback.onError);
         }
 
         private buildUrl(url: string) : string {

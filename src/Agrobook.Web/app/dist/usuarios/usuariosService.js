@@ -39,6 +39,12 @@ var usuariosArea;
         usuariosService.prototype.agregarUsuarioAGrupo = function (idUsuario, idOrganizacion, idGrupo, onSuccess, onError) {
             this.post("agregar-usuario-a-grupo/" + idUsuario + "/" + idOrganizacion + "/" + idGrupo, {}, onSuccess, onError);
         };
+        usuariosService.prototype.otorgarPermiso = function (idUsuario, permiso, callback) {
+            _super.prototype.postWithCallback.call(this, "otorgar-permiso?usuario=" + idUsuario + "&permiso=" + permiso, {}, callback);
+        };
+        usuariosService.prototype.retirarPermiso = function (idUsuario, permiso, callback) {
+            _super.prototype.postWithCallback.call(this, "retirar-permiso?usuario=" + idUsuario + "&permiso=" + permiso, {}, callback);
+        };
         return usuariosService;
     }(common.httpLite));
     usuariosService.$inject = ['$http'];

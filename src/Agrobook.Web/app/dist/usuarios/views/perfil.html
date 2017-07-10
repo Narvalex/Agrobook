@@ -11,17 +11,19 @@
             <form name="perfilForm" ng-submit="vm.actualizarPerfil()">
                 <div layout-gt-md="row">
                     <!--Avatar-->
-                    <md-input-container class="md-block" flex-gt-md>
-                        <label>Imagen de perfil</label>
-                        <md-select ng-model="vm.usuarioEditado.avatarUrl" name="avatar" required>
-                            <md-option ng-repeat="url in vm.avatarUrls" ng-value="url">
-                                <img style="height: 50px;" ng-src="{{url}}" alt="Imagen de perfil" />
-                            </md-option>
-                        </md-select>
-                        <div ng-messages="perfilForm.avatar.$error">
-                            <div ng-message="required">Debe elegir una imagen de perfil.</div>
-                        </div>
-                    </md-input-container>
+                    <div style="max-width: 150px">
+                        <md-input-container class="md-block" flex-gt-md>
+                            <label>Imagen de perfil</label>
+                            <md-select ng-model="vm.usuarioEditado.avatarUrl" name="avatar" required>
+                                <md-option ng-repeat="url in vm.avatarUrls" ng-value="url">
+                                    <img style="height: 50px;" ng-src="{{url}}" alt="Imagen de perfil" />
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="perfilForm.avatar.$error">
+                                <div ng-message="required">Debe elegir una imagen de perfil.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
                     <br />
                     <!--Nombre para mostrar-->
                     <md-input-container class="md-block" flex-gt-md>
@@ -35,22 +37,6 @@
                     </md-input-container>
                 </div>
                 <div layout="column">
-                    <!-- Roles y permisos -->
-                    <md-input-container class="md-block" flex-gt-md>
-                        <label>Roles y permisos</label>
-                        <md-select ng-model="vm.tipoDeCuenta">
-                            <md-option ng-repeat="claim in vm.claims" ng-value="claim" ng-click="vm.otorgarPermiso(claim)">
-                                {{claim.display}} <ng-md-icon title="{{claim.info}}" icon="help_outline"></ng-md-icon>
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <md-chips class="custom-chips" ng-model="vm.permisosOtorgados" readonly="true" md-removable="false">
-                        <md-chip-template ng-repeat="claim in vm.permisosOtorgados">
-                            {{claim.display}} <ng-md-icon style="cursor:pointer" title="Remover permiso de {{claim.display}}" icon="close"></ng-md-icon>
-                        </md-chip-template>
-                    </md-chips>
-
                     <!-- Password-->
                     <md-input-container class="md-block" flex-gt-md>
                         <label>Contraseña actual</label>
@@ -75,4 +61,48 @@
             </form>
         </div>
     </md-content>
+
+    <br />
+
+    <md-toolbar class="md-warn">
+        <div class="md-toolbar-tools">
+            <h2 class="md-flex">Roles y permisos</h2>
+        </div>
+    </md-toolbar>
+
+    <md-content flex layout-padding>
+        <br />
+
+        <div style="max-width: 250px">
+            <!-- Roles y permisos -->
+            <md-input-container class="md-block" flex-gt-md>
+                <label>Roles y permisos</label>
+                <md-select ng-model="vm.tipoDeCuenta">
+                    <md-option ng-repeat="claim in vm.claims" ng-value="claim" ng-click="vm.otorgarPermiso(claim)">
+                        {{claim.display}} <ng-md-icon title="{{claim.info}}" icon="help_outline"></ng-md-icon>
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+
+        <md-chips class="custom-chips" ng-model="vm.permisosOtorgados" name="display" readonly="true" md-removable="false">
+            <md-chip-template>
+                {{$chip.display}}
+                <ng-md-icon style="cursor:pointer"
+                            ng-click="vm.retirarPermiso($chip)"
+                            title="Remover permiso de {{$chip.display}}" icon="close"></ng-md-icon>
+            </md-chip-template>
+        </md-chips>
+
+
+        <p>Utilice con extrema precaución este menú, por que los cambios se aplican inmediatamente.</p>
+        <!-- Loading -->
+        <!--<div class="container" ng-show="vm.aplicandoPermisos">
+            <md-progress-linear md-mode="query" ng-disabled="!vm.aplicandoPermisos"></md-progress-linear>
+            <div class="bottom-block">
+                <span>Aplicando cambios...</span>
+            </div>
+        </div>-->
+    </md-content>
+    <br />
 </div>

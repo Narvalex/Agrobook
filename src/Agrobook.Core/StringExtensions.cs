@@ -28,5 +28,10 @@ namespace Agrobook.Core
             text = new string(text.Trim().Where(c => !char.IsWhiteSpace(c)).ToArray()).ToLowerInvariant();
             return text;
         }
+
+        public static bool EqualsIgnoringCase(this string a, string b)
+        {
+            return a.Equals(b, System.StringComparison.InvariantCultureIgnoreCase);
+        }
     }
 }

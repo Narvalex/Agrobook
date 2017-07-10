@@ -115,8 +115,8 @@ var common;
             this.$httpService.post(this.buildUrl(url), dto)
                 .then(successCallback, errorCallback);
         };
-        httpLite.prototype.postWithCallback = function (url, callback) {
-            this.post(url, callback.onSuccess, callback.onError);
+        httpLite.prototype.postWithCallback = function (url, dto, callback) {
+            this.post(url, dto, callback.onSuccess, callback.onError);
         };
         httpLite.prototype.buildUrl = function (url) {
             return this.prefix + '/' + url;

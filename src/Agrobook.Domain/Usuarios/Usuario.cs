@@ -30,6 +30,14 @@ namespace Agrobook.Domain.Usuarios
             {
                 this.LoginInfoEncriptado = e.LoginInfoEncriptado;
             });
+            this.On<PermisoRetiradoDelUsuario>(e =>
+            {
+                this.LoginInfoEncriptado = e.LoginInfoActualizado;
+            });
+            this.On<PermisoOtorgadoAlUsuario>(e =>
+            {
+                this.LoginInfoEncriptado = e.LoginInfoActualizado;
+            });
         }
 
         protected override void Rehydrate(ISnapshot snapshot)

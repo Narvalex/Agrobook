@@ -53,5 +53,17 @@ namespace Agrobook.Client.Usuarios
             var command = new AgregarUsuarioAUnGrupo(null, idOrganizacion, idUsuario, idGrupo);
             await base.Post("agregar-usuario-a-grupo", command);
         }
+
+        public async Task OtorgarPermisoAUsuario(string idUsuario, string permiso)
+        {
+            var command = new OtorgarPermiso(null, idUsuario, permiso);
+            await base.Post("otorgar-permiso", command);
+        }
+
+        public async Task RetirarPermiso(string usuario, string permiso)
+        {
+            var command = new RetirarPermiso(null, usuario, permiso);
+            await base.Post("retirar-permiso", command);
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using static Agrobook.Domain.Usuarios.Login.ClaimsDefs;
+using static Agrobook.Domain.Usuarios.Login.ClaimDef;
 
 namespace Agrobook.Domain.Usuarios.Login
 {
@@ -26,6 +26,17 @@ namespace Agrobook.Domain.Usuarios.Login
         public static IEnumerable<Claim> Transformar(string[] claims)
         {
             return claims.Select(x => _claims[x]);
+        }
+
+        public static IEnumerable<Claim> ObtenerRoles(string[] claims)
+        {
+            var claimDtos = Transformar(claims);
+            return claimDtos
+                .Where(x => x.Id == Roles.Admin
+                       || x.Id == Roles.Gerente
+                       || x.Id == Roles.Tecnico
+                       || x.Id == Roles.Productor
+                       || x.Id == Roles.Invitado);
         }
 
         public static Claim[] ObtenerClaimsPermitidosParaCrearNuevoUsuario(string claim)

@@ -3,7 +3,7 @@ using Agrobook.Domain.Usuarios.Services;
 using Agrobook.Server.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
-using static Agrobook.Domain.Usuarios.Login.ClaimsDefs;
+using static Agrobook.Domain.Usuarios.Login.ClaimDef;
 
 namespace Agrobook.Server.Usuarios
 {

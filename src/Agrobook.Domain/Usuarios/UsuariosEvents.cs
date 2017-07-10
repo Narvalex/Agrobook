@@ -77,4 +77,32 @@ namespace Agrobook.Domain.Usuarios
         public string Usuario { get; }
         public string LoginInfoEncriptado { get; }
     }
+
+    public class PermisoRetiradoDelUsuario : MensajeAuditable
+    {
+        public PermisoRetiradoDelUsuario(Metadatos metadatos, string idUsuario, string permiso, string loginInfoActualizado) : base(metadatos)
+        {
+            this.IdUsuario = idUsuario;
+            this.Permiso = permiso;
+            this.LoginInfoActualizado = loginInfoActualizado;
+        }
+
+        public string IdUsuario { get; }
+        public string Permiso { get; }
+        public string LoginInfoActualizado { get; }
+    }
+
+    public class PermisoOtorgadoAlUsuario : MensajeAuditable
+    {
+        public PermisoOtorgadoAlUsuario(Metadatos metadatos, string idUsuario, string permiso, string loginInfoActualizado) : base(metadatos)
+        {
+            this.IdUsuario = idUsuario;
+            this.Permiso = permiso;
+            this.LoginInfoActualizado = loginInfoActualizado;
+        }
+
+        public string IdUsuario { get; }
+        public string Permiso { get; }
+        public string LoginInfoActualizado { get; }
+    }
 }
