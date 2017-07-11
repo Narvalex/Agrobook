@@ -100,12 +100,12 @@ module common {
             successCallback: (value: ng.IHttpPromiseCallbackArg<TResult>) => any,
             errorCallback?: (reason: any) => any
         ) {
+            var self = this;
             return this.$httpService.get(this.buildUrl(url))
-                .then<TResult>(successCallback, errorCallback);
-        }
-
-        protected getWithCallback<TResult>(url: string, callback: callbackLite<TResult>) {
-            this.get<TResult>(url, callback.onSuccess, callback.onError);
+                .then<TResult>(successCallback,
+                reason => {
+                    self.handleError(reason, errorCallback);
+                });
         }
 
         protected post<TResult>(
@@ -114,8 +114,16 @@ module common {
             successCallback: (value: ng.IHttpPromiseCallbackArg<TResult>) => any,
             errorCallback?: (reason: any) => any
         ) {
+            var self = this;
             this.$httpService.post<TResult>(this.buildUrl(url), dto)
-                .then<TResult>(successCallback, errorCallback);
+                .then<TResult>(successCallback,
+                reason => {
+                    self.handleError(reason, errorCallback);
+                });
+        }
+
+        protected getWithCallback<TResult>(url: string, callback: callbackLite<TResult>) {
+            this.get<TResult>(url, callback.onSuccess, callback.onError);
         }
 
         protected postWithCallback<TResult>(url: string, dto: any, callback: callbackLite<TResult>) {
@@ -124,6 +132,16 @@ module common {
 
         private buildUrl(url: string) : string {
             return this.prefix + '/' + url;
+        }
+
+        private handleError(reason: any, errorCallback?: (reason: any) => any) {
+            // TODO here
+            if (reason.status === 401) {
+                window.location.replace('home.html?unauth=1');
+            }
+
+            if (errorCallback !== undefined && errorCallback !== null)
+                errorCallback(reason);
         }
     }
 

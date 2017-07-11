@@ -15,6 +15,11 @@ var homeArea;
             });
             this.establecerFormularioDeLogin();
             this.verificarSiEstaLogueado();
+            if (window.location.search === "?unauth=1") {
+                window.alert('Usted no tiene permiso para continuar o sus permisos fueron modificados. Por favor vuelva a introducir sus credenciales');
+                if (this.estaLogueado)
+                    this.loginService.logOut();
+            }
         }
         ToolbarHeaderController.prototype.onInputKeyPress = function ($event) {
             if ($event.keyCode == this.config.keyCodes.enter)
@@ -33,6 +38,10 @@ var homeArea;
             this.establecerFormularioDeLogin(true);
             this.loginService.tryLogin(new login.credencialesDto(this.usuario, this.password), function (value) {
                 if (value.data.loginExitoso) {
+                    if (window.location.search === "?unauth=1") {
+                        window.location.search = '';
+                        return;
+                    }
                     _this.establecerUsuarioLogueado(value.data.nombreParaMostrar);
                     // clear the inputs
                     _this.usuario = '';

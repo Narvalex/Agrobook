@@ -10,6 +10,8 @@ var common;
             this.$rootScope = $rootScope;
             this.$scope = $scope;
             this.estaLogueado = false;
+            if (window.location.search === "?unauth=1")
+                return;
             this.$rootScope.$on(this.config.eventIndex.login.loggedIn, function (e, args) {
                 _this.verificarLogueo();
             });
@@ -49,6 +51,7 @@ var common;
         userMenuWidgetController.prototype.verificarLogueo = function () {
             var result = this.loginQueryService.tryGetLocalLoginInfo();
             if (result !== undefined && result.loginExitoso) {
+                // verificar si no hay una peticion para que se desloguee
                 this.estaLogueado = true;
                 this.usuario = result.usuario;
                 this.nombreParaMostrar = result.nombreParaMostrar;

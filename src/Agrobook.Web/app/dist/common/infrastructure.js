@@ -105,21 +105,35 @@ var common;
             this.prefix = prefix;
         }
         httpLite.prototype.get = function (url, successCallback, errorCallback) {
+            var self = this;
             return this.$httpService.get(this.buildUrl(url))
-                .then(successCallback, errorCallback);
+                .then(successCallback, function (reason) {
+                self.handleError(reason, errorCallback);
+            });
+        };
+        httpLite.prototype.post = function (url, dto, successCallback, errorCallback) {
+            var self = this;
+            this.$httpService.post(this.buildUrl(url), dto)
+                .then(successCallback, function (reason) {
+                self.handleError(reason, errorCallback);
+            });
         };
         httpLite.prototype.getWithCallback = function (url, callback) {
             this.get(url, callback.onSuccess, callback.onError);
-        };
-        httpLite.prototype.post = function (url, dto, successCallback, errorCallback) {
-            this.$httpService.post(this.buildUrl(url), dto)
-                .then(successCallback, errorCallback);
         };
         httpLite.prototype.postWithCallback = function (url, dto, callback) {
             this.post(url, dto, callback.onSuccess, callback.onError);
         };
         httpLite.prototype.buildUrl = function (url) {
             return this.prefix + '/' + url;
+        };
+        httpLite.prototype.handleError = function (reason, errorCallback) {
+            // TODO here
+            if (reason.status === 401) {
+                window.location.replace('home.html?unauth=1');
+            }
+            if (errorCallback !== undefined && errorCallback !== null)
+                errorCallback(reason);
         };
         return httpLite;
     }());

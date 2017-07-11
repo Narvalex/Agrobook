@@ -2,6 +2,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -133,14 +134,21 @@ namespace Agrobook.Client
 
         private void EnsureResponseIsOk(string uri, HttpResponseMessage response)
         {
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
+                return;
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+                throw new RemoteUnauthrorizedResponseException();
+            else
                 throw new Exception($"Error on posting to {uri}. Status Code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
         }
     }
 
-    public class UnauthorizedHttpResponseException : Exception
+    public class RemoteUnauthrorizedResponseException : Exception
     {
-        public UnauthorizedHttpResponseException(string message) : base(message)
+        public RemoteUnauthrorizedResponseException()
+        { }
+
+        public RemoteUnauthrorizedResponseException(string message) : base(message)
         { }
     }
 }

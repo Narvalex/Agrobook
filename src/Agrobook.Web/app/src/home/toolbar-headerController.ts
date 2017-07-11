@@ -17,6 +17,12 @@ module homeArea {
 
             this.establecerFormularioDeLogin();
             this.verificarSiEstaLogueado();
+
+            if (window.location.search === "?unauth=1") {
+                window.alert('Usted no tiene permiso para continuar o sus permisos fueron modificados. Por favor vuelva a introducir sus credenciales');
+                if (this.estaLogueado)
+                    this.loginService.logOut();
+            }
         }
 
         estaLogueado: boolean = false;
@@ -50,9 +56,16 @@ module homeArea {
                 new login.credencialesDto(this.usuario, this.password),
                 value => {
                     if (value.data.loginExitoso) {
+                        if (window.location.search === "?unauth=1") {
+                            window.location.search = '';
+                            return;
+                        }
+
                         this.establecerUsuarioLogueado(value.data.nombreParaMostrar);
                         // clear the inputs
                         this.usuario = '';
+
+                       
                     }
                     else {
                         window.alert("Credenciales inválidas");

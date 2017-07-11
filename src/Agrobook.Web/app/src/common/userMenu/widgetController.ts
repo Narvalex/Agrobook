@@ -11,6 +11,9 @@ module common {
             private $rootScope: angular.IRootScopeService,
             private $scope: ng.IScope
         ) {
+            if (window.location.search === "?unauth=1")
+                return;
+
             this.$rootScope.$on(this.config.eventIndex.login.loggedIn, (e, args) => {
                 this.verificarLogueo();
             });
@@ -61,10 +64,12 @@ module common {
         private verificarLogueo() {
             var result = this.loginQueryService.tryGetLocalLoginInfo();
             if (result !== undefined && result.loginExitoso) {
-                this.estaLogueado = true;
-                this.usuario = result.usuario;
-                this.nombreParaMostrar = result.nombreParaMostrar;
-                this.avatarUrl = result.avatarUrl;
+                // verificar si no hay una peticion para que se desloguee
+                    this.estaLogueado = true;
+                    this.usuario = result.usuario;
+                    this.nombreParaMostrar = result.nombreParaMostrar;
+                    this.avatarUrl = result.avatarUrl;
+                
             }
             else {
                 this.estaLogueado = false;
