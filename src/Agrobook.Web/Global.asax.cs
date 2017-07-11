@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Serialization;
+﻿using Agrobook.Web.Filters;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Web.Http;
 
@@ -21,6 +22,8 @@ namespace Agrobook.Web
                 config.MapHttpAttributeRoutes();
 
                 config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+                config.Filters.Add(new RemoteUnauthrorizedExceptionHandlerAttribute());
             });
         }
     }

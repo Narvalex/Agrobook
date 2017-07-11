@@ -9,6 +9,13 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Client
 {
+    /// <summary>
+    /// This could be a whole lot improved with a limited pool
+    /// https://pastebin.com/jftEbWrc
+    /// Maybe we could abstract this out with an interface.
+    /// This is a little discusion about it.
+    /// https://aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/
+    /// </summary>
     public class HttpLite
     {
         private readonly string hostUri;
@@ -23,49 +30,46 @@ namespace Agrobook.Client
 
         public async Task<TResult> Get<TResult>(string uri, string token = null)
         {
-            HttpResponseMessage response;
             using (var client = this.CreateHttpClient(token))
             {
                 var endpoint = new Uri(new Uri(this.hostUri), uri);
-                response = await client.GetAsync(endpoint.AbsoluteUri);
+                using (var response = await client.GetAsync(endpoint.AbsoluteUri))
+                {
+                    this.EnsureResponseIsOk(uri, response);
+                    var result = await response.Content.ReadAsAsync<TResult>();
+                    return result;
+                }
             }
-
-            if (!response.IsSuccessStatusCode)
-                throw new Exception($"Error on GET to {uri}. Status Code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
-            var result = await response.Content.ReadAsAsync<TResult>();
-            return result;
         }
 
         public async Task<Stream> Get(string uri, string token = null)
         {
-            HttpResponseMessage response;
             using (var client = this.CreateHttpClient(token))
             {
                 var endpoint = new Uri(new Uri(this.hostUri), uri);
-                response = await client.GetAsync(endpoint.AbsoluteUri);
+                using (var response = await client.GetAsync(endpoint.AbsoluteUri))
+                {
+                    this.EnsureResponseIsOk(uri, response);
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return stream;
+                }
             }
-
-            if (!response.IsSuccessStatusCode)
-                throw new Exception($"Error on GET to {uri}. Status Code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
-            var stream = await response.Content.ReadAsStreamAsync();
-            return stream;
         }
 
         public async Task<TResult> Post<TResult>(string uri, string jsonContent, string token = null)
         {
-            HttpResponseMessage response;
             using (var client = this.CreateHttpClient(token))
             {
                 var tokenEndpoint = new Uri(new Uri(this.hostUri), uri);
                 var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-                response = await client.PostAsync(tokenEndpoint, stringContent);
+                using (var response = await client.PostAsync(tokenEndpoint, stringContent))
+                {
+                    this.EnsureResponseIsOk(uri, response);
+
+                    var responseContent = await response.Content.ReadAsAsync<TResult>();
+                    return responseContent;
+                }
             }
-
-            if (!response.IsSuccessStatusCode)
-                throw new Exception($"Error on posting to {uri}. Status Code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
-
-            var responseContent = await response.Content.ReadAsAsync<TResult>();
-            return responseContent;
         }
 
         // to build a stream from a byte array = new MemoryStream(byteArray);
@@ -85,8 +89,7 @@ namespace Agrobook.Client
                     var url = endpoint.AbsoluteUri;
                     using (var response = await client.PostAsync(url, content))
                     {
-                        if (!response.IsSuccessStatusCode)
-                            throw new Exception($"Error on posting to {uri}. Status Code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
+                        this.EnsureResponseIsOk(uri, response);
                     }
                 }
             }
@@ -99,24 +102,23 @@ namespace Agrobook.Client
 
         public async Task<TResult> Post<TContent, TResult>(string uri, TContent content, string token = null)
         {
-            HttpResponseMessage response = await this.TryPostAsJson(uri, content, token);
-
-            var responseContent = await response.Content.ReadAsAsync<TResult>();
-            return responseContent;
+            using (var response = await this.TryPostAsJson(uri, content, token))
+            {
+                var responseContent = await response.Content.ReadAsAsync<TResult>();
+                return responseContent;
+            }
         }
 
         private async Task<HttpResponseMessage> TryPostAsJson<TContent>(string uri, TContent content, string token)
         {
-            HttpResponseMessage response;
             using (var client = this.CreateHttpClient(token))
             {
                 var endpoint = new Uri(new Uri(this.hostUri), uri);
-                response = await client.PostAsJsonAsync<TContent>(endpoint.AbsoluteUri, content);
+                using (var response = await client.PostAsJsonAsync<TContent>(endpoint.AbsoluteUri, content))
+                {
+                    return response;
+                }
             }
-
-            if (!response.IsSuccessStatusCode)
-                throw new Exception($"Error on posting to {uri}. Status Code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
-            return response;
         }
 
         private HttpClient CreateHttpClient(string token, bool isJson = true)
@@ -128,5 +130,17 @@ namespace Agrobook.Client
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             return client;
         }
+
+        private void EnsureResponseIsOk(string uri, HttpResponseMessage response)
+        {
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Error on posting to {uri}. Status Code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
+        }
+    }
+
+    public class UnauthorizedHttpResponseException : Exception
+    {
+        public UnauthorizedHttpResponseException(string message) : base(message)
+        { }
     }
 }

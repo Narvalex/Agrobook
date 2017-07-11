@@ -1262,6 +1262,7 @@
     <Compile Include="Controllers\Maps\KmlController.cs" />
     <Compile Include="Controllers\Usuarios\UsuariosController.cs" />
     <Compile Include="Controllers\Usuarios\UsuariosQueryController.cs" />
+    <Compile Include="Filters\RemoteUnauthrorizedExceptionHandlerAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
