@@ -1,6 +1,7 @@
 ﻿using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Services;
 using Agrobook.Server.Filters;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using static Agrobook.Domain.Usuarios.Login.ClaimDef;
@@ -14,13 +15,23 @@ namespace Agrobook.Server.Usuarios
         private readonly UsuariosService usuariosService = ServiceLocator.ResolveSingleton<UsuariosService>();
         private readonly OrganizacionesQueryService organizacionesQueryService = ServiceLocator.ResolveSingleton<OrganizacionesQueryService>();
 
-        [Autorizar(Roles.Gerente)]
+        [Autorizar(Roles.Admin, Roles.Gerente, Roles.Tecnico)]
         [HttpGet]
         [Route("todos")]
         public async Task<IHttpActionResult> ObtenerTodosLosUsuarios()
         {
-            var lista = await this.usuarioQueryService.ObtenerTodosLosUsuarios();
-            return this.Ok(lista);
+            var claims = this.usuariosService.GetClaims(this.ActionContext.GetToken());
+
+            if (claims.Any(x => x == Roles.Admin))
+                return this.Ok(await this.usuarioQueryService.ObtenerTodosLosUsuarios());
+
+            else if (claims.Any(x => x == Roles.Gerente))
+                return this.Ok(await this.usuarioQueryService.ObtenerTodosLosUsuariosMenosAdmines());
+
+            else if (claims.Any(x => x == Roles.Tecnico))
+                return this.Ok(await this.usuarioQueryService.ObtenerTodosLosUsuariosMenosGerentesYAdmines());
+
+            return this.BadRequest();
         }
 
         [HttpGet]

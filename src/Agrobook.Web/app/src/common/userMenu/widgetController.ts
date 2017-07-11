@@ -78,15 +78,27 @@ module common {
     }
 
     class panelMenuController {
-        static $inject = ['mdPanelRef', 'loginService'];
+        static $inject = ['mdPanelRef', 'loginService', 'config'];
         private estaEnHome: boolean;
 
         constructor(
             private mdPanelRef: angular.material.IPanelRef,
-            private loginService: login.loginService
+            private loginService: login.loginService,
+            private config: common.config
         ) {
             this.estaEnHome = window.location.pathname == '/app/home.html';
+
+            var claims = this.config.claims;
+            var esTecnicoOSuperior = this.loginService.autorizar([claims.roles.Tecnico, claims.roles.Gerente]);
+            var usuariosLabel = esTecnicoOSuperior ? 'Usuarios' : 'Mi Perfil';
+            this.menuItemList = [
+                new menuItem('Inicio', 'home.html'),
+                new menuItem('Archivos', 'archivos.html'),
+                new menuItem(usuariosLabel, 'usuarios.html#!/')
+            ];
         }
+
+        menuItemList: menuItem[];
 
         logOut() {
             this.loginService.logOut();
@@ -102,12 +114,6 @@ module common {
         seleccionarItem(item: menuItem): void {
             window.location.href = item.link; 
         }
-
-        menuItemList: menuItem[] = [
-            new menuItem('Inicio', 'home.html'),
-            new menuItem('Archivos', 'archivos.html'),
-            new menuItem('Usuarios', 'usuarios.html#!/')
-        ]
     }
 
     class menuItem {

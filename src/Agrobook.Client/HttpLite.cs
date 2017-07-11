@@ -117,6 +117,7 @@ namespace Agrobook.Client
                 var endpoint = new Uri(new Uri(this.hostUri), uri);
                 using (var response = await client.PostAsJsonAsync<TContent>(endpoint.AbsoluteUri, content))
                 {
+                    this.EnsureResponseIsOk(uri, response);
                     return response;
                 }
             }

@@ -2,7 +2,7 @@
 var usuariosArea;
 (function (usuariosArea) {
     var sidenavController = (function () {
-        function sidenavController($mdSidenav, $mdDialog, $mdMedia, toasterLite, usuariosQueryService, $rootScope, config, $scope) {
+        function sidenavController($mdSidenav, $mdDialog, $mdMedia, toasterLite, usuariosQueryService, $rootScope, config, $scope, loginService) {
             var _this = this;
             this.$mdSidenav = $mdSidenav;
             this.$mdDialog = $mdDialog;
@@ -12,10 +12,15 @@ var usuariosArea;
             this.$rootScope = $rootScope;
             this.config = config;
             this.$scope = $scope;
+            this.loginService = loginService;
+            this.mostrarSidenav = false;
             this.usuarios = [];
             this.usuarioSeleccionado = null;
             this.loaded = false;
-            this.cargarListaDeUsuarios();
+            var claims = this.config.claims;
+            this.mostrarSidenav = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
+            if (this.mostrarSidenav)
+                this.cargarListaDeUsuarios();
             this.$scope.$on(this.config.eventIndex.usuarios.perfilActualizado, function (e, args) {
                 for (var i = 0; i < _this.usuarios.length; i++) {
                     if (_this.usuarios[i].nombre == args.usuario) {
@@ -63,7 +68,7 @@ var usuariosArea;
         return sidenavController;
     }());
     sidenavController.$inject = ['$mdSidenav', '$mdDialog', '$mdMedia', 'toasterLite', 'usuariosQueryService', '$rootScope',
-        'config', '$scope'];
+        'config', '$scope', 'loginService'];
     usuariosArea.sidenavController = sidenavController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=sidenavController.js.map

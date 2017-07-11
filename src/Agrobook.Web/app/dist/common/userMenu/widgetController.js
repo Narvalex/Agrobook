@@ -66,15 +66,19 @@ var common;
     userMenuWidgetController.$inject = ['config', '$mdPanel', 'loginQueryService', '$rootScope', '$scope'];
     common.userMenuWidgetController = userMenuWidgetController;
     var panelMenuController = (function () {
-        function panelMenuController(mdPanelRef, loginService) {
+        function panelMenuController(mdPanelRef, loginService, config) {
             this.mdPanelRef = mdPanelRef;
             this.loginService = loginService;
+            this.config = config;
+            this.estaEnHome = window.location.pathname == '/app/home.html';
+            var claims = this.config.claims;
+            var esTecnicoOSuperior = this.loginService.autorizar([claims.roles.Tecnico, claims.roles.Gerente]);
+            var usuariosLabel = esTecnicoOSuperior ? 'Usuarios' : 'Mi Perfil';
             this.menuItemList = [
                 new menuItem('Inicio', 'home.html'),
                 new menuItem('Archivos', 'archivos.html'),
-                new menuItem('Usuarios', 'usuarios.html#!/')
+                new menuItem(usuariosLabel, 'usuarios.html#!/')
             ];
-            this.estaEnHome = window.location.pathname == '/app/home.html';
         }
         panelMenuController.prototype.logOut = function () {
             this.loginService.logOut();
@@ -90,7 +94,7 @@ var common;
         };
         return panelMenuController;
     }());
-    panelMenuController.$inject = ['mdPanelRef', 'loginService'];
+    panelMenuController.$inject = ['mdPanelRef', 'loginService', 'config'];
     var menuItem = (function () {
         function menuItem(name, link) {
             this.name = name;

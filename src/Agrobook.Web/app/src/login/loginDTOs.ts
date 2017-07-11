@@ -15,7 +15,8 @@ module login {
             public usuario: string,
             public nombreParaMostrar: string,
             public token: string,
-            public avatarUrl: string
+            public avatarUrl: string,
+            public claims: string[]
         )
         { }
     }

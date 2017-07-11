@@ -33,6 +33,19 @@ module common {
             './assets/img/avatar/9.png'
         ];
 
+        private _claims = {
+            roles: {
+                Admin: 'rol-admin',
+                Gerente: 'rol-gerente',
+                Tecnico: 'rol-tecnico',
+                Productor: 'rol-productor',
+                Invitado: 'rol-invitado'
+            },
+            permisos: {
+                AdministrarOrganizaciones: 'permiso-administrar-organizaciones'
+            }
+        }
+
         private _repoIndex = {
             login: {
                 usuarioActual: 'ag-login-usuarioActual'
@@ -59,5 +72,6 @@ module common {
         get repoIndex() { return this._repoIndex; }
         get eventIndex() { return this._eventIndex; }
         get avatarUrls() { return this._avatarUrls; }
+        get claims() { return this._claims; }
     }
 }

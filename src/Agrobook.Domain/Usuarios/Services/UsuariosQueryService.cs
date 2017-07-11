@@ -30,12 +30,11 @@ namespace Agrobook.Domain.Usuarios.Services
             }
         }
 
-        public bool EsProductor(string loginInfoEncriptado)
+        public string[] ObtenerClaims(string loginInfoEncriptado)
         {
             var loginInfo = this.cryptoSerializer.Deserialize<LoginInfo>(loginInfoEncriptado);
 
-            var esProductor = loginInfo.Claims.Any(x => x == ClaimDef.Roles.Productor);
-            return esProductor;
+            return loginInfo.Claims;
         }
 
         public async Task<IList<UsuarioInfoBasica>> ObtenerTodosLosUsuarios()
@@ -43,6 +42,42 @@ namespace Agrobook.Domain.Usuarios.Services
             return await this.QueryAsync(async context =>
             {
                 var lista = await context.Usuarios.Select(u => new UsuarioInfoBasica
+                {
+                    Nombre = u.Id,
+                    NombreParaMostrar = u.Display,
+                    AvatarUrl = u.AvatarUrl
+                })
+                .ToListAsync();
+
+                return lista;
+            });
+        }
+
+        public async Task<IList<UsuarioInfoBasica>> ObtenerTodosLosUsuariosMenosAdmines()
+        {
+            return await this.QueryAsync(async context =>
+            {
+                var lista = await context.Usuarios
+                .Where(x => !x.EsAdmin)
+                .Select(u => new UsuarioInfoBasica
+                {
+                    Nombre = u.Id,
+                    NombreParaMostrar = u.Display,
+                    AvatarUrl = u.AvatarUrl
+                })
+                .ToListAsync();
+
+                return lista;
+            });
+        }
+
+        public async Task<IList<UsuarioInfoBasica>> ObtenerTodosLosUsuariosMenosGerentesYAdmines()
+        {
+            return await this.QueryAsync(async context =>
+            {
+                var lista = await context.Usuarios
+                .Where(x => !x.EsAdmin && !x.EsGerente)
+                .Select(u => new UsuarioInfoBasica
                 {
                     Nombre = u.Id,
                     NombreParaMostrar = u.Display,

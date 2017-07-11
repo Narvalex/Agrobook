@@ -31,6 +31,18 @@ var common;
                 './assets/img/avatar/8.png',
                 './assets/img/avatar/9.png'
             ];
+            this._claims = {
+                roles: {
+                    Admin: 'rol-admin',
+                    Gerente: 'rol-gerente',
+                    Tecnico: 'rol-tecnico',
+                    Productor: 'rol-productor',
+                    Invitado: 'rol-invitado'
+                },
+                permisos: {
+                    AdministrarOrganizaciones: 'permiso-administrar-organizaciones'
+                }
+            };
             this._repoIndex = {
                 login: {
                     usuarioActual: 'ag-login-usuarioActual'
@@ -69,6 +81,11 @@ var common;
         });
         Object.defineProperty(config.prototype, "avatarUrls", {
             get: function () { return this._avatarUrls; },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(config.prototype, "claims", {
+            get: function () { return this._claims; },
             enumerable: true,
             configurable: true
         });

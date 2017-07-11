@@ -13,7 +13,7 @@ namespace Agrobook.Domain.Usuarios
     public static class UsuariosConstants
     {
         public const string UsuarioAdmin = "admin";
-        public const string DefaultPassword = "1234";
+        public const string DefaultPassword = "123";
 
         public const string DefaultGrupoId = "todos";
         public const string DefaultGrupoDisplayName = "Todos";
@@ -101,6 +101,12 @@ namespace Agrobook.Domain.Usuarios
             return tienePermiso;
         }
 
+        public string[] GetClaims(string token)
+        {
+            var tokenInfo = this.cryptoSerializer.Deserialize<LoginInfo>(token);
+            return tokenInfo.Claims;
+        }
+
         public async Task HandleAsync(CrearNuevoUsuario cmd)
         {
             if (cmd.Usuario.Contains(' '))
@@ -125,7 +131,7 @@ namespace Agrobook.Domain.Usuarios
                 return LoginResult.Failed;
 
             await this.repository.SaveAsync(usuario);
-            return new LoginResult(true, cmd.Usuario, usuario.NombreParaMostrar, usuario.LoginInfoEncriptado, usuario.AvatarUrl);
+            return new LoginResult(true, cmd.Usuario, usuario.NombreParaMostrar, usuario.LoginInfoEncriptado, usuario.AvatarUrl, loginInfo.Claims);
         }
 
         public async Task HandleAsync(ActualizarPerfil cmd)

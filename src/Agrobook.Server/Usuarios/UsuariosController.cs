@@ -1,5 +1,6 @@
 ﻿using Agrobook.Domain.Usuarios;
 using Agrobook.Server.Filters;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using static Agrobook.Domain.Usuarios.Login.ClaimDef;
@@ -16,8 +17,25 @@ namespace Agrobook.Server.Usuarios
         [Route("crear-nuevo-usuario")]
         public async Task<IHttpActionResult> CrearNuevoUsuarioAsync([FromBody]CrearNuevoUsuario command)
         {
-            await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
-            return this.Ok();
+            var puedeProceder = false;
+            var claims = this.service.GetClaims(this.ActionContext.GetToken());
+
+            if (claims.Any(x => x == Roles.Admin))
+                puedeProceder = true;
+
+            else if (claims.Any(x => x == Roles.Gerente))
+                puedeProceder = !command.Claims.Any(x => x == Roles.Admin || x == Roles.Gerente);
+
+            else if (claims.Any(x => x == Roles.Tecnico))
+                puedeProceder = !command.Claims.Any(x => x == Roles.Admin || x == Roles.Tecnico || x == Roles.Tecnico);
+
+            if (puedeProceder)
+            {
+                await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+                return this.Ok();
+            }
+
+            return this.Unauthorized();
         }
 
         [HttpPost]

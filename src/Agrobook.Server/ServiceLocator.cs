@@ -72,6 +72,7 @@ namespace Agrobook.Server
 
             container.Register<IJsonSerializer>(jsonSerializer);
             container.Register<IDateTimeProvider>(dateTimeProvider);
+            container.Register<ITokenAuthorizationProvider>(usuariosService);
             container.Register<EventStoreManager>(es);
             container.Register<SqlDbInitializer<AgrobookDbContext>>(sqlInitializer);
             container.Register<UsuariosService>(usuariosService);

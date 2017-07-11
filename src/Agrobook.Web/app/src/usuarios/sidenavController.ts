@@ -3,7 +3,7 @@
 module usuariosArea {
     export class sidenavController {
         static $inject = ['$mdSidenav', '$mdDialog', '$mdMedia', 'toasterLite', 'usuariosQueryService', '$rootScope',
-        'config', '$scope'];
+            'config', '$scope', 'loginService'];
 
         constructor(
             private $mdSidenav: angular.material.ISidenavService,
@@ -13,9 +13,13 @@ module usuariosArea {
             private usuariosQueryService: usuariosQueryService,
             private $rootScope: ng.IRootScopeService,
             private config: common.config,
-            private $scope: ng.IScope
+            private $scope: ng.IScope,
+            private loginService: login.loginService
         ) {
-            this.cargarListaDeUsuarios();
+            var claims = this.config.claims;
+            this.mostrarSidenav = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
+            if (this.mostrarSidenav)
+                this.cargarListaDeUsuarios();
 
             this.$scope.$on(this.config.eventIndex.usuarios.perfilActualizado,
                 (e, args: common.perfilActualizado) => {
@@ -28,6 +32,8 @@ module usuariosArea {
                     }
                 });
         }
+
+        mostrarSidenav: boolean = false;
 
         usuarios: usuarioInfoBasica[] = [];
         usuarioSeleccionado: usuarioInfoBasica = null;
