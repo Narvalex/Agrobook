@@ -11,11 +11,12 @@
                        placeholder="Usuario"
                        class="home-input"
                        ng-model="vm.usuario"
-                       md-autofocus>
+                       autofocus>
             </md-input-container>
 
             <md-input-container>
                 <input class="home-input"
+                       id="passwordInput"
                        placeholder="Contraseña"
                        ng-keyup="vm.onInputKeyPress($event)"
                        type="password"

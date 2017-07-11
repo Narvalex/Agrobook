@@ -64,14 +64,15 @@ module homeArea {
                         this.establecerUsuarioLogueado(value.data.nombreParaMostrar);
                         // clear the inputs
                         this.usuario = '';
-
-                       
+                        this.password = '';
+                        this.establecerFormularioDeLogin();
                     }
                     else {
                         window.alert("Credenciales inválidas");
+                        this.password = '';
+                        this.establecerFormularioDeLogin();
+                        setTimeout(() => document.getElementById('passwordInput').focus(), 0);
                     }
-                    this.password = '';
-                    this.establecerFormularioDeLogin();
                 },
                 reason => {
                     this.establecerFormularioDeLogin();

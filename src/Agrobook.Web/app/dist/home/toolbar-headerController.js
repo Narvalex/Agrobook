@@ -45,12 +45,15 @@ var homeArea;
                     _this.establecerUsuarioLogueado(value.data.nombreParaMostrar);
                     // clear the inputs
                     _this.usuario = '';
+                    _this.password = '';
+                    _this.establecerFormularioDeLogin();
                 }
                 else {
                     window.alert("Credenciales inválidas");
+                    _this.password = '';
+                    _this.establecerFormularioDeLogin();
+                    setTimeout(function () { return document.getElementById('passwordInput').focus(); }, 0);
                 }
-                _this.password = '';
-                _this.establecerFormularioDeLogin();
             }, function (reason) {
                 _this.establecerFormularioDeLogin();
                 window.alert('Hubo un error inesperado al intentar inciar sesión');
