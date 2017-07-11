@@ -2,15 +2,24 @@
 var usuariosArea;
 (function (usuariosArea) {
     var mainContentController = (function () {
-        function mainContentController($routeParams, loginQueryService, usuariosQueryService, toasterLite, $scope, config) {
+        function mainContentController($routeParams, loginService, loginQueryService, usuariosQueryService, toasterLite, $scope, config) {
             var _this = this;
             this.$routeParams = $routeParams;
+            this.loginService = loginService;
             this.loginQueryService = loginQueryService;
             this.usuariosQueryService = usuariosQueryService;
             this.toasterLite = toasterLite;
             this.$scope = $scope;
             this.config = config;
             this.loaded = false;
+            this.mostrarOrganizacionesYGrupos = false;
+            // auth
+            var claims = this.config.claims;
+            this.mostrarOrganizacionesYGrupos = this.loginService.autorizar([
+                claims.roles.Admin,
+                claims.roles.Gerente,
+                claims.permisos.AdministrarOrganizaciones
+            ]);
             this.abrirElTabQueCorrespondeDesdeUrl();
             var idUsuario = this.$routeParams['idUsuario'];
             if (idUsuario === undefined)
@@ -65,7 +74,7 @@ var usuariosArea;
         };
         return mainContentController;
     }());
-    mainContentController.$inject = ['$routeParams', 'loginQueryService', 'usuariosQueryService', 'toasterLite', '$scope',
+    mainContentController.$inject = ['$routeParams', 'loginService', 'loginQueryService', 'usuariosQueryService', 'toasterLite', '$scope',
         'config'];
     usuariosArea.mainContentController = mainContentController;
 })(usuariosArea || (usuariosArea = {}));

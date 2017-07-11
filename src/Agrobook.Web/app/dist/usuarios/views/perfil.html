@@ -64,47 +64,49 @@
 
     <br />
 
-    <md-toolbar class="md-warn">
-        <div class="md-toolbar-tools">
-            <h2 class="md-flex">Roles y permisos</h2>
-        </div>
-    </md-toolbar>
-
-    <md-content flex layout-padding>
-        <br />
-
-        <div style="max-width: 250px">
-            <!-- Roles y permisos -->
-            <md-input-container class="md-block" flex-gt-md>
-                <label>Roles y permisos</label>
-                <md-select ng-model="vm.tipoDeCuenta">
-                    <md-option ng-repeat="claim in vm.claims" ng-value="claim" ng-click="vm.otorgarPermiso(claim)">
-                        {{claim.display}} <ng-md-icon title="{{claim.info}}" icon="help_outline"></ng-md-icon>
-                    </md-option>
-                </md-select>
-            </md-input-container>
-        </div>
-
-        <md-chips class="custom-chips" ng-model="vm.permisosOtorgados" name="display" readonly="true" md-removable="false">
-            <md-chip-template>
-                {{$chip.display}}
-                <ng-md-icon style="cursor:pointer"
-                            ng-click="vm.retirarPermiso($chip)"
-                            title="Remover permiso de {{$chip.display}}" icon="close"></ng-md-icon>
-            </md-chip-template>
-        </md-chips>
-
-
-        <p>Utilice con extrema precaución este menú, por que los cambios se aplican inmediatamente.</p>
-        <!-- Loading -->
-        <!--<div class="container" ng-show="vm.aplicandoPermisos">
-            <md-progress-linear md-mode="query" ng-disabled="!vm.aplicandoPermisos"></md-progress-linear>
-            <div class="bottom-block">
-                <span>Aplicando cambios...</span>
+    <div ng-show="vm.mostrarEdicionDeClaims">
+        <md-toolbar class="md-warn">
+            <div class="md-toolbar-tools">
+                <h2 class="md-flex">Roles y permisos</h2>
             </div>
-        </div>-->
-    </md-content>
-    <br />
-    <br />
-    <br />
+        </md-toolbar>
+
+        <md-content flex layout-padding>
+            <br />
+
+            <div style="max-width: 250px">
+                <!-- Roles y permisos -->
+                <md-input-container class="md-block" flex-gt-md>
+                    <label>Roles y permisos</label>
+                    <md-select ng-model="vm.tipoDeCuenta">
+                        <md-option ng-repeat="claim in vm.claims" ng-value="claim" ng-click="vm.otorgarPermiso(claim)">
+                            {{claim.display}} <ng-md-icon title="{{claim.info}}" icon="help_outline"></ng-md-icon>
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+
+            <md-chips class="custom-chips" ng-model="vm.permisosOtorgados" name="display" readonly="true" md-removable="false">
+                <md-chip-template>
+                    {{$chip.display}}
+                    <ng-md-icon style="cursor:pointer"
+                                ng-click="vm.retirarPermiso($chip)"
+                                title="Remover permiso de {{$chip.display}}" icon="close"></ng-md-icon>
+                </md-chip-template>
+            </md-chips>
+
+
+            <p>Utilice con extrema precaución este menú, por que los cambios se aplican inmediatamente.</p>
+            <!-- Loading -->
+            <!--<div class="container" ng-show="vm.aplicandoPermisos">
+                <md-progress-linear md-mode="query" ng-disabled="!vm.aplicandoPermisos"></md-progress-linear>
+                <div class="bottom-block">
+                    <span>Aplicando cambios...</span>
+                </div>
+            </div>-->
+        </md-content>
+        <br />
+        <br />
+        <br />
+    </div>
 </div>

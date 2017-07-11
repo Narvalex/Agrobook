@@ -2,17 +2,27 @@
 
 module usuariosArea {
     export class mainContentController {
-        static $inject = ['$routeParams', 'loginQueryService', 'usuariosQueryService', 'toasterLite', '$scope',
+        static $inject = ['$routeParams', 'loginService', 'loginQueryService', 'usuariosQueryService', 'toasterLite', '$scope',
             'config'];
 
         constructor(
             private $routeParams: angular.route.IRouteParamsService,
+            private loginService: login.loginService,
             private loginQueryService: login.loginQueryService,
             private usuariosQueryService: usuariosQueryService,
             private toasterLite: common.toasterLite,
             private $scope: ng.IScope,
             private config: common.config
         ) {
+            // auth
+            var claims = this.config.claims;
+            this.mostrarOrganizacionesYGrupos = this.loginService.autorizar([
+                claims.roles.Admin,
+                claims.roles.Gerente,
+                claims.permisos.AdministrarOrganizaciones
+            ]);
+
+
             this.abrirElTabQueCorrespondeDesdeUrl();
 
             let idUsuario = this.$routeParams['idUsuario'];
@@ -45,6 +55,7 @@ module usuariosArea {
         loaded: boolean = false;
         tabIndex: number;
         usuario: usuarioInfoBasica;
+        mostrarOrganizacionesYGrupos: boolean = false;
 
         onTabSelect(tabIndex: number) {
             if (this.usuario === undefined) return;

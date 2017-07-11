@@ -2,11 +2,12 @@
 
 module usuariosArea {
     export class perfilController {
-        static $inject = ['$routeParams', 'loginQueryService', 'usuariosService',
+        static $inject = ['$routeParams', 'loginService', 'loginQueryService', 'usuariosService',
             'usuariosQueryService', 'toasterLite', 'config', '$rootScope', '$scope'];
 
         constructor(
             private $routeParams: angular.route.IRouteParamsService,
+            private loginService: login.loginService,
             private loginQueryService: login.loginQueryService,
             private usuariosService: usuariosService,
             private usuariosQueryService: usuariosQueryService,
@@ -15,6 +16,11 @@ module usuariosArea {
             private $rootScope: ng.IRootScopeService,
             private $scope: ng.IScope
         ) {
+            // auth
+            var roles = this.config.claims.roles;
+            this.mostrarEdicionDeClaims = this.loginService.autorizar([roles.Admin]);
+
+
             this.avatarUrls = config.avatarUrls;
 
             this.usuarioLogueado = this.loginQueryService.tryGetLocalLoginInfo();
@@ -69,6 +75,8 @@ module usuariosArea {
         allLoaded(): boolean { return this.infoBasicaLoaded && this.claimsLoaded && this.permisosOtorgadosLoaded; }
 
         // Claim Adding / Removal
+        mostrarEdicionDeClaims: boolean = false;
+
         claims: claimDto[];
         permisosOtorgados: claimDto[] = []; // parece que debe estar inicializado para que los chips aparezcan
         aplicandoPermisos = false;

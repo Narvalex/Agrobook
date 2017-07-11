@@ -2,9 +2,10 @@
 var usuariosArea;
 (function (usuariosArea) {
     var perfilController = (function () {
-        function perfilController($routeParams, loginQueryService, usuariosService, usuariosQueryService, toasterLite, config, $rootScope, $scope) {
+        function perfilController($routeParams, loginService, loginQueryService, usuariosService, usuariosQueryService, toasterLite, config, $rootScope, $scope) {
             var _this = this;
             this.$routeParams = $routeParams;
+            this.loginService = loginService;
             this.loginQueryService = loginQueryService;
             this.usuariosService = usuariosService;
             this.usuariosQueryService = usuariosQueryService;
@@ -15,9 +16,14 @@ var usuariosArea;
             this.infoBasicaLoaded = false;
             this.claimsLoaded = false;
             this.permisosOtorgadosLoaded = false;
+            // Claim Adding / Removal
+            this.mostrarEdicionDeClaims = false;
             this.permisosOtorgados = []; // parece que debe estar inicializado para que los chips aparezcan
             this.aplicandoPermisos = false;
             this.avatarUrls = [];
+            // auth
+            var roles = this.config.claims.roles;
+            this.mostrarEdicionDeClaims = this.loginService.autorizar([roles.Admin]);
             this.avatarUrls = config.avatarUrls;
             this.usuarioLogueado = this.loginQueryService.tryGetLocalLoginInfo();
             var idUsuario = this.$routeParams['idUsuario'];
@@ -147,7 +153,7 @@ var usuariosArea;
         };
         return perfilController;
     }());
-    perfilController.$inject = ['$routeParams', 'loginQueryService', 'usuariosService',
+    perfilController.$inject = ['$routeParams', 'loginService', 'loginQueryService', 'usuariosService',
         'usuariosQueryService', 'toasterLite', 'config', '$rootScope', '$scope'];
     usuariosArea.perfilController = perfilController;
 })(usuariosArea || (usuariosArea = {}));
