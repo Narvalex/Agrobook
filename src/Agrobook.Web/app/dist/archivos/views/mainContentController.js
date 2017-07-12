@@ -13,6 +13,7 @@ var archivosArea;
             this.loginQueryService = loginQueryService;
             this.puedeCargarArchivos = false;
             this.puedeCambiarProductores = false;
+            this.archivoSeleccionado = null;
             // Auth
             var roles = this.config.claims.roles;
             this.puedeCargarArchivos = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);

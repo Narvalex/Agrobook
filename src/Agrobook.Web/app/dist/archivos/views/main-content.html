@@ -26,7 +26,7 @@
                     <md-list-item class="md-3-line"
                                   ng-click="vm.seleccionarArchivo(archivo)"
                                   ng-repeat="archivo in vm.archivos">
-                        <img ng-src="./assets/img/fileIcons/file.png" class="md-avatar" alt="pic" />
+                        <img ng-src="./archivos/query/file-icon/{{vm.idProductor}}/{{archivo.nombre}}/{{archivo.extension}}" class="md-avatar" alt="pic" />
                         <div class="md-list-item-text" layout="column">
                             <p style="color: black;font-weight:100"
                                ng-class="{'archivo-seleccionado': vm.archivoSeleccionado === archivo}">
@@ -49,9 +49,30 @@
         <md-divider></md-divider>
 
         <div flex-gt-xs="50" hide-xs flex>
-            <md-content>
-
-                <h1>PREVIEW</h1>
+            <md-content class="md-padding">
+                <div class="archivo-seleccione-por-favor" ng-hide="vm.archivoSeleccionado">
+                    <p><ng-md-icon icon="remove_red_eye"></ng-md-icon></p>
+                    <h3>Seleccione un archivo para ver más</h3>
+                </div>
+                <md-card md-theme="{{vm.archivoSeleccionado.extension == 'jpg' ? 'dark-grey' : 'default'}}" ng-show="vm.archivoSeleccionado">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">{{vm.archivoSeleccionado.nombre}}</span>
+                            <span class="md-subhead">{{vm.archivoSeleccionado.extension}}</span>
+                            <span class="md-subhead">{{vm.archivoSeleccionado.fecha}}</span>
+                            <span class="md-subhead">{{vm.archivoSeleccionado.desc}}</span>
+                        </md-card-title-text>
+                        <md-card-title-media>
+                            <div class="md-media-lg card-media">
+                                <img id="" ng-src="./archivos/query/file-icon/{{vm.idProductor}}/{{vm.archivoSeleccionado.nombre}}/{{vm.archivoSeleccionado.extension}}" />
+                            </div>
+                        </md-card-title-media>
+                    </md-card-title>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button><ng-md-icon icon="file_download"></ng-md-icon>&nbsp;Descargar</md-button>
+                        <!--<md-button>Action 2</md-button>-->
+                    </md-card-actions>
+                </md-card>
             </md-content>
         </div>
 

@@ -2,3 +2,17 @@
     color: rgb(76, 175, 80) !important;
     font-weight: bolder !important;
 }
+
+
+.archivo-seleccione-por-favor > p {
+    color: rgb(76, 175, 80);
+    text-align: center;
+}
+.archivo-seleccione-por-favor > h3 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #757575;
+    text-align: center;
+}
+.archivo-seleccione-por-favor {
+    padding: calc(30vh) 0;
+}

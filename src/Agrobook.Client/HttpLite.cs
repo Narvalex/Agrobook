@@ -48,12 +48,11 @@ namespace Agrobook.Client
             using (var client = this.CreateHttpClient(token))
             {
                 var endpoint = new Uri(new Uri(this.hostUri), uri);
-                using (var response = await client.GetAsync(endpoint.AbsoluteUri))
-                {
-                    this.EnsureResponseIsOk(uri, response);
-                    var stream = await response.Content.ReadAsStreamAsync();
-                    return stream;
-                }
+                var response = await client.GetAsync(endpoint.AbsoluteUri);
+                this.EnsureResponseIsOk(uri, response);
+                var stream = await response.Content.ReadAsStreamAsync();
+                return stream;
+
             }
         }
 

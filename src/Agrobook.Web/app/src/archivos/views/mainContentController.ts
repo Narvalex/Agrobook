@@ -53,7 +53,7 @@ module archivosArea {
 
         idProductor: string;
         archivos: archivoDto[];
-        archivoSeleccionado: archivoDto;
+        archivoSeleccionado: archivoDto = null;
 
         toggleSideNav(): void {
             this.$mdSidenav('right').toggle();

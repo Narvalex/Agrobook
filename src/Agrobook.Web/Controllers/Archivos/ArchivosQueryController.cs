@@ -1,9 +1,11 @@
 ﻿using Agrobook.Client;
 using Agrobook.Client.Archivos;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace Agrobook.Web.Controllers.Archivos
@@ -40,12 +42,44 @@ namespace Agrobook.Web.Controllers.Archivos
         {
             var stream = await this.client.Download(idProductor, nombreArchivo, extension);
 
-            var result = this.Request.CreateResponse(HttpStatusCode.OK);
-            result.Content = new StreamContent(stream);
-            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-            result.Content.Headers.ContentDisposition.FileName = $"{nombreArchivo}.{extension}";
+            var response = this.Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StreamContent(stream);
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+            response.Content.Headers.ContentDisposition.FileName = $"{nombreArchivo}.{extension}";
 
-            return result;
+            return response;
+        }
+
+        [HttpGet]
+        [Route("file-icon/{idProductor}/{archivo}/{extension}")]
+        public async Task<HttpResponseMessage> GetFileIcon([FromUri]string idProductor, [FromUri]string archivo, [FromUri]string extension)
+        {
+            byte[] byteArray;
+            if (extension != "jpg")
+            {
+                var path = HttpContext.Current.Server.MapPath("~/app/assets/img/fileIcons/file.png");
+                byteArray = File.ReadAllBytes(path);
+            }
+            else
+            {
+                var stream = await this.client.Download(idProductor, archivo, extension);
+                byteArray = await ReadToByte(stream);
+            }
+
+            var response = this.Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new ByteArrayContent(byteArray);
+            await response.Content.LoadIntoBufferAsync(byteArray.Length);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+            return response;
+        }
+
+        private static async Task<byte[]> ReadToByte(Stream input)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await input.CopyToAsync(memoryStream);
+                return memoryStream.ToArray();
+            }
         }
     }
 }
