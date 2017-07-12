@@ -9,15 +9,9 @@ var archivosArea;
             this.$routeParams = $routeParams;
             this.title = '';
             this.loaded = false;
-            var idProductor = this.$routeParams['idProductor'];
-            if (idProductor === undefined) {
-                // No hay productor seleccionado, pedir uno
-                this.toggleSideNav();
-                this.title = 'Seleccione un productor...';
-            }
-            else {
-                this.title = 'Productores';
-            }
+            // This can fail because is in a race condition. Sometimes the router did not get this ...
+            //var idProductor = this.$routeParams['idProductor'];
+            this.title = 'Productores';
             this.cargarListaDeProductores();
         }
         prodSidenavController.prototype.toggleSideNav = function () {

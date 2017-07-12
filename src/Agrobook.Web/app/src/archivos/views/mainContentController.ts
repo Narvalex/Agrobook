@@ -2,7 +2,8 @@
 
 module archivosArea {
     export class mainContentController {
-        static $inject = ['$mdSidenav', '$rootScope', '$routeParams', 'config', 'toasterLite', 'archivosQueryService'];
+        static $inject = ['$mdSidenav', '$rootScope', '$routeParams', 'config', 'toasterLite', 'archivosQueryService',
+            'loginService', 'loginQueryService'];
 
         constructor(
             private $mdSidenav: angular.material.ISidenavService,
@@ -10,25 +11,45 @@ module archivosArea {
             private $routeParams: ng.route.IRouteParamsService,
             private config: common.config,
             private toasterLite: common.toasterLite,
-            private archivosQueryService: archivosQueryService
+            private archivosQueryService: archivosQueryService,
+            private loginService: login.loginService,
+            private loginQueryService: login.loginQueryService
         ) {
-            this.idProductor = this.$routeParams['idProductor'];
-            if (this.idProductor === undefined)
-                // No existe productor seleccionado, deberia elegir uno
-                // no op, for now
-                return;
+            // Auth
+            var roles = this.config.claims.roles;
+            this.puedeCargarArchivos = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
+            this.puedeCambiarProductores = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
+
+            if (this.puedeCambiarProductores) {
+                this.idProductor = this.$routeParams['idProductor'];
+                if (this.idProductor === undefined) {
+                    // No existe productor seleccionado, deberia elegir uno
+                    // no op, for now
+                    this.toggleSideNav();
+                    return;
+                }
+                else {
+                    // todo aqui sucede si existe productor seleccionado                
+
+                    this.cargarArchivosDelproductor();
+
+                    // No entiendo muy bien porque hice esto asi...
+                    if (location.hash.slice(3, 9) === 'upload')
+                        this.abrirCuadroDeCargaDeArchivos();
+                    else
+                        this.publicarElIdProductorActual();
+                }
+            }
             else {
-                // todo aqui sucede si existe productor seleccionado                
-
+                var usuario = this.loginQueryService.tryGetLocalLoginInfo();
+                this.idProductor = usuario.usuario;
                 this.cargarArchivosDelproductor();
-
-                // No entiendo muy bien porque hice esto asi...
-                if (location.hash.slice(3, 9) === 'upload')
-                    this.abrirCuadroDeCargaDeArchivos();
-                else
-                    this.publicarElIdProductorActual();
+                this.publicarElIdProductorActual();
             }
         }
+
+        puedeCargarArchivos: boolean = false;
+        puedeCambiarProductores: boolean = false;
 
         idProductor: string;
         archivos: archivoDto[];

@@ -18,7 +18,8 @@
 
     <md-content>
         <br />
-        <section layout="row">
+        <section ng-show="vm.puedeCargarArchivos"
+                 layout="row">
             <md-button ng-click="vm.mostrarDialogoDeCarga($event)"
                        ng-disabled="vm.idProductor === undefined"
                        class="md-primary">

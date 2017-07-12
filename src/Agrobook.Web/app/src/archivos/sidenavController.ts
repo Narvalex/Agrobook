@@ -8,7 +8,9 @@ module archivosArea {
     }
 
     export class sidenavController {
-        static $inject = ['$mdSidenav', 'usuariosQueryService', 'toasterLite', '$rootScope', 'config', '$mdDialog'];
+        static $inject = ['$mdSidenav', 'usuariosQueryService', 'toasterLite', '$rootScope', 'config', '$mdDialog',
+            'loginService'
+        ];
 
         constructor(
             private $mdSidenav: angular.material.ISidenavService,
@@ -16,8 +18,14 @@ module archivosArea {
             private toasterLite: common.toasterLite,
             private $rootScope: ng.IRootScopeService,
             private config: common.config,
-            private $mdDialog: angular.material.IDialogService
+            private $mdDialog: angular.material.IDialogService,
+            private loginService: login.loginService
         ) {
+            // Auth
+            var roles = this.config.claims.roles;
+            this.puedeCargarArchivos = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
+
+
             this.$rootScope.$on(this.config.eventIndex.archivos.productorSeleccionado, (e, args) => {
                 this.idProductor = args;
                 this.recuperarInfoDelProductor();
@@ -28,6 +36,9 @@ module archivosArea {
                 this.initializeUploadCenter();
             });
         }
+
+        // Auth
+        puedeCargarArchivos: boolean = false;
 
         idProductor: string;
         productor: productorDto;

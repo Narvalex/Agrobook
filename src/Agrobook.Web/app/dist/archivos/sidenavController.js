@@ -2,7 +2,7 @@
 var archivosArea;
 (function (archivosArea) {
     var sidenavController = (function () {
-        function sidenavController($mdSidenav, usuariosQueryService, toasterLite, $rootScope, config, $mdDialog) {
+        function sidenavController($mdSidenav, usuariosQueryService, toasterLite, $rootScope, config, $mdDialog, loginService) {
             var _this = this;
             this.$mdSidenav = $mdSidenav;
             this.usuariosQueryService = usuariosQueryService;
@@ -10,7 +10,13 @@ var archivosArea;
             this.$rootScope = $rootScope;
             this.config = config;
             this.$mdDialog = $mdDialog;
+            this.loginService = loginService;
+            // Auth
+            this.puedeCargarArchivos = false;
             this.eventoCarga = null;
+            // Auth
+            var roles = this.config.claims.roles;
+            this.puedeCargarArchivos = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
             this.$rootScope.$on(this.config.eventIndex.archivos.productorSeleccionado, function (e, args) {
                 _this.idProductor = args;
                 _this.recuperarInfoDelProductor();
@@ -56,7 +62,9 @@ var archivosArea;
         };
         return sidenavController;
     }());
-    sidenavController.$inject = ['$mdSidenav', 'usuariosQueryService', 'toasterLite', '$rootScope', 'config', '$mdDialog'];
+    sidenavController.$inject = ['$mdSidenav', 'usuariosQueryService', 'toasterLite', '$rootScope', 'config', '$mdDialog',
+        'loginService'
+    ];
     archivosArea.sidenavController = sidenavController;
 })(archivosArea || (archivosArea = {}));
 //# sourceMappingURL=sidenavController.js.map

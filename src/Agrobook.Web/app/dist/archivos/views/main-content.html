@@ -1,7 +1,7 @@
 ﻿<div ng-controller="mainContentController as vm">
     <md-button class="md-fab md-fab-top-right"
                ng-click="vm.toggleSideNav()"
-               ng-hide="vm.isSideNavOpen()"
+               ng-hide="vm.isSideNavOpen() || !vm.puedeCambiarProductores"
                aria-label="Seleccionar productor">
         <md-tooltip md-direction="left">Seleccionar otro productor</md-tooltip>
         <ng-md-icon icon="people"></ng-md-icon>

@@ -2,26 +2,44 @@
 var archivosArea;
 (function (archivosArea) {
     var mainContentController = (function () {
-        function mainContentController($mdSidenav, $rooteScope, $routeParams, config, toasterLite, archivosQueryService) {
+        function mainContentController($mdSidenav, $rooteScope, $routeParams, config, toasterLite, archivosQueryService, loginService, loginQueryService) {
             this.$mdSidenav = $mdSidenav;
             this.$rooteScope = $rooteScope;
             this.$routeParams = $routeParams;
             this.config = config;
             this.toasterLite = toasterLite;
             this.archivosQueryService = archivosQueryService;
-            this.idProductor = this.$routeParams['idProductor'];
-            if (this.idProductor === undefined)
-                // No existe productor seleccionado, deberia elegir uno
-                // no op, for now
-                return;
+            this.loginService = loginService;
+            this.loginQueryService = loginQueryService;
+            this.puedeCargarArchivos = false;
+            this.puedeCambiarProductores = false;
+            // Auth
+            var roles = this.config.claims.roles;
+            this.puedeCargarArchivos = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
+            this.puedeCambiarProductores = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
+            if (this.puedeCambiarProductores) {
+                this.idProductor = this.$routeParams['idProductor'];
+                if (this.idProductor === undefined) {
+                    // No existe productor seleccionado, deberia elegir uno
+                    // no op, for now
+                    this.toggleSideNav();
+                    return;
+                }
+                else {
+                    // todo aqui sucede si existe productor seleccionado                
+                    this.cargarArchivosDelproductor();
+                    // No entiendo muy bien porque hice esto asi...
+                    if (location.hash.slice(3, 9) === 'upload')
+                        this.abrirCuadroDeCargaDeArchivos();
+                    else
+                        this.publicarElIdProductorActual();
+                }
+            }
             else {
-                // todo aqui sucede si existe productor seleccionado                
+                var usuario = this.loginQueryService.tryGetLocalLoginInfo();
+                this.idProductor = usuario.usuario;
                 this.cargarArchivosDelproductor();
-                // No entiendo muy bien porque hice esto asi...
-                if (location.hash.slice(3, 9) === 'upload')
-                    this.abrirCuadroDeCargaDeArchivos();
-                else
-                    this.publicarElIdProductorActual();
+                this.publicarElIdProductorActual();
             }
         }
         mainContentController.prototype.toggleSideNav = function () {
@@ -56,7 +74,8 @@ var archivosArea;
         };
         return mainContentController;
     }());
-    mainContentController.$inject = ['$mdSidenav', '$rootScope', '$routeParams', 'config', 'toasterLite', 'archivosQueryService'];
+    mainContentController.$inject = ['$mdSidenav', '$rootScope', '$routeParams', 'config', 'toasterLite', 'archivosQueryService',
+        'loginService', 'loginQueryService'];
     archivosArea.mainContentController = mainContentController;
 })(archivosArea || (archivosArea = {}));
 //# sourceMappingURL=mainContentController.js.map

@@ -10,15 +10,9 @@ module archivosArea {
             private archivosQueryService: archivosQueryService,
             private $routeParams: ng.route.IRouteParamsService
         ) {
-            var idProductor = this.$routeParams['idProductor'];
-            if (idProductor === undefined) {
-                // No hay productor seleccionado, pedir uno
-                this.toggleSideNav();
-                this.title = 'Seleccione un productor...'
-            }
-            else {
-                this.title = 'Productores'
-            }   
+            // This can fail because is in a race condition. Sometimes the router did not get this ...
+            //var idProductor = this.$routeParams['idProductor'];
+            this.title = 'Productores'
 
             this.cargarListaDeProductores();
         }
@@ -26,7 +20,7 @@ module archivosArea {
         title = '';
 
         loaded: boolean = false;
-        productores: productorDto[]; 
+        productores: productorDto[];
         productorSeleccionado: productorDto;
 
         toggleSideNav(): void {
@@ -34,7 +28,7 @@ module archivosArea {
         }
 
         seleccionarProductor(productor: productorDto) {
-            this.toggleSideNav(); 
+            this.toggleSideNav();
             this.productorSeleccionado = productor;
             window.location.replace('#!/archivos/' + productor.id);
         }
