@@ -16,4 +16,18 @@ namespace Agrobook.Domain.Archivos
         public ArchivoDescriptor Archivo { get; }
         public HttpContent FileContent { get; }
     }
+
+    public class RegistrarDescargaExitosa : MensajeAuditable
+    {
+        public RegistrarDescargaExitosa(Metadatos metadatos, string productor, string nombreArchivo)
+            : base(metadatos)
+        {
+            this.Productor = productor;
+            this.NombreArchivo = nombreArchivo;
+        }
+
+        // Este es al que pertenece el archivo
+        public string Productor { get; }
+        public string NombreArchivo { get; }
+    }
 }

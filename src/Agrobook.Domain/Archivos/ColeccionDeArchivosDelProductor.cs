@@ -8,7 +8,7 @@ namespace Agrobook.Domain.Archivos
     [StreamCategory("agrobook.coleccionesDeArchivosDelProductor")]
     public class ColeccionDeArchivosDelProductor : EventSourced
     {
-        private List<string> archivos = new List<string>();
+        private IDictionary<string, int> filesWithSize = new Dictionary<string, int>();
 
         public ColeccionDeArchivosDelProductor()
         {
@@ -18,34 +18,37 @@ namespace Agrobook.Domain.Archivos
             });
             this.On<NuevoArchivoAgregadoALaColeccion>(e =>
             {
-                this.archivos.Add(e.Archivo.Nombre);
+                this.filesWithSize.Add(e.Archivo.Nombre, e.Archivo.Size);
             });
         }
 
-        public bool YaTieneArchivo(string nombreDelArchivo) => this.archivos.Any(a => a == nombreDelArchivo);
+        public bool YaTieneArchivo(string nombreDelArchivo) => this.filesWithSize.ContainsKey(nombreDelArchivo);
+
+        public int GetSize(string nombreArchivo) => this.filesWithSize[nombreArchivo];
 
         protected override void Rehydrate(ISnapshot snapshot)
         {
             base.Rehydrate(snapshot);
 
             var state = (ColeccionDeArchivosDelProductorSnapshot)snapshot;
-            this.archivos.AddRange(state.Archivos);
+            foreach (var item in state.Archivos)
+                this.filesWithSize.Add(item);
         }
 
         protected override ISnapshot TakeSnapshot()
         {
-            return new ColeccionDeArchivosDelProductorSnapshot(this.StreamName, this.Version, this.archivos.ToArray());
+            return new ColeccionDeArchivosDelProductorSnapshot(this.StreamName, this.Version, this.filesWithSize.ToArray());
         }
     }
 
     public class ColeccionDeArchivosDelProductorSnapshot : Snapshot
     {
-        public ColeccionDeArchivosDelProductorSnapshot(string streamName, int version, string[] archivos) : base(streamName, version)
+        public ColeccionDeArchivosDelProductorSnapshot(string streamName, int version, KeyValuePair<string, int>[] archivos) : base(streamName, version)
         {
             this.Archivos = archivos;
         }
 
-        public string[] Archivos { get; }
+        public KeyValuePair<string, int>[] Archivos { get; }
     }
 
     public class ArchivoDescriptor

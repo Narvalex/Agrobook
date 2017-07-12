@@ -22,10 +22,11 @@
                 </md-autocomplete>
             </div>
             <md-content layout="column" style="overflow-y:scroll;height:calc(100vh - 135px);">
-                <md-list flex><!--class="md-dense"-->
+                <md-list flex>
+                    <!--class="md-dense"-->
                     <md-list-item class="md-3-line"
                                   ng-click="vm.seleccionarArchivo(archivo)"
-                                  ng-repeat="archivo in vm.archivos">
+                                  ng-repeat="archivo in vm.archivos | filter:vm.searchText">
                         <img ng-src="./archivos/query/file-icon/{{vm.idProductor}}/{{archivo.nombre}}/{{archivo.extension}}" class="md-avatar" alt="pic" />
                         <div class="md-list-item-text" layout="column">
                             <p style="color: black;font-weight:100"
@@ -69,7 +70,9 @@
                         </md-card-title-media>
                     </md-card-title>
                     <md-card-actions layout="row" layout-align="end center">
-                        <md-button><ng-md-icon icon="file_download"></ng-md-icon>&nbsp;Descargar</md-button>
+                        <md-button ng-click="vm.download(vm.archivoSeleccionado)">
+                            <ng-md-icon icon="file_download"></ng-md-icon>&nbsp;Descargar
+                        </md-button>
                         <!--<md-button>Action 2</md-button>-->
                     </md-card-actions>
                 </md-card>

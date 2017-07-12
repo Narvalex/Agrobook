@@ -13,9 +13,10 @@ var archivosArea;
 (function (archivosArea) {
     var archivosQueryService = (function (_super) {
         __extends(archivosQueryService, _super);
-        function archivosQueryService($http) {
+        function archivosQueryService($http, loginQueryService) {
             var _this = _super.call(this, $http, 'archivos/query') || this;
             _this.$http = $http;
+            _this.loginQueryService = loginQueryService;
             return _this;
         }
         archivosQueryService.prototype.obtenerListaDeProductores = function (onSuccess, onError) {
@@ -26,11 +27,13 @@ var archivosArea;
         };
         archivosQueryService.prototype.download = function (idProductor, nombre, extension) {
             // Could be improved here: https://stackoverflow.com/questions/24080018/download-file-from-an-asp-net-web-api-method-using-angularjs
-            window.open("./archivos/query/download/" + idProductor + "/" + nombre + "/" + extension, '_blank', '');
+            var userInfo = this.loginQueryService.tryGetLocalLoginInfo();
+            var usuario = userInfo.usuario;
+            window.open("./archivos/query/download/" + idProductor + "/" + nombre + "/" + extension + "/" + usuario, '_blank', '');
         };
         return archivosQueryService;
     }(common.httpLite));
-    archivosQueryService.$inject = ['$http'];
+    archivosQueryService.$inject = ['$http', 'loginQueryService'];
     archivosArea.archivosQueryService = archivosQueryService;
 })(archivosArea || (archivosArea = {}));
 //# sourceMappingURL=archivosQueryService.js.map

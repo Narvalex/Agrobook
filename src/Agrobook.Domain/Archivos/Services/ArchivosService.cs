@@ -35,6 +35,14 @@ namespace Agrobook.Domain.Archivos.Services
             else
                 return ResultadoDelUpload.ResponderQueYaExiste();
         }
+
+        public async Task HandleAsync(RegistrarDescargaExitosa cmd)
+        {
+            var coleccion = await this.repository.GetOrFailAsync<ColeccionDeArchivosDelProductor>(cmd.Productor);
+            coleccion.Emit(new ArchivoDescargadoExitosamente(cmd.Metadatos, cmd.Productor, cmd.NombreArchivo, coleccion.GetSize(cmd.NombreArchivo)));
+
+            await this.repository.SaveAsync(coleccion);
+        }
     }
 
     public class ResultadoDelUpload

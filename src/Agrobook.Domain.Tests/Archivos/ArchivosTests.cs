@@ -21,6 +21,7 @@ namespace Agrobook.Domain.Tests.Archivos
                 r => new ArchivosService(this.fileManager, r, new SimpleDateTimeProvider()));
         }
 
+        #region Uploads
         [TestMethod]
         public void TodoEmpiezaConElPrimerArchivoQueSeQuiereAgregarAUnProductor()
         {
@@ -126,5 +127,30 @@ namespace Agrobook.Domain.Tests.Archivos
                 Assert.IsTrue(coleccion.YaTieneArchivo("foto2"));
             });
         }
+        #endregion
+
+        #region Downloads
+        [TestMethod]
+        public void CuandoUnArchivoDeDescargoEntoncesSeRegistraEnElServidor()
+        {
+            var archivo = new ArchivoDescriptor("foto", "jpg", DateTime.Now, null, 1024);
+            this.sut
+            .When(s =>
+            {
+                s.HandleAsync(new AgregarArchivoAColeccion(TestMeta.New, "fulano", archivo, null)).Wait();
+                s.HandleAsync(new RegistrarDescargaExitosa(TestMeta.New, "fulano", "foto")).Wait();
+            })
+            .Then(events =>
+            {
+                Assert.AreEqual(1, events.OfType<ArchivoDescargadoExitosamente>().Count());
+
+                var e = events.OfType<ArchivoDescargadoExitosamente>().Single();
+
+                Assert.AreEqual("fulano", e.Productor);
+                Assert.AreEqual(archivo.Nombre, e.NombreArchivo);
+                Assert.AreEqual(archivo.Size, e.Size);
+            });
+        }
+        #endregion
     }
 }

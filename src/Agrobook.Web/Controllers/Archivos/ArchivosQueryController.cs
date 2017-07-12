@@ -37,10 +37,10 @@ namespace Agrobook.Web.Controllers.Archivos
         }
 
         [HttpGet]
-        [Route("download/{idProductor}/{nombreArchivo}/{extension}")]
-        public async Task<HttpResponseMessage> Download([FromUri]string idProductor, [FromUri] string nombreArchivo, [FromUri] string extension)
+        [Route("download/{idProductor}/{nombreArchivo}/{extension}/{usuario}")]
+        public async Task<HttpResponseMessage> Download([FromUri]string idProductor, [FromUri] string nombreArchivo, [FromUri] string extension, [FromUri]string usuario)
         {
-            var stream = await this.client.Download(idProductor, nombreArchivo, extension);
+            var stream = await this.client.Download(idProductor, nombreArchivo, extension, usuario);
 
             var response = this.Request.CreateResponse(HttpStatusCode.OK);
             response.Content = new StreamContent(stream);

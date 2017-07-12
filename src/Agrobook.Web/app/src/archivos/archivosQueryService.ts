@@ -2,10 +2,11 @@
 
 module archivosArea {
     export class archivosQueryService extends common.httpLite {
-        static $inject = ['$http'];
+        static $inject = ['$http', 'loginQueryService'];
 
         constructor(
-            private $http: ng.IHttpService
+            private $http: ng.IHttpService,
+            private loginQueryService: login.loginQueryService
         ) {
             super($http, 'archivos/query');
         }
@@ -27,8 +28,9 @@ module archivosArea {
 
         download(idProductor: string, nombre: string, extension: string) {
             // Could be improved here: https://stackoverflow.com/questions/24080018/download-file-from-an-asp-net-web-api-method-using-angularjs
-
-            window.open(`./archivos/query/download/${idProductor}/${nombre}/${extension}`, '_blank', '');
+            var userInfo = this.loginQueryService.tryGetLocalLoginInfo();
+            var usuario = userInfo.usuario;
+            window.open(`./archivos/query/download/${idProductor}/${nombre}/${extension}/${usuario}`, '_blank', '');
         }
     }
 }
