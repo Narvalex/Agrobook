@@ -1267,10 +1267,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\src\home\homeArea.ts" />
-    <TypeScriptCompile Include="app\src\maps\main-contentController.ts" />
-    <TypeScriptCompile Include="app\src\maps\mapsArea.ts" />
     <TypeScriptCompile Include="app\src\home\toolbar-headerController.ts" />
-    <TypeScriptCompile Include="app\src\maps\toolbar-headerController.ts" />
     <TypeScriptCompile Include="app\src\usuarios\dialogs\nuevoUsuarioDialogController.ts" />
     <TypeScriptCompile Include="app\src\usuarios\sidenavController.ts" />
     <TypeScriptCompile Include="app\src\usuarios\toolbarHeaderController.ts" />
