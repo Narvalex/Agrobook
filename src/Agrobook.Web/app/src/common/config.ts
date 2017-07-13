@@ -64,8 +64,20 @@ module common {
             },
             archivos: {
                 productorSeleccionado: 'productorSeleccionado',
-                abrirCuadroDeCargaDeArchivos: 'abrirCuadroDeCargaDeArchivos'
+                abrirCuadroDeCargaDeArchivos: 'abrirCuadroDeCargaDeArchivos',
+                filtrar: 'filtrar'
             }
+        }
+
+        private _tiposDeArchivos = {
+            todos: new TipoDeArchivo("Todos", "list"),
+            generico: new TipoDeArchivo("Generico", "generic-file"),
+            fotos: new TipoDeArchivo("Fotos", "picture"),
+            pdf: new TipoDeArchivo("PDF", "pdf"),
+            mapas: new TipoDeArchivo("Mapas", "google-earth"),
+            excel: new TipoDeArchivo("Excel", "excel"),
+            word: new TipoDeArchivo("Word", "word"),
+            powerPoint: new TipoDeArchivo("PowerPoint", "powerPoint")
         }
 
         get keyCodes() { return this._keyCodes; }
@@ -73,5 +85,13 @@ module common {
         get eventIndex() { return this._eventIndex; }
         get avatarUrls() { return this._avatarUrls; }
         get claims() { return this._claims; }
+        get tiposDeArchivos() { return this._tiposDeArchivos; }
+    }
+
+    export class TipoDeArchivo {
+        constructor(
+            public display: string,
+            public icon: string
+        ) { }
     }
 }

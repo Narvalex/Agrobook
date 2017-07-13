@@ -13,10 +13,11 @@ var archivosArea;
 (function (archivosArea) {
     var archivosQueryService = (function (_super) {
         __extends(archivosQueryService, _super);
-        function archivosQueryService($http, loginQueryService) {
+        function archivosQueryService($http, loginQueryService, config) {
             var _this = _super.call(this, $http, 'archivos/query') || this;
             _this.$http = $http;
             _this.loginQueryService = loginQueryService;
+            _this.config = config;
             return _this;
         }
         archivosQueryService.prototype.obtenerListaDeProductores = function (onSuccess, onError) {
@@ -31,9 +32,76 @@ var archivosArea;
             var usuario = userInfo.usuario;
             window.open("./archivos/query/download/" + idProductor + "/" + nombre + "/" + extension + "/" + usuario, '_blank', '');
         };
+        archivosQueryService.prototype.resolverIcono = function (ext) {
+            var tipos = this.config.tiposDeArchivos;
+            if (this.esPdf(ext)) {
+                return tipos.pdf.icon;
+            }
+            else if (this.esMapa(ext)) {
+                return tipos.mapas.icon;
+            }
+            else if (this.esFoto(ext)) {
+                return tipos.fotos.icon;
+            }
+            else if (this.esExcel(ext)) {
+                return tipos.excel.icon;
+            }
+            else if (this.esWord(ext)) {
+                return tipos.word.icon;
+            }
+            else if (this.esPowerPoint(ext)) {
+                return tipos.powerPoint.icon;
+            }
+            else
+                return tipos.generico.icon;
+        };
+        // Es algo section
+        archivosQueryService.prototype.esPdf = function (extension) {
+            if (extension === undefined)
+                return false;
+            extension = extension.toLowerCase();
+            return extension === 'pdf';
+        };
+        archivosQueryService.prototype.esFoto = function (extension) {
+            if (extension === undefined)
+                return false;
+            extension = extension.toLowerCase();
+            return extension === 'jpg'
+                || extension === 'jpeg';
+        };
+        archivosQueryService.prototype.esMapa = function (extension) {
+            if (extension === undefined)
+                return false;
+            extension = extension.toLowerCase();
+            return extension === 'kmz'
+                || extension === 'kml';
+        };
+        archivosQueryService.prototype.esExcel = function (extension) {
+            if (extension === undefined)
+                return false;
+            extension = extension.toLowerCase();
+            return extension === 'xls'
+                || extension === 'xlsx';
+        };
+        archivosQueryService.prototype.esWord = function (extension) {
+            if (extension === undefined)
+                return false;
+            extension = extension.toLowerCase();
+            return extension === 'doc'
+                || extension === 'docx'
+                || extension === 'text'
+                || extension === 'rtf';
+        };
+        archivosQueryService.prototype.esPowerPoint = function (extension) {
+            if (extension === undefined)
+                return false;
+            extension = extension.toLowerCase();
+            return extension === 'ppt'
+                || extension === 'pptx';
+        };
         return archivosQueryService;
     }(common.httpLite));
-    archivosQueryService.$inject = ['$http', 'loginQueryService'];
+    archivosQueryService.$inject = ['$http', 'loginQueryService', 'config'];
     archivosArea.archivosQueryService = archivosQueryService;
 })(archivosArea || (archivosArea = {}));
 //# sourceMappingURL=archivosQueryService.js.map

@@ -2,11 +2,12 @@
 
 module archivosArea {
     export class mainContentController {
-        static $inject = ['$mdSidenav', '$rootScope', '$routeParams', 'config', 'toasterLite', 'archivosQueryService',
+        static $inject = ['$mdSidenav', '$scope', '$rootScope', '$routeParams', 'config', 'toasterLite', 'archivosQueryService',
             'loginService', 'loginQueryService'];
 
         constructor(
             private $mdSidenav: angular.material.ISidenavService,
+            private $scope: angular.IScope,
             private $rooteScope: angular.IRootScopeService,
             private $routeParams: ng.route.IRouteParamsService,
             private config: common.config,
@@ -46,14 +47,24 @@ module archivosArea {
                 this.cargarArchivosDelproductor();
                 this.publicarElIdProductorActual();
             }
+
+            this.$scope.$on(this.config.eventIndex.archivos.filtrar, (e, args) => {
+                var filtro = args as common.TipoDeArchivo;
+                this.filtroActivo = filtro;
+                this.aplicarFiltro();
+            });
         }
 
         puedeCargarArchivos: boolean = false;
         puedeCambiarProductores: boolean = false;
 
         idProductor: string;
-        archivos: archivoDto[];
+        archivosOriginales: archivoDto[];
         archivoSeleccionado: archivoDto = null;
+
+        // filtraje
+        filtroActivo: common.TipoDeArchivo = this.config.tiposDeArchivos.todos;
+        archivosFiltrados: archivoDto[] = [];
 
         toggleSideNav(): void {
             this.$mdSidenav('right').toggle();
@@ -79,7 +90,8 @@ module archivosArea {
         cargarArchivosDelproductor() {
             this.archivosQueryService.obtenerArchivosDelProductor(this.idProductor,
                 value => {
-                    this.archivos = value.data;
+                    this.archivosOriginales = value.data;
+                    this.aplicarFiltro();
                 },
                 reason => {
                 }
@@ -93,5 +105,63 @@ module archivosArea {
         download(archivo: archivoDto) {
             this.archivosQueryService.download(this.idProductor, archivo.nombre, archivo.extension);
         }
+
+        obtenerTemaDePreview(): string {
+            if (this.archivoSeleccionado === null || this.archivoSeleccionado === undefined)
+                return 'default';
+            var ext = this.archivoSeleccionado.extension;
+            if (this.archivosQueryService.esFoto(ext))
+                return 'dark-grey';
+            else
+                return 'default';
+        }
+
+        private aplicarFiltro() {
+            this.archivosFiltrados = [];
+            var tipos = this.config.tiposDeArchivos;
+            var filtrado = this.filtroActivo.display;
+
+            if (filtrado === tipos.todos.display) {
+                this.archivosFiltrados = this.archivosOriginales;
+            }
+            else if (filtrado === tipos.fotos.display) {
+                this.archivosOriginales.forEach(x => {
+                    if (this.archivosQueryService.esFoto(x.extension))
+                        this.archivosFiltrados.push(x);
+                });
+            }
+            else if (filtrado === tipos.pdf.display) {
+                this.archivosOriginales.forEach(x => {
+                    if (this.archivosQueryService.esPdf(x.extension))
+                        this.archivosFiltrados.push(x);
+                });
+            }
+            else if (filtrado === tipos.mapas.display) {
+                this.archivosOriginales.forEach(x => {
+                    if (this.archivosQueryService.esMapa(x.extension))
+                        this.archivosFiltrados.push(x);
+                });
+            }
+            else if (filtrado === tipos.excel.display) {
+                this.archivosOriginales.forEach(x => {
+                    if (this.archivosQueryService.esExcel(x.extension))
+                        this.archivosFiltrados.push(x);
+                });
+            }
+            else if (filtrado === tipos.word.display) {
+                this.archivosOriginales.forEach(x => {
+                    if (this.archivosQueryService.esWord(x.extension))
+                        this.archivosFiltrados.push(x);
+                });
+            }
+            else if (filtrado === tipos.powerPoint.display) {
+                this.archivosOriginales.forEach(x => {
+                    if (this.archivosQueryService.esPowerPoint(x.extension))
+                        this.archivosFiltrados.push(x);
+                });
+            }
+        }
+
+
     }
 }

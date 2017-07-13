@@ -2,7 +2,7 @@
 
 module archivosArea {
     export class sidenavController {
-        static $inject = ['$mdSidenav', 'usuariosQueryService', 'toasterLite', '$rootScope', 'config', '$mdDialog',
+        static $inject = ['$mdSidenav', 'usuariosQueryService', 'toasterLite', '$scope', '$rootScope', 'config', '$mdDialog',
             'loginService'
         ];
 
@@ -10,6 +10,7 @@ module archivosArea {
             private $mdSidenav: angular.material.ISidenavService,
             private usuariosQueryService: usuariosArea.usuariosQueryService,
             private toasterLite: common.toasterLite,
+            private $scope: ng.IScope,
             private $rootScope: ng.IRootScopeService,
             private config: common.config,
             private $mdDialog: angular.material.IDialogService,
@@ -19,25 +20,25 @@ module archivosArea {
             var roles = this.config.claims.roles;
             this.puedeCargarArchivos = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
 
-
-            this.$rootScope.$on(this.config.eventIndex.archivos.productorSeleccionado, (e, args) => {
+            this.$scope.$on(this.config.eventIndex.archivos.productorSeleccionado, (e, args) => {
                 this.idProductor = args;
                 this.recuperarInfoDelProductor();
             });
-            this.$rootScope.$on(this.config.eventIndex.archivos.abrirCuadroDeCargaDeArchivos, (e, args) => {
+            this.$scope.$on(this.config.eventIndex.archivos.abrirCuadroDeCargaDeArchivos, (e, args) => {
                 this.idProductor = args;
                 this.recuperarInfoDelProductor();
                 this.initializeUploadCenter();
             });
 
+            let tipos = this.config.tiposDeArchivos;
             this.filtros = [
-                new FiltroDto("Todos", "list"),
-                new FiltroDto("Fotos", "picture"),
-                new FiltroDto("PDF", "pdf"),
-                new FiltroDto("Mapas", "google-earth"),
-                new FiltroDto("Excel", "excel"),
-                new FiltroDto("Word", "word"),
-                new FiltroDto("PowerPoint", "powerPoint")
+                tipos.todos,
+                tipos.pdf,
+                tipos.mapas,
+                tipos.fotos,
+                tipos.excel,
+                tipos.word,
+                tipos.powerPoint
             ];
         }
 
@@ -49,7 +50,8 @@ module archivosArea {
         eventoCarga = null;
 
         // Filtraje
-        filtros: FiltroDto[];
+        filtros: common.TipoDeArchivo[];
+        filtroSeleccionado: common.TipoDeArchivo = this.config.tiposDeArchivos.todos;
 
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
@@ -61,6 +63,11 @@ module archivosArea {
                 this.initializeUploadCenter();
             else
                 window.location.replace('#!/upload/' + this.idProductor);
+        }
+
+        filtrar(filtro: common.TipoDeArchivo) {
+            this.filtroSeleccionado = filtro;
+            this.$rootScope.$broadcast(this.config.eventIndex.archivos.filtrar, filtro);
         }
 
         // INTERNAL
@@ -95,12 +102,5 @@ module archivosArea {
         File: File,
         FileList: FileList,
         FileReader: FileReader
-    }
-
-    export class FiltroDto {
-        constructor(
-            public display: string,
-            public icon: string
-        ) { }
     }
 }

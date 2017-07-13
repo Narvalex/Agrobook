@@ -32,7 +32,7 @@
         <md-list>
             <md-subheader class="md-no-sticky">Mostrar</md-subheader>
             <md-list-item ng-repeat="filtro in vm.filtros"
-                          ng-click="null"
+                          ng-click="vm.filtrar(filtro)"
                           ng-class="{'seleccionado': filtro === vm.filtroSeleccionado }">
                 <md-icon md-svg-icon="{{filtro.icon}}"></md-icon>
                 <p>{{filtro.display}}</p>

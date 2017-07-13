@@ -104,6 +104,7 @@ module archivosArea {
             .icon('instagram', './assets/svg/instagram.svg')
             .icon('picture', './assets/svg/picture.svg')
             .icon('google-earth', './assets/svg/google-earth.svg')
+            .icon('generic-file', './assets/svg/generic-file.svg')
             .icon('excel', './assets/svg/excel.svg')
             .icon('word', './assets/svg/word.svg')
             .icon('powerPoint', './assets/svg/power-point.svg');

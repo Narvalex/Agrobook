@@ -26,10 +26,17 @@
                     <!--class="md-dense"-->
                     <md-list-item class="md-3-line"
                                   ng-click="vm.seleccionarArchivo(archivo)"
-                                  ng-repeat="archivo in vm.archivos | filter:vm.searchText">
-                        <img ng-src="./archivos/query/file-icon/{{vm.idProductor}}/{{archivo.nombre}}/{{archivo.extension}}" class="md-avatar" alt="pic" />
+                                  ng-repeat="archivo in vm.archivosFiltrados | filter:vm.searchText"
+                                  title="{{archivo.nombre}}">
+                        <img ng-if="vm.archivosQueryService.esFoto(archivo.extension)"
+                             ng-src="./archivos/query/file-icon/{{vm.idProductor}}/{{archivo.nombre}}/{{archivo.extension}}"
+                             class="md-avatar"
+                             alt="pic" />
+                        <md-icon ng-if="!vm.archivosQueryService.esFoto(archivo.extension)"
+                                 md-svg-icon="{{vm.archivosQueryService.resolverIcono(archivo.extension)}}"></md-icon>
                         <div class="md-list-item-text" layout="column">
-                            <p style="color: black;font-weight:100"
+                            <p md-truncate
+                               style="color: black;font-weight:100"
                                ng-class="{'archivo-seleccionado': vm.archivoSeleccionado === archivo}">
                                 {{archivo.nombre}}
                             </p>
@@ -47,35 +54,51 @@
             </md-content>
         </div>
 
-        <md-divider></md-divider>
+        <!--<md-divider></md-divider>-->
 
         <div flex-gt-xs="50" hide-xs flex>
-            <md-content class="md-padding">
+            <md-content class="md-padding" layout="column">
+
                 <div class="archivo-seleccione-por-favor" ng-hide="vm.archivoSeleccionado">
                     <p><ng-md-icon icon="remove_red_eye"></ng-md-icon></p>
                     <h3>Seleccione un archivo para ver más</h3>
                 </div>
-                <md-card md-theme="{{vm.archivoSeleccionado.extension == 'jpg' ? 'dark-grey' : 'default'}}" ng-show="vm.archivoSeleccionado">
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-headline">{{vm.archivoSeleccionado.nombre}}</span>
-                            <span class="md-subhead">{{vm.archivoSeleccionado.extension}}</span>
-                            <span class="md-subhead">{{vm.archivoSeleccionado.fecha}}</span>
-                            <span class="md-subhead">{{vm.archivoSeleccionado.desc}}</span>
-                        </md-card-title-text>
-                        <md-card-title-media>
-                            <div class="md-media-lg card-media">
-                                <img id="" ng-src="./archivos/query/file-icon/{{vm.idProductor}}/{{vm.archivoSeleccionado.nombre}}/{{vm.archivoSeleccionado.extension}}" />
-                            </div>
-                        </md-card-title-media>
-                    </md-card-title>
-                    <md-card-actions layout="row" layout-align="end center">
-                        <md-button ng-click="vm.download(vm.archivoSeleccionado)">
-                            <ng-md-icon icon="file_download"></ng-md-icon>&nbsp;Descargar
-                        </md-button>
-                        <!--<md-button>Action 2</md-button>-->
-                    </md-card-actions>
-                </md-card>
+                
+                <div class="archivo-seleccionado-preview">
+                    <md-card md-theme="{{vm.obtenerTemaDePreview()}}"
+                             ng-show="vm.archivoSeleccionado">
+                        <md-card-header>
+                            <md-card-avatar>
+                                <md-icon style="background-color: rgba(0,0,0,0)"
+                                         md-svg-icon="{{vm.archivosQueryService.resolverIcono(vm.archivoSeleccionado.extension)}}"></md-icon>
+                            </md-card-avatar>
+                            <md-card-header-text>
+                                <span class="md-title">Archivo</span>
+                                <span class="md-subhead">{{vm.archivoSeleccionado.extension}}</span>
+                            </md-card-header-text>
+                        </md-card-header>
+                        <img ng-if="vm.archivosQueryService.esFoto(vm.archivoSeleccionado.extension)"
+                             ng-src="./archivos/query/file-icon/{{vm.idProductor}}/{{vm.archivoSeleccionado.nombre}}/{{vm.archivoSeleccionado.extension}}" class="md-card-image" alt="Foto Preview">
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">{{vm.archivoSeleccionado.nombre}}</span>
+                                <span class="md-subhead">{{vm.archivoSeleccionado.fecha}}</span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-card-actions layout="row" layout-align="start center">
+                            <md-button ng-click="vm.download(vm.archivoSeleccionado)"
+                                       class="md-primary md-raised">
+                                <ng-md-icon icon="file_download"></ng-md-icon>&nbsp;Descargar&nbsp;
+                            </md-button>
+                            <!--<md-button>Action 2</md-button>-->
+                        </md-card-actions>
+                        <md-card-content>
+                            <p>{{vm.archivoSeleccionado.desc}}</p>
+                        </md-card-content>
+                    </md-card>
+                </div>
+
+
             </md-content>
         </div>
 

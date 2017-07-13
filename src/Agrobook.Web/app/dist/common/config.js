@@ -60,8 +60,19 @@ var common;
                 },
                 archivos: {
                     productorSeleccionado: 'productorSeleccionado',
-                    abrirCuadroDeCargaDeArchivos: 'abrirCuadroDeCargaDeArchivos'
+                    abrirCuadroDeCargaDeArchivos: 'abrirCuadroDeCargaDeArchivos',
+                    filtrar: 'filtrar'
                 }
+            };
+            this._tiposDeArchivos = {
+                todos: new TipoDeArchivo("Todos", "list"),
+                generico: new TipoDeArchivo("Generico", "generic-file"),
+                fotos: new TipoDeArchivo("Fotos", "picture"),
+                pdf: new TipoDeArchivo("PDF", "pdf"),
+                mapas: new TipoDeArchivo("Mapas", "google-earth"),
+                excel: new TipoDeArchivo("Excel", "excel"),
+                word: new TipoDeArchivo("Word", "word"),
+                powerPoint: new TipoDeArchivo("PowerPoint", "powerPoint")
             };
         }
         Object.defineProperty(config.prototype, "keyCodes", {
@@ -89,8 +100,21 @@ var common;
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(config.prototype, "tiposDeArchivos", {
+            get: function () { return this._tiposDeArchivos; },
+            enumerable: true,
+            configurable: true
+        });
         return config;
     }());
     common.config = config;
+    var TipoDeArchivo = (function () {
+        function TipoDeArchivo(display, icon) {
+            this.display = display;
+            this.icon = icon;
+        }
+        return TipoDeArchivo;
+    }());
+    common.TipoDeArchivo = TipoDeArchivo;
 })(common || (common = {}));
 //# sourceMappingURL=config.js.map

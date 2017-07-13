@@ -17,7 +17,6 @@
     padding: calc(30vh) 0;
 }
 
-.dumbTest {
-    background-color: #b7472a;
-    color: #303c42;
+.archivo-seleccionado-preview {
+    padding: 35px 0;
 }

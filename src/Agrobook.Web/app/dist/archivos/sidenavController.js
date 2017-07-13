@@ -2,11 +2,12 @@
 var archivosArea;
 (function (archivosArea) {
     var sidenavController = (function () {
-        function sidenavController($mdSidenav, usuariosQueryService, toasterLite, $rootScope, config, $mdDialog, loginService) {
+        function sidenavController($mdSidenav, usuariosQueryService, toasterLite, $scope, $rootScope, config, $mdDialog, loginService) {
             var _this = this;
             this.$mdSidenav = $mdSidenav;
             this.usuariosQueryService = usuariosQueryService;
             this.toasterLite = toasterLite;
+            this.$scope = $scope;
             this.$rootScope = $rootScope;
             this.config = config;
             this.$mdDialog = $mdDialog;
@@ -14,26 +15,28 @@ var archivosArea;
             // Auth
             this.puedeCargarArchivos = false;
             this.eventoCarga = null;
+            this.filtroSeleccionado = this.config.tiposDeArchivos.todos;
             // Auth
             var roles = this.config.claims.roles;
             this.puedeCargarArchivos = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
-            this.$rootScope.$on(this.config.eventIndex.archivos.productorSeleccionado, function (e, args) {
+            this.$scope.$on(this.config.eventIndex.archivos.productorSeleccionado, function (e, args) {
                 _this.idProductor = args;
                 _this.recuperarInfoDelProductor();
             });
-            this.$rootScope.$on(this.config.eventIndex.archivos.abrirCuadroDeCargaDeArchivos, function (e, args) {
+            this.$scope.$on(this.config.eventIndex.archivos.abrirCuadroDeCargaDeArchivos, function (e, args) {
                 _this.idProductor = args;
                 _this.recuperarInfoDelProductor();
                 _this.initializeUploadCenter();
             });
+            var tipos = this.config.tiposDeArchivos;
             this.filtros = [
-                new FiltroDto("Todos", "list"),
-                new FiltroDto("Fotos", "picture"),
-                new FiltroDto("PDF", "pdf"),
-                new FiltroDto("Mapas", "google-earth"),
-                new FiltroDto("Excel", "excel"),
-                new FiltroDto("Word", "word"),
-                new FiltroDto("PowerPoint", "powerPoint")
+                tipos.todos,
+                tipos.pdf,
+                tipos.mapas,
+                tipos.fotos,
+                tipos.excel,
+                tipos.word,
+                tipos.powerPoint
             ];
         }
         sidenavController.prototype.toggleSideNav = function () {
@@ -45,6 +48,10 @@ var archivosArea;
                 this.initializeUploadCenter();
             else
                 window.location.replace('#!/upload/' + this.idProductor);
+        };
+        sidenavController.prototype.filtrar = function (filtro) {
+            this.filtroSeleccionado = filtro;
+            this.$rootScope.$broadcast(this.config.eventIndex.archivos.filtrar, filtro);
         };
         // INTERNAL
         sidenavController.prototype.initializeUploadCenter = function () {
@@ -71,17 +78,9 @@ var archivosArea;
         };
         return sidenavController;
     }());
-    sidenavController.$inject = ['$mdSidenav', 'usuariosQueryService', 'toasterLite', '$rootScope', 'config', '$mdDialog',
+    sidenavController.$inject = ['$mdSidenav', 'usuariosQueryService', 'toasterLite', '$scope', '$rootScope', 'config', '$mdDialog',
         'loginService'
     ];
     archivosArea.sidenavController = sidenavController;
-    var FiltroDto = (function () {
-        function FiltroDto(display, icon) {
-            this.display = display;
-            this.icon = icon;
-        }
-        return FiltroDto;
-    }());
-    archivosArea.FiltroDto = FiltroDto;
 })(archivosArea || (archivosArea = {}));
 //# sourceMappingURL=sidenavController.js.map
