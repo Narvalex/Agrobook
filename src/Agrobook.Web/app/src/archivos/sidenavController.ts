@@ -1,12 +1,6 @@
 ﻿/// <reference path="../_all.ts" />
 
 module archivosArea {
-    export interface IWindowFileReady extends Window {
-        File: File,
-        FileList: FileList,
-        FileReader: FileReader
-    }
-
     export class sidenavController {
         static $inject = ['$mdSidenav', 'usuariosQueryService', 'toasterLite', '$rootScope', 'config', '$mdDialog',
             'loginService'
@@ -35,6 +29,16 @@ module archivosArea {
                 this.recuperarInfoDelProductor();
                 this.initializeUploadCenter();
             });
+
+            this.filtros = [
+                new FiltroDto("Todos", "list"),
+                new FiltroDto("Fotos", "picture"),
+                new FiltroDto("PDF", "pdf"),
+                new FiltroDto("Mapas", "google-earth"),
+                new FiltroDto("Excel", "excel"),
+                new FiltroDto("Word", "word"),
+                new FiltroDto("PowerPoint", "powerPoint")
+            ];
         }
 
         // Auth
@@ -43,6 +47,9 @@ module archivosArea {
         idProductor: string;
         productor: productorDto;
         eventoCarga = null;
+
+        // Filtraje
+        filtros: FiltroDto[];
 
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
@@ -76,11 +83,24 @@ module archivosArea {
         private recuperarInfoDelProductor() {
             this.usuariosQueryService.obtenerInfoBasicaDeUsuario(this.idProductor,
                 value => {
-                    this.productor = new productorDto(value.data.nombre, value.data.nombreParaMostrar, value.data.avatarUrl);
+                    this.productor = new productorDto(value.data.nombre, value.data.nombreParaMostrar, value.data.avatarUrl, null);
                 },
                 reason => {
                     this.toasterLite.error('Ocurrió un error al recuperar información del usuario', this.toasterLite.delayForever);
                 });
         }
+    }
+
+    export interface IWindowFileReady extends Window {
+        File: File,
+        FileList: FileList,
+        FileReader: FileReader
+    }
+
+    export class FiltroDto {
+        constructor(
+            public display: string,
+            public icon: string
+        ) { }
     }
 }

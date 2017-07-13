@@ -26,6 +26,15 @@ var archivosArea;
                 _this.recuperarInfoDelProductor();
                 _this.initializeUploadCenter();
             });
+            this.filtros = [
+                new FiltroDto("Todos", "list"),
+                new FiltroDto("Fotos", "picture"),
+                new FiltroDto("PDF", "pdf"),
+                new FiltroDto("Mapas", "google-earth"),
+                new FiltroDto("Excel", "excel"),
+                new FiltroDto("Word", "word"),
+                new FiltroDto("PowerPoint", "powerPoint")
+            ];
         }
         sidenavController.prototype.toggleSideNav = function () {
             this.$mdSidenav('left').toggle();
@@ -55,7 +64,7 @@ var archivosArea;
         sidenavController.prototype.recuperarInfoDelProductor = function () {
             var _this = this;
             this.usuariosQueryService.obtenerInfoBasicaDeUsuario(this.idProductor, function (value) {
-                _this.productor = new archivosArea.productorDto(value.data.nombre, value.data.nombreParaMostrar, value.data.avatarUrl);
+                _this.productor = new archivosArea.productorDto(value.data.nombre, value.data.nombreParaMostrar, value.data.avatarUrl, null);
             }, function (reason) {
                 _this.toasterLite.error('Ocurrió un error al recuperar información del usuario', _this.toasterLite.delayForever);
             });
@@ -66,5 +75,13 @@ var archivosArea;
         'loginService'
     ];
     archivosArea.sidenavController = sidenavController;
+    var FiltroDto = (function () {
+        function FiltroDto(display, icon) {
+            this.display = display;
+            this.icon = icon;
+        }
+        return FiltroDto;
+    }());
+    archivosArea.FiltroDto = FiltroDto;
 })(archivosArea || (archivosArea = {}));
 //# sourceMappingURL=sidenavController.js.map

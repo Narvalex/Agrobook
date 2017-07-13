@@ -21,39 +21,35 @@ module archivosArea {
         .controller('mainContentController', mainContentController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider',
             '$mdDateLocaleProvider', (
-            $mdIconProvider: angular.material.IIconProvider,
-            $mdThemingProvider: angular.material.IThemingProvider,
-            $httpProvider: angular.IHttpProvider,
-            $routeProvider: angular.route.IRouteProvider,
-            $mdDateLocaleProvider: angular.material.IDateLocaleProvider
-        ) => {
-            // most from flat icon dot com
-            $mdIconProvider
-                .defaultIconSet('./assets/svg/avatars.svg', 128)
-                .icon('menu', './assets/svg/menu.svg', 24)
-                .icon('close', './assets/svg/close.svg');
+                $mdIconProvider: angular.material.IIconProvider,
+                $mdThemingProvider: angular.material.IThemingProvider,
+                $httpProvider: angular.IHttpProvider,
+                $routeProvider: angular.route.IRouteProvider,
+                $mdDateLocaleProvider: angular.material.IDateLocaleProvider
+            ) => {
+                configureIcons($mdIconProvider);
 
-            $mdThemingProvider.theme('default')
-                .primaryPalette('green')
-                .accentPalette('blue');
-            // optional themes
-            $mdThemingProvider.theme('dark-grey').backgroundPalette('grey').dark();
-            $mdThemingProvider.theme('dark-orange').backgroundPalette('orange').dark();
-            $mdThemingProvider.theme('dark-purple').backgroundPalette('deep-purple').dark();
-            $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
+                $mdThemingProvider.theme('default')
+                    .primaryPalette('green')
+                    .accentPalette('blue');
+                // optional themes
+                $mdThemingProvider.theme('dark-grey').backgroundPalette('grey').dark();
+                $mdThemingProvider.theme('dark-orange').backgroundPalette('orange').dark();
+                $mdThemingProvider.theme('dark-purple').backgroundPalette('deep-purple').dark();
+                $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
 
-            common.registerHttpInterceptors($httpProvider);
+                common.registerHttpInterceptors($httpProvider);
 
-            getRouteConfigs().forEach(config => {
-                $routeProvider.when(config.path, config.route);
-            });
-            $routeProvider.otherwise({ redirectTo: '/' });
+                getRouteConfigs().forEach(config => {
+                    $routeProvider.when(config.path, config.route);
+                });
+                $routeProvider.otherwise({ redirectTo: '/' });
 
-            configLang($mdDateLocaleProvider);
-        }]);
+                configLang($mdDateLocaleProvider);
+            }]);
 
     function configLang($mdDateLocaleProvider: angular.material.IDateLocaleProvider) {
-        
+
 
         $mdDateLocaleProvider.months = [
             'enero', 'febrero', 'marzo',
@@ -93,5 +89,23 @@ module archivosArea {
         };
         $mdDateLocaleProvider.msgCalendar = 'Calendario';
         $mdDateLocaleProvider.msgOpenCalendar = 'Abrir calendario';
+    }
+
+    function configureIcons($mdIconProvider: angular.material.IIconProvider) {
+        // Credits 
+        // most from flaticon.com
+        // https://icons8.com/icon/11591/microsoft-word#filled
+        $mdIconProvider
+            .defaultIconSet('./assets/svg/avatars.svg', 128)
+            .icon('menu', './assets/svg/menu.svg', 24)
+            .icon('close', './assets/svg/close.svg')
+            .icon('pdf', './assets/svg/pdf.svg')
+            .icon('list', './assets/svg/list.svg')
+            .icon('instagram', './assets/svg/instagram.svg')
+            .icon('picture', './assets/svg/picture.svg')
+            .icon('google-earth', './assets/svg/google-earth.svg')
+            .icon('excel', './assets/svg/excel.svg')
+            .icon('word', './assets/svg/word.svg')
+            .icon('powerPoint', './assets/svg/power-point.svg');
     }
 }

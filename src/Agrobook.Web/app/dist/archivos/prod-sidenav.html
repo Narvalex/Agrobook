@@ -10,7 +10,7 @@
             </md-button>
         </div>
     </md-toolbar>
-        <md-content layout-padding ng-hide="vm.loaded">
+    <md-content layout-padding ng-hide="vm.loaded">
         <div layout="row" layout-align="space-around">
             <md-progress-circular md-mode="indeterminate"
                                   ng-disabled="vm.loaded"></md-progress-circular>
@@ -29,13 +29,18 @@
     </div>
 
     <md-content class="scrollable-nav-content">
-        <md-list>
+        <md-list><!--Optional:  <md-list class="md-dense"> -->
             <!--Optional filter  | orderBy:'nombre'" -->
-            <md-list-item ng-repeat="productor in vm.productores | filter:vm.searchText"
+            <md-list-item ng-repeat="productor in vm.productores | filter:vm.searchText "
                           ng-click="vm.seleccionarProductor(productor)"
+                          class="md-3-line"
                           ng-class="{'seleccionado': productor === vm.productorSeleccionado }">
-                <img ng-src="{{productor.avatarUrl}}" alt="Imagen de perfil" style="height:40px" />
-                &nbsp;{{productor.display}}
+                <img ng-src="{{productor.avatarUrl}}" class="md-avatar" alt="Imagen de perfil" style="height:40px" />
+                <div class="md-list-item-text" layout="column">
+                    <h3>{{productor.display}}</h3>
+                    <h4>{{productor.organizaciones[0].display}}</h4>
+                    <p>{{productor.organizaciones[0].grupos}}</p>
+                </div>
             </md-list-item>
         </md-list>
     </md-content>

@@ -5,6 +5,13 @@
         public string Id { get; set; }
         public string Display { get; set; }
         public string AvatarUrl { get; set; }
+        public OrganizacionDto[] Organizaciones { get; set; }
+    }
+
+    public class OrganizacionDto
+    {
+        public string Display { get; set; }
+        public string Grupos { get; set; }
     }
 
     public class ArchivoDto

@@ -18,8 +18,10 @@
                         <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{item.display}}</span>
                     </md-item-template>
                     <md-not-found>
-                        <a ng-show="vm.organizaciones.length > 0">No existe ninguna organización que suene a "{{vm.searchText}}".</a>
-                        <a ng-show="vm.organizaciones.length === 0">El usuario {{vm.idUsuario}} no está en ninguna organización.</a>
+                        <a ng-show="vm.organizaciones.length > 0"
+                           ng-click="vm.irAOrgTab()">No existe ninguna organización que suene a "{{vm.searchText}}".</a>
+                        <a ng-show="vm.organizaciones.length === 0" 
+                           ng-click="vm.irAOrgTab()">El usuario {{vm.idUsuario}} no está en ninguna organización.</a>
                     </md-not-found>
                 </md-autocomplete>
                 <div class="md-actions">

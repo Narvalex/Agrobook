@@ -34,12 +34,12 @@ namespace Agrobook.Client
             using (var client = this.CreateHttpClient(token))
             {
                 var endpoint = new Uri(new Uri(this.hostUri), uri);
-                using (var response = await client.GetAsync(endpoint.AbsoluteUri))
-                {
-                    this.EnsureResponseIsOk(uri, response);
-                    var result = await response.Content.ReadAsAsync<TResult>();
-                    return result;
-                }
+                var response = await client.GetAsync(endpoint.AbsoluteUri);
+
+                this.EnsureResponseIsOk(uri, response);
+                var result = await response.Content.ReadAsAsync<TResult>();
+                return result;
+
             }
         }
 
@@ -62,13 +62,13 @@ namespace Agrobook.Client
             {
                 var tokenEndpoint = new Uri(new Uri(this.hostUri), uri);
                 var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-                using (var response = await client.PostAsync(tokenEndpoint, stringContent))
-                {
-                    this.EnsureResponseIsOk(uri, response);
+                var response = await client.PostAsync(tokenEndpoint, stringContent);
 
-                    var responseContent = await response.Content.ReadAsAsync<TResult>();
-                    return responseContent;
-                }
+                this.EnsureResponseIsOk(uri, response);
+
+                var responseContent = await response.Content.ReadAsAsync<TResult>();
+                return responseContent;
+
             }
         }
 
@@ -87,10 +87,10 @@ namespace Agrobook.Client
 
                     var endpoint = new Uri(new Uri(this.hostUri), uri);
                     var url = endpoint.AbsoluteUri;
-                    using (var response = await client.PostAsync(url, content))
-                    {
-                        this.EnsureResponseIsOk(uri, response);
-                    }
+                    var response = await client.PostAsync(url, content);
+
+                    this.EnsureResponseIsOk(uri, response);
+
                 }
             }
         }
@@ -102,11 +102,11 @@ namespace Agrobook.Client
 
         public async Task<TResult> Post<TContent, TResult>(string uri, TContent content, string token = null)
         {
-            using (var response = await this.TryPostAsJson(uri, content, token))
-            {
-                var responseContent = await response.Content.ReadAsAsync<TResult>();
-                return responseContent;
-            }
+            var response = await this.TryPostAsJson(uri, content, token);
+
+            var responseContent = await response.Content.ReadAsAsync<TResult>();
+            return responseContent;
+
         }
 
         private async Task<HttpResponseMessage> TryPostAsJson<TContent>(string uri, TContent content, string token)
@@ -114,11 +114,10 @@ namespace Agrobook.Client
             using (var client = this.CreateHttpClient(token))
             {
                 var endpoint = new Uri(new Uri(this.hostUri), uri);
-                using (var response = await client.PostAsJsonAsync<TContent>(endpoint.AbsoluteUri, content))
-                {
-                    this.EnsureResponseIsOk(uri, response);
-                    return response;
-                }
+                var response = await client.PostAsJsonAsync<TContent>(endpoint.AbsoluteUri, content);
+                this.EnsureResponseIsOk(uri, response);
+                return response;
+
             }
         }
 

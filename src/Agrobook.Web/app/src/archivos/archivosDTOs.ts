@@ -6,6 +6,14 @@ module archivosArea {
             public id: string,
             public display: string,
             public avatarUrl: string,
+            public organizaciones: Organizacion[]
+        ) { }
+    }
+
+    export class Organizacion {
+        constructor(
+            public nombre: string,
+            public grupos: string
         ) { }
     }
 

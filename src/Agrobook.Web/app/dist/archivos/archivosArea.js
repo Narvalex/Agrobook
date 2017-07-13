@@ -19,11 +19,7 @@ var archivosArea;
         .controller('mainContentController', archivosArea.mainContentController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider',
         '$mdDateLocaleProvider', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $routeProvider, $mdDateLocaleProvider) {
-            // most from flat icon dot com
-            $mdIconProvider
-                .defaultIconSet('./assets/svg/avatars.svg', 128)
-                .icon('menu', './assets/svg/menu.svg', 24)
-                .icon('close', './assets/svg/close.svg');
+            configureIcons($mdIconProvider);
             $mdThemingProvider.theme('default')
                 .primaryPalette('green')
                 .accentPalette('blue');
@@ -75,6 +71,23 @@ var archivosArea;
         };
         $mdDateLocaleProvider.msgCalendar = 'Calendario';
         $mdDateLocaleProvider.msgOpenCalendar = 'Abrir calendario';
+    }
+    function configureIcons($mdIconProvider) {
+        // Credits 
+        // most from flaticon.com
+        // https://icons8.com/icon/11591/microsoft-word#filled
+        $mdIconProvider
+            .defaultIconSet('./assets/svg/avatars.svg', 128)
+            .icon('menu', './assets/svg/menu.svg', 24)
+            .icon('close', './assets/svg/close.svg')
+            .icon('pdf', './assets/svg/pdf.svg')
+            .icon('list', './assets/svg/list.svg')
+            .icon('instagram', './assets/svg/instagram.svg')
+            .icon('picture', './assets/svg/picture.svg')
+            .icon('google-earth', './assets/svg/google-earth.svg')
+            .icon('excel', './assets/svg/excel.svg')
+            .icon('word', './assets/svg/word.svg')
+            .icon('powerPoint', './assets/svg/power-point.svg');
     }
 })(archivosArea || (archivosArea = {}));
 //# sourceMappingURL=archivosArea.js.map

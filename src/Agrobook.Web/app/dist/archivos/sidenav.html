@@ -15,11 +15,9 @@
         </div>
     </md-toolbar>
 
-
-    <md-content>
+    <md-content ng-show="vm.puedeCargarArchivos">
         <br />
-        <section ng-show="vm.puedeCargarArchivos"
-                 layout="row">
+        <section layout="row">
             <md-button ng-click="vm.mostrarDialogoDeCarga($event)"
                        ng-disabled="vm.idProductor === undefined"
                        class="md-primary">
@@ -28,5 +26,17 @@
             </md-button>
         </section>
 
+    </md-content>
+
+    <md-content ng-class="{'scrollable-nav-content': vm.puedeCargarArchivos, 'scrollable-nav-content-without-top': !vm.puedeCargarArchivos}">
+        <md-list>
+            <md-subheader class="md-no-sticky">Mostrar</md-subheader>
+            <md-list-item ng-repeat="filtro in vm.filtros"
+                          ng-click="null"
+                          ng-class="{'seleccionado': filtro === vm.filtroSeleccionado }">
+                <md-icon md-svg-icon="{{filtro.icon}}"></md-icon>
+                <p>{{filtro.display}}</p>
+            </md-list-item>
+        </md-list>
     </md-content>
 </md-sidenav>

@@ -16,3 +16,8 @@
 .archivo-seleccione-por-favor {
     padding: calc(30vh) 0;
 }
+
+.dumbTest {
+    background-color: #b7472a;
+    color: #303c42;
+}

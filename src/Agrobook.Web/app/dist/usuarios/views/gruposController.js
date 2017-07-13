@@ -85,6 +85,9 @@ var usuariosArea;
                 _this.agregandoAGrupo = false;
             });
         };
+        gruposController.prototype.irAOrgTab = function () {
+            // TODO...
+        };
         //********************************
         // Internal
         //********************************

@@ -90,11 +90,13 @@ module common {
 
             var claims = this.config.claims;
             var esTecnicoOSuperior = this.loginService.autorizar([claims.roles.Tecnico, claims.roles.Gerente]);
-            var usuariosLabel = esTecnicoOSuperior ? 'Usuarios' : 'Mi Perfil';
+
             this.menuItemList = [
                 new menuItem('Inicio', 'home.html'),
-                new menuItem('Archivos', 'archivos.html'),
-                new menuItem(usuariosLabel, 'usuarios.html#!/')
+                new menuItem(esTecnicoOSuperior
+                    ? 'Archivos' : 'Mis archivos', 'archivos.html'),
+                new menuItem(esTecnicoOSuperior
+                    ? 'Usuarios' : 'Mi Perfil', 'usuarios.html#!/')
             ];
         }
 
