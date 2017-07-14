@@ -20,6 +20,7 @@ namespace Agrobook.Domain.Archivos.Services
 
         public async Task<ResultadoDelUpload> HandleAsync(AgregarArchivoAColeccion cmd)
         {
+            // ToDo: improve
             var @lock = this.locks.GetOrAdd(cmd.IdProductor, new SemaphoreSlim(1, 1));
             await @lock.WaitAsync();
             try
