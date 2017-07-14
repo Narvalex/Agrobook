@@ -12,4 +12,19 @@ namespace Agrobook.Domain.Archivos.Services
         public int Size { get; set; }
         public string IdProductor { get; set; }
     }
+
+    public class ResultadoDelUpload
+    {
+        public ResultadoDelUpload(bool exitoso, bool yaExiste)
+        {
+            this.Exitoso = exitoso;
+            this.YaExiste = yaExiste;
+        }
+
+        public bool Exitoso { get; }
+        public bool YaExiste { get; }
+
+        public static ResultadoDelUpload ResponderExitoso() => new ResultadoDelUpload(true, false);
+        public static ResultadoDelUpload ResponderQueYaExiste() => new ResultadoDelUpload(false, true);
+    }
 }

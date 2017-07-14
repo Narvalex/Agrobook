@@ -1,4 +1,7 @@
 ﻿using Agrobook.Core;
+using System;
+using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Archivos.Services
@@ -6,6 +9,7 @@ namespace Agrobook.Domain.Archivos.Services
     public class ArchivosService : EventSourcedService
     {
         private readonly IArchivosDelProductorFileManager fileWriter;
+        private readonly ConcurrentDictionary<string, SemaphoreSlim> locks = new ConcurrentDictionary<string, SemaphoreSlim>();
 
         public ArchivosService(IArchivosDelProductorFileManager fileWriter, IEventSourcedRepository repository, IDateTimeProvider dateTime) : base(repository, dateTime)
         {
@@ -15,6 +19,34 @@ namespace Agrobook.Domain.Archivos.Services
         }
 
         public async Task<ResultadoDelUpload> HandleAsync(AgregarArchivoAColeccion cmd)
+        {
+            var @lock = this.locks.GetOrAdd(cmd.IdProductor, new SemaphoreSlim(1, 1));
+            await @lock.WaitAsync();
+            try
+            {
+                // This could be so much optimized
+                var resultado = await HandleAsyncWithPesimisticConcurrencyLock(cmd);
+                return resultado;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                @lock.Release();
+            }
+        }
+
+        public async Task HandleAsync(RegistrarDescargaExitosa cmd)
+        {
+            var coleccion = await this.repository.GetOrFailAsync<ColeccionDeArchivosDelProductor>(cmd.Productor);
+            coleccion.Emit(new ArchivoDescargadoExitosamente(cmd.Metadatos, cmd.Productor, cmd.NombreArchivo, coleccion.GetSize(cmd.NombreArchivo)));
+
+            await this.repository.SaveAsync(coleccion);
+        }
+
+        private async Task<ResultadoDelUpload> HandleAsyncWithPesimisticConcurrencyLock(AgregarArchivoAColeccion cmd)
         {
             var coleccion = await this.repository.GetAsync<ColeccionDeArchivosDelProductor>(cmd.IdProductor);
             if (coleccion == null)
@@ -29,34 +61,14 @@ namespace Agrobook.Domain.Archivos.Services
             if (await this.fileWriter.TryWriteUnindexedIfNotExists(cmd.FileContent, cmd.IdProductor, cmd.Archivo))
             {
                 coleccion.Emit(new NuevoArchivoAgregadoALaColeccion(cmd.Metadatos, cmd.IdProductor, cmd.Archivo));
+
+
                 await this.repository.SaveAsync(coleccion);
+
                 return ResultadoDelUpload.ResponderExitoso();
             }
             else
                 return ResultadoDelUpload.ResponderQueYaExiste();
         }
-
-        public async Task HandleAsync(RegistrarDescargaExitosa cmd)
-        {
-            var coleccion = await this.repository.GetOrFailAsync<ColeccionDeArchivosDelProductor>(cmd.Productor);
-            coleccion.Emit(new ArchivoDescargadoExitosamente(cmd.Metadatos, cmd.Productor, cmd.NombreArchivo, coleccion.GetSize(cmd.NombreArchivo)));
-
-            await this.repository.SaveAsync(coleccion);
-        }
-    }
-
-    public class ResultadoDelUpload
-    {
-        public ResultadoDelUpload(bool exitoso, bool yaExiste)
-        {
-            this.Exitoso = exitoso;
-            this.YaExiste = yaExiste;
-        }
-
-        public bool Exitoso { get; }
-        public bool YaExiste { get; }
-
-        public static ResultadoDelUpload ResponderExitoso() => new ResultadoDelUpload(true, false);
-        public static ResultadoDelUpload ResponderQueYaExiste() => new ResultadoDelUpload(false, true);
     }
 }
