@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Agrobook.Domain.Archivos.Services;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -11,9 +12,15 @@ namespace Agrobook.Client.Archivos
         { }
 
         // Los metadatos estan serializados de la forma simple { prop1: '', prop2: ''}
-        public async Task Upload(Stream fileStream, string fileName, string metadatosSerializados)
+        //public async Task Upload(Stream fileStream, string fileName, string metadatosSerializados)
+        //{
+        //    await base.Upload("upload", fileStream, fileName, metadatosSerializados);
+        //}
+
+        public async Task<ResultadoDelUpload> Upload(Stream fileStream, string fileName, string metadatosSerializados)
         {
-            await base.Upload("upload", fileStream, fileName, metadatosSerializados);
+            var dto = await base.Upload<ResultadoDelUpload>("upload", fileStream, fileName, metadatosSerializados);
+            return dto;
         }
     }
 }

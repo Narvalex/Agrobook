@@ -235,29 +235,44 @@ var archivosArea;
                 self.uploading = false;
                 self.esperandoAlServidor = false;
             }
-            function setFailure() {
+            function setFailure(message) {
                 self.failed = true;
                 self.uploaded = false;
                 self.uploading = false;
                 self.progress = 0;
                 self.blockEdition = false;
                 self.esperandoAlServidor = false;
+                self.errorMessage = message;
             }
             function readyStateChange(e) {
                 console.log("ready state change. status:" + e.target.status + " " + e.target.statusText);
+                var errorComun = 'Error al cargar archivo';
+                var elArchivoYaExiste = 'Ya existe un archivo con ese nombre';
                 switch (e.target.status) {
                     case 500:
-                        setFailure();
+                        setFailure(errorComun);
                         self.scope.$apply(function () {
-                            setFailure();
+                            setFailure(errorComun);
                         });
                         break;
                     case 200:
-                        setUploaded();
-                        self.scope.$apply(function () {
+                        var serialized = e.target.response;
+                        if (serialized === "")
+                            return;
+                        var result = JSON.parse(serialized);
+                        if (result.exitoso) {
                             setUploaded();
-                        });
-                        console.log('El archivo se recibio correctamente en el servidor');
+                            self.scope.$apply(function () {
+                                setUploaded();
+                            });
+                            console.log('El archivo se recibio correctamente en el servidor');
+                        }
+                        else {
+                            setFailure(elArchivoYaExiste);
+                            self.scope.$apply(function () {
+                                setFailure(elArchivoYaExiste);
+                            });
+                        }
                         break;
                     case 0:
                     case '':

@@ -67,7 +67,8 @@ var archivosArea;
                 return false;
             extension = extension.toLowerCase();
             return extension === 'jpg'
-                || extension === 'jpeg';
+                || extension === 'jpeg'
+                || extension === 'png';
         };
         archivosQueryService.prototype.esMapa = function (extension) {
             if (extension === undefined)

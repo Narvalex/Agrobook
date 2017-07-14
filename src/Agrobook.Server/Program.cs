@@ -80,16 +80,15 @@ namespace Agrobook.Server
             fileManager.CrearDirectoriosSiFaltan();
 #endif
 
-
-            OnPersistenceEnginesInitialized();
-
             _log.Verbose("Starting web server...");
             // Web Api
             var baseUri = "http://localhost:8081";
             WebApiStartup.OnAppDisposing = () => OnExit();
             WebApp.Start<WebApiStartup>(baseUri);
             _log.Verbose("Web server is ready");
-            Console.WriteLine($"Server running at {baseUri} - press Enter to quit");
+            _log.Info($"Server running at {baseUri}");
+
+            OnServerStarted();
 
             string line;
             do
@@ -109,7 +108,7 @@ namespace Agrobook.Server
                 .TearDown();
         }
 
-        private static void OnPersistenceEnginesInitialized()
+        private static void OnServerStarted()
         {
             var userService = ServiceLocator.ResolveSingleton<UsuariosService>();
             var userQueryService = ServiceLocator.ResolveSingleton<UsuariosQueryService>();

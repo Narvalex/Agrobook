@@ -158,6 +158,7 @@ module archivosArea {
         public editMode: boolean = false;
         public blockEdition: boolean = false;
         public esperandoAlServidor: boolean = false;
+        public errorMessage: string;
 
         public iconUrl = '';
 
@@ -270,33 +271,47 @@ module archivosArea {
                 self.esperandoAlServidor = false;
             }
 
-            function setFailure() {
+            function setFailure(message: string) {
                 self.failed = true;
                 self.uploaded = false;
                 self.uploading = false;
                 self.progress = 0;
                 self.blockEdition = false;
                 self.esperandoAlServidor = false;
+                self.errorMessage = message;
             }
 
             function readyStateChange(e) {
                 console.log("ready state change. status:" + e.target.status + " " + e.target.statusText);
+                var errorComun = 'Error al cargar archivo';
+                var elArchivoYaExiste = 'Ya existe un archivo con ese nombre';
                 switch (e.target.status) {
                     case 500:
-                        setFailure()
+                        setFailure(errorComun)
                         self.scope.$apply(() => {
-                            setFailure();
+                            setFailure(errorComun);
                         });
                         break;
 
                     case 200:
+                        var serialized = e.target.response;
+                        if (serialized === "")
+                            return;
+                        var result = JSON.parse(serialized) as { exitoso: boolean, yaExiste: boolean }
+                        if (result.exitoso) {
+                            setUploaded()
+                            self.scope.$apply(() => {
+                                setUploaded();
+                            });
 
-                        setUploaded()
-                        self.scope.$apply(() => {
-                            setUploaded();
-                        });
-
-                        console.log('El archivo se recibio correctamente en el servidor');
+                            console.log('El archivo se recibio correctamente en el servidor');
+                        }
+                        else {
+                            setFailure(elArchivoYaExiste)
+                            self.scope.$apply(() => {
+                                setFailure(elArchivoYaExiste);
+                            });
+                        }
                         break;
 
                     case 0:

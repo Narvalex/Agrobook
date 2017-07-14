@@ -48,7 +48,7 @@
                             <h3 style="cursor:pointer;"
                                 md-truncate
                                 ng-click="unit.toggleEditMode()">
-                                <ng-md-icon class="animated bounceIn" ng-show="unit.failed" title="Error al cargar el archivo" style="color:red" icon="warning"></ng-md-icon>
+                                <ng-md-icon class="animated bounceIn" ng-show="unit.failed" title="{{unit.errorMessage}}" style="color:red" icon="warning"></ng-md-icon>
                                 <ng-md-icon class="animated bounceIn" ng-show="unit.uploaded" title="Carga completada" style="color:#4caf50" icon="check_circle"></ng-md-icon>
                                 {{unit.metadatos.nombre}}.{{unit.metadatos.extension}}
                                 <ng-md-icon ng-hide="unit.uploaded || unit.uploading" title="Editar metadatos del archivo" style="color:#808080" icon="mode_edit"></ng-md-icon>

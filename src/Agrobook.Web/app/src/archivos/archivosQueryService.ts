@@ -70,7 +70,8 @@ module archivosArea {
             if (extension === undefined) return false;
             extension = extension.toLowerCase();
             return extension === 'jpg'
-                || extension === 'jpeg';
+                || extension === 'jpeg'
+                || extension === 'png';
         }
 
         esMapa(extension: string): boolean {

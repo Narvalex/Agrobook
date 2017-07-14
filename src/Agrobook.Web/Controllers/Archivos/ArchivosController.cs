@@ -39,10 +39,9 @@ namespace Agrobook.Web.Controllers.Archivos
             var fileName = content.Headers.ContentDisposition.FileName;
             using (var stream = await content.ReadAsStreamAsync())
             {
-                await this.client.Upload(stream, fileName, metadatos);
+                var resultado = await this.client.Upload(stream, fileName, metadatos);
+                return this.Ok(resultado);
             }
-            return this.Ok();
-
         }
     }
 }

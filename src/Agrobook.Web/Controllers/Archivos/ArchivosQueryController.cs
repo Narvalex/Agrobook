@@ -55,7 +55,10 @@ namespace Agrobook.Web.Controllers.Archivos
         public async Task<HttpResponseMessage> GetFileIcon([FromUri]string idProductor, [FromUri]string archivo, [FromUri]string extension)
         {
             byte[] byteArray;
-            if (extension != "jpg")
+            extension = extension.ToLowerInvariant();
+            if (extension != "jpg"
+                && extension != "png"
+                && extension != "jpeg")
             {
                 var path = HttpContext.Current.Server.MapPath("~/app/assets/img/fileIcons/file.png");
                 byteArray = File.ReadAllBytes(path);

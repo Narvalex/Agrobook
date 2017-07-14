@@ -40,9 +40,9 @@ namespace Agrobook.Server.Archivos
                 fileContent)
             .ConMetadatos(this.ActionContext);
 
-            await this.service.HandleAsync(command);
+            var dto = await this.service.HandleAsync(command);
 
-            return this.Ok();
+            return this.Ok(dto);
         }
     }
 

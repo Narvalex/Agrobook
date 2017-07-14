@@ -95,6 +95,28 @@ namespace Agrobook.Client
             }
         }
 
+        public async Task<TResult> Upload<TResult>(string uri, Stream fileStream, string fileName, string metadatos, string token = null)
+        {
+            // Reference: https://stackoverflow.com/questions/16416601/c-sharp-httpclient-4-5-multipart-form-data-upload?noredirect=1&lq=1
+
+            using (var client = this.CreateHttpClient(token, false))
+            {
+                using (var content = new MultipartFormDataContent($"Upload----{DateTime.Now.ToString(CultureInfo.InvariantCulture)}"))
+                {
+                    content.Add(new StreamContent(fileStream), "uploadedFile", fileName);
+                    content.Add(new StringContent(metadatos));
+
+                    var endpoint = new Uri(new Uri(this.hostUri), uri);
+                    var url = endpoint.AbsoluteUri;
+                    var response = await client.PostAsync(url, content);
+
+                    this.EnsureResponseIsOk(uri, response);
+                    var dto = await response.Content.ReadAsAsync<TResult>();
+                    return dto;
+                }
+            }
+        }
+
         public async Task Post<TContent>(string uri, TContent content, string token = null)
         {
             await this.TryPostAsJson<TContent>(uri, content, token);
