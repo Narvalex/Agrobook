@@ -17,6 +17,9 @@ var usuariosArea;
                 this.titulo = 'Mi Perfil';
             }
         }
+        toolbarHeaderController.prototype.goTo = function (location) {
+            window.location.href = location;
+        };
         toolbarHeaderController.prototype.toggleSideNav = function () {
             this.$mdSidenav('left').toggle();
         };

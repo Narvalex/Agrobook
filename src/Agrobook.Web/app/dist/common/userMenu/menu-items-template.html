@@ -3,13 +3,15 @@
         <div class="menu-content">
             <div class="menu-item" ng-repeat="item in vm.menuItemList">
                 <button class="md-button" ng-click="vm.seleccionarItem(item)">
-                    <span>{{item.name}}</span>
+                    <ng-md-icon icon="{{item.icon}}"></ng-md-icon>
+                    <span>&nbsp;{{item.name}}</span>
                 </button>
             </div>
             <md-divider></md-divider>
             <div class="menu-item">
                 <button class="md-button" ng-click="vm.logOut()">
-                    <span>Cerrar sesión</span>
+                    <ng-md-icon icon="exit_to_app"></ng-md-icon>
+                    <span>&nbsp;Cerrar sesión</span>
                 </button>
             </div>
             <!--<div class="menu-item">

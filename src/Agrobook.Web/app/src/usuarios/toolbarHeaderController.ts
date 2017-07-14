@@ -24,6 +24,10 @@ module usuariosArea {
         mostrarSidenav: boolean = false;
         titulo: string;
 
+        goTo(location: string) {
+            window.location.href = location;
+        }
+
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
         }

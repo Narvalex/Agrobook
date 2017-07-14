@@ -28,7 +28,9 @@ module usuariosArea {
             $mdIconProvider
                 .defaultIconSet('./assets/svg/avatars.svg', 128)
                 .icon('menu', './assets/svg/menu.svg', 24)
-                .icon('close', './assets/svg/close.svg');
+                .icon('close', './assets/svg/close.svg')
+                .icon('agrobook-white', './assets/svg/agrobook-white.svg')
+                .icon('agrobook-green', './assets/svg/agrobook-green.svg');
 
             $mdThemingProvider.theme('default')
                 .primaryPalette('green')

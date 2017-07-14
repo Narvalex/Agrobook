@@ -109,14 +109,25 @@
       <DependentUpon>md-toasts.css</DependentUpon>
     </Content>
     <Content Include="app\assets\spinner.css" />
+    <Content Include="app\assets\svg\agrobook-green.svg" />
+    <Content Include="app\assets\svg\agrobook-white.svg" />
     <Content Include="app\assets\svg\avatars.svg" />
     <Content Include="app\assets\svg\close.svg" />
+    <Content Include="app\assets\svg\excel.svg" />
+    <Content Include="app\assets\svg\generic-file.svg" />
+    <Content Include="app\assets\svg\google-earth.svg" />
     <Content Include="app\assets\svg\google_plus.svg" />
     <Content Include="app\assets\svg\hangouts.svg" />
+    <Content Include="app\assets\svg\instagram.svg" />
+    <Content Include="app\assets\svg\list.svg" />
     <Content Include="app\assets\svg\menu.svg" />
+    <Content Include="app\assets\svg\pdf.svg" />
     <Content Include="app\assets\svg\phone.svg" />
+    <Content Include="app\assets\svg\picture.svg" />
+    <Content Include="app\assets\svg\power-point.svg" />
     <Content Include="app\assets\svg\search.svg" />
     <Content Include="app\assets\svg\twitter.svg" />
+    <Content Include="app\assets\svg\word.svg" />
     <Content Include="app\assets\tab-fix.css" />
     <Content Include="app\assets\view.css" />
     <Content Include="app\bower_components\angular-animate\angular-animate.js" />

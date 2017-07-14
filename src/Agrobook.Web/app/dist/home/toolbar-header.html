@@ -1,8 +1,31 @@
 ﻿<md-toolbar ng-controller="toolbar-headerController as vm">
     <div class="md-toolbar-tools">
-        <h2 flex md-truncate hide-xs>
-            Agrobook
+        <md-icon ng-click="vm.recargarHome()"
+                 style="cursor:pointer;"
+                 md-svg-icon="agrobook-white"></md-icon>
+        <h2 style="cursor:pointer;"
+            md-truncate
+            hide-xs
+            ng-click="vm.recargarHome()">
+            &nbsp;Agrobook
         </h2>
+        <span flex></span>
+        <md-button ng-show="vm.estaLogueado"
+                   ng-click="vm.goTo('archivos.html')"
+                   class="md-raised"
+                   title="Archivos"
+                   aria-label="Archivos">
+            <ng-md-icon icon="folder"></ng-md-icon>&nbsp;Archivos
+        </md-button>
+        <md-button ng-show="vm.estaLogueado && vm.showUsuarios"
+                   ng-click="vm.goTo('usuarios.html')"
+                   class="md-fab md-mini"
+                   title="Usuarios"
+                   aria-label="Usuarios">
+            <!--<md-icon md-svg-icon="agrobook-white"></md-icon>-->
+            <ng-md-icon icon="people"></ng-md-icon>
+        </md-button>
+
 
         <div ng-hide="vm.estaLogueado || vm.enEspera"
              layout="row" class="home-login-form">
@@ -25,12 +48,14 @@
         </div>
 
         <md-button ng-hide="vm.estaLogueado"
-                   ng-disabled="vm.enEspera" 
+                   ng-disabled="vm.enEspera"
                    class="md-flat" aria-label="Login" ng-click="vm.login()">
             {{vm.loginBtnLabel}}
         </md-button>
 
-        <span class="user-menu-user-name" style="padding-bottom: 3px;" ng-cloak ng-show="vm.estaLogueado">Bienvenido&nbsp;</span>
+        <span class="user-menu-user-name" style="padding-bottom: 3px;" ng-cloak ng-show="vm.estaLogueado">
+            &nbsp;Bienvenido&nbsp;
+        </span>
 
         <div ng-include="'dist/common/userMenu/widget.html'"
              ng-controller="userMenuWidgetController as vm"></div>

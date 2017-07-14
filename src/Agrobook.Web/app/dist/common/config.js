@@ -29,7 +29,8 @@ var common;
                 './assets/img/avatar/6.png',
                 './assets/img/avatar/7.png',
                 './assets/img/avatar/8.png',
-                './assets/img/avatar/9.png'
+                './assets/img/avatar/9.png',
+                './assets/img/avatar/10.png'
             ];
             this._claims = {
                 roles: {

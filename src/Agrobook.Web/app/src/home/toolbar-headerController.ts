@@ -11,6 +11,10 @@ module homeArea {
             private config: common.config,
             private $rootScope: angular.IRootScopeService
         ) {
+            // Auth
+            this.mostrarUsuariosSiSePuede();
+
+
             this.$rootScope.$on(this.config.eventIndex.login.loggedOut, (e, a) => {
                 this.verificarSiEstaLogueado();
             });
@@ -34,6 +38,17 @@ module homeArea {
         usuario: string;
 
         password: string;
+
+        // mostrar menus
+        showUsuarios: boolean = false;
+
+        recargarHome() {
+            window.location.reload();
+        }
+
+        goTo(uri: string) {
+            window.location.href = uri;
+        }
 
         onInputKeyPress($event): void {
             if ($event.keyCode == this.config.keyCodes.enter)
@@ -62,6 +77,7 @@ module homeArea {
                         }
 
                         this.establecerUsuarioLogueado(value.data.nombreParaMostrar);
+                        this.mostrarUsuariosSiSePuede();
                         // clear the inputs
                         this.usuario = '';
                         this.password = '';
@@ -104,6 +120,11 @@ module homeArea {
             else {
                 this.loginBtnLabel = 'Login';
             }
+        }
+
+        private mostrarUsuariosSiSePuede() {
+            var roles = this.config.claims.roles;
+            this.showUsuarios = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
         }
     }
 }

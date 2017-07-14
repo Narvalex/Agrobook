@@ -97,6 +97,8 @@ module archivosArea {
         // https://icons8.com/icon/11591/microsoft-word#filled
         $mdIconProvider
             .defaultIconSet('./assets/svg/avatars.svg', 128)
+            .icon('agrobook-white', './assets/svg/agrobook-white.svg')
+            .icon('agrobook-green', './assets/svg/agrobook-green.svg')
             .icon('menu', './assets/svg/menu.svg', 24)
             .icon('close', './assets/svg/close.svg')
             .icon('pdf', './assets/svg/pdf.svg')

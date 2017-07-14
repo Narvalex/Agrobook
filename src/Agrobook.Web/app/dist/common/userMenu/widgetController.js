@@ -74,11 +74,11 @@ var common;
             var claims = this.config.claims;
             var esTecnicoOSuperior = this.loginService.autorizar([claims.roles.Tecnico, claims.roles.Gerente]);
             this.menuItemList = [
-                new menuItem('Inicio', 'home.html'),
+                new menuItem('Inicio', 'home.html', 'home'),
                 new menuItem(esTecnicoOSuperior
-                    ? 'Archivos' : 'Mis archivos', 'archivos.html'),
+                    ? 'Archivos' : 'Mis archivos', 'archivos.html', 'folder'),
                 new menuItem(esTecnicoOSuperior
-                    ? 'Usuarios' : 'Mi Perfil', 'usuarios.html#!/')
+                    ? 'Usuarios' : 'Mi Perfil', 'usuarios.html#!/', 'people')
             ];
         }
         panelMenuController.prototype.logOut = function () {
@@ -97,9 +97,10 @@ var common;
     }());
     panelMenuController.$inject = ['mdPanelRef', 'loginService', 'config'];
     var menuItem = (function () {
-        function menuItem(name, link) {
+        function menuItem(name, link, icon) {
             this.name = name;
             this.link = link;
+            this.icon = icon;
         }
         return menuItem;
     }());

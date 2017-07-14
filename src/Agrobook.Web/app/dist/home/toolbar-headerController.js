@@ -10,6 +10,10 @@ var homeArea;
             this.$rootScope = $rootScope;
             this.estaLogueado = false;
             this.enEspera = false;
+            // mostrar menus
+            this.showUsuarios = false;
+            // Auth
+            this.mostrarUsuariosSiSePuede();
             this.$rootScope.$on(this.config.eventIndex.login.loggedOut, function (e, a) {
                 _this.verificarSiEstaLogueado();
             });
@@ -21,6 +25,12 @@ var homeArea;
                     this.loginService.logOut();
             }
         }
+        ToolbarHeaderController.prototype.recargarHome = function () {
+            window.location.reload();
+        };
+        ToolbarHeaderController.prototype.goTo = function (uri) {
+            window.location.href = uri;
+        };
         ToolbarHeaderController.prototype.onInputKeyPress = function ($event) {
             if ($event.keyCode == this.config.keyCodes.enter)
                 this.login();
@@ -43,6 +53,7 @@ var homeArea;
                         return;
                     }
                     _this.establecerUsuarioLogueado(value.data.nombreParaMostrar);
+                    _this.mostrarUsuariosSiSePuede();
                     // clear the inputs
                     _this.usuario = '';
                     _this.password = '';
@@ -82,6 +93,10 @@ var homeArea;
             else {
                 this.loginBtnLabel = 'Login';
             }
+        };
+        ToolbarHeaderController.prototype.mostrarUsuariosSiSePuede = function () {
+            var roles = this.config.claims.roles;
+            this.showUsuarios = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
         };
         return ToolbarHeaderController;
     }());
