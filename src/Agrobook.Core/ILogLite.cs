@@ -11,5 +11,6 @@ namespace Agrobook.Infrastructure.Log
         void Info(string message);
         void Verbose(string message);
         void Warning(string message);
+        void Success(string message);
     }
 }

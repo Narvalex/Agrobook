@@ -57,6 +57,11 @@ namespace Agrobook.Infrastructure.Log
             this.WriteWithLock(this.messageBuilder.BuildMessage(VERBOSE_level, message), ConsoleColor.DarkGray);
         }
 
+        public void Success(string message)
+        {
+            this.WriteWithLock(this.messageBuilder.BuildMessage(VERBOSE_level, message), ConsoleColor.Green);
+        }
+
         private void WriteWithLock(string message)
         {
             lock (lockObject)

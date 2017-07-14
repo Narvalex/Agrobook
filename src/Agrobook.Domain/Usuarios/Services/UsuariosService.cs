@@ -238,6 +238,27 @@ namespace Agrobook.Domain.Usuarios
             await this.repository.SaveAsync(org);
         }
 
+        public async Task HandleAsync(RemoverUsuarioDeUnGrupo cmd)
+        {
+            if (cmd.GrupoId.EqualsIgnoringCase(UsuariosConstants.DefaultGrupoId))
+                throw new InvalidOperationException("No se puede remover a alguien del grupo por defecto");
+
+            var org = await this.repository.GetOrFailAsync<Organizacion>(cmd.OrganizacionId);
+
+            if (!org.YaTieneAlUsuarioComoMiembro(cmd.UsuarioId))
+                throw new InvalidOperationException("El usuario ni siquiera es miembro de la organizacion");
+
+            if (!org.YaTieneGrupoConId(cmd.GrupoId))
+                throw new InvalidOperationException("No existe el grupo al que se quiere remover el usuario");
+
+            if (!org.YaTieneUsuarioDentroDelGrupo(cmd.GrupoId, cmd.UsuarioId))
+                throw new InvalidOperationException("El usuario no esta siquiera dentro del grupo");
+
+            org.Emit(new UsuarioRemovidoDeUnGrupo(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId, cmd.GrupoId));
+
+            await this.repository.SaveAsync(org);
+        }
+
         public async Task HandleAsync(RetirarPermiso cmd)
         {
             // verificamos que no se quiera quitar permiso de admin al usuario de nombre admin

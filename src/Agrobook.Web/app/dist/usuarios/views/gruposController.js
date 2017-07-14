@@ -21,6 +21,7 @@ var usuariosArea;
             // loading grupos for an org
             this.gruposLoaded = true;
             this.agregandoAGrupo = false;
+            this.quitandoDeUnGrupo = false;
             this.creandoGrupo = false;
             this.filterFromServer = false;
             this.isDisabled = false;
@@ -85,6 +86,23 @@ var usuariosArea;
                 _this.agregandoAGrupo = false;
             });
         };
+        gruposController.prototype.quitarDeGrupo = function ($event, grupo) {
+            var _this = this;
+            this.quitandoDeUnGrupo = true;
+            this.usuariosService.removerUsuarioDeUnGrupo(this.idUsuario, this.orgSeleccionada.id, grupo.id, function (value) {
+                for (var i = 0; i < _this.grupos.length; i++) {
+                    if (_this.grupos[i].id == grupo.id) {
+                        _this.grupos[i].usuarioEsMiembro = false;
+                        break;
+                    }
+                }
+                _this.toasterLite.success("El usuario " + _this.idUsuario + " a sido removido del grupo " + grupo.display);
+                _this.quitandoDeUnGrupo = false;
+            }, function (reson) {
+                _this.toasterLite.error('Hubo un error al intentar remover usuario del grupo seleccionado', _this.toasterLite.delayForever);
+                _this.quitandoDeUnGrupo = false;
+            });
+        };
         gruposController.prototype.irAOrgTab = function () {
             // TODO...
         };
@@ -102,6 +120,8 @@ var usuariosArea;
                     lista.push(new usuariosArea.organizacionDto(response.data[i].id, response.data[i].display, response.data[i].usuarioEsMiembro));
                 }
                 _this.organizaciones = lista;
+                if (_this.organizaciones.length > 0)
+                    _this.orgSeleccionada = _this.organizaciones[0];
                 _this.loaded = true;
             }, function (reason) { return _this.toasterLite.error('Hubo un error al recuperar lista de organizaciones', _this.toasterLite.delayForever); });
         };

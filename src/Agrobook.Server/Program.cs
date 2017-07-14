@@ -86,7 +86,7 @@ namespace Agrobook.Server
             WebApiStartup.OnAppDisposing = () => OnExit();
             WebApp.Start<WebApiStartup>(baseUri);
             _log.Verbose("Web server is ready");
-            _log.Info($"Server running at {baseUri}");
+            _log.Success($"Server running at {baseUri}");
 
             OnServerStarted();
 

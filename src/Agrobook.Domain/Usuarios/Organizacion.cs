@@ -30,6 +30,10 @@ namespace Agrobook.Domain.Usuarios
             {
                 this.usuariosPorGrupo[e.GrupoId].Add(e.UsuarioId);
             });
+            this.On<UsuarioRemovidoDeUnGrupo>(e =>
+            {
+                this.usuariosPorGrupo[e.GrupoId].Remove(e.UsuarioId);
+            });
         }
 
         public string Nombre { get; private set; }

@@ -53,4 +53,18 @@ namespace Agrobook.Domain.Usuarios
         public string UsuarioId { get; }
         public string GrupoId { get; }
     }
+
+    public class UsuarioRemovidoDeUnGrupo : MensajeAuditable
+    {
+        public UsuarioRemovidoDeUnGrupo(Metadatos metadatos, string organizacionId, string usuarioId, string grupoId) : base(metadatos)
+        {
+            this.OrganizacionId = organizacionId;
+            this.UsuarioId = usuarioId;
+            this.GrupoId = grupoId;
+        }
+
+        public string OrganizacionId { get; }
+        public string UsuarioId { get; }
+        public string GrupoId { get; }
+    }
 }

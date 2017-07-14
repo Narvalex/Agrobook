@@ -34,20 +34,30 @@
             </div>
         </form>
         <md-list>
-            <md-list-item class="secondary-button-padding" ng-repeat="grupo in vm.grupos | orderBy:'display'">
-                <p>{{grupo.display}}</p>
-                <md-chips>
-                    <md-chip title="{{vm.idUsuario}} es miembro del grupo {{grupo.display}} en la organización {{vm.orgSeleccionada.display}}."
-                             ng-show="grupo.usuarioEsMiembro">Miembro</md-chip>
-                </md-chips>
+            <md-list-item class="secondary-button-padding" ng-repeat="grupo in vm.grupos | orderBy:'!usuarioEsMiembro'">
                 <md-button title="Agregar a {{vm.idUsuario}} al grupo {{grupo.display}}"
                            ng-hide="grupo.usuarioEsMiembro"
-                           class="md-secondary"
                            ng-disabled="vm.agregandoAGrupo"
                            aria-label="Agregar a grupo"
                            ng-click="vm.agregarAGrupo($event, grupo)">
                     <ng-md-icon icon="add"></ng-md-icon>
                 </md-button>
+                <p>{{grupo.display}}</p>
+                <md-chips>
+                    <md-chip title="{{vm.idUsuario}} es miembro del grupo {{grupo.display}} en la organización {{vm.orgSeleccionada.display}}."
+                             ng-show="grupo.usuarioEsMiembro">Miembro</md-chip>
+                </md-chips>
+
+                <md-button title="Quitar a {{vm.idUsuario}} del grupo {{grupo.display}}"
+                           ng-show="grupo.usuarioEsMiembro"
+                           class="md-secondary"
+                           ng-disabled="vm.quitandoDeUnGrupo"
+                           aria-label="Quitar de un grupo"
+                           ng-click="vm.quitarDeGrupo($event, grupo)">
+                    <ng-md-icon icon="delete"></ng-md-icon>
+                </md-button>
+
+               
             </md-list-item>
         </md-list>
     </md-content>

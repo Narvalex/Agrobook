@@ -74,6 +74,14 @@ namespace Agrobook.Web.Controllers.Usuarios
         }
 
         [HttpPost]
+        [Route("remover-usuario-de-un-grupo/{idUsuario}/{idOrganizacion}/{idGrupo}")]
+        public async Task<IHttpActionResult> RemoverUsuarioDeUnGrupo([FromUri]string idUsuario, [FromUri]string idOrganizacion, [FromUri]string idGrupo)
+        {
+            await this.client.RemoverUsuarioDeUnGrupo(idUsuario, idOrganizacion, idGrupo);
+            return this.Ok();
+        }
+
+        [HttpPost]
         [Route("otorgar-permiso")]// ?usuario=${idUsuario}&permiso=${permiso}`
         public async Task<IHttpActionResult> OtorgarPermiso([FromUri]string usuario, [FromUri]string permiso)
         {

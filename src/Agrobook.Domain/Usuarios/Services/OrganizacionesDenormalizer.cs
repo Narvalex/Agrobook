@@ -10,7 +10,8 @@ namespace Agrobook.Domain.Usuarios.Services
         IEventHandler<NuevaOrganizacionCreada>,
         IEventHandler<NuevoGrupoCreado>,
         IEventHandler<UsuarioAgregadoALaOrganizacion>,
-        IEventHandler<UsuarioAgregadoAUnGrupo>
+        IEventHandler<UsuarioAgregadoAUnGrupo>,
+        IEventHandler<UsuarioRemovidoDeUnGrupo>
     {
         public OrganizacionesDenormalizer(IEventStreamSubscriber subscriber, Func<AgrobookDbContext> contextFactory)
             : base(subscriber, contextFactory,
@@ -69,6 +70,21 @@ namespace Agrobook.Domain.Usuarios.Services
                     GrupoId = e.GrupoId,
                     GrupoDisplay = grupo.Display
                 });
+            });
+        }
+
+        public async Task Handle(long eventNumber, UsuarioRemovidoDeUnGrupo e)
+        {
+            await this.Denormalize(eventNumber, context =>
+            {
+                var grupo = new GrupoDeUsuarioEntity
+                {
+                    UsuarioId = e.UsuarioId,
+                    OrganizacionId = e.OrganizacionId,
+                    GrupoId = e.GrupoId
+                };
+
+                context.Entry(grupo).State = EntityState.Deleted;
             });
         }
     }

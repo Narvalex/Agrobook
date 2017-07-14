@@ -87,6 +87,14 @@ namespace Agrobook.Server.Usuarios
         }
 
         [HttpPost]
+        [Route("remover-usuario-de-un-grupo")]
+        public async Task<IHttpActionResult> RemoverUsuarioDeUnGrupo([FromBody]RemoverUsuarioDeUnGrupo command)
+        {
+            await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            return this.Ok();
+        }
+
+        [HttpPost]
         [Route("otorgar-permiso")]
         public async Task<IHttpActionResult> OtorgarPermiso([FromBody]OtorgarPermiso cmd)
         {

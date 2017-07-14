@@ -39,6 +39,7 @@ module usuariosArea {
         // loading grupos for an org
         gruposLoaded = true;
         agregandoAGrupo = false;
+        quitandoDeUnGrupo = false;
 
         idUsuario: string;
 
@@ -104,6 +105,26 @@ module usuariosArea {
                 });
         }
 
+        quitarDeGrupo($event, grupo: grupoDto) {
+            this.quitandoDeUnGrupo = true;
+            this.usuariosService.removerUsuarioDeUnGrupo(this.idUsuario, this.orgSeleccionada.id, grupo.id,
+                value => {
+                    for (var i = 0; i < this.grupos.length; i++) {
+                        if (this.grupos[i].id == grupo.id) {
+                            this.grupos[i].usuarioEsMiembro = false;
+                            break;
+                        }
+                    }
+
+                    this.toasterLite.success(`El usuario ${this.idUsuario} a sido removido del grupo ${grupo.display}`);
+                    this.quitandoDeUnGrupo = false;
+                },
+                reson => {
+                    this.toasterLite.error('Hubo un error al intentar remover usuario del grupo seleccionado', this.toasterLite.delayForever);
+                    this.quitandoDeUnGrupo = false;
+                });
+        }
+
         irAOrgTab() {
             // TODO...
         }
@@ -125,6 +146,8 @@ module usuariosArea {
                         lista.push(new organizacionDto(response.data[i].id, response.data[i].display, response.data[i].usuarioEsMiembro)); 
                     }
                     this.organizaciones = lista;
+                    if (this.organizaciones.length > 0)
+                        this.orgSeleccionada = this.organizaciones[0];
                     this.loaded = true;
                 },
                 reason => this.toasterLite.error('Hubo un error al recuperar lista de organizaciones', this.toasterLite.delayForever)

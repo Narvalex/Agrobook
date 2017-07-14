@@ -48,5 +48,10 @@ namespace Agrobook.Infrastructure.Log
         {
             this.log.Value.Verbose(message);
         }
+
+        public void Success(string message)
+        {
+            this.log.Value.Success(message);
+        }
     }
 }

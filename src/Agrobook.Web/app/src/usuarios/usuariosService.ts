@@ -70,6 +70,16 @@ module usuariosArea {
             this.post(`agregar-usuario-a-grupo/${idUsuario}/${idOrganizacion}/${idGrupo}`, {}, onSuccess, onError);
         }
 
+        removerUsuarioDeUnGrupo(
+            idUsuario: string,
+            idOrganizacion: string,
+            idGrupo: string,
+            onSuccess: (value: ng.IHttpPromiseCallback<{}>) => void,
+            onError: (reason: any) => void
+        ) {
+            this.post(`remover-usuario-de-un-grupo/${idUsuario}/${idOrganizacion}/${idGrupo}`, {}, onSuccess, onError);
+        }
+
         otorgarPermiso(
             idUsuario: string,
             permiso: string,
