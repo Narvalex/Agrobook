@@ -81,9 +81,7 @@
     <Compile Include="Persistence\EventStoreManager.cs" />
     <Compile Include="Persistence\ISnapshotCache.cs" />
     <Compile Include="Persistence\SnapshotCache.cs" />
-    <Compile Include="Http\HttpClientExtensions.cs" />
     <Compile Include="IoC\SimpleContainer.cs" />
-    <Compile Include="Login\TokenManager.cs" />
     <Compile Include="Log\ConsoleLogger.cs" />
     <Compile Include="Log\LazyLogger.cs" />
     <Compile Include="Log\LogManager.cs" />
