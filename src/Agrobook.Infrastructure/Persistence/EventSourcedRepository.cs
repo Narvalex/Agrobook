@@ -37,9 +37,9 @@ namespace Agrobook.Infrastructure.Persistence
             this.writePageSize = writePageSize;
         }
 
-        public async Task<T> GetAsync<T>(string streamName) where T : class, IEventSourced, new()
+        public async Task<T> GetByIdAsync<T>(string streamId) where T : class, IEventSourced, new()
         {
-            streamName = StreamCategoryAttribute.GetFullStreamName<T>(streamName);
+            var streamName = StreamCategoryAttribute.GetFullStreamName<T>(streamId);
 
             var eventSourced = new T();
             if (this.snapshotCache.TryGet(streamName, out var snapshot))

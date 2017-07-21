@@ -86,7 +86,7 @@ namespace Agrobook.Domain.Usuarios
             var tokenInfo = this.cryptoSerializer.Deserialize<LoginInfo>(token);
             var nombreUsuario = tokenInfo.Usuario;
 
-            var usuario = this.repository.GetAsync<Usuario>(nombreUsuario).Result;
+            var usuario = this.repository.GetByIdAsync<Usuario>(nombreUsuario).Result;
             if (usuario == null)
                 return false;
 
@@ -121,7 +121,7 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task<LoginResult> HandleAsync(IniciarSesion cmd)
         {
-            var usuario = await this.repository.GetAsync<Usuario>(cmd.Usuario);
+            var usuario = await this.repository.GetByIdAsync<Usuario>(cmd.Usuario);
             if (usuario is null) return LoginResult.Failed;
             LoginInfo loginInfo = this.ExtraerElLoginInfo(usuario);
 

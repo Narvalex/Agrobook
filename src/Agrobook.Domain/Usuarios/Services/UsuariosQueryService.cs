@@ -25,7 +25,7 @@ namespace Agrobook.Domain.Usuarios.Services
         {
             get
             {
-                var usuarioAdmin = this.esReader.GetAsync<Usuario>(UsuariosConstants.UsuarioAdmin).Result;
+                var usuarioAdmin = this.esReader.GetByIdAsync<Usuario>(UsuariosConstants.UsuarioAdmin).Result;
                 return usuarioAdmin != null;
             }
         }

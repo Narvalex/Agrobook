@@ -31,11 +31,6 @@ namespace Agrobook.Domain.Tests.Utils
             return this;
         }
 
-        public IWhenReady<T> And(string streamName = null, params object[] @events)
-        {
-            return this.Given(streamName, @events);
-        }
-
         public IThenReady When(Action<T> handling)
         {
             handling.Invoke(this.service);
@@ -68,7 +63,7 @@ namespace Agrobook.Domain.Tests.Utils
             this.eventStore[streamName] = @events.ToList();
         }
 
-        public async Task<T> GetAsync<T>(string streamName) where T : class, IEventSourced, new()
+        public async Task<T> GetByIdAsync<T>(string streamName) where T : class, IEventSourced, new()
         {
             streamName = StreamCategoryAttribute.GetFullStreamName<T>(streamName);
 
@@ -115,7 +110,6 @@ namespace Agrobook.Domain.Tests.Utils
 
     public interface IWhenReady<T>
     {
-        IWhenReady<T> And(string streamName, params object[] @event);
         IThenReady When(Action<T> handling);
     }
 

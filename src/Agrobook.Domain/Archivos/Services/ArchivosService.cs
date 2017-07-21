@@ -49,7 +49,7 @@ namespace Agrobook.Domain.Archivos.Services
 
         private async Task<ResultadoDelUpload> HandleAsyncWithPesimisticConcurrencyLock(AgregarArchivoAColeccion cmd)
         {
-            var coleccion = await this.repository.GetAsync<ColeccionDeArchivosDelProductor>(cmd.IdProductor);
+            var coleccion = await this.repository.GetByIdAsync<ColeccionDeArchivosDelProductor>(cmd.IdProductor);
             if (coleccion == null)
             {
                 coleccion = new ColeccionDeArchivosDelProductor();

@@ -8,7 +8,7 @@ namespace Agrobook.Core
         /// <summary>
         /// Gets the event sourced object, if found. If not found returns null.
         /// </summary>
-        Task<T> GetAsync<T>(string streamName) where T : class, IEventSourced, new();
+        Task<T> GetByIdAsync<T>(string streamName) where T : class, IEventSourced, new();
     }
 
     public interface IEventSourcedRepository : IEventSourcedReader
