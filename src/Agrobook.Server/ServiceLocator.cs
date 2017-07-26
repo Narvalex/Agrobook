@@ -28,7 +28,7 @@ namespace Agrobook.Server
         {
             var container = _container;
 
-            var es = new EventStoreManager();
+            var esm = new EventStoreManager();
 
             var sqlDbName = "AgrobookDb";
 
@@ -47,9 +47,9 @@ namespace Agrobook.Server
 
             var snapshotCache = new SnapshotCache();
 
-            var eventSourcedRepository = new EventSourcedRepository(es.GetFailFastConnection, jsonSerializer, snapshotCache);
+            var eventSourcedRepository = new EventSourcedRepository(esm.GetFailFastConnection, jsonSerializer, snapshotCache);
 
-            var eventStreamSubscriber = new EventStreamSubscriber(es.ResilientConnection, jsonSerializer);
+            var eventStreamSubscriber = new EventStreamSubscriber(esm.ResilientConnection, jsonSerializer);
 
             var usuariosService = new UsuariosService(eventSourcedRepository, dateTimeProvider, cryptoSerializer);
             AutorizarAttribute.SetTokenAuthProvider(usuariosService);
@@ -73,7 +73,7 @@ namespace Agrobook.Server
             container.Register<IJsonSerializer>(jsonSerializer);
             container.Register<IDateTimeProvider>(dateTimeProvider);
             container.Register<ITokenAuthorizationProvider>(usuariosService);
-            container.Register<EventStoreManager>(es);
+            container.Register<EventStoreManager>(esm);
             container.Register<SqlDbInitializer<AgrobookDbContext>>(sqlInitializer);
             container.Register<UsuariosService>(usuariosService);
             container.Register<IProveedorDeMetadatosDelUsuario>(usuariosService);
