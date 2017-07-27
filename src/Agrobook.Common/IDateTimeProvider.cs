@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Agrobook.Core
+namespace Agrobook.Common
 {
     public interface IDateTimeProvider
     {

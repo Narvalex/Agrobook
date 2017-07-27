@@ -1,4 +1,4 @@
-﻿using Agrobook.Core;
+﻿using Agrobook.Common;
 using System.Text;
 
 namespace Agrobook.Infrastructure.Cryptography

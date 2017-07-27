@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Agrobook.Core
+namespace Agrobook.Common
 {
     public abstract class EventStreamHandler
     {

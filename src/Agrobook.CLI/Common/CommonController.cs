@@ -1,4 +1,4 @@
-﻿using Agrobook.Core;
+﻿using Agrobook.Common;
 using Eventing;
 
 namespace Agrobook.CLI.Common

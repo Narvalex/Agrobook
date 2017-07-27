@@ -114,9 +114,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Agrobook.Core\Agrobook.Core.csproj">
+    <ProjectReference Include="..\Agrobook.Common\Agrobook.Common.csproj">
       <Project>{02f6c2b8-c3eb-4107-8d43-113a0258992f}</Project>
-      <Name>Agrobook.Core</Name>
+      <Name>Agrobook.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\libs\Eventing.Core-v1.0.0\Eventing.Core.csproj">
       <Project>{d8a3116a-5c51-4a6f-b364-512948e5a792}</Project>

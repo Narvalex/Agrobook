@@ -1,4 +1,4 @@
-﻿using Agrobook.Core;
+﻿using Agrobook.Common;
 using System;
 
 namespace Agrobook.Domain.Tests.Utils

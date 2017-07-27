@@ -1,4 +1,4 @@
-﻿namespace Agrobook.Core
+﻿namespace Agrobook.Common
 {
     public interface IOneWayEncryptor
     {

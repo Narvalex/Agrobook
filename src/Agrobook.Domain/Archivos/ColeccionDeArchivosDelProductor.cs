@@ -1,4 +1,4 @@
-﻿using Agrobook.Core;
+﻿using Agrobook.Common;
 using Eventing.Core.Domain;
 using System;
 using System.Collections.Generic;

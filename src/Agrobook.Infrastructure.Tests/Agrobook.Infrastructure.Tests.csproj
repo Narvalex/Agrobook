@@ -82,9 +82,9 @@
     <Compile Include="Serialization\JsonSerializerTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Agrobook.Core\Agrobook.Core.csproj">
-      <Project>{02F6C2B8-C3EB-4107-8D43-113A0258992F}</Project>
-      <Name>Agrobook.Core</Name>
+    <ProjectReference Include="..\Agrobook.Common\Agrobook.Common.csproj">
+      <Project>{02f6c2b8-c3eb-4107-8d43-113a0258992f}</Project>
+      <Name>Agrobook.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Agrobook.Infrastructure\Agrobook.Infrastructure.csproj">
       <Project>{8194B76B-7583-48A8-A610-01EFADED7417}</Project>

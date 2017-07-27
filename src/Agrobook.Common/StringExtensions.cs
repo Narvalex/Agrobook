@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Agrobook.Core
+namespace Agrobook.Common
 {
     public static class StringExtensions
     {

@@ -1,4 +1,4 @@
-﻿using Agrobook.Core;
+﻿using Agrobook.Common;
 using Agrobook.Infrastructure.IoC;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
