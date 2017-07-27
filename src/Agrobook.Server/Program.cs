@@ -2,8 +2,9 @@
 using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Services;
-using Agrobook.Infrastructure.Log;
 using Agrobook.Infrastructure.Persistence;
+using Eventing.GetEventStore;
+using Eventing.Log;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Runtime.InteropServices;

@@ -1,4 +1,5 @@
 ﻿using Agrobook.Domain.Archivos.Services;
+using Eventing.Client.Http;
 using System;
 using System.IO;
 using System.Threading.Tasks;

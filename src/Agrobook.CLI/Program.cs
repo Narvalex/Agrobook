@@ -1,8 +1,8 @@
 ﻿using Agrobook.CLI.Controllers;
 using Agrobook.CLI.Views;
-using Agrobook.Client;
 using Agrobook.Client.Login;
-using Agrobook.Infrastructure.Serialization;
+using Eventing.Client.Http;
+using Eventing.Core.Serialization;
 
 namespace Agrobook.CLI
 {
@@ -12,7 +12,7 @@ namespace Agrobook.CLI
 
         static void Main(string[] args)
         {
-            var serializer = new JsonTextSerializer();
+            var serializer = new NewtonsoftJsonSerializer();
             var http = new HttpLite("http://localhost:8081");
             var accessTokenProvider = new LoginClient(http);
 

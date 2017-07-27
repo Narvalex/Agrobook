@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Agrobook.Infrastructure.Tests</RootNamespace>
     <AssemblyName>Agrobook.Infrastructure.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
@@ -89,6 +89,14 @@
     <ProjectReference Include="..\Agrobook.Infrastructure\Agrobook.Infrastructure.csproj">
       <Project>{8194B76B-7583-48A8-A610-01EFADED7417}</Project>
       <Name>Agrobook.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libs\Eventing.Core-v1.0.0\Eventing.Core.csproj">
+      <Project>{D8A3116A-5C51-4A6F-B364-512948E5A792}</Project>
+      <Name>Eventing.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libs\Eventing.GetEventStore-v1.0.0\Eventing.GetEventStore.csproj">
+      <Project>{7C1FC9BB-A213-4E09-8FD2-F13ADFA758B4}</Project>
+      <Name>Eventing.GetEventStore</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

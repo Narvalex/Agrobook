@@ -1,4 +1,6 @@
 ﻿using Agrobook.Core;
+using Eventing;
+using Eventing.Core.Persistence;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,11 +9,11 @@ namespace Agrobook.Domain.Common
 {
     public abstract class AgrobookDenormalizer : EventStreamHandler
     {
-        private readonly IEventStreamSubscription subscription;
+        private readonly IEventSubscription subscription;
         private readonly Func<AgrobookDbContext> contextFactory;
         private readonly string subName;
 
-        public AgrobookDenormalizer(IEventStreamSubscriber subscriber, Func<AgrobookDbContext> contextFactory,
+        public AgrobookDenormalizer(IEventSubscriber subscriber, Func<AgrobookDbContext> contextFactory,
             string subscriptionName, string eventSourceStreamName)
         {
             Ensure.NotNullOrWhiteSpace(eventSourceStreamName, nameof(eventSourceStreamName));

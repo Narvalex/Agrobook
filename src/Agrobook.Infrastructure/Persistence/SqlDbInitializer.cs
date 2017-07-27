@@ -1,5 +1,5 @@
-﻿using Agrobook.Core;
-using Agrobook.Infrastructure.Log;
+﻿using Eventing;
+using Eventing.Log;
 using System;
 using System.Data.Entity;
 

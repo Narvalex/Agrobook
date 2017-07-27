@@ -1,6 +1,7 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Archivos;
 using Agrobook.Domain.Archivos.Services;
+using Eventing.Core.Serialization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;

@@ -1,5 +1,8 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Common;
+using Eventing;
+using Eventing.Core.Domain;
+using Eventing.Core.Persistence;
 using System;
 using System.Threading.Tasks;
 
@@ -10,12 +13,11 @@ namespace Agrobook.Domain.Archivos.Services
     {
         private readonly IArchivosDelProductorFileManager fileManager;
 
-        public ArchivosIndexerService(IEventStreamSubscriber subscriber, Func<AgrobookDbContext> contextFactory,
+        public ArchivosIndexerService(IEventSubscriber subscriber, Func<AgrobookDbContext> contextFactory,
             IArchivosDelProductorFileManager fileManager)
             : base(subscriber, contextFactory,
                   typeof(ArchivosIndexerService).Name,
-                  StreamCategoryAttribute.GetCategory<ColeccionDeArchivosDelProductor>()
-                  .AsCategoryProjectionStream())
+                  StreamCategoryAttribute.GetCategoryProjectionStream<ColeccionDeArchivosDelProductor>())
         {
             Ensure.NotNull(fileManager, nameof(fileManager));
 

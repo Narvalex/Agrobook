@@ -1,6 +1,6 @@
-﻿using Agrobook.Core;
-using Agrobook.Domain.Tests.Utils;
+﻿using Agrobook.Domain.Tests.Utils;
 using Agrobook.Domain.Usuarios;
+using Eventing.Core.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -28,7 +28,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             })
             .And<OrganizacionSnapshot>(s =>
             {
-                Assert.AreEqual("cooperativax".AsStreamNameOf<Organizacion>(), s.StreamName);
+                Assert.AreEqual(StreamCategoryAttribute.GetFullStreamName<Organizacion>("cooperativax"), s.StreamName);
                 Assert.AreEqual("cooperativax", s.Nombre);
                 Assert.AreEqual("Cooperativa X", s.NombreParaMostrar);
             });
@@ -63,7 +63,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             })
             .And<OrganizacionSnapshot>(s =>
             {
-                Assert.AreEqual("cooperativax".AsStreamNameOf<Organizacion>(), s.StreamName);
+                Assert.AreEqual(StreamCategoryAttribute.GetFullStreamName<Organizacion>("cooperativax"), s.StreamName);
                 Assert.AreEqual("cooperativax", s.Nombre);
                 Assert.AreEqual("Cooperativa X", s.NombreParaMostrar);
             });
@@ -212,7 +212,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                })
                .Then(events =>
                {
-                   var e = events.OfType<UsuarioAgregadoALaOrganizacion>().ToArray()[1];
+                   var e = events.OfType<UsuarioAgregadoALaOrganizacion>().Single();
                    Assert.AreEqual("prod2", e.UsuarioId);
                })
                .And<OrganizacionSnapshot>(s =>

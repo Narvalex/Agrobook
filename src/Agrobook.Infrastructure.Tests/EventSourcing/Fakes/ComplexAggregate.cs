@@ -1,4 +1,5 @@
 ﻿using Agrobook.Core;
+using Eventing.Core.Domain;
 
 namespace Agrobook.Infrastructure.Tests.EventSourcing.Fakes
 {

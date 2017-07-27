@@ -1,5 +1,5 @@
-﻿using Agrobook.Core;
-using Agrobook.Infrastructure.Serialization;
+﻿using Eventing;
+using Eventing.Core.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Agrobook.Infrastructure.Tests.Serialization
@@ -7,14 +7,14 @@ namespace Agrobook.Infrastructure.Tests.Serialization
     [TestClass]
     public class JsonSerializerTests
     {
-        private JsonTextSerializer sut;
+        private NewtonsoftJsonSerializer sut;
 
         private readonly SimplePoco simplePoco = new SimplePoco("user", 18);
         private const string _serializedSimplePoco = "{\"$type\":\"Agrobook.Infrastructure.Tests.Serialization.JsonSerializerTests+SimplePoco, Agrobook.Infrastructure.Tests\",\"name\":\"user\",\"age\":18}";
 
         public JsonSerializerTests()
         {
-            this.sut = new JsonTextSerializer();
+            this.sut = new NewtonsoftJsonSerializer();
         }
 
         [TestMethod]

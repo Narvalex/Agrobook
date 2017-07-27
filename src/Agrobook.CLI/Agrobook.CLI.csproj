@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Agrobook.CLI</RootNamespace>
     <AssemblyName>Agrobook.CLI</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -91,6 +91,14 @@
     <ProjectReference Include="..\Agrobook.Infrastructure\Agrobook.Infrastructure.csproj">
       <Project>{8194B76B-7583-48A8-A610-01EFADED7417}</Project>
       <Name>Agrobook.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libs\Eventing.Core-v1.0.0\Eventing.Core.csproj">
+      <Project>{D8A3116A-5C51-4A6F-B364-512948E5A792}</Project>
+      <Name>Eventing.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libs\Eventing.HttpClient-v1.0.0\Eventing.HttpClient.csproj">
+      <Project>{FD80989B-08E7-446A-B967-670BAEB4BD5F}</Project>
+      <Name>Eventing.HttpClient</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

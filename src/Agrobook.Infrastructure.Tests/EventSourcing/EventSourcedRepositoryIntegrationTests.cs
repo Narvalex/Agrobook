@@ -1,6 +1,10 @@
 ﻿using Agrobook.Infrastructure.Persistence;
 using Agrobook.Infrastructure.Serialization;
 using Agrobook.Infrastructure.Tests.EventSourcing.Fakes;
+using Eventing.Core.Domain;
+using Eventing.Core.Persistence;
+using Eventing.Core.Serialization;
+using Eventing.GetEventStore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -13,7 +17,7 @@ namespace Agrobook.Infrastructure.Tests.EventSourcing
     {
 
         private EventStoreManager esManager;
-        private EventSourcedRepository sut;
+        private IEventSourcedRepository sut;
         private TestableRealTimeSnapshotter snapshotter;
 
         [TestInitialize]
@@ -24,7 +28,7 @@ namespace Agrobook.Infrastructure.Tests.EventSourcing
             Thread.Sleep(TimeSpan.FromSeconds(4)); // Warmingup the Db
 
             this.snapshotter = new TestableRealTimeSnapshotter();
-            this.sut = new EventSourcedRepository(this.esManager.GetFailFastConnection, new JsonTextSerializer(), this.snapshotter);
+            this.sut = new EventStoreEventSourcedRepository(this.esManager.GetFailFastConnection, new NewtonsoftJsonSerializer(), this.snapshotter);
         }
 
         [TestMethod]
@@ -118,9 +122,9 @@ namespace Agrobook.Infrastructure.Tests.EventSourcing
 
         private void t6_GivenTwoPageReadWriteThenCanReadWrite()
         {
-            this.sut = new EventSourcedRepository(
+            this.sut = new EventStoreEventSourcedRepository(
                 this.esManager.GetFailFastConnection,
-                new JsonTextSerializer(),
+                new NewtonsoftJsonSerializer(),
                 this.snapshotter,
                 2, 2);
 

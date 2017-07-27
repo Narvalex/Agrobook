@@ -1,6 +1,7 @@
 ﻿using Agrobook.Domain.Archivos;
 using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Tests.Utils;
+using Eventing.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Agrobook.Domain.Tests.Archivos
             this.fileManager = new TestableFileManager();
 
             this.sut = new TestableEventSourcedService<ArchivosService>(
-                r => new ArchivosService(this.fileManager, r, new SimpleDateTimeProvider()));
+                r => new ArchivosService(this.fileManager, r));
         }
 
         #region Uploads
@@ -91,7 +92,7 @@ namespace Agrobook.Domain.Tests.Archivos
             })
             .Then(events =>
             {
-                Assert.AreEqual(0, events.Count);
+                Assert.IsNull(events);
             })
             .And<ColeccionDeArchivosDelProductorSnapshot>(s =>
             {
@@ -115,9 +116,8 @@ namespace Agrobook.Domain.Tests.Archivos
             })
             .Then(events =>
             {
-                Assert.AreEqual(3, events.Count);
-                Assert.AreEqual(1, events.OfType<NuevaColeccionDeArchivosDelProductorCreada>().Count());
-                Assert.AreEqual(2, events.OfType<NuevoArchivoAgregadoALaColeccion>().Count());
+                Assert.AreEqual(1, events.Count);
+                Assert.AreEqual(1, events.OfType<NuevoArchivoAgregadoALaColeccion>().Count());
             })
             .And<ColeccionDeArchivosDelProductorSnapshot>(s =>
             {

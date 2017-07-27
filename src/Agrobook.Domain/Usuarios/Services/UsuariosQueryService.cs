@@ -1,6 +1,10 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Common;
 using Agrobook.Domain.Usuarios.Login;
+using Eventing;
+using Eventing.Core.Domain;
+using Eventing.Core.Persistence;
+using Eventing.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

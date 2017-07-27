@@ -1,4 +1,6 @@
-﻿using Agrobook.Core;
+﻿using Eventing;
+using Eventing.Core.Domain;
+using Eventing.Core.Persistence;
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
@@ -11,7 +13,7 @@ namespace Agrobook.Domain.Archivos.Services
         private readonly IArchivosDelProductorFileManager fileWriter;
         private readonly ConcurrentDictionary<string, SemaphoreSlim> locks = new ConcurrentDictionary<string, SemaphoreSlim>();
 
-        public ArchivosService(IArchivosDelProductorFileManager fileWriter, IEventSourcedRepository repository, IDateTimeProvider dateTime) : base(repository, dateTime)
+        public ArchivosService(IArchivosDelProductorFileManager fileWriter, IEventSourcedRepository repository) : base(repository)
         {
             Ensure.NotNull(fileWriter, nameof(fileWriter));
 
@@ -41,7 +43,7 @@ namespace Agrobook.Domain.Archivos.Services
 
         public async Task HandleAsync(RegistrarDescargaExitosa cmd)
         {
-            var coleccion = await this.repository.GetOrFailAsync<ColeccionDeArchivosDelProductor>(cmd.Productor);
+            var coleccion = await this.repository.GetOrFailByIdAsync<ColeccionDeArchivosDelProductor>(cmd.Productor);
             coleccion.Emit(new ArchivoDescargadoExitosamente(cmd.Metadatos, cmd.Productor, cmd.NombreArchivo, coleccion.GetSize(cmd.NombreArchivo)));
 
             await this.repository.SaveAsync(coleccion);

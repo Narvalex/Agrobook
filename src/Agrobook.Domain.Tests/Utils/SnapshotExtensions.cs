@@ -1,4 +1,4 @@
-﻿using Agrobook.Core;
+﻿using Eventing.Core.Domain;
 
 namespace Agrobook.Domain.Tests
 {

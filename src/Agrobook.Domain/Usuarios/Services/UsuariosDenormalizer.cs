@@ -1,5 +1,8 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Common;
+using Eventing;
+using Eventing.Core.Domain;
+using Eventing.Core.Persistence;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,10 +19,10 @@ namespace Agrobook.Domain.Usuarios.Services
     {
         private readonly UsuariosQueryService queryService;
 
-        public UsuariosDenormalizer(IEventStreamSubscriber subscriber, Func<AgrobookDbContext> contextFactory, UsuariosQueryService queryService)
+        public UsuariosDenormalizer(IEventSubscriber subscriber, Func<AgrobookDbContext> contextFactory, UsuariosQueryService queryService)
            : base(subscriber, contextFactory,
                  typeof(UsuariosDenormalizer).Name,
-                 StreamCategoryAttribute.GetCategory<Usuario>().AsCategoryProjectionStream())
+                 StreamCategoryAttribute.GetCategoryProjectionStream<Usuario>())
         {
             Ensure.NotNull(queryService, nameof(queryService));
 

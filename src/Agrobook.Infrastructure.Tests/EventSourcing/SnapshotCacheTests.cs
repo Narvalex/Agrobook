@@ -1,5 +1,5 @@
-﻿using Agrobook.Core;
-using Agrobook.Infrastructure.Persistence;
+﻿using Eventing.Core.Domain;
+using Eventing.Core.Persistence;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Runtime.Caching;

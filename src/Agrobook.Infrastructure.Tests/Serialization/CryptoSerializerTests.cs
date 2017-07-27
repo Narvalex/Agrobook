@@ -1,5 +1,6 @@
 ﻿using Agrobook.Infrastructure.Cryptography;
 using Agrobook.Infrastructure.Serialization;
+using Eventing.Core.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Agrobook.Infrastructure.Tests.Serialization
@@ -13,7 +14,7 @@ namespace Agrobook.Infrastructure.Tests.Serialization
 
         public CryptoSerializerTests()
         {
-            this.sut = new CryptoSerializer(new FauxCrypto());
+            this.sut = new CryptoSerializer(new FauxCrypto(), new NewtonsoftJsonSerializer());
         }
 
         [TestMethod]

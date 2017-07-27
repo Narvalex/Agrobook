@@ -6,6 +6,8 @@ using Agrobook.Core;
 using Agrobook.Infrastructure;
 using Agrobook.Infrastructure.IoC;
 using Agrobook.Infrastructure.Serialization;
+using Eventing.Client.Http;
+using Eventing.Core.Serialization;
 
 namespace Agrobook.Web
 {
@@ -21,7 +23,7 @@ namespace Agrobook.Web
         {
             var container = _container;
 
-            var serializer = new JsonTextSerializer();
+            var serializer = new NewtonsoftJsonSerializer();
             var http = new HttpLite("http://localhost:8081");
 
             var dateTime = new SimpleDateTimeProvider();

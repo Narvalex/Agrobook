@@ -1,4 +1,5 @@
 ﻿using Agrobook.Core;
+using Eventing.Core.Domain;
 using System.Collections.Generic;
 
 namespace Agrobook.Domain.Usuarios

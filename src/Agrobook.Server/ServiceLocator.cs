@@ -7,11 +7,13 @@ using Agrobook.Domain.Usuarios.Services;
 using Agrobook.Infrastructure;
 using Agrobook.Infrastructure.Cryptography;
 using Agrobook.Infrastructure.IoC;
-using Agrobook.Infrastructure.Log;
 using Agrobook.Infrastructure.Persistence;
 using Agrobook.Infrastructure.Serialization;
-using Agrobook.Infrastructure.Subscription;
 using Agrobook.Server.Filters;
+using Eventing.Core.Persistence;
+using Eventing.Core.Serialization;
+using Eventing.GetEventStore;
+using Eventing.Log;
 using System;
 
 namespace Agrobook.Server
@@ -41,15 +43,15 @@ namespace Agrobook.Server
 
             var decryptor = new StringCipher();
 
-            var cryptoSerializer = new CryptoSerializer(decryptor);
+            var jsonSerializer = new NewtonsoftJsonSerializer();
 
-            var jsonSerializer = new JsonTextSerializer();
+            var cryptoSerializer = new CryptoSerializer(decryptor, jsonSerializer);
 
             var snapshotCache = new SnapshotCache();
 
-            var eventSourcedRepository = new EventSourcedRepository(esm.GetFailFastConnection, jsonSerializer, snapshotCache);
+            var eventSourcedRepository = new EventStoreEventSourcedRepository(esm.GetFailFastConnection, jsonSerializer, snapshotCache);
 
-            var eventStreamSubscriber = new EventStreamSubscriber(esm.ResilientConnection, jsonSerializer);
+            var eventStreamSubscriber = new EventStoreSubscriber(esm.ResilientConnection, jsonSerializer);
 
             var usuariosService = new UsuariosService(eventSourcedRepository, dateTimeProvider, cryptoSerializer);
             AutorizarAttribute.SetTokenAuthProvider(usuariosService);
@@ -64,7 +66,7 @@ namespace Agrobook.Server
 
             var archivosDelProductorFileManager = new DurableArchivosDelProductorFileManager(LogManager.GetLoggerFor<DurableArchivosDelProductorFileManager>(), jsonSerializer);
 
-            var archivosService = new ArchivosService(archivosDelProductorFileManager, eventSourcedRepository, dateTimeProvider);
+            var archivosService = new ArchivosService(archivosDelProductorFileManager, eventSourcedRepository);
 
             var archivosQueryService = new ArchivosQueryService(readOnlyDbContextFactory, eventSourcedRepository);
 

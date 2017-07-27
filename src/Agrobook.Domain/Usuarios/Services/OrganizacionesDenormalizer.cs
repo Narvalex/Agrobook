@@ -1,5 +1,7 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Common;
+using Eventing.Core.Domain;
+using Eventing.Core.Persistence;
 using System;
 using System.Data.Entity;
 using System.Threading.Tasks;
@@ -13,10 +15,10 @@ namespace Agrobook.Domain.Usuarios.Services
         IEventHandler<UsuarioAgregadoAUnGrupo>,
         IEventHandler<UsuarioRemovidoDeUnGrupo>
     {
-        public OrganizacionesDenormalizer(IEventStreamSubscriber subscriber, Func<AgrobookDbContext> contextFactory)
+        public OrganizacionesDenormalizer(IEventSubscriber subscriber, Func<AgrobookDbContext> contextFactory)
             : base(subscriber, contextFactory,
                   typeof(OrganizacionesDenormalizer).Name,
-                  StreamCategoryAttribute.GetCategory<Organizacion>().AsCategoryProjectionStream())
+                  StreamCategoryAttribute.GetCategoryProjectionStream<Organizacion>())
         { }
 
         public async Task Handle(long eventNumber, NuevaOrganizacionCreada e)

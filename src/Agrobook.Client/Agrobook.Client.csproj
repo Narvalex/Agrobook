@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Agrobook.Client</RootNamespace>
     <AssemblyName>Agrobook.Client</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,7 +60,6 @@
     <Compile Include="Archivos\ArchivosQueryClient.cs" />
     <Compile Include="ClientBase.cs" />
     <Compile Include="ClientBaseExtensions.cs" />
-    <Compile Include="HttpLite.cs" />
     <Compile Include="Login\LoginClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Usuarios\UsuariosDTOs.cs" />
@@ -67,22 +67,26 @@
     <Compile Include="Usuarios\UsuariosQueryClient.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Agrobook.Core\Agrobook.Core.csproj">
       <Project>{02f6c2b8-c3eb-4107-8d43-113a0258992f}</Project>
       <Name>Agrobook.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Agrobook.Domain\Agrobook.Domain.csproj">
-      <Project>{6B9AD205-891C-491A-9166-9B7996821C5D}</Project>
+      <Project>{6b9ad205-891c-491a-9166-9b7996821c5d}</Project>
       <Name>Agrobook.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Agrobook.Infrastructure\Agrobook.Infrastructure.csproj">
-      <Project>{8194B76B-7583-48A8-A610-01EFADED7417}</Project>
-      <Name>Agrobook.Infrastructure</Name>
+    <ProjectReference Include="..\libs\Eventing.Core-v1.0.0\Eventing.Core.csproj">
+      <Project>{D8A3116A-5C51-4A6F-B364-512948E5A792}</Project>
+      <Name>Eventing.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
+    <ProjectReference Include="..\libs\Eventing.HttpClient-v1.0.0\Eventing.HttpClient.csproj">
+      <Project>{FD80989B-08E7-446A-B967-670BAEB4BD5F}</Project>
+      <Name>Eventing.HttpClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

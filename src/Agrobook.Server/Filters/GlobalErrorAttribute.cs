@@ -1,4 +1,4 @@
-﻿using Agrobook.Infrastructure.Log;
+﻿using Eventing.Log;
 using System.Web.Http.Filters;
 
 namespace Agrobook.Server.Filters

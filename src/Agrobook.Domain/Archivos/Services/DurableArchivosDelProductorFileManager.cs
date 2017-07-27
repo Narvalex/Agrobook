@@ -1,5 +1,6 @@
-﻿using Agrobook.Core;
-using Agrobook.Infrastructure.Log;
+﻿using Eventing;
+using Eventing.Core.Serialization;
+using Eventing.Log;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;

@@ -2,6 +2,8 @@
 using Agrobook.Domain.Usuarios;
 using Agrobook.Infrastructure.Cryptography;
 using Agrobook.Infrastructure.Serialization;
+using Eventing.Core.Serialization;
+using Eventing.TestHelpers;
 
 namespace Agrobook.Domain.Tests.Usuarios
 {
@@ -12,7 +14,7 @@ namespace Agrobook.Domain.Tests.Usuarios
 
         public UsuariosServiceTestBase()
         {
-            this.crypto = new CryptoSerializer(new FauxCrypto());
+            this.crypto = new CryptoSerializer(new FauxCrypto(), new NewtonsoftJsonSerializer());
             this.sut = new TestableEventSourcedService<UsuariosService>(
                 r => new UsuariosService(r, new SimpleDateTimeProvider(), this.crypto));
         }

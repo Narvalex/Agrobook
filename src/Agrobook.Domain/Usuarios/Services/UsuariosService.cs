@@ -2,6 +2,10 @@
 using Agrobook.Domain.Common;
 using Agrobook.Domain.Usuarios.Login;
 using Agrobook.Domain.Usuarios.Services;
+using Eventing;
+using Eventing.Core.Domain;
+using Eventing.Core.Persistence;
+using Eventing.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +25,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class UsuariosService : EventSourcedService, ITokenAuthorizationProvider, IProveedorDeMetadatosDelUsuario
     {
+        private readonly IDateTimeProvider dateTime;
         private readonly IJsonSerializer cryptoSerializer;
 
         private readonly string adminAvatarUrl;
@@ -30,13 +35,15 @@ namespace Agrobook.Domain.Usuarios
             IDateTimeProvider dateTime,
             IJsonSerializer cryptoSerializer,
             string adminAvatarUrl = "./assets/img/avatar/1.png")
-            : base(repository, dateTime)
+            : base(repository)
         {
+            Ensure.NotNull(dateTime, nameof(dateTime));
             Ensure.NotNull(cryptoSerializer, nameof(cryptoSerializer));
             Ensure.NotNullOrWhiteSpace(adminAvatarUrl, nameof(adminAvatarUrl));
 
             this.adminAvatarUrl = adminAvatarUrl;
             this.cryptoSerializer = cryptoSerializer;
+            this.dateTime = dateTime;
         }
 
 
@@ -63,7 +70,7 @@ namespace Agrobook.Domain.Usuarios
 
             var loginInfo = this.cryptoSerializer.Deserialize<LoginInfo>(token);
 
-            var usuarioActualizado = await this.repository.GetOrFailAsync<Usuario>(loginInfo.Usuario);
+            var usuarioActualizado = await this.repository.GetOrFailByIdAsync<Usuario>(loginInfo.Usuario);
 
             //  Refrescamos la info
             loginInfo = this.ExtraerElLoginInfo(usuarioActualizado);
@@ -74,7 +81,7 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task<IList<Claim>> ObtenerClaimsDelUsuario(string idUsuario)
         {
-            var usuario = await this.repository.GetOrFailAsync<Usuario>(idUsuario);
+            var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(idUsuario);
 
             var loginInfo = this.ExtraerElLoginInfo(usuario);
             var claims = ClaimProvider.Transformar(loginInfo.Claims).ToList();
@@ -136,7 +143,7 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task HandleAsync(ActualizarPerfil cmd)
         {
-            var usuario = await this.repository.GetOrFailAsync<Usuario>(cmd.Usuario);
+            var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(cmd.Usuario);
 
             if (cmd.AvatarUrl != null && usuario.AvatarUrl != cmd.AvatarUrl)
                 usuario.Emit(new AvatarUrlActualizado(cmd.Metadatos, cmd.Usuario, cmd.AvatarUrl));
@@ -161,7 +168,7 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task HandleAsync(AgregarUsuarioALaOrganizacion cmd)
         {
-            var org = await this.repository.GetOrFailAsync<Organizacion>(cmd.OrganizacionId);
+            var org = await this.repository.GetOrFailByIdAsync<Organizacion>(cmd.OrganizacionId);
 
             if (org.LaOrganizacionNoTieneTodaviaUsuarios)
             {
@@ -183,7 +190,7 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task HandleAsync(ResetearPassword cmd)
         {
-            var usuario = await this.repository.GetOrFailAsync<Usuario>(cmd.Usuario);
+            var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(cmd.Usuario);
             var loginInfo = this.ExtraerElLoginInfo(usuario);
             loginInfo.ActualizarPassword(DefaultPassword);
             var encriptado = this.EncriptarLoginInfo(loginInfo);
@@ -211,7 +218,7 @@ namespace Agrobook.Domain.Usuarios
             if (cmd.GrupoDisplayName.ToLowerTrimmedAndWhiteSpaceless() == UsuariosConstants.DefaultGrupoId)
                 throw new InvalidOperationException($"El nombre del grupo no puede ser {cmd.GrupoDisplayName}");
 
-            var org = await this.repository.GetOrFailAsync<Organizacion>(cmd.IdOrganizacion);
+            var org = await this.repository.GetOrFailByIdAsync<Organizacion>(cmd.IdOrganizacion);
             var idGrupo = cmd.GrupoDisplayName.ToLowerTrimmedAndWhiteSpaceless();
             if (org.YaTieneGrupoConId(idGrupo))
                 throw new InvalidOperationException($"Ya existe el grupo con id {idGrupo} en la organización {org.NombreParaMostrar}");
@@ -222,7 +229,7 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task HandleAsync(AgregarUsuarioAUnGrupo cmd)
         {
-            var org = await this.repository.GetOrFailAsync<Organizacion>(cmd.OrganizacionId);
+            var org = await this.repository.GetOrFailByIdAsync<Organizacion>(cmd.OrganizacionId);
 
             if (!org.YaTieneAlUsuarioComoMiembro(cmd.UsuarioId))
                 throw new InvalidOperationException("El usuario todavia no es miembro de la organizacion");
@@ -243,7 +250,7 @@ namespace Agrobook.Domain.Usuarios
             if (cmd.GrupoId.EqualsIgnoringCase(UsuariosConstants.DefaultGrupoId))
                 throw new InvalidOperationException("No se puede remover a alguien del grupo por defecto");
 
-            var org = await this.repository.GetOrFailAsync<Organizacion>(cmd.OrganizacionId);
+            var org = await this.repository.GetOrFailByIdAsync<Organizacion>(cmd.OrganizacionId);
 
             if (!org.YaTieneAlUsuarioComoMiembro(cmd.UsuarioId))
                 throw new InvalidOperationException("El usuario ni siquiera es miembro de la organizacion");
@@ -266,7 +273,7 @@ namespace Agrobook.Domain.Usuarios
                 && cmd.Permiso.EqualsIgnoringCase(ClaimDef.Roles.Admin))
                 throw new InvalidOperationException("No se puede retirar el permiso de admin al usuario admin.");
 
-            var usuario = await this.repository.GetOrFailAsync<Usuario>(cmd.IdUsuario);
+            var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(cmd.IdUsuario);
             var loginInfo = this.ExtraerElLoginInfo(usuario);
 
             // obtengo los roles y permisos actuales del usuario
@@ -301,7 +308,7 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task HandleAsync(OtorgarPermiso cmd)
         {
-            var usuario = await this.repository.GetOrFailAsync<Usuario>(cmd.IdUsuario);
+            var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(cmd.IdUsuario);
             var loginInfo = this.ExtraerElLoginInfo(usuario);
 
             if (loginInfo.Claims.Any(x => x.EqualsIgnoringCase(cmd.Permiso)))

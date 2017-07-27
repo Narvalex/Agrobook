@@ -1,4 +1,5 @@
 ﻿using Agrobook.Core;
+using Eventing;
 
 namespace Agrobook.CLI.Common
 {
