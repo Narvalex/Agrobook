@@ -4,7 +4,7 @@ namespace Agrobook.Domain.Usuarios
 {
     public class NuevoUsuarioCreado : MensajeAuditable
     {
-        public NuevoUsuarioCreado(Metadatos metadatos, string usuario, string nombreParaMostrar, string avatarUrl, string loginInfoEncriptado)
+        public NuevoUsuarioCreado(Firma metadatos, string usuario, string nombreParaMostrar, string avatarUrl, string loginInfoEncriptado)
             : base(metadatos)
         {
             this.Usuario = usuario;
@@ -21,14 +21,14 @@ namespace Agrobook.Domain.Usuarios
 
     public class UsuarioInicioSesion : MensajeAuditable
     {
-        public UsuarioInicioSesion(Metadatos metadatos)
+        public UsuarioInicioSesion(Firma metadatos)
             : base(metadatos)
         { }
     }
 
     public class AvatarUrlActualizado : MensajeAuditable
     {
-        public AvatarUrlActualizado(Metadatos metadatos, string usuario, string nuevoAvatarUrl)
+        public AvatarUrlActualizado(Firma metadatos, string usuario, string nuevoAvatarUrl)
             : base(metadatos)
         {
             this.Usuario = usuario;
@@ -41,7 +41,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class NombreParaMostrarActualizado : MensajeAuditable
     {
-        public NombreParaMostrarActualizado(Metadatos metadatos, string usuario, string nuevoNombreParaMostrar)
+        public NombreParaMostrarActualizado(Firma metadatos, string usuario, string nuevoNombreParaMostrar)
             : base(metadatos)
         {
             this.Usuario = usuario;
@@ -54,7 +54,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class PasswordCambiado : MensajeAuditable
     {
-        public PasswordCambiado(Metadatos metadatos, string usuario, string loginInfoEncriptado)
+        public PasswordCambiado(Firma metadatos, string usuario, string loginInfoEncriptado)
             : base(metadatos)
         {
             this.Usuario = usuario;
@@ -67,7 +67,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class PasswordReseteado : MensajeAuditable
     {
-        public PasswordReseteado(Metadatos metadatos, string usuario, string loginInfoEncriptado)
+        public PasswordReseteado(Firma metadatos, string usuario, string loginInfoEncriptado)
             : base(metadatos)
         {
             this.Usuario = usuario;
@@ -80,7 +80,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class PermisoRetiradoDelUsuario : MensajeAuditable
     {
-        public PermisoRetiradoDelUsuario(Metadatos metadatos, string idUsuario, string permiso, string loginInfoActualizado) : base(metadatos)
+        public PermisoRetiradoDelUsuario(Firma metadatos, string idUsuario, string permiso, string loginInfoActualizado) : base(metadatos)
         {
             this.IdUsuario = idUsuario;
             this.Permiso = permiso;
@@ -94,7 +94,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class PermisoOtorgadoAlUsuario : MensajeAuditable
     {
-        public PermisoOtorgadoAlUsuario(Metadatos metadatos, string idUsuario, string permiso, string loginInfoActualizado) : base(metadatos)
+        public PermisoOtorgadoAlUsuario(Firma metadatos, string idUsuario, string permiso, string loginInfoActualizado) : base(metadatos)
         {
             this.IdUsuario = idUsuario;
             this.Permiso = permiso;

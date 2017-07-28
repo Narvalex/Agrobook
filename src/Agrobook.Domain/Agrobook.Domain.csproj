@@ -62,8 +62,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Archivos\ArchivosCommands.cs" />
-    <Compile Include="Archivos\ArchivosEvents.cs" />
+    <Compile Include="Archivos\Messages\ArchivosCommands.cs" />
+    <Compile Include="Archivos\Messages\ArchivosEvents.cs" />
     <Compile Include="Archivos\ColeccionDeArchivosDelProductor.cs" />
     <Compile Include="Archivos\Services\ArchivosDbContext.cs" />
     <Compile Include="Archivos\Services\ArchivosIndexerService.cs" />
@@ -83,8 +83,8 @@
     <Compile Include="Usuarios\Login\LoginInfo.cs" />
     <Compile Include="Usuarios\Login\Claim.cs" />
     <Compile Include="Usuarios\Organizacion.cs" />
-    <Compile Include="Usuarios\OrganizacionCommands.cs" />
-    <Compile Include="Usuarios\OrganizacionEvents.cs" />
+    <Compile Include="Usuarios\Messages\OrganizacionCommands.cs" />
+    <Compile Include="Usuarios\Messages\OrganizacionEvents.cs" />
     <Compile Include="Usuarios\OrganizacionSnapshot.cs" />
     <Compile Include="Usuarios\Services\OrganizacionesDbContext.cs" />
     <Compile Include="Usuarios\Services\OrganizacionesDenormalizer.cs" />
@@ -94,8 +94,8 @@
     <Compile Include="Usuarios\Services\UsuariosQueryService.cs" />
     <Compile Include="Usuarios\Services\UsuariosQueryServiceDTOs.cs" />
     <Compile Include="Usuarios\Services\UsuariosService.cs" />
-    <Compile Include="Usuarios\UsuariosCommands.cs" />
-    <Compile Include="Usuarios\UsuariosEvents.cs" />
+    <Compile Include="Usuarios\Messages\UsuariosCommands.cs" />
+    <Compile Include="Usuarios\Messages\UsuariosEvents.cs" />
     <Compile Include="Usuarios\Usuario.cs" />
     <Compile Include="Usuarios\Services\UsuariosServiceResults.cs" />
     <Compile Include="Usuarios\UsuarioSnapshot.cs" />

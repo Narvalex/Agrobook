@@ -78,7 +78,7 @@ namespace Agrobook.Server
             container.Register<EventStoreManager>(esm);
             container.Register<SqlDbInitializer<AgrobookDbContext>>(sqlInitializer);
             container.Register<UsuariosService>(usuariosService);
-            container.Register<IProveedorDeMetadatosDelUsuario>(usuariosService);
+            container.Register<IProveedorDeFirmaDelUsuario>(usuariosService);
             container.Register<UsuariosQueryService>(usuariosQueryService);
             container.Register<UsuariosDenormalizer>(usuariosDenormalizer);
             container.Register<OrganizacionesDenormalizer>(organizacionesDenormalizer);

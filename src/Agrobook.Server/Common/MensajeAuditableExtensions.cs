@@ -11,7 +11,7 @@ namespace Agrobook.Server
     {
         public static T ConMetadatos<T>(this T mensaje, HttpActionContext context) where T : MensajeAuditable
         {
-            var proveedor = ServiceLocator.ResolveSingleton<IProveedorDeMetadatosDelUsuario>();
+            var proveedor = ServiceLocator.ResolveSingleton<IProveedorDeFirmaDelUsuario>();
 
             var headerValue = GetTokenHeaderValue();
             if (headerValue == null)
@@ -21,7 +21,7 @@ namespace Agrobook.Server
             if (!AuthenticationHeaderValue.TryParse(headerValue, out tokenDescriptor))
                 throw new ArgumentException("Could not parse the auth header. Maybe the token is not valid.", "AuthenticationHeaderValue");
 
-            var metadatos = proveedor.ObtenerMetadatosDelUsuario(tokenDescriptor.Parameter);
+            var metadatos = proveedor.ObtenerFirmaDelUsuario(tokenDescriptor.Parameter);
 
             mensaje.TrySet(metadatos);
             return mensaje;

@@ -12,13 +12,13 @@ namespace Agrobook.Domain.Tests
         {
             var now = DateTime.Now;
             var mensaje = new MensajeAuditable(null);
-            Assert.IsNull(mensaje.Metadatos);
+            Assert.IsNull(mensaje.Firma);
 
-            var metadatos = new Metadatos("test", now);
+            var metadatos = new Firma("test", now);
             mensaje.TrySet(metadatos);
 
-            Assert.AreEqual("test", mensaje.Metadatos.Autor);
-            Assert.AreEqual(now, mensaje.Metadatos.Timestamp);
+            Assert.AreEqual("test", mensaje.Firma.Usuario);
+            Assert.AreEqual(now, mensaje.Firma.Timestamp);
         }
     }
 }

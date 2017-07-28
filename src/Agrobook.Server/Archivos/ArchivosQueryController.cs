@@ -44,7 +44,7 @@ namespace Agrobook.Server.Archivos
 
             var response = this.PrepareFileResponse(idProductor, nombreArchivo, extension);
 
-            await this.service.HandleAsync(new RegistrarDescargaExitosa(new Metadatos(usuario, DateTime.Now), idProductor, nombreArchivo));
+            await this.service.HandleAsync(new RegistrarDescargaExitosa(new Firma(usuario, DateTime.Now), idProductor, nombreArchivo));
 
             return response;
         }

@@ -5,6 +5,6 @@ namespace Agrobook.Domain.Tests.Utils
 {
     public static class TestMeta
     {
-        public static Metadatos New => new Metadatos("Test", DateTime.Now);
+        public static Firma New => new Firma("Test", DateTime.Now);
     }
 }

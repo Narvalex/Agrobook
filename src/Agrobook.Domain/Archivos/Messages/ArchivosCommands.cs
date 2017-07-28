@@ -5,7 +5,7 @@ namespace Agrobook.Domain.Archivos
 {
     public class AgregarArchivoAColeccion : MensajeAuditable
     {
-        public AgregarArchivoAColeccion(Metadatos metadatos, string idProductor, ArchivoDescriptor archivo, HttpContent fileContent) : base(metadatos)
+        public AgregarArchivoAColeccion(Firma metadatos, string idProductor, ArchivoDescriptor archivo, HttpContent fileContent) : base(metadatos)
         {
             this.IdProductor = idProductor;
             this.Archivo = archivo;
@@ -19,7 +19,7 @@ namespace Agrobook.Domain.Archivos
 
     public class RegistrarDescargaExitosa : MensajeAuditable
     {
-        public RegistrarDescargaExitosa(Metadatos metadatos, string productor, string nombreArchivo)
+        public RegistrarDescargaExitosa(Firma metadatos, string productor, string nombreArchivo)
             : base(metadatos)
         {
             this.Productor = productor;

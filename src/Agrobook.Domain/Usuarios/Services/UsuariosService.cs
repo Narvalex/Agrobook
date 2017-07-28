@@ -23,7 +23,7 @@ namespace Agrobook.Domain.Usuarios
         public const string DefaultGrupoDisplayName = "Todos";
     }
 
-    public class UsuariosService : EventSourcedService, ITokenAuthorizationProvider, IProveedorDeMetadatosDelUsuario
+    public class UsuariosService : EventSourcedService, ITokenAuthorizationProvider, IProveedorDeFirmaDelUsuario
     {
         private readonly IDateTimeProvider dateTime;
         private readonly IJsonSerializer cryptoSerializer;
@@ -52,16 +52,16 @@ namespace Agrobook.Domain.Usuarios
             var admin = new Usuario();
             var loginInfo = new LoginInfo(UsuarioAdmin, DefaultPassword, new string[] { ClaimDef.Roles.Admin });
             var encryptedLoginInfo = this.EncriptarLoginInfo(loginInfo);
-            admin.Emit(new NuevoUsuarioCreado(new Metadatos("system", this.dateTime.Now), UsuarioAdmin, UsuarioAdmin, this.adminAvatarUrl, encryptedLoginInfo));
+            admin.Emit(new NuevoUsuarioCreado(new Firma("system", this.dateTime.Now), UsuarioAdmin, UsuarioAdmin, this.adminAvatarUrl, encryptedLoginInfo));
             await this.repository.SaveAsync(admin);
         }
 
-        public Metadatos ObtenerMetadatosDelUsuario(string token)
+        public Firma ObtenerFirmaDelUsuario(string token)
         {
             var tokenInfo = this.cryptoSerializer.Deserialize<LoginInfo>(token);
             var nombreUsuario = tokenInfo.Usuario;
 
-            return new Metadatos(nombreUsuario, this.dateTime.Now);
+            return new Firma(nombreUsuario, this.dateTime.Now);
         }
 
         public async Task<Claim[]> ObtenerListaDeClaimsDisponiblesParaElUsuario(string token)
@@ -122,7 +122,7 @@ namespace Agrobook.Domain.Usuarios
             var state = new Usuario();
             var loginInfo = new LoginInfo(cmd.Usuario, cmd.PasswordCrudo, cmd.Claims ?? new string[] { ClaimDef.Roles.Invitado });
             var eLoginInfo = this.EncriptarLoginInfo(loginInfo);
-            state.Emit(new NuevoUsuarioCreado(cmd.Metadatos, cmd.Usuario, cmd.NombreParaMostrar, cmd.AvatarUrl, eLoginInfo));
+            state.Emit(new NuevoUsuarioCreado(cmd.Firma, cmd.Usuario, cmd.NombreParaMostrar, cmd.AvatarUrl, eLoginInfo));
             await this.repository.SaveAsync(state);
         }
 
@@ -133,7 +133,7 @@ namespace Agrobook.Domain.Usuarios
             LoginInfo loginInfo = this.ExtraerElLoginInfo(usuario);
 
             if (loginInfo.Password == cmd.PasswordCrudo)
-                usuario.Emit(new UsuarioInicioSesion(new Metadatos(cmd.Usuario, this.dateTime.Now)));
+                usuario.Emit(new UsuarioInicioSesion(new Firma(cmd.Usuario, this.dateTime.Now)));
             else
                 return LoginResult.Failed;
 
@@ -146,10 +146,10 @@ namespace Agrobook.Domain.Usuarios
             var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(cmd.Usuario);
 
             if (cmd.AvatarUrl != null && usuario.AvatarUrl != cmd.AvatarUrl)
-                usuario.Emit(new AvatarUrlActualizado(cmd.Metadatos, cmd.Usuario, cmd.AvatarUrl));
+                usuario.Emit(new AvatarUrlActualizado(cmd.Firma, cmd.Usuario, cmd.AvatarUrl));
 
             if (cmd.NombreParaMostrar != null && usuario.NombreParaMostrar != cmd.NombreParaMostrar)
-                usuario.Emit(new NombreParaMostrarActualizado(cmd.Metadatos, cmd.Usuario, cmd.NombreParaMostrar));
+                usuario.Emit(new NombreParaMostrarActualizado(cmd.Firma, cmd.Usuario, cmd.NombreParaMostrar));
 
             if (cmd.NuevoPassword != null)
             {
@@ -160,7 +160,7 @@ namespace Agrobook.Domain.Usuarios
 
                 loginInfo.ActualizarPassword(cmd.NuevoPassword);
                 var encriptado = this.EncriptarLoginInfo(loginInfo);
-                usuario.Emit(new PasswordCambiado(cmd.Metadatos, cmd.Usuario, encriptado));
+                usuario.Emit(new PasswordCambiado(cmd.Firma, cmd.Usuario, encriptado));
             }
 
             await this.repository.SaveAsync(usuario);
@@ -172,17 +172,17 @@ namespace Agrobook.Domain.Usuarios
 
             if (org.LaOrganizacionNoTieneTodaviaUsuarios)
             {
-                org.Emit(new UsuarioAgregadoALaOrganizacion(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId));
-                org.Emit(new NuevoGrupoCreado(cmd.Metadatos, DefaultGrupoId, DefaultGrupoDisplayName, cmd.OrganizacionId));
-                org.Emit(new UsuarioAgregadoAUnGrupo(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId, DefaultGrupoId));
+                org.Emit(new UsuarioAgregadoALaOrganizacion(cmd.Firma, cmd.OrganizacionId, cmd.UsuarioId));
+                org.Emit(new NuevoGrupoCreado(cmd.Firma, DefaultGrupoId, DefaultGrupoDisplayName, cmd.OrganizacionId));
+                org.Emit(new UsuarioAgregadoAUnGrupo(cmd.Firma, cmd.OrganizacionId, cmd.UsuarioId, DefaultGrupoId));
             }
             else
             {
                 if (org.YaTieneAlUsuarioComoMiembro(cmd.UsuarioId))
                     throw new InvalidOperationException("El usuario ya pertenece a la organización");
 
-                org.Emit(new UsuarioAgregadoALaOrganizacion(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId));
-                org.Emit(new UsuarioAgregadoAUnGrupo(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId, UsuariosConstants.DefaultGrupoId));
+                org.Emit(new UsuarioAgregadoALaOrganizacion(cmd.Firma, cmd.OrganizacionId, cmd.UsuarioId));
+                org.Emit(new UsuarioAgregadoAUnGrupo(cmd.Firma, cmd.OrganizacionId, cmd.UsuarioId, UsuariosConstants.DefaultGrupoId));
             }
 
             await this.repository.SaveAsync(org);
@@ -194,7 +194,7 @@ namespace Agrobook.Domain.Usuarios
             var loginInfo = this.ExtraerElLoginInfo(usuario);
             loginInfo.ActualizarPassword(DefaultPassword);
             var encriptado = this.EncriptarLoginInfo(loginInfo);
-            usuario.Emit(new PasswordReseteado(cmd.Metadatos, cmd.Usuario, encriptado));
+            usuario.Emit(new PasswordReseteado(cmd.Firma, cmd.Usuario, encriptado));
 
             await this.repository.SaveAsync(usuario);
         }
@@ -206,7 +206,7 @@ namespace Agrobook.Domain.Usuarios
             var nombreFormateadoParaDisplay = cmd.NombreCrudo.Trim();
             var nombreFormateadoParaId = cmd.NombreCrudo.ToLowerTrimmedAndWhiteSpaceless();
 
-            organizacion.Emit(new NuevaOrganizacionCreada(cmd.Metadatos, nombreFormateadoParaId, nombreFormateadoParaDisplay));
+            organizacion.Emit(new NuevaOrganizacionCreada(cmd.Firma, nombreFormateadoParaId, nombreFormateadoParaDisplay));
 
             await this.repository.SaveAsync(organizacion);
 
@@ -222,7 +222,7 @@ namespace Agrobook.Domain.Usuarios
             var idGrupo = cmd.GrupoDisplayName.ToLowerTrimmedAndWhiteSpaceless();
             if (org.YaTieneGrupoConId(idGrupo))
                 throw new InvalidOperationException($"Ya existe el grupo con id {idGrupo} en la organización {org.NombreParaMostrar}");
-            org.Emit(new NuevoGrupoCreado(cmd.Metadatos, idGrupo, cmd.GrupoDisplayName, cmd.IdOrganizacion));
+            org.Emit(new NuevoGrupoCreado(cmd.Firma, idGrupo, cmd.GrupoDisplayName, cmd.IdOrganizacion));
             await this.repository.SaveAsync(org);
             return new GrupoDto { Id = idGrupo, Display = cmd.GrupoDisplayName };
         }
@@ -240,7 +240,7 @@ namespace Agrobook.Domain.Usuarios
             if (org.YaTieneUsuarioDentroDelGrupo(cmd.GrupoId, cmd.UsuarioId))
                 throw new InvalidOperationException("El usuario ya esta dentro del grupo");
 
-            org.Emit(new UsuarioAgregadoAUnGrupo(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId, cmd.GrupoId));
+            org.Emit(new UsuarioAgregadoAUnGrupo(cmd.Firma, cmd.OrganizacionId, cmd.UsuarioId, cmd.GrupoId));
 
             await this.repository.SaveAsync(org);
         }
@@ -261,7 +261,7 @@ namespace Agrobook.Domain.Usuarios
             if (!org.YaTieneUsuarioDentroDelGrupo(cmd.GrupoId, cmd.UsuarioId))
                 throw new InvalidOperationException("El usuario no esta siquiera dentro del grupo");
 
-            org.Emit(new UsuarioRemovidoDeUnGrupo(cmd.Metadatos, cmd.OrganizacionId, cmd.UsuarioId, cmd.GrupoId));
+            org.Emit(new UsuarioRemovidoDeUnGrupo(cmd.Firma, cmd.OrganizacionId, cmd.UsuarioId, cmd.GrupoId));
 
             await this.repository.SaveAsync(org);
         }
@@ -286,7 +286,7 @@ namespace Agrobook.Domain.Usuarios
             // procedemos a retirar el permiso o rol
             loginInfo.RemoverClaim(cmd.Permiso);
             var loginInfoActualizado = this.EncriptarLoginInfo(loginInfo);
-            usuario.Emit(new PermisoRetiradoDelUsuario(cmd.Metadatos, cmd.IdUsuario, cmd.Permiso, loginInfoActualizado));
+            usuario.Emit(new PermisoRetiradoDelUsuario(cmd.Firma, cmd.IdUsuario, cmd.Permiso, loginInfoActualizado));
 
             // verificamos si tiene algun rol todavia
             var solamenteRoles = ClaimProvider.ObtenerRoles(loginInfo.Claims);
@@ -300,7 +300,7 @@ namespace Agrobook.Domain.Usuarios
                 // o entonces queda como invitado el pobrecito....
                 loginInfo.AddClaim(ClaimDef.Roles.Invitado);
                 var encriptado = this.EncriptarLoginInfo(loginInfo);
-                usuario.Emit(new PermisoOtorgadoAlUsuario(cmd.Metadatos, cmd.IdUsuario, ClaimDef.Roles.Invitado, encriptado));
+                usuario.Emit(new PermisoOtorgadoAlUsuario(cmd.Firma, cmd.IdUsuario, ClaimDef.Roles.Invitado, encriptado));
             }
 
             await this.repository.SaveAsync(usuario);
@@ -316,7 +316,7 @@ namespace Agrobook.Domain.Usuarios
 
             loginInfo.AddClaim(cmd.Permiso);
             var encriptado = this.EncriptarLoginInfo(loginInfo);
-            usuario.Emit(new PermisoOtorgadoAlUsuario(cmd.Metadatos, cmd.IdUsuario, cmd.Permiso, encriptado));
+            usuario.Emit(new PermisoOtorgadoAlUsuario(cmd.Firma, cmd.IdUsuario, cmd.Permiso, encriptado));
 
             await this.repository.SaveAsync(usuario);
         }

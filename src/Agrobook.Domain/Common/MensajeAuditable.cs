@@ -2,26 +2,21 @@
 
 namespace Agrobook.Domain.Common
 {
-    public interface IProveedorDeMetadatosDelUsuario
-    {
-        Metadatos ObtenerMetadatosDelUsuario(string token);
-    }
-
     public class MensajeAuditable
     {
-        public MensajeAuditable(Metadatos metadatos)
+        public MensajeAuditable(Firma firma)
         {
-            this.Metadatos = metadatos;
+            this.Firma = firma;
         }
 
-        public Metadatos Metadatos { get; private set; }
+        public Firma Firma { get; private set; }
 
-        public bool TrySet(Metadatos metadatos)
+        public bool TrySet(Firma firma)
         {
             // Only updates if metadatos is null
-            if (this.Metadatos == null)
+            if (this.Firma == null)
             {
-                this.Metadatos = metadatos;
+                this.Firma = firma;
                 return true;
             }
 
@@ -29,15 +24,20 @@ namespace Agrobook.Domain.Common
         }
     }
 
-    public class Metadatos
+    public interface IProveedorDeFirmaDelUsuario
     {
-        public Metadatos(string autor, DateTime timestamp)
+        Firma ObtenerFirmaDelUsuario(string token);
+    }
+
+    public class Firma
+    {
+        public Firma(string usuario, DateTime timestamp)
         {
-            this.Autor = autor;
+            this.Usuario = usuario;
             this.Timestamp = timestamp;
         }
 
-        public string Autor { get; }
+        public string Usuario { get; }
         public DateTime Timestamp { get; }
     }
 }

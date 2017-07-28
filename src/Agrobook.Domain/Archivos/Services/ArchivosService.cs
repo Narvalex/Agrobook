@@ -44,7 +44,7 @@ namespace Agrobook.Domain.Archivos.Services
         public async Task HandleAsync(RegistrarDescargaExitosa cmd)
         {
             var coleccion = await this.repository.GetOrFailByIdAsync<ColeccionDeArchivosDelProductor>(cmd.Productor);
-            coleccion.Emit(new ArchivoDescargadoExitosamente(cmd.Metadatos, cmd.Productor, cmd.NombreArchivo, coleccion.GetSize(cmd.NombreArchivo)));
+            coleccion.Emit(new ArchivoDescargadoExitosamente(cmd.Firma, cmd.Productor, cmd.NombreArchivo, coleccion.GetSize(cmd.NombreArchivo)));
 
             await this.repository.SaveAsync(coleccion);
         }
@@ -55,7 +55,7 @@ namespace Agrobook.Domain.Archivos.Services
             if (coleccion == null)
             {
                 coleccion = new ColeccionDeArchivosDelProductor();
-                coleccion.Emit(new NuevaColeccionDeArchivosDelProductorCreada(cmd.Metadatos, cmd.IdProductor));
+                coleccion.Emit(new NuevaColeccionDeArchivosDelProductorCreada(cmd.Firma, cmd.IdProductor));
             }
             else if (coleccion.YaTieneArchivo(cmd.Archivo.Nombre))
                 return ResultadoDelUpload.ResponderQueYaExiste();
@@ -63,7 +63,7 @@ namespace Agrobook.Domain.Archivos.Services
 
             if (await this.fileWriter.TryWriteUnindexedIfNotExists(cmd.FileContent, cmd.IdProductor, cmd.Archivo))
             {
-                coleccion.Emit(new NuevoArchivoAgregadoALaColeccion(cmd.Metadatos, cmd.IdProductor, cmd.Archivo));
+                coleccion.Emit(new NuevoArchivoAgregadoALaColeccion(cmd.Firma, cmd.IdProductor, cmd.Archivo));
 
 
                 await this.repository.SaveAsync(coleccion);

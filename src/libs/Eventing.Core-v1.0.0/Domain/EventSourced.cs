@@ -13,13 +13,14 @@ namespace Eventing.Core.Domain
 
         public int Version { get; private set; } = NoStreamVersionNumber; // ExpectedVersion.NoStream; // Empty/NoExistent stream, in Event Store
 
-        public string StreamName
-        {
-            get => this.streamName;
-            protected set => this.streamName = StreamCategoryAttribute.GetFullStreamName(this.GetType(), value);
-        }
+        public string StreamName => this.streamName;
 
         ICollection<object> IEventSourced.NewEvents => this.newEvents;
+
+        protected void SetStreamNameById(string id)
+        {
+            this.streamName = StreamCategoryAttribute.GetFullStreamName(this.GetType(), id);
+        }
 
         protected void On<T>(Action<T> handler) => this.handlers[typeof(T)] = e => handler((T)e);
 

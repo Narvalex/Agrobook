@@ -4,7 +4,7 @@ namespace Agrobook.Domain.Usuarios
 {
     public class NuevaOrganizacionCreada : MensajeAuditable
     {
-        public NuevaOrganizacionCreada(Metadatos metadatos, string identificador, string nombreParaMostrar) : base(metadatos)
+        public NuevaOrganizacionCreada(Firma metadatos, string identificador, string nombreParaMostrar) : base(metadatos)
         {
             this.Identificador = identificador;
             this.NombreParaMostrar = nombreParaMostrar;
@@ -16,7 +16,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class NuevoGrupoCreado : MensajeAuditable
     {
-        public NuevoGrupoCreado(Metadatos metadatos, string grupoId, string grupoDisplayName, string organizacionId) : base(metadatos)
+        public NuevoGrupoCreado(Firma metadatos, string grupoId, string grupoDisplayName, string organizacionId) : base(metadatos)
         {
             this.GrupoId = grupoId;
             this.GrupoDisplayName = grupoDisplayName;
@@ -30,7 +30,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class UsuarioAgregadoALaOrganizacion : MensajeAuditable
     {
-        public UsuarioAgregadoALaOrganizacion(Metadatos metadatos, string organizacionId, string usuarioId) : base(metadatos)
+        public UsuarioAgregadoALaOrganizacion(Firma metadatos, string organizacionId, string usuarioId) : base(metadatos)
         {
             this.OrganizacionId = organizacionId;
             this.UsuarioId = usuarioId;
@@ -42,7 +42,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class UsuarioAgregadoAUnGrupo : MensajeAuditable
     {
-        public UsuarioAgregadoAUnGrupo(Metadatos metadatos, string organizacionId, string usuarioId, string grupoId) : base(metadatos)
+        public UsuarioAgregadoAUnGrupo(Firma metadatos, string organizacionId, string usuarioId, string grupoId) : base(metadatos)
         {
             this.OrganizacionId = organizacionId;
             this.UsuarioId = usuarioId;
@@ -56,7 +56,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class UsuarioRemovidoDeUnGrupo : MensajeAuditable
     {
-        public UsuarioRemovidoDeUnGrupo(Metadatos metadatos, string organizacionId, string usuarioId, string grupoId) : base(metadatos)
+        public UsuarioRemovidoDeUnGrupo(Firma metadatos, string organizacionId, string usuarioId, string grupoId) : base(metadatos)
         {
             this.OrganizacionId = organizacionId;
             this.UsuarioId = usuarioId;

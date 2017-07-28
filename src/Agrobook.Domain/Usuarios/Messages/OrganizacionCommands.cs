@@ -4,7 +4,7 @@ namespace Agrobook.Domain.Usuarios
 {
     public class CrearNuevaOrganizacion : MensajeAuditable
     {
-        public CrearNuevaOrganizacion(Metadatos metadatos, string nombreCrudo) : base(metadatos)
+        public CrearNuevaOrganizacion(Firma metadatos, string nombreCrudo) : base(metadatos)
         {
             this.NombreCrudo = nombreCrudo;
         }
@@ -14,7 +14,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class CrearNuevoGrupo : MensajeAuditable
     {
-        public CrearNuevoGrupo(Metadatos metadatos, string idOrganizacion, string grupoDisplayName) : base(metadatos)
+        public CrearNuevoGrupo(Firma metadatos, string idOrganizacion, string grupoDisplayName) : base(metadatos)
         {
             this.IdOrganizacion = idOrganizacion;
             this.GrupoDisplayName = grupoDisplayName;
@@ -26,7 +26,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class AgregarUsuarioALaOrganizacion : MensajeAuditable
     {
-        public AgregarUsuarioALaOrganizacion(Metadatos metadatos, string organizacionId, string usuarioId) : base(metadatos)
+        public AgregarUsuarioALaOrganizacion(Firma metadatos, string organizacionId, string usuarioId) : base(metadatos)
         {
             this.OrganizacionId = organizacionId;
             this.UsuarioId = usuarioId;
@@ -38,7 +38,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class AgregarUsuarioAUnGrupo : MensajeAuditable
     {
-        public AgregarUsuarioAUnGrupo(Metadatos metadatos, string organizacionId, string usuarioId, string grupoId) : base(metadatos)
+        public AgregarUsuarioAUnGrupo(Firma metadatos, string organizacionId, string usuarioId, string grupoId) : base(metadatos)
         {
             this.OrganizacionId = organizacionId;
             this.UsuarioId = usuarioId;
@@ -52,7 +52,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class RemoverUsuarioDeUnGrupo : MensajeAuditable
     {
-        public RemoverUsuarioDeUnGrupo(Metadatos metadatos, string organizacionId, string usuarioId, string grupoId) : base(metadatos)
+        public RemoverUsuarioDeUnGrupo(Firma metadatos, string organizacionId, string usuarioId, string grupoId) : base(metadatos)
         {
             this.OrganizacionId = organizacionId;
             this.UsuarioId = usuarioId;

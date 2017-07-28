@@ -10,7 +10,7 @@ namespace Agrobook.Domain.Usuarios
         {
             this.On<NuevoUsuarioCreado>(e =>
             {
-                this.StreamName = e.Usuario;
+                this.SetStreamNameById(e.Usuario);
                 this.NombreParaMostrar = e.NombreParaMostrar;
                 this.LoginInfoEncriptado = e.LoginInfoEncriptado;
                 this.AvatarUrl = e.AvatarUrl;

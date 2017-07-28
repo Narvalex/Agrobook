@@ -15,7 +15,7 @@ namespace Agrobook.Domain.Archivos
         {
             this.On<NuevaColeccionDeArchivosDelProductorCreada>(e =>
             {
-                this.StreamName = e.IdProductor;
+                this.SetStreamNameById(e.IdProductor);
             });
             this.On<NuevoArchivoAgregadoALaColeccion>(e =>
             {
