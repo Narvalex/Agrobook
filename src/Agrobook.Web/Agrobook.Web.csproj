@@ -80,6 +80,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\ap.html" />
     <Content Include="app\archivos.html" />
     <Content Include="app\assets\angular-locale_es-py.js" />
     <Content Include="app\assets\animate.css" />
@@ -1101,6 +1102,7 @@
     <TypeScriptCompile Include="app\src\archivos\uploadService.ts" />
     <TypeScriptCompile Include="app\src\usuarios\dialogs\nuevoGrupoDialogController.ts" />
     <TypeScriptCompile Include="app\src\archivos\prodSidenavController.ts" />
+    <Content Include="app\informes.html" />
     <Content Include="app\usuarios.html" />
     <Content Include="Global.asax" />
     <Content Include="favicon.ico" />
