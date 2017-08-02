@@ -1,7 +1,7 @@
 ﻿<md-list-item style="cursor: pointer" ng-click="vm.mostrarMenu($event)" ng-show="vm.estaLogueado">
     <img ng-src="{{vm.avatarUrl}}" alt="Imagen de perfil" style="height:40px"/>
     <p ng-cloak
-       class="user-menu-user-name">
+       class="user-menu-user-name" md-truncate>
         &nbsp;{{vm.nombreParaMostrar}}<ng-md-icon icon="expand_more"></ng-md-icon>
     </p>
 </md-list-item>
