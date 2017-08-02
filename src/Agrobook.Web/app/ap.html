@@ -6,9 +6,44 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2" />
 
-    <title></title>
-</head>
-<body>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="../favicon.ico" type="image/ico" />
 
+    <link href="./assets/google-font-roboto.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="./bower_components/angular-material/angular-material.min.css" />
+    <link rel="stylesheet" href="./bower_components/angular-material-icons/angular-material-icons.css" />
+
+    <!-- Custom -->
+    <link href="./assets/spinner.css" rel="stylesheet" />
+    <link href="./assets/home.css" rel="stylesheet" />
+    <link href="./dist/common/userMenu/user-menu-widget.css" rel="stylesheet" />
+
+    <style type="text/css">
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
+    <title>Agrobook - Ag. de Precisión</title>
+</head>
+<body layout="row">
+    <div ng-show="false">
+        <div class="spinner">
+            <div class="dot1"></div>
+            <div class="dot2"></div>
+        </div>
+    </div>
+
+    <script src="./bower_components/angular/angular.js"></script>
+    <script src="./bower_components/angular-route/angular-route.min.js"></script>
+    <script src="./bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="./bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="./bower_components/angular-material/angular-material.min.js"></script>
+    <script src="./bower_components/angular-material-icons/angular-material-icons.min.js"></script>
+
+    <!-- values -->
+    <script src="./dist/common/config.js"></script>
+    <!--Boot-->
+    <script src="./dist/ap/apArea.js"></script>
 </body>
 </html>

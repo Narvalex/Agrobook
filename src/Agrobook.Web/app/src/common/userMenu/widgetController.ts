@@ -93,6 +93,7 @@ module common {
 
             this.menuItemList = [
                 new menuItem('Inicio', 'home.html', 'home'),
+                new menuItem('Ag. de Precisión', 'ap.html', 'folder'),
                 new menuItem(esTecnicoOSuperior
                     ? 'Archivos' : 'Mis archivos', 'archivos.html', 'folder'),
                 new menuItem(esTecnicoOSuperior

@@ -1095,6 +1095,7 @@
     <Content Include="app\dist\usuarios\views\perfil.html" />
     <Content Include="app\home.html" />
     <TypeScriptCompile Include="app\bower_components\moment\moment.d.ts" />
+    <TypeScriptCompile Include="app\src\ap\apArea.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosDTOs.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosQueryService.ts" />
     <TypeScriptCompile Include="app\src\archivos\dialogs\uploadCenterController.ts" />

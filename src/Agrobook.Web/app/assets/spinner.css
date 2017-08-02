@@ -1,6 +1,6 @@
 ﻿/* Credits: http://tobiasahlin.com/spinkit/  */
 .spinner {
-    margin: 100px auto;
+    margin: calc(30vh) auto;
     width: 40px;
     height: 40px;
     position: relative;
