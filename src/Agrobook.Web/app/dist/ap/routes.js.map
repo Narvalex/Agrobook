@@ -1,0 +1,1 @@
+{"version":3,"file":"routes.js","sourceRoot":"","sources":["../../src/ap/routes.ts"],"names":[],"mappings":"AAAA,mCAAmC;AAEnC,IAAO,MAAM,CAkBZ;AAlBD,WAAO,MAAM;IAOT;QACI,MAAM,CAAC;YACH;gBACI,IAAI,EAAE,GAAG;gBACT,KAAK,EAAE;oBACH,WAAW,EAAE,mCAAmC;oBAChD,cAAc,EAAE,KAAK;iBACxB;aACJ;SACJ,CAAC;IACN,CAAC;IAVe,sBAAe,kBAU9B,CAAA;AACL,CAAC,EAlBM,MAAM,KAAN,MAAM,QAkBZ"}

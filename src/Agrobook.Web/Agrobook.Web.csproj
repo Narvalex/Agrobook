@@ -1073,6 +1073,9 @@
     <Content Include="app\bower_components\toastr\toastr.js" />
     <Content Include="app\bower_components\toastr\toastr.min.css" />
     <Content Include="app\bower_components\toastr\toastr.min.js" />
+    <Content Include="app\dist\ap\sidenav.html" />
+    <Content Include="app\dist\ap\toolbar-header.html" />
+    <Content Include="app\dist\ap\views\main-content.html" />
     <Content Include="app\dist\archivos\dialogs\upload-center-dialog.html" />
     <Content Include="app\dist\archivos\prod-sidenav.html" />
     <Content Include="app\dist\archivos\sidenav.html" />
@@ -1096,6 +1099,9 @@
     <Content Include="app\home.html" />
     <TypeScriptCompile Include="app\bower_components\moment\moment.d.ts" />
     <TypeScriptCompile Include="app\src\ap\apArea.ts" />
+    <TypeScriptCompile Include="app\src\ap\routes.ts" />
+    <TypeScriptCompile Include="app\src\ap\sidenavController.ts" />
+    <TypeScriptCompile Include="app\src\ap\toolbarHeaderController.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosDTOs.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosQueryService.ts" />
     <TypeScriptCompile Include="app\src\archivos\dialogs\uploadCenterController.ts" />

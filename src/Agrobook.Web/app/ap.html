@@ -33,6 +33,15 @@
             <div class="dot2"></div>
         </div>
     </div>
+    <div ng-include="'./dist/ap/sidenav.html'" layout="vertical" ng-controller="sidenavController as vm"></div>
+
+    <div layout="column" flex>
+        <div ng-include="'./dist/ap/toolbar-header.html'"></div>
+        <!-- Routed content here -->
+        <md-content flex>
+            <div ng-view></div>
+        </md-content>
+    </div>
 
     <script src="./bower_components/angular/angular.js"></script>
     <script src="./bower_components/angular-route/angular-route.min.js"></script>
@@ -40,9 +49,19 @@
     <script src="./bower_components/angular-aria/angular-aria.min.js"></script>
     <script src="./bower_components/angular-material/angular-material.min.js"></script>
     <script src="./bower_components/angular-material-icons/angular-material-icons.min.js"></script>
-
+    <!-- functions -->
+    <script src="./dist/common/httpInterceptorRegistry.js"></script>
+    <script src="./dist/ap/routes.js"></script>
     <!-- values -->
     <script src="./dist/common/config.js"></script>
+    <!-- services -->
+    <script src="./dist/common/infrastructure.js"></script>
+    <script src="./dist/login/loginService.js"></script>
+    <script src="./dist/login/loginQueryService.js"></script>
+    <!-- controllers -->
+    <script src="./dist/common/userMenu/widgetController.js"></script>
+    <script src="./dist/ap/sidenavController.js"></script>
+    <script src="./dist/ap/toolbarHeaderController.js"></script>
     <!--Boot-->
     <script src="./dist/ap/apArea.js"></script>
 </body>

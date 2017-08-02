@@ -1,0 +1,17 @@
+﻿<md-sidenav class="md-sidenav-left md-whiteframe-z2"
+            md-component-id="left"
+            md-is-locked-open="$mdMedia('gt-sm')"
+            ng-show="vm.mostrarSidenav">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 md-truncate>Agricultura de Precisión</h2>
+            <div flex></div>
+            <md-button class="md-icon-button"
+                       hide-gt-sm
+                       ng-click="vm.toggleSideNav()"
+                       aria-label="Toggle side nav">
+                <ng-md-icon icon="close"></ng-md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+</md-sidenav>
