@@ -1102,6 +1102,7 @@
     <TypeScriptCompile Include="app\src\ap\routes.ts" />
     <TypeScriptCompile Include="app\src\ap\sidenavController.ts" />
     <TypeScriptCompile Include="app\src\ap\toolbarHeaderController.ts" />
+    <TypeScriptCompile Include="app\src\ap\views\mainContentController.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosDTOs.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosQueryService.ts" />
     <TypeScriptCompile Include="app\src\archivos\dialogs\uploadCenterController.ts" />

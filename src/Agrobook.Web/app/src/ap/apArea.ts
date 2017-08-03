@@ -9,6 +9,7 @@ module apArea {
         .controller('sidenavController', sidenavController)
         .controller('toolbarHeaderController', toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
+        .controller('mainContentController', mainContentController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', (
             $mdIconProvider: angular.material.IIconProvider,
             $mdThemingProvider: angular.material.IThemingProvider,

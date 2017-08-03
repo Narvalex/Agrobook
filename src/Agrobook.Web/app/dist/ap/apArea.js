@@ -9,6 +9,7 @@ var apArea;
         .controller('sidenavController', apArea.sidenavController)
         .controller('toolbarHeaderController', apArea.toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
+        .controller('mainContentController', apArea.mainContentController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $routeProvider) {
             // most from flat icon dot com
             $mdIconProvider

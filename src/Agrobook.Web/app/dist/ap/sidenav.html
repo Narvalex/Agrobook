@@ -14,4 +14,45 @@
             </md-button>
         </div>
     </md-toolbar>
+    <md-content layout-padding ng-hide="vm.loaded">
+        <div layout="row" layout-align="space-around">
+            <md-progress-circular md-mode="indeterminate"
+                                  ng-disabled="vm.loaded"></md-progress-circular>
+        </div>
+    </md-content>
+    <div layout-padding>
+        
+        <div layout="row">
+            <md-button class="md-fab md-mini" 
+                       aria-label="filtro"
+                       ng-click="vm.mostrarFiltros($event)">
+                <ng-md-icon icon="filter"></ng-md-icon>
+            </md-button>
+
+            <md-autocomplete md-search-text="vm.searchText"
+                             md-items="item in vm.clientes | filter: vm.searchText"
+                             md-item-text="item.nombre"
+                             md-min-length="100"
+                             placeholder="Buscar">
+                <md-not-found>
+                    Ninguna coincidencia con "{{vm.searchText}}".
+                </md-not-found>
+            </md-autocomplete>
+        </div>
+      
+    </div>
+
+    <md-content class="scrollable-nav-content">
+        <md-list>
+            <!--Optional filter  | orderBy:'nombre'" -->
+            <md-list-item ng-repeat="cliente in vm.clientes | filter:vm.searchText"
+                          ng-click="vm.seleccionarCliente(cliente)"
+                          ng-class="{'seleccionado': cliente === vm.clienteSeleccionado }">
+                <img ng-src="{{cliente.avatarUrl}}" alt="Imagen de perfil" style="height:40px" />
+                &nbsp;{{cliente.nombre}}
+            </md-list-item>
+        </md-list>
+    </md-content>
+
+
 </md-sidenav>
