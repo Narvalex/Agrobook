@@ -6,6 +6,7 @@ module apArea {
         .service('localStorageLite', common.localStorageLite)
         .service('loginService', login.loginService) // to log out...! do not remove this!
         .service('loginQueryService', login.loginQueryService)
+        .service('apQueryService', apQueryService)
         .controller('sidenavController', sidenavController)
         .controller('toolbarHeaderController', toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)

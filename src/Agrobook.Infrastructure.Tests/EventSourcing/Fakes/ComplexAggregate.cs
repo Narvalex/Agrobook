@@ -1,5 +1,4 @@
-﻿using Agrobook.Common;
-using Eventing.Core.Domain;
+﻿using Eventing.Core.Domain;
 
 namespace Agrobook.Infrastructure.Tests.EventSourcing.Fakes
 {
@@ -7,7 +6,7 @@ namespace Agrobook.Infrastructure.Tests.EventSourcing.Fakes
     {
         public ComplexAggregate()
         {
-            this.On<NewAgregateCreated>(e => this.StreamName = e.AggregateId);
+            this.On<NewAgregateCreated>(e => this.SetStreamNameById(e.AggregateId));
             this.On<OneStuffHappened>(e => this.StuffHappenedCount += 1);
             this.On<TwoStuffHappened>(e => this.StuffHappenedCount += 2);
         }

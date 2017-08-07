@@ -2,50 +2,75 @@
 var apArea;
 (function (apArea) {
     var sidenavController = (function () {
-        function sidenavController($mdSidenav, config, loginService) {
+        function sidenavController($mdSidenav, config, loginService, apQueryService) {
             this.$mdSidenav = $mdSidenav;
             this.config = config;
             this.loginService = loginService;
+            this.apQueryService = apQueryService;
+            // Estados
             this.mostrarSidenav = false;
             var claims = this.config.claims;
             this.mostrarSidenav = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
+            this.resolverFiltros();
+            this.establecerFiltro('todos');
             this.recuperarListaDeClientes();
         }
         sidenavController.prototype.toggleSideNav = function () {
             this.$mdSidenav('left').toggle();
         };
-        sidenavController.prototype.mostrarFiltros = function ($event) {
+        sidenavController.prototype.cambiarFiltro = function ($event) {
+            switch (this.filtroSeleccionado.id) {
+                case "todos":
+                    this.establecerFiltro('prod');
+                    break;
+                case "prod":
+                    this.establecerFiltro('org');
+                    break;
+                case "org":
+                    this.establecerFiltro('todos');
+                    break;
+            }
         };
         //--------------------
         // PRIVATE
         //--------------------
-        sidenavController.prototype.recuperarListaDeClientes = function () {
-            this.clientes = [
-                new cliente("coopchorti", "Cooperativa Chortizer", "Loma Plata", "org", "./assets/img/avatar/6.png"),
-                new cliente("ccuu", "Cooperativa Colonias Unidas", "Itapua", "org", "./assets/img/avatar/7.png"),
-                new cliente("davidelias", "David Elias", "Productor de Chortizer", "prod", "./assets/img/avatar/8.png"),
-                new cliente("kazuoyama", "Kazuo Yamazuki", "Productor de Pirapo", "prod", "./assets/img/avatar/9.png")
+        sidenavController.prototype.resolverFiltros = function () {
+            this.filtros = [
+                new filtro("todos", "Buscar entre todos", "search"),
+                new filtro("prod", "Buscar en productores", "people"),
+                new filtro("org", "Buscar en organizaciones", "business")
             ];
-            this.loaded = true;
+        };
+        sidenavController.prototype.establecerFiltro = function (filtroId) {
+            for (var i = 0; i < this.filtros.length; i++) {
+                if (this.filtros[i].id === filtroId) {
+                    this.filtroSeleccionado = this.filtros[i];
+                    this.recuperarListaDeClientes();
+                    return;
+                }
+            }
+            ;
+            throw "El filtro: " + filtroId + "es inválido";
+        };
+        sidenavController.prototype.recuperarListaDeClientes = function () {
+            var _this = this;
+            this.apQueryService.getClientes(this.filtroSeleccionado.id, new common.callbackLite(function (value) {
+                _this.clientes = value.data;
+                _this.loaded = true;
+            }, function (reason) { }));
         };
         return sidenavController;
     }());
-    sidenavController.$inject = ['$mdSidenav', 'config', 'loginService'];
+    sidenavController.$inject = ['$mdSidenav', 'config', 'loginService', 'apQueryService'];
     apArea.sidenavController = sidenavController;
-    var cliente = (function () {
-        function cliente(id, // coopchorti / davidelias
-            nombre, // Cooperativa Chortizer / David Elias
-            desc, // Loma Plata / Productor de Chooperativa Chortizer y Colonias Unidas
-            tipo, // org / prod
-            avatarUrl) {
+    var filtro = (function () {
+        function filtro(id, placeholder, icon) {
             this.id = id;
-            this.nombre = nombre;
-            this.desc = desc;
-            this.tipo = tipo;
-            this.avatarUrl = avatarUrl;
+            this.placeholder = placeholder;
+            this.icon = icon;
         }
-        return cliente;
+        return filtro;
     }());
-    apArea.cliente = cliente;
+    apArea.filtro = filtro;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=sidenavController.js.map

@@ -2,55 +2,91 @@
 
 module apArea {
     export class sidenavController {
-        static $inject = ['$mdSidenav', 'config', 'loginService'];
+        static $inject = ['$mdSidenav', 'config', 'loginService', 'apQueryService'];
 
         constructor(
             private $mdSidenav: angular.material.ISidenavService,
             private config: common.config,
-            private loginService: login.loginService
+            private loginService: login.loginService,
+            private apQueryService: apQueryService
         ) {
             var claims = this.config.claims;
             this.mostrarSidenav = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
 
+            this.resolverFiltros();
+            this.establecerFiltro('todos');
             this.recuperarListaDeClientes();
         }
 
+        // Estados
         mostrarSidenav: boolean = false;
         loaded: boolean;
 
         // Objetos
+        filtroSeleccionado: filtro;
+        filtros: filtro[];
         clientes: cliente[];
 
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
         }
 
-        mostrarFiltros($event) {
-
+        cambiarFiltro($event) {
+            switch (this.filtroSeleccionado.id) {
+                case "todos":
+                    this.establecerFiltro('prod');
+                    break;
+                case "prod":
+                    this.establecerFiltro('org');
+                    break;
+                case "org":
+                    this.establecerFiltro('todos');
+                    break;
+            }
         }
 
         //--------------------
         // PRIVATE
         //--------------------
 
-        private recuperarListaDeClientes() {
-            this.clientes = [
-                new cliente("coopchorti", "Cooperativa Chortizer", "Loma Plata", "org", "./assets/img/avatar/6.png"),
-                new cliente("ccuu", "Cooperativa Colonias Unidas", "Itapua", "org", "./assets/img/avatar/7.png"),
-                new cliente("davidelias", "David Elias", "Productor de Chortizer", "prod", "./assets/img/avatar/8.png"),
-                new cliente("kazuoyama", "Kazuo Yamazuki", "Productor de Pirapo", "prod", "./assets/img/avatar/9.png")
+        private resolverFiltros() {
+            this.filtros = [
+                new filtro("todos", "Buscar entre todos", "search"),
+                new filtro("prod", "Buscar en productores", "people"),
+                new filtro("org", "Buscar en organizaciones", "business")
             ];
-            this.loaded = true
+        }
+
+        private establecerFiltro(filtroId: string) {
+            for (var i = 0; i < this.filtros.length; i++) {
+                if (this.filtros[i].id === filtroId) {
+                    this.filtroSeleccionado = this.filtros[i];
+                    this.recuperarListaDeClientes();
+                    return;
+                }
+            };
+            throw "El filtro: " + filtroId + "es inválido";
+        }
+
+        private recuperarListaDeClientes() {
+            this.apQueryService.getClientes(
+                this.filtroSeleccionado.id,
+                new common.callbackLite<cliente[]>(
+                    value => {
+                        this.clientes = value.data;
+                        this.loaded = true;
+                    },
+                    reason => { })
+            );
         }
     }
 
-    export class cliente {
+    export class filtro {
+
         constructor(
-            public id: string, // coopchorti / davidelias
-            public nombre: string, // Cooperativa Chortizer / David Elias
-            public desc: string, // Loma Plata / Productor de Chooperativa Chortizer y Colonias Unidas
-            public tipo: string, // org / prod
-            public avatarUrl: string
+            public id: string,
+            public placeholder: string,
+            public icon: string
         ) {
         }
     }

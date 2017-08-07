@@ -23,17 +23,22 @@
     <div layout-padding>
         
         <div layout="row">
-            <md-button class="md-fab md-mini" 
+            <md-button class="md-fab md-mini"
+                       ng-class="{'md-primary': vm.filtroSeleccionado.id === 'todos'}"
                        aria-label="filtro"
-                       ng-click="vm.mostrarFiltros($event)">
-                <ng-md-icon icon="filter"></ng-md-icon>
+                       ng-click="vm.cambiarFiltro($event)">
+                <ng-md-icon icon="{{vm.filtroSeleccionado.icon}}"></ng-md-icon>
+                <md-tooltip md-direction="top">
+                    Cambiar de filtro
+                </md-tooltip>
             </md-button>
 
-            <md-autocomplete md-search-text="vm.searchText"
+            <md-autocomplete style="margin-top:5px;"
+                             md-search-text="vm.searchText"
                              md-items="item in vm.clientes | filter: vm.searchText"
                              md-item-text="item.nombre"
                              md-min-length="100"
-                             placeholder="Buscar">
+                             placeholder="{{vm.filtroSeleccionado.placeholder}}">
                 <md-not-found>
                     Ninguna coincidencia con "{{vm.searchText}}".
                 </md-not-found>
@@ -45,11 +50,15 @@
     <md-content class="scrollable-nav-content">
         <md-list>
             <!--Optional filter  | orderBy:'nombre'" -->
-            <md-list-item ng-repeat="cliente in vm.clientes | filter:vm.searchText"
+            <md-list-item class="md-2-line"
+                          ng-repeat="cliente in vm.clientes | filter:vm.searchText"
                           ng-click="vm.seleccionarCliente(cliente)"
                           ng-class="{'seleccionado': cliente === vm.clienteSeleccionado }">
                 <img ng-src="{{cliente.avatarUrl}}" alt="Imagen de perfil" style="height:40px" />
-                &nbsp;{{cliente.nombre}}
+                <div class="md-list-item-text">
+                    <h3>&nbsp;{{cliente.nombre}}</h3>
+                    <p>&nbsp;{{cliente.desc}}</p>
+                </div>
             </md-list-item>
         </md-list>
     </md-content>
