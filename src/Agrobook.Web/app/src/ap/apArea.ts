@@ -11,6 +11,10 @@ module apArea {
         .controller('toolbarHeaderController', toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
         .controller('mainContentController', mainContentController)
+        // org controllers
+        .controller('orgMainContentController', orgMainContentController)
+        .controller('orgTabServiciosController', orgTabServiciosController)
+        // config
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', (
             $mdIconProvider: angular.material.IIconProvider,
             $mdThemingProvider: angular.material.IThemingProvider,

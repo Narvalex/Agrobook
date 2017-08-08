@@ -13,21 +13,21 @@ var apArea;
             {
                 path: '/prod/:idProd',
                 route: {
-                    templateUrl: './dist/ap/views/prod-main-content.html',
+                    templateUrl: './dist/ap/views/prod/prod-main-content.html',
                     reloadOnSearch: false
                 }
             },
             {
                 path: '/org/:idOrg',
                 route: {
-                    templateUrl: './dist/ap/views/org-main-content.html',
+                    templateUrl: './dist/ap/views/org/org-main-content.html',
                     reloadOnSearch: false
                 }
             },
             {
                 path: '/servicios/:idServicio',
                 route: {
-                    templateUrl: './dist/ap/views/servicio-main-content.html',
+                    templateUrl: './dist/ap/views/servicios/servicio-main-content.html',
                     reloadOnSearch: false
                 }
             }

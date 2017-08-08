@@ -1,0 +1,26 @@
+﻿table.table-style {
+    border-collapse: collapse;
+}
+
+.table-style th {
+    color: #808080;
+    text-align: left;
+    padding-left: 15px;
+}
+
+.table-style tr {
+    height: 30px;  
+}
+
+.table-style td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.table-style-row:hover {
+    background-color: rgb(219, 245, 220);
+    cursor: pointer;
+    -webkit-transition: background-color 180ms linear;
+    transition: background-color 180ms linear;
+}
+

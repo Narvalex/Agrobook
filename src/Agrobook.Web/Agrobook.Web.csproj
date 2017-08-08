@@ -89,6 +89,7 @@
     <Content Include="app\assets\google-font-roboto.css" />
     <Content Include="app\assets\home.css" />
     <Content Include="app\assets\img\avatar\1.png" />
+    <Content Include="app\assets\img\avatar\10.png" />
     <Content Include="app\assets\img\avatar\2.png" />
     <Content Include="app\assets\img\avatar\3.png" />
     <Content Include="app\assets\img\avatar\4.png" />
@@ -98,6 +99,7 @@
     <Content Include="app\assets\img\avatar\8.png" />
     <Content Include="app\assets\img\avatar\9.png" />
     <Content Include="app\assets\img\avatar\avatar-set.png" />
+    <Content Include="app\assets\img\avatar\org-icon.png" />
     <Content Include="app\assets\img\avatar\Source.txt" />
     <None Include="app\assets\md-toasts.scss" />
     <Content Include="app\assets\img\fileIcons\file.png" />
@@ -129,6 +131,7 @@
     <Content Include="app\assets\svg\twitter.svg" />
     <Content Include="app\assets\svg\word.svg" />
     <Content Include="app\assets\tab-fix.css" />
+    <Content Include="app\assets\table-style.css" />
     <Content Include="app\assets\view.css" />
     <Content Include="app\bower_components\angular-animate\angular-animate.js" />
     <Content Include="app\bower_components\angular-animate\angular-animate.min.js" />
@@ -1076,9 +1079,11 @@
     <Content Include="app\dist\ap\sidenav.html" />
     <Content Include="app\dist\ap\toolbar-header.html" />
     <Content Include="app\dist\ap\views\main-content.html" />
-    <Content Include="app\dist\ap\views\org-main-content.html" />
-    <Content Include="app\dist\ap\views\prod-main-content.html" />
-    <Content Include="app\dist\ap\views\servicio-main-content.html" />
+    <Content Include="app\dist\ap\views\org\org-main-content.html" />
+    <Content Include="app\dist\ap\views\org\tab-productores.html" />
+    <Content Include="app\dist\ap\views\org\tab-servicios.html" />
+    <Content Include="app\dist\ap\views\prod\prod-main-content.html" />
+    <Content Include="app\dist\ap\views\servicios\servicio-main-content.html" />
     <Content Include="app\dist\archivos\dialogs\upload-center-dialog.html" />
     <Content Include="app\dist\archivos\prod-sidenav.html" />
     <Content Include="app\dist\archivos\sidenav.html" />
@@ -1107,6 +1112,8 @@
     <TypeScriptCompile Include="app\src\ap\sidenavController.ts" />
     <TypeScriptCompile Include="app\src\ap\toolbarHeaderController.ts" />
     <TypeScriptCompile Include="app\src\ap\views\mainContentController.ts" />
+    <TypeScriptCompile Include="app\src\ap\views\org\orgMainContentController.ts" />
+    <TypeScriptCompile Include="app\src\ap\views\org\orgTabServiciosController.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosDTOs.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosQueryService.ts" />
     <TypeScriptCompile Include="app\src\archivos\dialogs\uploadCenterController.ts" />

@@ -17,24 +17,49 @@ var apArea;
             var _this = _super.call(this, $http, 'ap/query') || this;
             _this.$http = $http;
             _this.$q = $q;
+            //--------------------------------
+            // Fakes
+            //--------------------------------
+            _this.fakeClientesList = [
+                new cliente("coopchorti", "Cooperativa Chortizer", "Loma Plata", "org", "./assets/img/avatar/org-icon.png"),
+                new cliente("ccuu", "Cooperativa Colonias Unidas", "Itapua", "org", "./assets/img/avatar/org-icon.png"),
+                new cliente("davidelias", "David Elias", "Cooperativa Chortizer", "prod", "./assets/img/avatar/8.png"),
+                new cliente("kazuoyama", "Kazuo Yamazuki", "Cooperativa Pirapo", "prod", "./assets/img/avatar/9.png")
+            ];
+            _this.fakeServiciosList = [
+                new servicioDto("David Elias", "20/12/2018", "Contrato Chorti"),
+                new servicioDto("Kazuo Yamazuki", "20/12/2017", "Contrato Pirapo")
+            ];
             return _this;
         }
         apQueryService.prototype.getClientes = function (filtro, callback) {
             var filteredList;
-            var list = [
-                new cliente("coopchorti", "Cooperativa Chortizer", "Loma Plata", "org", "./assets/img/avatar/6.png"),
-                new cliente("ccuu", "Cooperativa Colonias Unidas", "Itapua", "org", "./assets/img/avatar/7.png"),
-                new cliente("davidelias", "David Elias", "Cooperativa Chortizer", "prod", "./assets/img/avatar/8.png"),
-                new cliente("kazuoyama", "Kazuo Yamazuki", "Cooperativa Pirapo", "prod", "./assets/img/avatar/9.png")
-            ];
             if (filtro === "todos")
-                filteredList = list;
+                filteredList = this.fakeClientesList;
             else if (filtro === "prod")
-                filteredList = list.filter(function (x) { return x.tipo === "prod"; });
+                filteredList = this.fakeClientesList.filter(function (x) { return x.tipo === "prod"; });
             else if (filtro === "org")
-                filteredList = list.filter(function (x) { return x.tipo === "org"; });
+                filteredList = this.fakeClientesList.filter(function (x) { return x.tipo === "org"; });
             callback.onSuccess({
                 data: filteredList
+            });
+        };
+        apQueryService.prototype.getOrg = function (id, callback) {
+            var dto;
+            for (var i = 0; i < this.fakeClientesList.length; i++) {
+                if (this.fakeClientesList[i].id === id) {
+                    var x = this.fakeClientesList[i];
+                    dto = new orgDto(x.id, x.nombre);
+                    break;
+                }
+            }
+            callback.onSuccess({
+                data: dto
+            });
+        };
+        apQueryService.prototype.getServiciosPorOrg = function (idOrg, callback) {
+            callback.onSuccess({
+                data: this.fakeServiciosList
             });
         };
         return apQueryService;
@@ -59,5 +84,22 @@ var apArea;
         return cliente;
     }());
     apArea.cliente = cliente;
+    var orgDto = (function () {
+        function orgDto(id, display) {
+            this.id = id;
+            this.display = display;
+        }
+        return orgDto;
+    }());
+    apArea.orgDto = orgDto;
+    var servicioDto = (function () {
+        function servicioDto(productorDisplay, fecha, contrato) {
+            this.productorDisplay = productorDisplay;
+            this.fecha = fecha;
+            this.contrato = contrato;
+        }
+        return servicioDto;
+    }());
+    apArea.servicioDto = servicioDto;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=apQueryService.js.map

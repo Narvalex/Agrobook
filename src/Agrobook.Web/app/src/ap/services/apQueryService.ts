@@ -16,23 +16,60 @@ module apArea {
             callback: common.callbackLite<cliente[]>
         ) {
             var filteredList: cliente[];
-            var list = [
-                new cliente("coopchorti", "Cooperativa Chortizer", "Loma Plata", "org", "./assets/img/avatar/6.png"),
-                new cliente("ccuu", "Cooperativa Colonias Unidas", "Itapua", "org", "./assets/img/avatar/7.png"),
-                new cliente("davidelias", "David Elias", "Cooperativa Chortizer", "prod", "./assets/img/avatar/8.png"),
-                new cliente("kazuoyama", "Kazuo Yamazuki", "Cooperativa Pirapo", "prod", "./assets/img/avatar/9.png")
-            ];
 
             if (filtro === "todos")
-                filteredList = list;
+                filteredList = this.fakeClientesList;
             else if (filtro === "prod")
-                filteredList = list.filter(x => x.tipo === "prod");
+                filteredList = this.fakeClientesList.filter(x => x.tipo === "prod");
             else if (filtro === "org")
-                filteredList = list.filter(x => x.tipo === "org");
+                filteredList = this.fakeClientesList.filter(x => x.tipo === "org");
 
             callback.onSuccess({
                 data: filteredList});
         }
+
+        getOrg(
+            id: string,
+            callback: common.callbackLite<orgDto>
+        ) {
+            var dto: orgDto;
+            for (var i = 0; i < this.fakeClientesList.length; i++) {
+                if (this.fakeClientesList[i].id === id) {
+                    var x = this.fakeClientesList[i];
+                    dto = new orgDto(x.id, x.nombre);
+                    break;
+                }
+            }
+
+            callback.onSuccess({
+                data: dto
+            });
+        }
+
+        getServiciosPorOrg(
+            idOrg: string,
+            callback: common.callbackLite<servicioDto[]>
+        ) {
+            callback.onSuccess({
+                data: this.fakeServiciosList
+            });
+        }
+
+        //--------------------------------
+        // Fakes
+        //--------------------------------
+
+        private fakeClientesList = [
+            new cliente("coopchorti", "Cooperativa Chortizer", "Loma Plata", "org", "./assets/img/avatar/org-icon.png"),
+            new cliente("ccuu", "Cooperativa Colonias Unidas", "Itapua", "org", "./assets/img/avatar/org-icon.png"),
+            new cliente("davidelias", "David Elias", "Cooperativa Chortizer", "prod", "./assets/img/avatar/8.png"),
+            new cliente("kazuoyama", "Kazuo Yamazuki", "Cooperativa Pirapo", "prod", "./assets/img/avatar/9.png")
+        ];
+
+        private fakeServiciosList = [
+            new servicioDto("David Elias", "20/12/2018", "Contrato Chorti"),
+            new servicioDto("Kazuo Yamazuki", "20/12/2017", "Contrato Pirapo")
+        ];
     }
 
     //---------------------
@@ -45,6 +82,23 @@ module apArea {
             public desc: string, // Loma Plata / Productor de Chooperativa Chortizer y Colonias Unidas
             public tipo: string, // org / prod
             public avatarUrl: string
+        ) {
+        }
+    }
+
+    export class orgDto {
+        constructor(
+            public id: string,
+            public display: string
+        ) {
+        }
+    }
+
+    export class servicioDto {
+        constructor(
+            public productorDisplay: string,
+            public fecha: string,
+            public contrato: string
         ) {
         }
     }
