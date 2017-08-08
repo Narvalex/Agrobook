@@ -18,8 +18,8 @@ var archivosArea;
             this.$mdSidenav('right').toggle();
         };
         prodSidenavController.prototype.seleccionarProductor = function (productor) {
-            this.toggleSideNav();
             this.productorSeleccionado = productor;
+            this.toggleSideNav();
             window.location.replace('#!/archivos/' + productor.id);
         };
         // Internal

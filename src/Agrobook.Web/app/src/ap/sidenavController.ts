@@ -22,8 +22,11 @@ module apArea {
         mostrarSidenav: boolean = false;
         loaded: boolean;
 
-        // Objetos
+        // Seleccioandos
         filtroSeleccionado: filtro;
+        clienteSeleccionado: cliente;
+
+        // Listas
         filtros: filtro[];
         clientes: cliente[];
 
@@ -43,6 +46,12 @@ module apArea {
                     this.establecerFiltro('todos');
                     break;
             }
+        }
+
+        seleccionarCliente(cliente: cliente) {
+            this.clienteSeleccionado = cliente;
+            this.toggleSideNav();
+            window.location.replace(`#!/${cliente.tipo}/${cliente.id}`);
         }
 
         //--------------------

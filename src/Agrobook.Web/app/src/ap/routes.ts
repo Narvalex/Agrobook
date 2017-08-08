@@ -15,6 +15,27 @@ module apArea {
                     templateUrl: './dist/ap/views/main-content.html',
                     reloadOnSearch: false
                 }
+            },
+            {
+                path: '/prod/:idProd',
+                route: {
+                    templateUrl: './dist/ap/views/prod-main-content.html',
+                    reloadOnSearch: false
+                }
+            },
+            {
+                path: '/org/:idOrg',
+                route: {
+                    templateUrl: './dist/ap/views/org-main-content.html',
+                    reloadOnSearch: false
+                }
+            },
+            {
+                path: '/servicios/:idServicio',
+                route: {
+                    templateUrl: './dist/ap/views/servicio-main-content.html',
+                    reloadOnSearch: false
+                }
             }
         ];
     }

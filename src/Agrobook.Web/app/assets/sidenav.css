@@ -2,6 +2,11 @@
     color: rgb(76, 175, 80) !important;
 }
 
+h3.seleccionado {
+    color: rgb(76, 175, 80) !important;
+    font-weight: 600 !important;
+}
+
 .scrollable-nav-content {
     position: absolute;
     top: 136px;

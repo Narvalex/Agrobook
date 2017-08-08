@@ -28,8 +28,8 @@ module archivosArea {
         }
 
         seleccionarProductor(productor: productorDto) {
-            this.toggleSideNav();
             this.productorSeleccionado = productor;
+            this.toggleSideNav();
             window.location.replace('#!/archivos/' + productor.id);
         }
 

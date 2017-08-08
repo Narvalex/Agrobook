@@ -31,6 +31,11 @@ var apArea;
                     break;
             }
         };
+        sidenavController.prototype.seleccionarCliente = function (cliente) {
+            this.clienteSeleccionado = cliente;
+            this.toggleSideNav();
+            window.location.replace("#!/" + cliente.tipo + "/" + cliente.id);
+        };
         //--------------------
         // PRIVATE
         //--------------------

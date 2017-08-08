@@ -1076,6 +1076,9 @@
     <Content Include="app\dist\ap\sidenav.html" />
     <Content Include="app\dist\ap\toolbar-header.html" />
     <Content Include="app\dist\ap\views\main-content.html" />
+    <Content Include="app\dist\ap\views\org-main-content.html" />
+    <Content Include="app\dist\ap\views\prod-main-content.html" />
+    <Content Include="app\dist\ap\views\servicio-main-content.html" />
     <Content Include="app\dist\archivos\dialogs\upload-center-dialog.html" />
     <Content Include="app\dist\archivos\prod-sidenav.html" />
     <Content Include="app\dist\archivos\sidenav.html" />

@@ -52,11 +52,10 @@
             <!--Optional filter  | orderBy:'nombre'" -->
             <md-list-item class="md-2-line"
                           ng-repeat="cliente in vm.clientes | filter:vm.searchText"
-                          ng-click="vm.seleccionarCliente(cliente)"
-                          ng-class="{'seleccionado': cliente === vm.clienteSeleccionado }">
+                          ng-click="vm.seleccionarCliente(cliente)">
                 <img ng-src="{{cliente.avatarUrl}}" alt="Imagen de perfil" style="height:40px" />
                 <div class="md-list-item-text">
-                    <h3>&nbsp;{{cliente.nombre}}</h3>
+                    <h3 ng-class="{'seleccionado': cliente === vm.clienteSeleccionado }">&nbsp;{{cliente.nombre}}</h3>
                     <p>&nbsp;{{cliente.desc}}</p>
                 </div>
             </md-list-item>
