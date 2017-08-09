@@ -57,6 +57,19 @@ var apArea;
                 data: dto
             });
         };
+        apQueryService.prototype.getProd = function (id, callback) {
+            var dto;
+            for (var i = 0; i < this.fakeClientesList.length; i++) {
+                if (this.fakeClientesList[i].id === id) {
+                    var x = this.fakeClientesList[i];
+                    dto = new prodDto(x.id, x.nombre);
+                    break;
+                }
+            }
+            callback.onSuccess({
+                data: dto
+            });
+        };
         apQueryService.prototype.getServiciosPorOrg = function (idOrg, callback) {
             callback.onSuccess({
                 data: this.fakeServiciosList
@@ -101,5 +114,13 @@ var apArea;
         return servicioDto;
     }());
     apArea.servicioDto = servicioDto;
+    var prodDto = (function () {
+        function prodDto(id, display) {
+            this.id = id;
+            this.display = display;
+        }
+        return prodDto;
+    }());
+    apArea.prodDto = prodDto;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=apQueryService.js.map

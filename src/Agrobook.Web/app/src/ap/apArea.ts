@@ -8,12 +8,16 @@ module apArea {
         .service('loginQueryService', login.loginQueryService)
         .service('apQueryService', apQueryService)
         .controller('sidenavController', sidenavController)
+        .controller('bottomSheetButtonController', bottomSheetButtonController)
+        .controller('bottomSheetController', bottomSheetController)
         .controller('toolbarHeaderController', toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
         .controller('mainContentController', mainContentController)
         // org controllers
         .controller('orgMainContentController', orgMainContentController)
         .controller('orgTabServiciosController', orgTabServiciosController)
+        // prod controllers
+        .controller('prodMainContentController', prodMainContentController)
         // config
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', (
             $mdIconProvider: angular.material.IIconProvider,
@@ -39,5 +43,10 @@ module apArea {
                 $routeProvider.when(config.path, config.route);
             });
             $routeProvider.otherwise({ redirectTo: '/' });
+        }])
+        .run(['$rootScope', (
+            $rootScope: angular.IRootScopeService
+        ) => {
+            // Aqui se pueden definir DTOS compartidos. Algo asi como "variables globales"
         }]);
 }

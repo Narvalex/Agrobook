@@ -20,6 +20,7 @@
     <link href="./dist/common/userMenu/user-menu-widget.css" rel="stylesheet" />
     <link href="./assets/sidenav.css" rel="stylesheet" />
     <link href="./assets/view.css" rel="stylesheet" />
+    <link href="./assets/tab-fix.css" rel="stylesheet" />
     <link href="./assets/table-style.css" rel="stylesheet" />
 
     <style type="text/css">
@@ -44,6 +45,17 @@
         <md-content flex>
             <div ng-view></div>
         </md-content>
+
+        <md-button ng-controller="bottomSheetButtonController as vm"
+                   class="md-fab md-fab-bottom-left"
+                   aria-label="Mostrar acciones"
+                   ng-click="vm.mostrarBottomSheet()"
+                   style="position:fixed;">
+            <ng-md-icon icon="more_horiz"></ng-md-icon>
+            <md-tooltip md-direction="right" ng-cloak>
+                Mostrar acciones
+            </md-tooltip>
+        </md-button>
     </div>
 
     <script src="./bower_components/angular/angular.js"></script>
@@ -65,11 +77,14 @@
     <!-- controllers -->
     <script src="./dist/common/userMenu/widgetController.js"></script>
     <script src="./dist/ap/sidenavController.js"></script>
+    <script src="./dist/ap/bottomSheetController.js"></script>
     <script src="./dist/ap/toolbarHeaderController.js"></script>
     <script src="./dist/ap/views/mainContentController.js"></script>
-    <!-- orgTab controllers -->
+    <!-- org controllers -->
     <script src="./dist/ap/views/org/orgMainContentController.js"></script>
     <script src="./dist/ap/views/org/orgTabServiciosController.js"></script>
+    <!-- prod controllers -->
+    <script src="./dist/ap/views/prod/prodMainContentController.js"></script>
     <!--Boot-->
     <script src="./dist/ap/apArea.js"></script>
 </body>

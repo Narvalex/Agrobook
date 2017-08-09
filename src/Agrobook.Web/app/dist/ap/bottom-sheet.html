@@ -1,0 +1,15 @@
+﻿<md-bottom-sheet class="md-list md-has-header">
+    <md-subheader>Acciones disponibles</md-subheader>
+    <md-list>
+        <md-list-item ng-repeat="item in vm.items">
+
+            <md-button ng-click="listItemClick($index)"
+                       md-autofocus="$index == 2"
+                       class="md-list-item-content">
+                <ng-md-icon icon="{{item.icon}}"></ng-md-icon>
+                <span class="md-inline-list-icon-label">{{ item.display }}</span>
+            </md-button>
+
+        </md-list-item>
+    </md-list>
+</md-bottom-sheet>

@@ -38,7 +38,7 @@ var common;
                 attachTo: angular.element(document.body),
                 controller: panelMenuController,
                 controllerAs: 'vm',
-                templateUrl: 'dist/common/userMenu/menu-items-template.html',
+                templateUrl: './dist/common/userMenu/menu-items-template.html',
                 panelClass: 'menu-panel-container',
                 openFrom: $event,
                 clickOutsideToClose: true,

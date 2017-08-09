@@ -8,11 +8,14 @@ var apArea;
         .service('loginQueryService', login.loginQueryService)
         .service('apQueryService', apArea.apQueryService)
         .controller('sidenavController', apArea.sidenavController)
+        .controller('bottomSheetButtonController', apArea.bottomSheetButtonController)
+        .controller('bottomSheetController', apArea.bottomSheetController)
         .controller('toolbarHeaderController', apArea.toolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
         .controller('mainContentController', apArea.mainContentController)
         .controller('orgMainContentController', apArea.orgMainContentController)
         .controller('orgTabServiciosController', apArea.orgTabServiciosController)
+        .controller('prodMainContentController', apArea.prodMainContentController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $routeProvider) {
             // most from flat icon dot com
             $mdIconProvider
@@ -29,6 +32,9 @@ var apArea;
                 $routeProvider.when(config.path, config.route);
             });
             $routeProvider.otherwise({ redirectTo: '/' });
+        }])
+        .run(['$rootScope', function ($rootScope) {
+            // Aqui se pueden definir DTOS compartidos. Algo asi como "variables globales"
         }]);
 })(apArea || (apArea = {}));
 //# sourceMappingURL=apArea.js.map

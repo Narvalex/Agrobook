@@ -1,30 +1,30 @@
 ﻿/// <reference path="../../../_all.ts" />
 
 module apArea {
-    export class orgMainContentController {
+    export class prodMainContentController {
         static $inject = ['$routeParams', 'apQueryService']
 
         constructor(
             private $routeParams: angular.route.IRouteParamsService,
             private apQueryService: apQueryService,
         ) {
-            let idOrg = this.$routeParams['idOrg'];
+            let idProd = this.$routeParams['idProd'];
 
-            this.recuperarOrg(idOrg);
+            this.recuperarProd(idProd);
         }
 
         // Objetos seleccionados
-        org: orgDto;
+        prod: prodDto;
 
         //--------------------------
         // Private
         //--------------------------
 
-        private recuperarOrg(id: string) {
-            this.apQueryService.getOrg(id,
-                new common.callbackLite<orgDto>(
+        private recuperarProd(id: string) {
+            this.apQueryService.getProd(id,
+                new common.callbackLite<prodDto>(
                     value => {
-                        this.org = value.data;
+                        this.prod = value.data;
                     },
                     reason => { })
             );

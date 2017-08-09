@@ -41,7 +41,7 @@ var apArea;
         //--------------------
         sidenavController.prototype.resolverFiltros = function () {
             this.filtros = [
-                new filtro("todos", "Buscar entre todos", "search"),
+                new filtro("todos", "Buscar entre todos", "filter_list"),
                 new filtro("prod", "Buscar en productores", "people"),
                 new filtro("org", "Buscar en organizaciones", "business")
             ];

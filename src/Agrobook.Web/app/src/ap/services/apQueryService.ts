@@ -46,6 +46,24 @@ module apArea {
             });
         }
 
+        getProd(
+            id: string,
+            callback: common.callbackLite<prodDto>
+        ) {
+            var dto: orgDto;
+            for (var i = 0; i < this.fakeClientesList.length; i++) {
+                if (this.fakeClientesList[i].id === id) {
+                    var x = this.fakeClientesList[i];
+                    dto = new prodDto(x.id, x.nombre);
+                    break;
+                }
+            }
+
+            callback.onSuccess({
+                data: dto
+            });
+        }
+
         getServiciosPorOrg(
             idOrg: string,
             callback: common.callbackLite<servicioDto[]>
@@ -99,6 +117,14 @@ module apArea {
             public productorDisplay: string,
             public fecha: string,
             public contrato: string
+        ) {
+        }
+    }
+
+    export class prodDto {
+        constructor(
+            public id: string,
+            public display: string
         ) {
         }
     }
