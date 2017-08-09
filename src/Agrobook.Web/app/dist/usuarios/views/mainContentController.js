@@ -20,7 +20,6 @@ var usuariosArea;
                 claims.roles.Gerente,
                 claims.permisos.AdministrarOrganizaciones
             ]);
-            this.abrirElTabQueCorrespondeDesdeUrl();
             var idUsuario = this.$routeParams['idUsuario'];
             if (idUsuario === undefined)
                 idUsuario = this.loginQueryService.tryGetLocalLoginInfo().usuario;
@@ -33,8 +32,9 @@ var usuariosArea;
             this.$scope.$on(this.config.eventIndex.usuarios.perfilActualizado, function (e, args) {
                 _this.usuario = new usuariosArea.usuarioInfoBasica(_this.usuario.nombre, args.nombreParaMostrar, args.avatarUrl);
             });
+            this.abrirTabCorrespondiente();
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
-                _this.abrirElTabQueCorrespondeDesdeUrl();
+                _this.abrirTabCorrespondiente();
             });
         }
         mainContentController.prototype.onTabSelect = function (tabIndex) {
@@ -55,7 +55,7 @@ var usuariosArea;
             }
             window.location.replace('#!/usuario/' + this.usuario.nombre + '?tab=' + tabId);
         };
-        mainContentController.prototype.abrirElTabQueCorrespondeDesdeUrl = function () {
+        mainContentController.prototype.abrirTabCorrespondiente = function () {
             var tabId = this.$routeParams['tab'];
             switch (tabId) {
                 case 'perfil':

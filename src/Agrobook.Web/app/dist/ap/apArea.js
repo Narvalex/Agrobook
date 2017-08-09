@@ -16,6 +16,7 @@ var apArea;
         .controller('orgMainContentController', apArea.orgMainContentController)
         .controller('orgTabServiciosController', apArea.orgTabServiciosController)
         .controller('prodMainContentController', apArea.prodMainContentController)
+        .controller('prodTabParcelasController', apArea.prodTabParcelasController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $routeProvider) {
             // most from flat icon dot com
             $mdIconProvider

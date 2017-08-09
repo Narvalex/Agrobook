@@ -23,8 +23,6 @@ module usuariosArea {
             ]);
 
 
-            this.abrirElTabQueCorrespondeDesdeUrl();
-
             let idUsuario = this.$routeParams['idUsuario'];
             if (idUsuario === undefined)
                 idUsuario = this.loginQueryService.tryGetLocalLoginInfo().usuario;
@@ -47,8 +45,9 @@ module usuariosArea {
                         args.avatarUrl);
                 });
 
+            this.abrirTabCorrespondiente();
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
-                this.abrirElTabQueCorrespondeDesdeUrl();
+                this.abrirTabCorrespondiente();
             });
         }
 
@@ -71,7 +70,7 @@ module usuariosArea {
             window.location.replace('#!/usuario/' + this.usuario.nombre + '?tab=' + tabId);
         }
 
-        abrirElTabQueCorrespondeDesdeUrl() {
+        abrirTabCorrespondiente() {
             let tabId = this.$routeParams['tab'];
             switch (tabId) { 
                 case 'perfil': this.tabIndex = 0; break;

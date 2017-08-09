@@ -2,10 +2,10 @@
     <h2 class="md-title">{{vm.prod.display}}</h2>
     <div>
         <md-tabs md-dynamic-height="" md-selected="vm.tabIndex">
-            <md-tab label="Servicios" md-on-select="vm.onTabSelect(0)">
+            <md-tab label="Servicios" md-on-select="vm.onTabSelected(0)">
                 <div ng-include="'./dist/ap/views/prod/tab-servicios.html'"></div>
             </md-tab>
-            <md-tab label="Parcelas" md-on-select="vm.onTabSelect(1)">
+            <md-tab label="Parcelas" md-on-select="vm.onTabSelected(1)">
                 <div ng-include="'./dist/ap/views/prod/tab-parcelas.html'"></div>
             </md-tab>
         </md-tabs>

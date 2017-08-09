@@ -1,1 +1,25 @@
-﻿<h1>Parcelas</h1>
+﻿<md-content ng-controller="prodTabParcelasController as vm">
+    <div layout="row">
+        <div class="padding-top">
+            <md-button class="md-button"
+                       ng-hide="vm.creandoNuevaParcela"
+                       ng-click="vm.habilitarCreacionDeNuevaParcela()">
+                <ng-md-icon icon="add"></ng-md-icon>&nbsp;Nueva parcela
+            </md-button>
+        </div>
+        <md-input-container ng-show="vm.creandoNuevaParcela">
+            <label>Nombre de la parcela</label>
+            <input ng-model="vm.nuevaParcela"
+                   id="nuevaParcelaInput"
+                   autofocus>
+        </md-input-container>
+        <div class="padding-top" ng-show="vm.creandoNuevaParcela">
+            <md-button class="md-button md-primary md-raised">Registrar nueva parcela</md-button>
+        </div>
+        <div class="padding-top" 
+             ng-show="vm.creandoNuevaParcela"
+             ng-click="vm.cancelarCreacionDeNuevaParcela()">
+            <md-button class="md-button">Cancelar</md-button>
+        </div>
+    </div>
+</md-content>
