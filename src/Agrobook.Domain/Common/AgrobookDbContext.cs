@@ -6,10 +6,10 @@ namespace Agrobook.Domain
 {
     public partial class AgrobookDbContext : DbContext
     {
-        public AgrobookDbContext(bool isReadonly, string nameOrConnectionString)
+        public AgrobookDbContext(bool isForReadOnly, string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
-            if (isReadonly)
+            if (isForReadOnly)
                 this.Configuration.AutoDetectChangesEnabled = false;
         }
 

@@ -9,12 +9,19 @@
         </div>
         <md-input-container ng-show="vm.creandoNuevaParcela">
             <label>Nombre de la parcela</label>
-            <input ng-model="vm.nuevaParcela"
+            <input ng-model="vm.nuevaParcelaInput"
                    id="nuevaParcelaInput"
+                   ng-keyup="vm.checkIfEnter($event)"
+                   required
                    autofocus>
+            <div ng-messages="">
+                <div ng-message="required">Debe especificar un nombre de parcela</div>
+            </div>
         </md-input-container>
         <div class="padding-top" ng-show="vm.creandoNuevaParcela">
-            <md-button class="md-button md-primary md-raised">Registrar nueva parcela</md-button>
+            <md-button class="md-button md-primary md-raised"
+                       ng-disabled="vm.intentandoRegistrarParcela || vm.nuevaParcelaInput.length === 0 || !vm.nuevaParcelaInput"
+                       ng-click="vm.registrarNuevaParcela()">Registrar nueva parcela</md-button>
         </div>
         <div class="padding-top" 
              ng-show="vm.creandoNuevaParcela"
@@ -22,4 +29,6 @@
             <md-button class="md-button">Cancelar</md-button>
         </div>
     </div>
+
+    
 </md-content>

@@ -3,10 +3,13 @@ var apArea;
 (function (apArea) {
     angular.module('apArea', ['ngRoute', 'ngMaterial', 'ngMdIcons'])
         .value('config', new common.config())
+        .service('toasterLite', common.toasterLite)
         .service('localStorageLite', common.localStorageLite)
         .service('loginService', login.loginService) // to log out...! do not remove this!
         .service('loginQueryService', login.loginQueryService)
         .service('apQueryService', apArea.apQueryService)
+        .service('apService', apArea.apService)
+        .service('fakeDb', apArea.fakeDb)
         .controller('sidenavController', apArea.sidenavController)
         .controller('bottomSheetButtonController', apArea.bottomSheetButtonController)
         .controller('bottomSheetController', apArea.bottomSheetController)
