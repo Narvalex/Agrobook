@@ -5,8 +5,8 @@ var apArea;
         function bottomSheetController($mdBottomSheet) {
             this.$mdBottomSheet = $mdBottomSheet;
             this.items = [
-                new bottomSheetItem("Nuevo servicio", "nuevoServicio", "add"),
-                new bottomSheetItem("Nuevo contrato", "nuevoContrato", "add")
+                new bottomSheetItem("Ver Planilla General de Servicios", "planillaGeneral", "add"),
+                new bottomSheetItem("Ver Resumen de Costos", "costos", "add")
             ];
         }
         return bottomSheetController;

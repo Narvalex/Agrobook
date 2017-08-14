@@ -47,6 +47,7 @@ module apArea {
             this.apService.registrarNuevaParcela(this.nuevaParcelaInput,
                 new common.callbackLite<parcelaDto>(
                     value => {
+                        this.nuevaParcelaInput = '';
                         this.intentandoRegistrarParcela = false;
                         this.creandoNuevaParcela = false;
                         this.toasterLite.success('Parcela creada')
@@ -59,6 +60,7 @@ module apArea {
         }
 
         cancelarCreacionDeNuevaParcela() {
+            this.nuevaParcelaInput = '';
             this.creandoNuevaParcela = false;
         }
 

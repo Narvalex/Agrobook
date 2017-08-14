@@ -33,6 +33,7 @@ var apArea;
             }
             this.intentandoRegistrarParcela = true;
             this.apService.registrarNuevaParcela(this.nuevaParcelaInput, new common.callbackLite(function (value) {
+                _this.nuevaParcelaInput = '';
                 _this.intentandoRegistrarParcela = false;
                 _this.creandoNuevaParcela = false;
                 _this.toasterLite.success('Parcela creada');
@@ -42,6 +43,7 @@ var apArea;
             }));
         };
         prodTabParcelasController.prototype.cancelarCreacionDeNuevaParcela = function () {
+            this.nuevaParcelaInput = '';
             this.creandoNuevaParcela = false;
         };
         return prodTabParcelasController;
