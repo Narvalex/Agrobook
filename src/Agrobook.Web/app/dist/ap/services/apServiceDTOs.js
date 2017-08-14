@@ -47,10 +47,17 @@ var apArea;
     /************************
      * Parcela
      ************************/
+    var nuevaParcelaDto = (function () {
+        function nuevaParcelaDto() {
+        }
+        return nuevaParcelaDto;
+    }());
+    apArea.nuevaParcelaDto = nuevaParcelaDto;
     var parcelaDto = (function () {
-        function parcelaDto(id, display) {
+        function parcelaDto(id, display, hectareas) {
             this.id = id;
             this.display = display;
+            this.hectareas = hectareas;
         }
         return parcelaDto;
     }());

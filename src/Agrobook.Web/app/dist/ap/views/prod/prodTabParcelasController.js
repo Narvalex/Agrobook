@@ -21,19 +21,18 @@ var apArea;
             if (keyCode === this.config.keyCodes.enter)
                 this.registrarNuevaParcela();
             else if (keyCode === this.config.keyCodes.esc) {
-                this.nuevaParcelaInput = '';
                 this.cancelarCreacionDeNuevaParcela();
             }
         };
         prodTabParcelasController.prototype.registrarNuevaParcela = function () {
             var _this = this;
-            if (this.nuevaParcelaInput.length === 0) {
+            if (this.nuevaParcela.display.length === 0) {
                 this.toasterLite.error("Debe especificar el nombre de la parcela");
                 return;
             }
             this.intentandoRegistrarParcela = true;
-            this.apService.registrarNuevaParcela(this.nuevaParcelaInput, new common.callbackLite(function (value) {
-                _this.nuevaParcelaInput = '';
+            this.apService.registrarNuevaParcela(this.nuevaParcela.display, new common.callbackLite(function (value) {
+                _this.resetearNuevaParcelaInput();
                 _this.intentandoRegistrarParcela = false;
                 _this.creandoNuevaParcela = false;
                 _this.toasterLite.success('Parcela creada');
@@ -43,8 +42,12 @@ var apArea;
             }));
         };
         prodTabParcelasController.prototype.cancelarCreacionDeNuevaParcela = function () {
-            this.nuevaParcelaInput = '';
+            this.resetearNuevaParcelaInput();
             this.creandoNuevaParcela = false;
+        };
+        // Privados
+        prodTabParcelasController.prototype.resetearNuevaParcelaInput = function () {
+            this.nuevaParcela = undefined;
         };
         return prodTabParcelasController;
     }());

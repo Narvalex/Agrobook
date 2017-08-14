@@ -15,7 +15,7 @@ module apArea {
             nombre: string,
             callback: common.callbackLite<parcelaDto>
         ) {
-            var dto = new parcelaDto(nombre.trim(), nombre);
+            var dto = null;//new parcelaDto(nombre.trim(), nombre);
                  
             callback.onSuccess({
                 data: dto

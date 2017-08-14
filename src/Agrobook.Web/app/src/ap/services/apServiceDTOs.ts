@@ -44,10 +44,16 @@ module apArea {
      * Parcela
      ************************/
 
+    export class nuevaParcelaDto {
+        public display: string;
+        public hectareas: string;
+    }
+
     export class parcelaDto {
         constructor(
             public id: string,
-            public display: string
+            public display: string,
+            public hectareas: string
         ) {
         }
     }

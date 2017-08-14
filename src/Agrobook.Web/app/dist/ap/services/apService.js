@@ -20,7 +20,7 @@ var apArea;
             return _this;
         }
         apService.prototype.registrarNuevaParcela = function (nombre, callback) {
-            var dto = new apArea.parcelaDto(nombre.trim(), nombre);
+            var dto = null; //new parcelaDto(nombre.trim(), nombre);
             callback.onSuccess({
                 data: dto
             });

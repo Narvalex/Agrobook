@@ -1,5 +1,5 @@
 ﻿<md-content ng-controller="prodTabParcelasController as vm">
-    <div layout="row">
+    <div layout-gt-md="row">
         <div class="padding-top">
             <md-button class="md-button"
                        ng-hide="vm.creandoNuevaParcela"
@@ -9,8 +9,8 @@
         </div>
         <md-input-container ng-show="vm.creandoNuevaParcela">
             <label>Nombre de la parcela</label>
-            <input ng-model="vm.nuevaParcelaInput"
-                   id="nuevaParcelaInput"
+            <input ng-model="vm.nuevaParcela.display"
+                   id="nuevaParcela"
                    ng-keyup="vm.checkIfEnter($event)"
                    required
                    autofocus>
@@ -18,9 +18,18 @@
                 <div ng-message="required">Debe especificar un nombre de parcela</div>
             </div>
         </md-input-container>
+        <md-input-container ng-show="vm.creandoNuevaParcela">
+            <label>Hectáreas</label>
+            <input ng-model="vm.nuevaParcela.hectareas"
+                   ng-keyup="vm.checkIfEnter($event)"
+                   required>
+            <div ng-messages="">
+                <div ng-message="required">Debe especificar las hectáreas</div>
+            </div>
+        </md-input-container>
         <div class="padding-top" ng-show="vm.creandoNuevaParcela">
             <md-button class="md-button md-primary md-raised"
-                       ng-disabled="vm.intentandoRegistrarParcela || vm.nuevaParcelaInput.length === 0 || !vm.nuevaParcelaInput"
+                       ng-disabled="vm.intentandoRegistrarParcela || vm.nuevaParcela.length === 0 || !vm.nuevaParcela"
                        ng-click="vm.registrarNuevaParcela()">Registrar nueva parcela</md-button>
         </div>
         <div class="padding-top" 
@@ -30,5 +39,9 @@
         </div>
     </div>
 
-    
+    <md-subheader class="md-no-sticky">Single Action Checkboxes</md-subheader>
+    <md-list-item ng-repeat="topping in toppings">
+        <p> {{ topping.name }} </p>
+        <md-checkbox class="md-secondary" ng-model="topping.wanted"></md-checkbox>
+    </md-list-item>
 </md-content>

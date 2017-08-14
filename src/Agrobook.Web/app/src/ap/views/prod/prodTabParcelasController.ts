@@ -17,7 +17,7 @@ module apArea {
         intentandoRegistrarParcela: boolean;
 
         // Objetos
-        nuevaParcelaInput: string;
+        nuevaParcela: nuevaParcelaDto;
 
         // Listas
 
@@ -33,21 +33,20 @@ module apArea {
             if (keyCode === this.config.keyCodes.enter)
                 this.registrarNuevaParcela();
             else if (keyCode === this.config.keyCodes.esc) {
-                this.nuevaParcelaInput = '';
                 this.cancelarCreacionDeNuevaParcela();
             }
         }
 
         registrarNuevaParcela() {
-            if (this.nuevaParcelaInput.length === 0) {
+            if (this.nuevaParcela.display.length === 0) {
                 this.toasterLite.error("Debe especificar el nombre de la parcela");
                 return;
             }
             this.intentandoRegistrarParcela = true;
-            this.apService.registrarNuevaParcela(this.nuevaParcelaInput,
+            this.apService.registrarNuevaParcela(this.nuevaParcela.display,
                 new common.callbackLite<parcelaDto>(
                     value => {
-                        this.nuevaParcelaInput = '';
+                        this.resetearNuevaParcelaInput();
                         this.intentandoRegistrarParcela = false;
                         this.creandoNuevaParcela = false;
                         this.toasterLite.success('Parcela creada')
@@ -60,11 +59,14 @@ module apArea {
         }
 
         cancelarCreacionDeNuevaParcela() {
-            this.nuevaParcelaInput = '';
+            this.resetearNuevaParcelaInput();
             this.creandoNuevaParcela = false;
         }
 
         // Privados
+        private resetearNuevaParcelaInput() {
+            this.nuevaParcela = undefined;
+        }
         
     }
 }
