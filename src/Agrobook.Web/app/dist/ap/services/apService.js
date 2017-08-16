@@ -26,6 +26,18 @@ var apArea;
                 data: data
             });
         };
+        apService.prototype.editarParcela = function (dto, callback) {
+            for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
+                if (this.fakeDb.parcelas[i].id === dto.idParcela) {
+                    this.fakeDb.parcelas[i].display = dto.display;
+                    this.fakeDb.parcelas[i].hectareas = dto.hectareas;
+                    break;
+                }
+            }
+            callback.onSuccess({
+                data: {}
+            });
+        };
         return apService;
     }(common.httpLite));
     apService.$inject = ['$http', 'fakeDb'];

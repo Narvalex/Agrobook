@@ -44,10 +44,11 @@ module apArea {
      * Parcela
      ************************/
 
-    export class nuevaParcelaDto {
+    export class edicionParcelaDto {
         public idProd: string;
         public display: string;
         public hectareas: string;
+        public idParcela: string; // solo en edicion tiene sentido
     }
 
     export class parcelaDto {

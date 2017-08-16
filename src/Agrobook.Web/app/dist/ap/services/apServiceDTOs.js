@@ -47,12 +47,12 @@ var apArea;
     /************************
      * Parcela
      ************************/
-    var nuevaParcelaDto = (function () {
-        function nuevaParcelaDto() {
+    var edicionParcelaDto = (function () {
+        function edicionParcelaDto() {
         }
-        return nuevaParcelaDto;
+        return edicionParcelaDto;
     }());
-    apArea.nuevaParcelaDto = nuevaParcelaDto;
+    apArea.edicionParcelaDto = edicionParcelaDto;
     var parcelaDto = (function () {
         function parcelaDto(id, idProd, display, hectareas) {
             this.id = id;

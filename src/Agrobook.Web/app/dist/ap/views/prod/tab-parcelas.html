@@ -2,15 +2,15 @@
     <div layout-gt-md="row">
         <div class="padding-top">
             <md-button class="md-button"
-                       ng-hide="vm.creandoNuevaParcela"
+                       ng-hide="vm.mostrarForm"
                        ng-click="vm.habilitarCreacionDeNuevaParcela()">
                 <ng-md-icon icon="add"></ng-md-icon>&nbsp;Nueva parcela
             </md-button>
         </div>
-        <md-input-container ng-show="vm.creandoNuevaParcela">
+        <md-input-container ng-show="vm.mostrarForm">
             <label>Nombre de la parcela</label>
-            <input ng-model="vm.nuevaParcela.display"
-                   id="nuevaParcelaInput"
+            <input ng-model="vm.parcelaObject.display"
+                   id="parcelaInput"
                    ng-keyup="vm.checkIfEnter($event)"
                    required
                    autofocus>
@@ -18,31 +18,37 @@
                 <div ng-message="required">Debe especificar un nombre de parcela</div>
             </div>
         </md-input-container>
-        <md-input-container ng-show="vm.creandoNuevaParcela">
+        <md-input-container ng-show="vm.mostrarForm">
             <label>Hectáreas</label>
-            <input ng-model="vm.nuevaParcela.hectareas"
+            <input ng-model="vm.parcelaObject.hectareas"
                    ng-keyup="vm.checkIfEnter($event)"
                    required>
             <div ng-messages="">
                 <div ng-message="required">Debe especificar las hectáreas</div>
             </div>
         </md-input-container>
-        <div class="padding-top" ng-show="vm.creandoNuevaParcela">
+        <div class="padding-top" ng-show="vm.mostrarForm">
             <md-button class="md-button md-primary md-raised"
-                       ng-disabled="vm.intentandoRegistrarParcela || vm.nuevaParcela.length === 0 || !vm.nuevaParcela"
-                       ng-click="vm.registrarNuevaParcela()">Registrar nueva parcela</md-button>
+                       ng-disabled="vm.submitting || !(vm.parcelaObject.display.length > 0) || !(vm.parcelaObject.hectareas.length > 0)  || !vm.parcelaObject"
+                       ng-click="vm.submit()">
+            {{vm.formIsEditing ? 'Actualizar parcela' : 'Registrar nueva parcela'}}</md-button>
         </div>
         <div class="padding-top"
-             ng-show="vm.creandoNuevaParcela"
-             ng-click="vm.cancelarCreacionDeNuevaParcela()">
+             ng-show="vm.mostrarForm"
+             ng-click="vm.cancel()">
             <md-button class="md-button">Cancelar</md-button>
         </div>
     </div>
 
     <md-list>
-        <md-list-item ng-repeat="parcela in vm.parcelas" class="width-xs">
+        <md-list-item ng-repeat="parcela in vm.parcelas" ng-click="null" class="width-xs">
             <p> {{parcela.display}} </p>
-            <span class="md-secondary">{{parcela.hectareas}} ha</span>
+            <span class="md-secondary">{{parcela.hectareas}} ha&nbsp;</span>
+
+            <md-button class="md-icon-button md-secondary" aria-label="edit"
+                       ng-click="vm.habilitarEdicionDeParcela(parcela)">
+                <ng-md-icon icon="edit"></ng-md-icon>
+            </md-button>
         </md-list-item>
     </md-list>
 
@@ -50,6 +56,6 @@
         <span>Tiene {{vm.parcelas.length}} parcelas</span>
     </md-subheader>
     <md-subheader class="md-no-sticky" ng-hide="vm.parcelas.length > 0">
-        <span>No tiene ninguna parcela. </span><a href="" ng-click="vm.habilitarCreacionDeNuevaParcela()">Registre una</a>
+        <span>No tiene ninguna parcela. </span><a href="" ng-click="vm.habilitarCreacionDeparcelaObject()">Registre una</a>
     </md-subheader>
 </md-content>

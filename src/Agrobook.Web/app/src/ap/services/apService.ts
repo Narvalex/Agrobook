@@ -12,7 +12,7 @@ module apArea {
         }
 
         registrarNuevaParcela(
-            dto: nuevaParcelaDto,
+            dto: edicionParcelaDto,
             callback: common.callbackLite<parcelaDto>
         ) {
             var data = new parcelaDto(dto.display.trim(), dto.idProd, dto.display, dto.hectareas);
@@ -24,10 +24,21 @@ module apArea {
             });
         }
 
-        //--------------------------------
-        // Fakes
-        //--------------------------------
+        editarParcela(
+            dto: edicionParcelaDto,
+            callback: common.callbackLite<{}>
+        ) {
+            for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
+                if (this.fakeDb.parcelas[i].id === dto.idParcela) {
+                    this.fakeDb.parcelas[i].display = dto.display;
+                    this.fakeDb.parcelas[i].hectareas = dto.hectareas;
+                    break;
+                }
+            }
 
-       
+            callback.onSuccess({
+                data: {}
+            });
+        }
     }
 }
