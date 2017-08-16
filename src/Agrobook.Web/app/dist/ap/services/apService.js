@@ -13,21 +13,22 @@ var apArea;
 (function (apArea) {
     var apService = (function (_super) {
         __extends(apService, _super);
-        function apService($http, $q) {
+        function apService($http, fakeDb) {
             var _this = _super.call(this, $http, 'ap') || this;
             _this.$http = $http;
-            _this.$q = $q;
+            _this.fakeDb = fakeDb;
             return _this;
         }
-        apService.prototype.registrarNuevaParcela = function (nombre, callback) {
-            var dto = null; //new parcelaDto(nombre.trim(), nombre);
+        apService.prototype.registrarNuevaParcela = function (dto, callback) {
+            var data = new apArea.parcelaDto(dto.display.trim(), dto.idProd, dto.display, dto.hectareas);
+            this.fakeDb.parcelas.push(data);
             callback.onSuccess({
-                data: dto
+                data: data
             });
         };
         return apService;
     }(common.httpLite));
-    apService.$inject = ['$http'];
+    apService.$inject = ['$http', 'fakeDb'];
     apArea.apService = apService;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=apService.js.map

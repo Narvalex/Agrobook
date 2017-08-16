@@ -71,7 +71,18 @@ module apArea {
             callback.onSuccess({
                 data: this.fakeDb.fakeServiciosList
             });
-        }       
+        }
+
+        gerParcelasDelProd(
+            idProd: string,
+            callback: common.callbackLite<parcelaDto[]>
+        ) {
+            var list = this.fakeDb.parcelas.filter(x => x.idProd === idProd);
+
+            callback.onSuccess({
+                data: list
+            });
+        }
     }
 }
 

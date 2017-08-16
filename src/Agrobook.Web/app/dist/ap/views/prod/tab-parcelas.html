@@ -10,7 +10,7 @@
         <md-input-container ng-show="vm.creandoNuevaParcela">
             <label>Nombre de la parcela</label>
             <input ng-model="vm.nuevaParcela.display"
-                   id="nuevaParcela"
+                   id="nuevaParcelaInput"
                    ng-keyup="vm.checkIfEnter($event)"
                    required
                    autofocus>
@@ -32,16 +32,24 @@
                        ng-disabled="vm.intentandoRegistrarParcela || vm.nuevaParcela.length === 0 || !vm.nuevaParcela"
                        ng-click="vm.registrarNuevaParcela()">Registrar nueva parcela</md-button>
         </div>
-        <div class="padding-top" 
+        <div class="padding-top"
              ng-show="vm.creandoNuevaParcela"
              ng-click="vm.cancelarCreacionDeNuevaParcela()">
             <md-button class="md-button">Cancelar</md-button>
         </div>
     </div>
 
-    <md-subheader class="md-no-sticky">Single Action Checkboxes</md-subheader>
-    <md-list-item ng-repeat="topping in toppings">
-        <p> {{ topping.name }} </p>
-        <md-checkbox class="md-secondary" ng-model="topping.wanted"></md-checkbox>
-    </md-list-item>
+    <md-list>
+        <md-list-item ng-repeat="parcela in vm.parcelas" class="width-xs">
+            <p> {{parcela.display}} </p>
+            <span class="md-secondary">{{parcela.hectareas}} ha</span>
+        </md-list-item>
+    </md-list>
+
+    <md-subheader class="md-no-sticky" ng-show="vm.parcelas.length > 0">
+        <span>Tiene {{vm.parcelas.length}} parcelas</span>
+    </md-subheader>
+    <md-subheader class="md-no-sticky" ng-hide="vm.parcelas.length > 0">
+        <span>No tiene ninguna parcela. </span><a href="" ng-click="vm.habilitarCreacionDeNuevaParcela()">Registre una</a>
+    </md-subheader>
 </md-content>

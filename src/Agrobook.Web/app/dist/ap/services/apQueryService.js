@@ -62,6 +62,12 @@ var apArea;
                 data: this.fakeDb.fakeServiciosList
             });
         };
+        apQueryService.prototype.gerParcelasDelProd = function (idProd, callback) {
+            var list = this.fakeDb.parcelas.filter(function (x) { return x.idProd === idProd; });
+            callback.onSuccess({
+                data: list
+            });
+        };
         return apQueryService;
     }(common.httpLite));
     apQueryService.$inject = ['$http', 'fakeDb'];

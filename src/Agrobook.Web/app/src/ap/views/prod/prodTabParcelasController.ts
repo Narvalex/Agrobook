@@ -2,14 +2,20 @@
 
 module apArea {
     export class prodTabParcelasController {
-        static $inject = ['config', 'apService', 'toasterLite'];
+        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams'];
 
         constructor(
             private config: common.config,
             private apService: apService,
-            private toasterLite: common.toasterLite
+            private apQueryService: apQueryService,
+            private toasterLite: common.toasterLite,
+            private $routeParams: angular.route.IRouteParamsService
         ) {
             this.creandoNuevaParcela = false;
+
+            this.idProd = this.$routeParams['idProd'];
+
+            this.obtenerParcelasDelProd();
         }
 
         // Estados
@@ -17,9 +23,11 @@ module apArea {
         intentandoRegistrarParcela: boolean;
 
         // Objetos
+        idProd: string;
         nuevaParcela: nuevaParcelaDto;
 
         // Listas
+        parcelas: parcelaDto[];
 
         // Api
         habilitarCreacionDeNuevaParcela() {
@@ -43,12 +51,13 @@ module apArea {
                 return;
             }
             this.intentandoRegistrarParcela = true;
-            this.apService.registrarNuevaParcela(this.nuevaParcela.display,
+            this.apService.registrarNuevaParcela(this.nuevaParcela,
                 new common.callbackLite<parcelaDto>(
                     value => {
                         this.resetearNuevaParcelaInput();
                         this.intentandoRegistrarParcela = false;
                         this.creandoNuevaParcela = false;
+                        this.parcelas.push(value.data);
                         this.toasterLite.success('Parcela creada')
                     },
                     reason => {
@@ -59,14 +68,23 @@ module apArea {
         }
 
         cancelarCreacionDeNuevaParcela() {
-            this.resetearNuevaParcelaInput();
             this.creandoNuevaParcela = false;
+            this.resetearNuevaParcelaInput();
         }
 
         // Privados
         private resetearNuevaParcelaInput() {
             this.nuevaParcela = undefined;
         }
-        
+
+        private obtenerParcelasDelProd() {
+            this.apQueryService.gerParcelasDelProd(this.idProd,
+                new common.callbackLite<parcelaDto[]>(
+                    response => {
+                        this.parcelas = response.data;
+                    },
+                    reason => { })
+            );
+        }
     }
 }

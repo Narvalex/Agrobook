@@ -2,13 +2,16 @@
 var apArea;
 (function (apArea) {
     var prodTabParcelasController = (function () {
-        function prodTabParcelasController(config, apService, toasterLite) {
+        function prodTabParcelasController(config, apService, apQueryService, toasterLite, $routeParams) {
             this.config = config;
             this.apService = apService;
+            this.apQueryService = apQueryService;
             this.toasterLite = toasterLite;
+            this.$routeParams = $routeParams;
             this.creandoNuevaParcela = false;
+            this.idProd = this.$routeParams['idProd'];
+            this.obtenerParcelasDelProd();
         }
-        // Listas
         // Api
         prodTabParcelasController.prototype.habilitarCreacionDeNuevaParcela = function () {
             this.creandoNuevaParcela = true;
@@ -31,10 +34,11 @@ var apArea;
                 return;
             }
             this.intentandoRegistrarParcela = true;
-            this.apService.registrarNuevaParcela(this.nuevaParcela.display, new common.callbackLite(function (value) {
+            this.apService.registrarNuevaParcela(this.nuevaParcela, new common.callbackLite(function (value) {
                 _this.resetearNuevaParcelaInput();
                 _this.intentandoRegistrarParcela = false;
                 _this.creandoNuevaParcela = false;
+                _this.parcelas.push(value.data);
                 _this.toasterLite.success('Parcela creada');
             }, function (reason) {
                 _this.intentandoRegistrarParcela = false;
@@ -42,16 +46,22 @@ var apArea;
             }));
         };
         prodTabParcelasController.prototype.cancelarCreacionDeNuevaParcela = function () {
-            this.resetearNuevaParcelaInput();
             this.creandoNuevaParcela = false;
+            this.resetearNuevaParcelaInput();
         };
         // Privados
         prodTabParcelasController.prototype.resetearNuevaParcelaInput = function () {
             this.nuevaParcela = undefined;
         };
+        prodTabParcelasController.prototype.obtenerParcelasDelProd = function () {
+            var _this = this;
+            this.apQueryService.gerParcelasDelProd(this.idProd, new common.callbackLite(function (response) {
+                _this.parcelas = response.data;
+            }, function (reason) { }));
+        };
         return prodTabParcelasController;
     }());
-    prodTabParcelasController.$inject = ['config', 'apService', 'toasterLite'];
+    prodTabParcelasController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams'];
     apArea.prodTabParcelasController = prodTabParcelasController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=prodTabParcelasController.js.map

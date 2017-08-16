@@ -54,8 +54,9 @@ var apArea;
     }());
     apArea.nuevaParcelaDto = nuevaParcelaDto;
     var parcelaDto = (function () {
-        function parcelaDto(id, display, hectareas) {
+        function parcelaDto(id, idProd, display, hectareas) {
             this.id = id;
+            this.idProd = idProd;
             this.display = display;
             this.hectareas = hectareas;
         }
@@ -68,11 +69,20 @@ var apArea;
                 new cliente("coopchorti", "Cooperativa Chortizer", "Loma Plata", "org", "./assets/img/avatar/org-icon.png"),
                 new cliente("ccuu", "Cooperativa Colonias Unidas", "Itapua", "org", "./assets/img/avatar/org-icon.png"),
                 new cliente("davidelias", "David Elias", "Cooperativa Chortizer", "prod", "./assets/img/avatar/8.png"),
-                new cliente("kazuoyama", "Kazuo Yamazuki", "Cooperativa Pirapo", "prod", "./assets/img/avatar/9.png")
+                new cliente("kazuoyama", "Kazuo Yamazuki", "Cooperativa Pirapo", "prod", "./assets/img/avatar/9.png"),
+                new cliente("adair", "Adair Acosta", "Cooperativa Raul Peña", "prod", "./assets/img/avatar/7.png")
             ];
             this.fakeServiciosList = [
                 new servicioDto("David Elias", "20/12/2018", "Contrato Chorti"),
                 new servicioDto("Kazuo Yamazuki", "20/12/2017", "Contrato Pirapo")
+            ];
+            // El id de la parcela se puede hacer de la combinacion [prod]_[nombreParcela] debido a que el prod es 
+            // igual al usuario, que es unico
+            this.parcelas = [
+                new parcelaDto('davidelias_deLaSenhora', 'davidelias', 'De la Señora', '31,66'),
+                new parcelaDto('davidelias_apepu', 'davidelias', 'Apepu', '72,18'),
+                new parcelaDto('kazuoyama_mariscal', 'kazuoyama', 'Mariscal', '73,18'),
+                new parcelaDto('kazuoyama_feliciano', 'kazuoyama', 'Feliciano', '75,18')
             ];
         }
         return fakeDb;

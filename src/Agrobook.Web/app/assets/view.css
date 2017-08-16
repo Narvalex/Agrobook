@@ -19,4 +19,16 @@ md-autocomplete input:not(.md-input) {
     padding: 10px;
 }
 
+.width-md {
+    max-width: 640px;
+}
+
+.width-sm {
+    max-width: 480px;
+}
+
+.width-xs {
+    max-width: 240px;
+}
+
 
