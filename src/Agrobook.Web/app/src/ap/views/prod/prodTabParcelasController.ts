@@ -2,14 +2,15 @@
 
 module apArea {
     export class prodTabParcelasController {
-        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams'];
+        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel'];
 
         constructor(
             private config: common.config,
             private apService: apService,
             private apQueryService: apQueryService,
             private toasterLite: common.toasterLite,
-            private $routeParams: angular.route.IRouteParamsService
+            private $routeParams: angular.route.IRouteParamsService,
+            private $mdPanel: angular.material.IPanelService
         ) {
             this.mostrarForm = false;
 
@@ -19,6 +20,7 @@ module apArea {
         }
 
         // Estados
+        ocultarEliminados = true;
         mostrarForm: boolean;
         submitting: boolean;
         formIsEditing: boolean; // editMode Actually
@@ -31,6 +33,10 @@ module apArea {
         parcelas: parcelaDto[];
 
         // Api
+        toggleMostrarEliminados() {
+            this.ocultarEliminados = !this.ocultarEliminados;
+        }
+
         habilitarCreacionDeNuevaParcela() {
             this.formIsEditing = false;
             this.mostrarFormYHacerFocus();
@@ -48,8 +54,39 @@ module apArea {
             this.mostrarFormYHacerFocus();
         }
 
+        mostrarOpciones($event: Event, parcela: parcelaDto) {
+            let position = this.$mdPanel.newPanelPosition()
+                .relativeTo($event.srcElement)
+                .addPanelPosition(
+                this.$mdPanel.xPosition.ALIGN_START,
+                this.$mdPanel.yPosition.BELOW);
+
+            let config: angular.material.IPanelConfig = {
+                attachTo: angular.element(document.body),
+                controller: panelMenuController,
+                controllerAs: 'vm',
+                hasBackdrop: true,
+                templateUrl: './dist/ap/views/prod/menu-panel-tab-parcelas.html',
+                position: position,
+                trapFocus: true,
+                locals: {
+                    'parcela': parcela,
+                    'parent': this
+                },
+                panelClass: 'menu-panel-container',
+                openFrom: $event,
+                focusOnOpen: true,
+                zIndex: 150,
+                disableParentScroll: true,
+                clickOutsideToClose: true,
+                escapeToClose: true,
+            };
+
+            this.$mdPanel.open(config);
+        }
+
         checkIfEnter($event) {
-            var keyCode = $event.keyCode;
+            let keyCode = $event.keyCode;
             if (keyCode === this.config.keyCodes.enter)
                 this.registrarNuevaParcela();
             else if (keyCode === this.config.keyCodes.esc) {
@@ -64,9 +101,9 @@ module apArea {
             }
             this.submitting = true;
 
-            if (this.formIsEditing) 
+            if (this.formIsEditing)
                 this.editarParcela();
-            else 
+            else
                 this.registrarNuevaParcela();
         }
 
@@ -75,8 +112,43 @@ module apArea {
             this.resetForm();
         }
 
+        eliminar(parcela: parcelaDto) {
+            this.apService.eliminar(parcela.id,
+                new common.callbackLite<{}>(
+                    value => {
+                        for (var i = 0; i < this.parcelas.length; i++) {
+                            if (this.parcelas[i].id === parcela.id) {
+                                this.parcelas[i].eliminado = true;
+                                break;
+                            }
+                        }
+
+                        this.toasterLite.info('Parcela elimnada');
+                    },
+                    reason => { })
+            );
+        }
+
+        restaurar(parcela: parcelaDto) {
+            this.apService.restaurar(parcela.id,
+                new common.callbackLite<{}>(
+                    value => {
+                        for (var i = 0; i < this.parcelas.length; i++) {
+                            if (this.parcelas[i].id === parcela.id) {
+                                this.parcelas[i].eliminado = false;
+                                break;
+                            }
+                        }
+
+                        this.toasterLite.success('Parcela restaurada');
+                    },
+                    reason => { })
+            );
+        }
+
         // Privados
         registrarNuevaParcela() {
+            this.parcelaObject.idProd = this.idProd;
             this.apService.registrarNuevaParcela(this.parcelaObject,
                 new common.callbackLite<parcelaDto>(
                     value => {
@@ -85,7 +157,7 @@ module apArea {
                         this.toasterLite.success('Parcela creada')
                     },
                     reason => {
-                        this.resetForm();
+                        this.toasterLite.error('Hubo un error al registrar la parcela. Verifique que el nombre ya no exista por favor');
                     })
             );
         }
@@ -132,6 +204,46 @@ module apArea {
                     },
                     reason => { })
             );
+        }
+    }
+
+    class panelMenuController {
+        static $inject = ['mdPanelRef'];
+
+        constructor(
+            private mdPanelref: angular.material.IPanelRef
+        ) {
+        }
+
+        parcela: parcelaDto;
+        parent: prodTabParcelasController;
+
+        editar() {
+            this.mdPanelref.close().then(
+                value => {
+                    this.parent.habilitarEdicionDeParcela(this.parcela);
+                })
+                .finally(() => this.mdPanelref.destroy());
+        }
+
+        eliminar() {
+            this.mdPanelref.close().then(
+                value => {
+                    this.parent.eliminar(this.parcela);
+                })
+                .finally(() => this.mdPanelref.destroy());
+        }
+
+        restaurar() {
+            this.mdPanelref.close().then(
+                value => {
+                    this.parent.restaurar(this.parcela);
+                })
+                .finally(() => this.mdPanelref.destroy());
+        }
+
+        cancelar() {
+            this.mdPanelref.close().finally(() => this.mdPanelref.destroy());
         }
     }
 }

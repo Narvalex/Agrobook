@@ -2,17 +2,23 @@
 var apArea;
 (function (apArea) {
     var prodTabParcelasController = (function () {
-        function prodTabParcelasController(config, apService, apQueryService, toasterLite, $routeParams) {
+        function prodTabParcelasController(config, apService, apQueryService, toasterLite, $routeParams, $mdPanel) {
             this.config = config;
             this.apService = apService;
             this.apQueryService = apQueryService;
             this.toasterLite = toasterLite;
             this.$routeParams = $routeParams;
+            this.$mdPanel = $mdPanel;
+            // Estados
+            this.ocultarEliminados = true;
             this.mostrarForm = false;
             this.idProd = this.$routeParams['idProd'];
             this.obtenerParcelasDelProd();
         }
         // Api
+        prodTabParcelasController.prototype.toggleMostrarEliminados = function () {
+            this.ocultarEliminados = !this.ocultarEliminados;
+        };
         prodTabParcelasController.prototype.habilitarCreacionDeNuevaParcela = function () {
             this.formIsEditing = false;
             this.mostrarFormYHacerFocus();
@@ -25,6 +31,32 @@ var apArea;
             this.parcelaObject.idProd = parcela.idProd;
             this.parcelaObject.idParcela = parcela.id;
             this.mostrarFormYHacerFocus();
+        };
+        prodTabParcelasController.prototype.mostrarOpciones = function ($event, parcela) {
+            var position = this.$mdPanel.newPanelPosition()
+                .relativeTo($event.srcElement)
+                .addPanelPosition(this.$mdPanel.xPosition.ALIGN_START, this.$mdPanel.yPosition.BELOW);
+            var config = {
+                attachTo: angular.element(document.body),
+                controller: panelMenuController,
+                controllerAs: 'vm',
+                hasBackdrop: true,
+                templateUrl: './dist/ap/views/prod/menu-panel-tab-parcelas.html',
+                position: position,
+                trapFocus: true,
+                locals: {
+                    'parcela': parcela,
+                    'parent': this
+                },
+                panelClass: 'menu-panel-container',
+                openFrom: $event,
+                focusOnOpen: true,
+                zIndex: 150,
+                disableParentScroll: true,
+                clickOutsideToClose: true,
+                escapeToClose: true,
+            };
+            this.$mdPanel.open(config);
         };
         prodTabParcelasController.prototype.checkIfEnter = function ($event) {
             var keyCode = $event.keyCode;
@@ -49,15 +81,40 @@ var apArea;
             this.mostrarForm = false;
             this.resetForm();
         };
+        prodTabParcelasController.prototype.eliminar = function (parcela) {
+            var _this = this;
+            this.apService.eliminar(parcela.id, new common.callbackLite(function (value) {
+                for (var i = 0; i < _this.parcelas.length; i++) {
+                    if (_this.parcelas[i].id === parcela.id) {
+                        _this.parcelas[i].eliminado = true;
+                        break;
+                    }
+                }
+                _this.toasterLite.info('Parcela elimnada');
+            }, function (reason) { }));
+        };
+        prodTabParcelasController.prototype.restaurar = function (parcela) {
+            var _this = this;
+            this.apService.restaurar(parcela.id, new common.callbackLite(function (value) {
+                for (var i = 0; i < _this.parcelas.length; i++) {
+                    if (_this.parcelas[i].id === parcela.id) {
+                        _this.parcelas[i].eliminado = false;
+                        break;
+                    }
+                }
+                _this.toasterLite.success('Parcela restaurada');
+            }, function (reason) { }));
+        };
         // Privados
         prodTabParcelasController.prototype.registrarNuevaParcela = function () {
             var _this = this;
+            this.parcelaObject.idProd = this.idProd;
             this.apService.registrarNuevaParcela(this.parcelaObject, new common.callbackLite(function (value) {
                 _this.resetForm();
                 _this.parcelas.push(value.data);
                 _this.toasterLite.success('Parcela creada');
             }, function (reason) {
-                _this.resetForm();
+                _this.toasterLite.error('Hubo un error al registrar la parcela. Verifique que el nombre ya no exista por favor');
             }));
         };
         prodTabParcelasController.prototype.editarParcela = function () {
@@ -96,7 +153,39 @@ var apArea;
         };
         return prodTabParcelasController;
     }());
-    prodTabParcelasController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams'];
+    prodTabParcelasController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel'];
     apArea.prodTabParcelasController = prodTabParcelasController;
+    var panelMenuController = (function () {
+        function panelMenuController(mdPanelref) {
+            this.mdPanelref = mdPanelref;
+        }
+        panelMenuController.prototype.editar = function () {
+            var _this = this;
+            this.mdPanelref.close().then(function (value) {
+                _this.parent.habilitarEdicionDeParcela(_this.parcela);
+            })
+                .finally(function () { return _this.mdPanelref.destroy(); });
+        };
+        panelMenuController.prototype.eliminar = function () {
+            var _this = this;
+            this.mdPanelref.close().then(function (value) {
+                _this.parent.eliminar(_this.parcela);
+            })
+                .finally(function () { return _this.mdPanelref.destroy(); });
+        };
+        panelMenuController.prototype.restaurar = function () {
+            var _this = this;
+            this.mdPanelref.close().then(function (value) {
+                _this.parent.restaurar(_this.parcela);
+            })
+                .finally(function () { return _this.mdPanelref.destroy(); });
+        };
+        panelMenuController.prototype.cancelar = function () {
+            var _this = this;
+            this.mdPanelref.close().finally(function () { return _this.mdPanelref.destroy(); });
+        };
+        return panelMenuController;
+    }());
+    panelMenuController.$inject = ['mdPanelRef'];
 })(apArea || (apArea = {}));
 //# sourceMappingURL=prodTabParcelasController.js.map

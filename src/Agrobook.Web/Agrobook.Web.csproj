@@ -27,6 +27,7 @@
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>2.2</TypeScriptToolsVersion>
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -1085,6 +1086,7 @@
     <Content Include="app\dist\ap\views\org\tab-productores.html" />
     <Content Include="app\dist\ap\views\org\tab-servicios.html" />
     <Content Include="app\dist\ap\views\prod\prod-main-content.html" />
+    <Content Include="app\dist\ap\views\prod\menu-panel-tab-parcelas.html" />
     <Content Include="app\dist\ap\views\prod\tab-parcelas.html" />
     <Content Include="app\dist\ap\views\prod\tab-servicios.html" />
     <Content Include="app\dist\ap\views\servicios\servicio-main-content.html" />

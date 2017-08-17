@@ -56,7 +56,8 @@ module apArea {
             public id: string,
             public idProd: string,
             public display: string,
-            public hectareas: string
+            public hectareas: string,
+            public eliminado: boolean = false
         ) {
         }
     }
@@ -84,10 +85,10 @@ module apArea {
         // El id de la parcela se puede hacer de la combinacion [prod]_[nombreParcela] debido a que el prod es 
         // igual al usuario, que es unico
         public parcelas: parcelaDto[] = [
-            new parcelaDto('davidelias_deLaSenhora', 'davidelias', 'De la Señora', '31,66'),
-            new parcelaDto('davidelias_apepu', 'davidelias', 'Apepu', '72,18'),
-            new parcelaDto('kazuoyama_mariscal', 'kazuoyama', 'Mariscal', '73,18'),
-            new parcelaDto('kazuoyama_feliciano', 'kazuoyama', 'Feliciano', '75,18')
+            new parcelaDto('davidelias_DeLaSeñora', 'davidelias', 'De la Señora', '31,66'),
+            new parcelaDto('davidelias_Apepu', 'davidelias', 'Apepu', '72,18'),
+            new parcelaDto('kazuoyama_Mariscal', 'kazuoyama', 'Mariscal', '73,18'),
+            new parcelaDto('kazuoyama_Feliciano', 'kazuoyama', 'Feliciano', '75,18')
         ];
     }
 }

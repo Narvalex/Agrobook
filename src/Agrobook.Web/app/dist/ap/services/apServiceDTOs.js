@@ -54,11 +54,13 @@ var apArea;
     }());
     apArea.edicionParcelaDto = edicionParcelaDto;
     var parcelaDto = (function () {
-        function parcelaDto(id, idProd, display, hectareas) {
+        function parcelaDto(id, idProd, display, hectareas, eliminado) {
+            if (eliminado === void 0) { eliminado = false; }
             this.id = id;
             this.idProd = idProd;
             this.display = display;
             this.hectareas = hectareas;
+            this.eliminado = eliminado;
         }
         return parcelaDto;
     }());
@@ -79,10 +81,10 @@ var apArea;
             // El id de la parcela se puede hacer de la combinacion [prod]_[nombreParcela] debido a que el prod es 
             // igual al usuario, que es unico
             this.parcelas = [
-                new parcelaDto('davidelias_deLaSenhora', 'davidelias', 'De la Señora', '31,66'),
-                new parcelaDto('davidelias_apepu', 'davidelias', 'Apepu', '72,18'),
-                new parcelaDto('kazuoyama_mariscal', 'kazuoyama', 'Mariscal', '73,18'),
-                new parcelaDto('kazuoyama_feliciano', 'kazuoyama', 'Feliciano', '75,18')
+                new parcelaDto('davidelias_DeLaSeñora', 'davidelias', 'De la Señora', '31,66'),
+                new parcelaDto('davidelias_Apepu', 'davidelias', 'Apepu', '72,18'),
+                new parcelaDto('kazuoyama_Mariscal', 'kazuoyama', 'Mariscal', '73,18'),
+                new parcelaDto('kazuoyama_Feliciano', 'kazuoyama', 'Feliciano', '75,18')
             ];
         }
         return fakeDb;

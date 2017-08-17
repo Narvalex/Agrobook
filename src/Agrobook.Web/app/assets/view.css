@@ -31,4 +31,8 @@ md-autocomplete input:not(.md-input) {
     max-width: 360px;
 }
 
+.red-text {
+    color: red;
+}
+
 

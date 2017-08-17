@@ -37,14 +37,13 @@ module common {
         avatarUrl: string;
 
         mostrarMenu($event: any): void {
-            let panelConfig: angular.material.IPanelConfig;
             let position = this.$mdPanel
                 .newPanelPosition()
                 .relativeTo($event.target)
                 .addPanelPosition(this.$mdPanel.xPosition.ALIGN_START, this.$mdPanel.yPosition.BELOW)
                 .withOffsetX('-1px');
 
-            panelConfig = {
+            let panelConfig: angular.material.IPanelConfig = {
                 position: position,
                 attachTo: angular.element(document.body),
                 controller: panelMenuController,
@@ -53,6 +52,8 @@ module common {
                 panelClass: 'menu-panel-container',
                 openFrom: $event,
                 clickOutsideToClose: true,
+                disableParentScroll: true,
+                hasBackdrop: true,
                 escapeToClose: true,
                 focusOnOpen: true,
                 zIndex: 100

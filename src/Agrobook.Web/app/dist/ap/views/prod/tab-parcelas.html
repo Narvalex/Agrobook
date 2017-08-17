@@ -41,21 +41,23 @@
     </div>
 
     <md-list>
-        <md-list-item ng-repeat="parcela in vm.parcelas" ng-click="null" class="width-xs">
-            <p> {{parcela.display}} </p>
+        <md-list-item ng-repeat="parcela in vm.parcelas" class="width-xs"
+                      ng-hide="parcela.eliminado && vm.ocultarEliminados">
+            <p ng-class="{ 'red-text': parcela.eliminado }"> {{parcela.display}} </p>
             <span class="md-secondary">{{parcela.hectareas}} ha&nbsp;</span>
 
             <md-button class="md-icon-button md-secondary" aria-label="edit"
-                       ng-click="vm.habilitarEdicionDeParcela(parcela)">
-                <ng-md-icon icon="edit"></ng-md-icon>
+                       ng-click="vm.mostrarOpciones($event, parcela)">
+                <ng-md-icon icon="more_horiz"></ng-md-icon>
             </md-button>
         </md-list-item>
     </md-list>
 
     <md-subheader class="md-no-sticky" ng-show="vm.parcelas.length > 0">
-        <span>Tiene {{vm.parcelas.length}} parcelas</span>
+        <span>Tiene {{vm.parcelas.length}} parcelas. </span>
+        <a href="" ng-click="vm.toggleMostrarEliminados()">{{vm.ocultarEliminados ? 'Mostrar' : 'Ocultar'}}</a> parcelas eliminadas.
     </md-subheader>
     <md-subheader class="md-no-sticky" ng-hide="vm.parcelas.length > 0">
-        <span>No tiene ninguna parcela. </span><a href="" ng-click="vm.habilitarCreacionDeparcelaObject()">Registre una</a>
+        <span>No tiene ninguna parcela. </span><a href="" ng-click="vm.habilitarCreacionDeNuevaParcela()">Registre una</a>
     </md-subheader>
 </md-content>
