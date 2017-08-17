@@ -1125,6 +1125,7 @@
     <TypeScriptCompile Include="app\src\ap\views\org\orgTabServiciosController.ts" />
     <TypeScriptCompile Include="app\src\ap\views\prod\prodMainContentController.ts" />
     <TypeScriptCompile Include="app\src\ap\views\prod\prodTabParcelasController.ts" />
+    <TypeScriptCompile Include="app\src\ap\views\prod\prodTabServiciosController.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosDTOs.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosQueryService.ts" />
     <TypeScriptCompile Include="app\src\archivos\dialogs\uploadCenterController.ts" />

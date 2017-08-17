@@ -27,16 +27,17 @@
                 <div ng-message="required">Debe especificar las hectáreas</div>
             </div>
         </md-input-container>
-        <div class="padding-top" ng-show="vm.mostrarForm">
-            <md-button class="md-button md-primary md-raised"
-                       ng-disabled="vm.submitting || !(vm.parcelaObject.display.length > 0) || !(vm.parcelaObject.hectareas.length > 0)  || !vm.parcelaObject"
-                       ng-click="vm.submit()">
-            {{vm.formIsEditing ? 'Actualizar parcela' : 'Registrar nueva parcela'}}</md-button>
-        </div>
-        <div class="padding-top"
-             ng-show="vm.mostrarForm"
-             ng-click="vm.cancel()">
-            <md-button class="md-button">Cancelar</md-button>
+        <div layout="row"  ng-show="vm.mostrarForm">
+            <div>
+                <md-button class="md-button md-primary md-raised"
+                           ng-disabled="vm.submitting || !(vm.parcelaObject.display.length > 0) || !(vm.parcelaObject.hectareas.length > 0)  || !vm.parcelaObject"
+                           ng-click="vm.submit()">
+                    {{vm.formIsEditing ? 'Actualizar parcela' : 'Registrar nueva parcela'}}
+                </md-button>
+            </div>
+            <div>
+                <md-button  ng-click="vm.cancel()" class="md-button">Cancelar</md-button>
+            </div>
         </div>
     </div>
 
