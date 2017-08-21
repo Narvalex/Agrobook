@@ -73,11 +73,22 @@ module apArea {
             });
         }
 
-        gerParcelasDelProd(
+        getParcelasDelProd(
             idProd: string,
             callback: common.callbackLite<parcelaDto[]>
         ) {
             var list = this.fakeDb.parcelas.filter(x => x.idProd === idProd);
+
+            callback.onSuccess({
+                data: list
+            });
+        }
+
+        getContratos(
+            idOrg: string,
+            callback: common.callbackLite<contratoDto[]>
+        ) {
+            var list = this.fakeDb.contratos.filter(x => x.idOrg === idOrg);
 
             callback.onSuccess({
                 data: list

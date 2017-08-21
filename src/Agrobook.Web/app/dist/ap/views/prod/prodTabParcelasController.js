@@ -147,7 +147,7 @@ var apArea;
         };
         prodTabParcelasController.prototype.obtenerParcelasDelProd = function () {
             var _this = this;
-            this.apQueryService.gerParcelasDelProd(this.idProd, new common.callbackLite(function (response) {
+            this.apQueryService.getParcelasDelProd(this.idProd, new common.callbackLite(function (response) {
                 _this.parcelas = response.data;
             }, function (reason) { }));
         };

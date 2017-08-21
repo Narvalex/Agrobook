@@ -1,1 +1,18 @@
-﻿<h1>Contratos</h1>
+﻿<md-content ng-controller="orgTabContratosController as vm">
+    <div layout-gt-md="row">
+        <div class="padding-top">
+            <md-button class="md-button"
+                       ng-hide="false"
+                       ng-click="null">
+                <ng-md-icon icon="add"></ng-md-icon>&nbsp;Nuevo contrato
+            </md-button>
+        </div>
+    </div>
+
+    <md-list class="width-xs">
+        <md-list-item ng-repeat="contrato in vm.contratos">
+           <p>{{contrato.display}}</p>
+            <span class="md-secondary">{{contrato.fecha}}</span>
+        </md-list-item>
+    </md-list>
+</md-content>

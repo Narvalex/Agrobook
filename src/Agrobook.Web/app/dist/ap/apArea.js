@@ -18,6 +18,7 @@ var apArea;
         .controller('mainContentController', apArea.mainContentController)
         .controller('orgMainContentController', apArea.orgMainContentController)
         .controller('orgTabServiciosController', apArea.orgTabServiciosController)
+        .controller('orgTabContratosController', apArea.orgTabContratosController)
         .controller('prodMainContentController', apArea.prodMainContentController)
         .controller('prodTabParcelasController', apArea.prodTabParcelasController)
         .controller('prodTabServiciosController', apArea.prodTabServiciosController)

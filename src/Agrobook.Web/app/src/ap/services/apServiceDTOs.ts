@@ -62,6 +62,18 @@ module apArea {
         }
     }
 
+    export class contratoDto {
+        constructor(
+            public id: string,
+            public idOrg: string,
+            public display: string,
+            public esAdenda: boolean,
+            public idContratoDeLaAdenda: string,
+            public fecha: string
+        ) {
+        }
+    }
+
     export class fakeDb {
         static $inject = [];
 
@@ -89,6 +101,12 @@ module apArea {
             new parcelaDto('davidelias_Apepu', 'davidelias', 'Apepu', '72,18'),
             new parcelaDto('kazuoyama_Mariscal', 'kazuoyama', 'Mariscal', '73,18'),
             new parcelaDto('kazuoyama_Feliciano', 'kazuoyama', 'Feliciano', '75,18')
+        ];
+
+        // Id: [nombre_contrato]_[nombre_adenda]
+        public contratos: contratoDto[] = [
+            new contratoDto('Contrato_Chorti', 'coopchorti', 'Contrato Chorti', false, null, '10/08/2017'),
+            new contratoDto('Contrato_Chorti_Adenda_I', 'coopchorti', 'Adenda I', true, 'Contrato_Chorti', '11/08/2017') 
         ];
     }
 }

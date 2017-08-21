@@ -62,8 +62,14 @@ var apArea;
                 data: this.fakeDb.fakeServiciosList
             });
         };
-        apQueryService.prototype.gerParcelasDelProd = function (idProd, callback) {
+        apQueryService.prototype.getParcelasDelProd = function (idProd, callback) {
             var list = this.fakeDb.parcelas.filter(function (x) { return x.idProd === idProd; });
+            callback.onSuccess({
+                data: list
+            });
+        };
+        apQueryService.prototype.getContratos = function (idOrg, callback) {
+            var list = this.fakeDb.contratos.filter(function (x) { return x.idOrg === idOrg; });
             callback.onSuccess({
                 data: list
             });

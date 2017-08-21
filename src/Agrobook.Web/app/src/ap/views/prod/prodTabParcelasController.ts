@@ -197,7 +197,7 @@ module apArea {
         }
 
         private obtenerParcelasDelProd() {
-            this.apQueryService.gerParcelasDelProd(this.idProd,
+            this.apQueryService.getParcelasDelProd(this.idProd,
                 new common.callbackLite<parcelaDto[]>(
                     response => {
                         this.parcelas = response.data;

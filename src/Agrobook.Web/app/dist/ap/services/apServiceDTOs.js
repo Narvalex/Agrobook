@@ -65,6 +65,18 @@ var apArea;
         return parcelaDto;
     }());
     apArea.parcelaDto = parcelaDto;
+    var contratoDto = (function () {
+        function contratoDto(id, idOrg, display, esAdenda, idContratoDeLaAdenda, fecha) {
+            this.id = id;
+            this.idOrg = idOrg;
+            this.display = display;
+            this.esAdenda = esAdenda;
+            this.idContratoDeLaAdenda = idContratoDeLaAdenda;
+            this.fecha = fecha;
+        }
+        return contratoDto;
+    }());
+    apArea.contratoDto = contratoDto;
     var fakeDb = (function () {
         function fakeDb() {
             this.fakeClientesList = [
@@ -85,6 +97,11 @@ var apArea;
                 new parcelaDto('davidelias_Apepu', 'davidelias', 'Apepu', '72,18'),
                 new parcelaDto('kazuoyama_Mariscal', 'kazuoyama', 'Mariscal', '73,18'),
                 new parcelaDto('kazuoyama_Feliciano', 'kazuoyama', 'Feliciano', '75,18')
+            ];
+            // Id: [nombre_contrato]_[nombre_adenda]
+            this.contratos = [
+                new contratoDto('Contrato_Chorti', 'coopchorti', 'Contrato Chorti', false, null, '10/08/2017'),
+                new contratoDto('Contrato_Chorti_Adenda_I', 'coopchorti', 'Adenda I', true, 'Contrato_Chorti', '11/08/2017')
             ];
         }
         return fakeDb;

@@ -19,6 +19,7 @@ module apArea {
         // org controllers
         .controller('orgMainContentController', orgMainContentController)
         .controller('orgTabServiciosController', orgTabServiciosController)
+        .controller('orgTabContratosController', orgTabContratosController)
         // prod controllers
         .controller('prodMainContentController', prodMainContentController)
         .controller('prodTabParcelasController', prodTabParcelasController)
