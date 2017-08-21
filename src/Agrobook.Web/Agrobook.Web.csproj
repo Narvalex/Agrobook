@@ -1090,6 +1090,10 @@
     <Content Include="app\dist\ap\views\prod\tab-parcelas.html" />
     <Content Include="app\dist\ap\views\prod\tab-servicios.html" />
     <Content Include="app\dist\ap\views\servicios\servicio-main-content.html" />
+    <Content Include="app\dist\ap\views\servicios\tab-prescripciones.html" />
+    <Content Include="app\dist\ap\views\servicios\tab-diagnostico.html" />
+    <Content Include="app\dist\ap\views\servicios\tab-parcela.html" />
+    <Content Include="app\dist\ap\views\servicios\tab-resumen.html" />
     <Content Include="app\dist\archivos\dialogs\upload-center-dialog.html" />
     <Content Include="app\dist\archivos\prod-sidenav.html" />
     <Content Include="app\dist\archivos\sidenav.html" />
@@ -1127,6 +1131,8 @@
     <TypeScriptCompile Include="app\src\ap\views\prod\prodMainContentController.ts" />
     <TypeScriptCompile Include="app\src\ap\views\prod\prodTabParcelasController.ts" />
     <TypeScriptCompile Include="app\src\ap\views\prod\prodTabServiciosController.ts" />
+    <TypeScriptCompile Include="app\src\ap\views\servicios\serviciosTabResumenController.ts" />
+    <TypeScriptCompile Include="app\src\ap\views\servicios\serviciosMainContentController.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosDTOs.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosQueryService.ts" />
     <TypeScriptCompile Include="app\src\archivos\dialogs\uploadCenterController.ts" />

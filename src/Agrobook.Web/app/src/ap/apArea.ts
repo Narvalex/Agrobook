@@ -24,6 +24,9 @@ module apArea {
         .controller('prodMainContentController', prodMainContentController)
         .controller('prodTabParcelasController', prodTabParcelasController)
         .controller('prodTabServiciosController', prodTabServiciosController)
+        // servicios controllers
+        .controller('serviciosMainContentController', serviciosMainContentController)
+        .controller('serviciosTabResumenController', serviciosTabResumenController)
         // config
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', (
             $mdIconProvider: angular.material.IIconProvider,

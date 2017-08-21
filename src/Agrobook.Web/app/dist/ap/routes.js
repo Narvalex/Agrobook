@@ -25,7 +25,7 @@ var apArea;
                 }
             },
             {
-                path: '/servicios/:idServicio',
+                path: '/servicios/:idProd/:idServicio',
                 route: {
                     templateUrl: './dist/ap/views/servicios/servicio-main-content.html',
                     reloadOnSearch: false

@@ -1,1 +1,19 @@
-﻿<h1>Servicio Id 1</h1>
+﻿<div class="padding-all" ng-controller="serviciosMainContentController as vm">
+    <h2 class="md-title"><ng-md-icon icon="add" ng-show="vm.esNuevo"></ng-md-icon>{{vm.title}}</h2>
+    <div>
+        <md-tabs md-dynamic-height="" md-selected="vm.tabIndex">
+            <md-tab label="Resumen" md-on-select="vm.onTabSelected(0)">
+                <div ng-include="'./dist/ap/views/servicios/tab-resumen.html'"></div>
+            </md-tab>
+            <md-tab label="Parcela" md-on-select="vm.onTabSelected(1)">
+                <div ng-include="'./dist/ap/views/servicios/tab-parcela.html'"></div>
+            </md-tab>
+            <md-tab label="Diagnóstico" md-on-select="vm.onTabSelected(2)">
+                <div ng-include="'./dist/ap/views/servicios/tab-diagnostico.html'"></div>
+            </md-tab>
+            <md-tab label="Prescripciones" md-on-select="vm.onTabSelected(3)">
+                <div ng-include="'./dist/ap/views/servicios/tab-prescripciones.html'"></div>
+            </md-tab>
+        </md-tabs>
+    </div>
+</div>

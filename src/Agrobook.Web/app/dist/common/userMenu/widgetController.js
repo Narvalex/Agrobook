@@ -76,7 +76,7 @@ var common;
             var esTecnicoOSuperior = this.loginService.autorizar([claims.roles.Tecnico, claims.roles.Gerente]);
             this.menuItemList = [
                 new menuItem('Inicio', 'home.html', 'home'),
-                new menuItem('Ag. de Precisión', 'ap.html', 'location_searching'),
+                new menuItem('Ag. de Precisión', 'ap.html', 'my_location'),
                 new menuItem(esTecnicoOSuperior
                     ? 'Archivos' : 'Mis archivos', 'archivos.html', 'folder'),
                 new menuItem(esTecnicoOSuperior

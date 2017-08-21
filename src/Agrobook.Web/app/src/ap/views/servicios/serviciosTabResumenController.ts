@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../../_all.ts" />
 
 module apArea {
-    export class prodTabServiciosController {
+    export class serviciosTabResumenController {
         static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel'];
 
         constructor(
@@ -13,10 +13,11 @@ module apArea {
             private $mdPanel: angular.material.IPanelService
         ) {
             this.idProd = this.$routeParams['idProd'];
+            this.esNuevo = true;
         }
 
         // Estados
-
+        esNuevo: boolean;
 
         // Objetos
         idProd: string;
@@ -25,8 +26,8 @@ module apArea {
 
 
         // Api
-        nuevoServicio() {
-            window.location.replace(`#!/servicios/${this.idProd}/${this.config.conventions.nuevoServicioUrlToken}`);
+        cancelar() {
+            window.location.replace(`#!/prod/${this.idProd}`);
         }
 
         // Privados

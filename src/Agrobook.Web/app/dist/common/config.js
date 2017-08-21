@@ -75,6 +75,9 @@ var common;
                 word: new TipoDeArchivo("Word", "word"),
                 powerPoint: new TipoDeArchivo("PowerPoint", "powerPoint")
             };
+            this._conventions = {
+                nuevoServicioUrlToken: 'nuevo-servicio'
+            };
         }
         Object.defineProperty(config.prototype, "keyCodes", {
             get: function () { return this._keyCodes; },
@@ -103,6 +106,11 @@ var common;
         });
         Object.defineProperty(config.prototype, "tiposDeArchivos", {
             get: function () { return this._tiposDeArchivos; },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(config.prototype, "conventions", {
+            get: function () { return this._conventions; },
             enumerable: true,
             configurable: true
         });

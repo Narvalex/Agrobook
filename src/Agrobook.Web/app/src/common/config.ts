@@ -81,12 +81,17 @@ module common {
             powerPoint: new TipoDeArchivo("PowerPoint", "powerPoint")
         }
 
+        private _conventions = {
+            nuevoServicioUrlToken: 'nuevo-servicio'
+        }
+
         get keyCodes() { return this._keyCodes; }
         get repoIndex() { return this._repoIndex; }
         get eventIndex() { return this._eventIndex; }
         get avatarUrls() { return this._avatarUrls; }
         get claims() { return this._claims; }
         get tiposDeArchivos() { return this._tiposDeArchivos; }
+        get conventions() { return this._conventions }
     }
 
     export class TipoDeArchivo {

@@ -1,0 +1,14 @@
+﻿<md-content ng-controller="serviciosTabResumenController as vm">
+    <div layout="row" ng-show="vm.esNuevo">
+        <div>
+            <md-button class="md-button md-primary md-raised"
+                       ng-disabled="false"
+                       ng-click="null">
+                Registrar nuevo servicio
+            </md-button>
+        </div>
+        <div>
+            <md-button ng-click="vm.cancelar()" class="md-button">Cancelar</md-button>
+        </div>
+    </div>
+</md-content>
