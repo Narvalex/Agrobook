@@ -218,7 +218,7 @@ module archivosArea {
             self.failed = false;
             self.blockEdition = true;
 
-            function progress(e) {
+            function progress(e: ProgressEvent) {
                 try {
                     if (!self.scope || !self.uploading)
                         return;
@@ -230,7 +230,7 @@ module archivosArea {
                 }
             }
 
-            function updateProgress(e) {
+            function updateProgress(e: ProgressEvent) {
                 if (e.lengthComputable) {
                     var value = Math.round(e.loaded * 100 / e.total);
                     self.progress = value === 100 ? 99 : value;
@@ -337,9 +337,13 @@ module archivosArea {
             formData.append('uploadedFile', self.file);
             formData.append('metadatos', JSON.stringify(this.metadatos));
 
+
+            // More info to try on edge: http://jsfiddle.net/pthoty2e/
+            // Issue on edge: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/12224510/
             self.xhr = new XMLHttpRequest();
 
             self.xhr.upload.addEventListener("progress", progress, false);
+            self.xhr.onprogress = progress;
             self.xhr.upload.addEventListener("load", load, false);
             self.xhr.addEventListener("error", error, false);
             self.xhr.addEventListener("abort", abort, false);

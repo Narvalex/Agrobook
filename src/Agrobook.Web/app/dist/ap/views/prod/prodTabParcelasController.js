@@ -78,7 +78,6 @@ var apArea;
                 this.registrarNuevaParcela();
         };
         prodTabParcelasController.prototype.cancel = function () {
-            this.mostrarForm = false;
             this.resetForm();
         };
         prodTabParcelasController.prototype.eliminar = function (parcela) {
@@ -141,9 +140,9 @@ var apArea;
             }, 0);
         };
         prodTabParcelasController.prototype.resetForm = function () {
+            this.mostrarForm = false;
             this.parcelaObject = undefined;
             this.submitting = false;
-            this.mostrarForm = false;
         };
         prodTabParcelasController.prototype.obtenerParcelasDelProd = function () {
             var _this = this;

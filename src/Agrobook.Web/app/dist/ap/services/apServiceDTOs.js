@@ -65,6 +65,20 @@ var apArea;
         return parcelaDto;
     }());
     apArea.parcelaDto = parcelaDto;
+    /************************
+    * Contrato
+    ************************/
+    var editContratoDto = (function () {
+        function editContratoDto(idOrg, display, esAdenda, idContratoDeLaAdenda, fecha) {
+            this.idOrg = idOrg;
+            this.display = display;
+            this.esAdenda = esAdenda;
+            this.idContratoDeLaAdenda = idContratoDeLaAdenda;
+            this.fecha = fecha;
+        }
+        return editContratoDto;
+    }());
+    apArea.editContratoDto = editContratoDto;
     var contratoDto = (function () {
         function contratoDto(id, idOrg, display, esAdenda, idContratoDeLaAdenda, fecha) {
             this.id = id;
@@ -77,6 +91,9 @@ var apArea;
         return contratoDto;
     }());
     apArea.contratoDto = contratoDto;
+    //-----------------------------------------
+    // FakeDb
+    //-----------------------------------------
     var fakeDb = (function () {
         function fakeDb() {
             this.fakeClientesList = [

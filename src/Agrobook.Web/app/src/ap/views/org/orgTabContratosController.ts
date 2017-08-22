@@ -2,10 +2,11 @@
 
 module apArea {
     export class orgTabContratosController {
-        static $inject = ['$routeParams', 'apQueryService']
+        static $inject = ['$routeParams', '$mdPanel', 'apQueryService']
 
         constructor(
             private $routeParams: angular.route.IRouteParamsService,
+            private $mdPanel: angular.material.IPanelService,
             private apQueryService: apQueryService
         ) {
             this.idOrg = this.$routeParams['idOrg'];
@@ -13,11 +14,37 @@ module apArea {
             this.recuperarContratos();
         }
 
-        idOrg: string;
+        // estados
+        formVisible: boolean;
+        editMode: boolean;
+        submitting = false;
+
+        // object
+        idOrg: string; 
+        dirty: editContratoDto;
 
         // listas
         contratos: contratoDto[];
-        
+
+        //--------------------------
+        // Api
+        //--------------------------
+        mostrarForm(editMode: boolean) {
+            this.editMode = editMode;
+            this.formVisible = true;
+            setTimeout(() => document.getElementById('nombreContratoInput').focus(), 0);
+
+        }
+
+        cancelar() {
+            this.formVisible = false;
+            this.resetForm();
+        }
+
+        mostrarOpciones($events: Event, contrato: contratoDto) {
+            //let position = this.$mdPanel.newPanelPosition()
+            //.relativeTo
+        }
 
         //--------------------------
         // Private
@@ -30,6 +57,12 @@ module apArea {
                     },
                     reason => { }
                 ));
+        }
+
+        private resetForm() {
+            this.formVisible = false;
+            this.dirty = undefined;
+            this.submitting = false;
         }
     }
 }

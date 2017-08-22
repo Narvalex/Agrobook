@@ -1,18 +1,67 @@
 ﻿<md-content ng-controller="orgTabContratosController as vm">
-    <div layout-gt-md="row">
-        <div class="padding-top">
+    <!-- Formulario de Nuevo Contrato -->
+   
+        <div class="padding-top" ng-hide="vm.formVisible">
             <md-button class="md-button"
                        ng-hide="false"
-                       ng-click="null">
+                       ng-click="vm.mostrarForm(false)">
                 <ng-md-icon icon="add"></ng-md-icon>&nbsp;Nuevo contrato
             </md-button>
         </div>
+
+
+    <div class="padding-top" ng-show="vm.formVisible">
+        <div layout-gt-md="row">
+            <md-input-container>
+                <label>Nombre del nuevo contrato</label>
+                <input ng-model="vm.dirty.display"
+                       id="nombreContratoInput"
+                       placeholder="Ej: Contrato con la Cooperativa..."
+                       required
+                       autofocus>
+                <div ng-messages="">
+                    <div ng-message="required">Debe especificar un nombre al contrato</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container>
+                <label>Fecha</label>
+                <md-datepicker ng-model="vm.dirty.fecha"
+                               ng-disabled="false"></md-datepicker>
+            </md-input-container>
+        </div>
+
+        <div layout="row">
+                <md-checkbox ng-model="vm.dirty.esAdenda" aria-label="Checkbox Es Adenda">
+                    {{vm.dirty.esAdenda ? 'Es una adenda' : 'Es un contrato'}}
+                </md-checkbox>
+        </div>
+
+        <div layout="row">
+            <div>
+                <md-button class="md-button md-primary md-raised"
+                           ng-disabled="vm.submitting || !(vm.dirty.display.length > 0) || !vm.dirty"
+                           ng-click="vm.submit()">
+                    {{vm.editMode ? 'Actualizar cambios' : 'Registrar nuevo'}}
+                </md-button>
+            </div>
+            <div>
+                <md-button ng-click="vm.cancelar()" class="md-button">Cancelar</md-button>
+            </div>
+        </div>
     </div>
+  
+    <!-- Fin del Formulario de Nuevo Contrato -->
 
     <md-list class="width-xs">
         <md-list-item ng-repeat="contrato in vm.contratos">
            <p>{{contrato.display}}</p>
             <span class="md-secondary">{{contrato.fecha}}</span>
+
+            <md-button class="md-icon-button md-secondary" aria-label="edit"
+                       ng-click="vm.mostrarOpciones($event, contrato)">
+                <ng-md-icon icon="more_horiz"></ng-md-icon>
+            </md-button>
         </md-list-item>
     </md-list>
 </md-content>

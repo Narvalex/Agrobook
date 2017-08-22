@@ -108,7 +108,6 @@ module apArea {
         }
 
         cancel() {
-            this.mostrarForm = false;
             this.resetForm();
         }
 
@@ -191,9 +190,9 @@ module apArea {
         }
 
         private resetForm() {
+            this.mostrarForm = false;
             this.parcelaObject = undefined;
             this.submitting = false;
-            this.mostrarForm = false;
         }
 
         private obtenerParcelasDelProd() {

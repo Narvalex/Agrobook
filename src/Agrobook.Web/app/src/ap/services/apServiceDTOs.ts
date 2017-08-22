@@ -62,6 +62,21 @@ module apArea {
         }
     }
 
+     /************************
+     * Contrato
+     ************************/
+
+    export class editContratoDto {
+        constructor(
+            public idOrg: string,
+            public display: string,
+            public esAdenda: boolean,
+            public idContratoDeLaAdenda: string,
+            public fecha: Date,
+        ) {
+        }
+    }
+
     export class contratoDto {
         constructor(
             public id: string,
@@ -74,6 +89,9 @@ module apArea {
         }
     }
 
+    //-----------------------------------------
+    // FakeDb
+    //-----------------------------------------
     export class fakeDb {
         static $inject = [];
 
