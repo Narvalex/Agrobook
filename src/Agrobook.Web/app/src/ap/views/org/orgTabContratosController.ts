@@ -18,13 +18,17 @@ module apArea {
         formVisible: boolean;
         editMode: boolean;
         submitting = false;
+        tieneContrato = false;
 
         // object
         idOrg: string; 
         dirty: editContratoDto;
+        tipoContrato = 'adenda';
+        contratoAdendado: contratoDto;
 
         // listas
         contratos: contratoDto[];
+        soloContratos: contratoDto[];
 
         //--------------------------
         // Api
@@ -54,6 +58,11 @@ module apArea {
                 new common.callbackLite<contratoDto[]>(
                     value => {
                         this.contratos = value.data;
+                        this.soloContratos = this.contratos.filter(x => !x.esAdenda);
+                        if (this.soloContratos.length > 0) {
+                            this.tieneContrato = true;
+                            this.contratoAdendado = this.soloContratos[0];
+                        }
                     },
                     reason => { }
                 ));

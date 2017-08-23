@@ -7,6 +7,8 @@ var apArea;
             this.$mdPanel = $mdPanel;
             this.apQueryService = apQueryService;
             this.submitting = false;
+            this.tieneContrato = false;
+            this.tipoContrato = 'adenda';
             this.idOrg = this.$routeParams['idOrg'];
             this.recuperarContratos();
         }
@@ -33,6 +35,11 @@ var apArea;
             var _this = this;
             this.apQueryService.getContratos(this.idOrg, new common.callbackLite(function (value) {
                 _this.contratos = value.data;
+                _this.soloContratos = _this.contratos.filter(function (x) { return !x.esAdenda; });
+                if (_this.soloContratos.length > 0) {
+                    _this.tieneContrato = true;
+                    _this.contratoAdendado = _this.soloContratos[0];
+                }
             }, function (reason) { }));
         };
         orgTabContratosController.prototype.resetForm = function () {
