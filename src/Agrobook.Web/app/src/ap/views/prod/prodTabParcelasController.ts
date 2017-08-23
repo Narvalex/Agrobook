@@ -42,7 +42,7 @@ module apArea {
             this.mostrarFormYHacerFocus();
         }
 
-        habilitarEdicionDeParcela(parcela: parcelaDto) {
+        habilitarEdicion(parcela: parcelaDto) {
             this.formIsEditing = true;
 
             this.parcelaObject = new edicionParcelaDto();
@@ -112,7 +112,7 @@ module apArea {
         }
 
         eliminar(parcela: parcelaDto) {
-            this.apService.eliminar(parcela.id,
+            this.apService.eliminarParcela(parcela.id,
                 new common.callbackLite<{}>(
                     value => {
                         for (var i = 0; i < this.parcelas.length; i++) {
@@ -129,7 +129,7 @@ module apArea {
         }
 
         restaurar(parcela: parcelaDto) {
-            this.apService.restaurar(parcela.id,
+            this.apService.restaurarParcela(parcela.id,
                 new common.callbackLite<{}>(
                     value => {
                         for (var i = 0; i < this.parcelas.length; i++) {
@@ -210,7 +210,7 @@ module apArea {
         static $inject = ['mdPanelRef'];
 
         constructor(
-            private mdPanelref: angular.material.IPanelRef
+            private mdPanelRef: angular.material.IPanelRef
         ) {
         }
 
@@ -218,31 +218,31 @@ module apArea {
         parent: prodTabParcelasController;
 
         editar() {
-            this.mdPanelref.close().then(
+            this.mdPanelRef.close().then(
                 value => {
-                    this.parent.habilitarEdicionDeParcela(this.parcela);
+                    this.parent.habilitarEdicion(this.parcela);
                 })
-                .finally(() => this.mdPanelref.destroy());
+                .finally(() => this.mdPanelRef.destroy());
         }
 
         eliminar() {
-            this.mdPanelref.close().then(
+            this.mdPanelRef.close().then(
                 value => {
                     this.parent.eliminar(this.parcela);
                 })
-                .finally(() => this.mdPanelref.destroy());
+                .finally(() => this.mdPanelRef.destroy());
         }
 
         restaurar() {
-            this.mdPanelref.close().then(
+            this.mdPanelRef.close().then(
                 value => {
                     this.parent.restaurar(this.parcela);
                 })
-                .finally(() => this.mdPanelref.destroy());
+                .finally(() => this.mdPanelRef.destroy());
         }
 
         cancelar() {
-            this.mdPanelref.close().finally(() => this.mdPanelref.destroy());
+            this.mdPanelRef.close().finally(() => this.mdPanelRef.destroy());
         }
     }
 }

@@ -66,25 +66,15 @@ module apArea {
      * Contrato
      ************************/
 
-    export class editContratoDto {
-        constructor(
-            public idOrg: string,
-            public display: string,
-            public esAdenda: boolean,
-            public idContratoDeLaAdenda: string,
-            public fecha: Date,
-        ) {
-        }
-    }
-
     export class contratoDto {
         constructor(
             public id: string,
             public idOrg: string,
             public display: string,
             public esAdenda: boolean,
+            public eliminado: boolean,
             public idContratoDeLaAdenda: string,
-            public fecha: string
+            public fecha: Date
         ) {
         }
     }
@@ -123,8 +113,8 @@ module apArea {
 
         // Id: [nombre_contrato]_[nombre_adenda]
         public contratos: contratoDto[] = [
-            new contratoDto('Contrato_Chorti', 'coopchorti', 'Contrato Chorti', false, null, '10/08/2017'),
-            new contratoDto('Contrato_Chorti_Adenda_I', 'coopchorti', 'Adenda I', true, 'Contrato_Chorti', '11/08/2017') 
+            new contratoDto('Contrato_Chorti', 'coopchorti', 'Contrato Chorti', false, false, null, new Date(2017, 1, 17)),
+            new contratoDto('Contrato_Chorti_Adenda_I', 'coopchorti', 'Adenda I', true, false, 'Contrato_Chorti', new Date(2017, 2, 20)) 
         ];
     }
 }

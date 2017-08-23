@@ -44,7 +44,7 @@ var apArea;
                 data: {}
             });
         };
-        apService.prototype.eliminar = function (idParcela, callback) {
+        apService.prototype.eliminarParcela = function (idParcela, callback) {
             for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
                 if (this.fakeDb.parcelas[i].id === idParcela) {
                     this.fakeDb.parcelas[i].eliminado = true;
@@ -55,7 +55,7 @@ var apArea;
                 data: {}
             });
         };
-        apService.prototype.restaurar = function (idParcela, callback) {
+        apService.prototype.restaurarParcela = function (idParcela, callback) {
             for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
                 if (this.fakeDb.parcelas[i].id === idParcela) {
                     this.fakeDb.parcelas[i].eliminado = false;
@@ -65,6 +65,12 @@ var apArea;
             callback.onSuccess({
                 data: {}
             });
+        };
+        apService.prototype.registrarNuevoContrato = function (contrato, callback) {
+        };
+        apService.prototype.editarContrato = function (contrato, callback) {
+        };
+        apService.prototype.eliminarContrato = function (idContrato, callback) {
         };
         return apService;
     }(common.httpLite));

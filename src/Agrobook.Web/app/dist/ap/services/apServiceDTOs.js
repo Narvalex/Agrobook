@@ -68,23 +68,13 @@ var apArea;
     /************************
     * Contrato
     ************************/
-    var editContratoDto = (function () {
-        function editContratoDto(idOrg, display, esAdenda, idContratoDeLaAdenda, fecha) {
-            this.idOrg = idOrg;
-            this.display = display;
-            this.esAdenda = esAdenda;
-            this.idContratoDeLaAdenda = idContratoDeLaAdenda;
-            this.fecha = fecha;
-        }
-        return editContratoDto;
-    }());
-    apArea.editContratoDto = editContratoDto;
     var contratoDto = (function () {
-        function contratoDto(id, idOrg, display, esAdenda, idContratoDeLaAdenda, fecha) {
+        function contratoDto(id, idOrg, display, esAdenda, eliminado, idContratoDeLaAdenda, fecha) {
             this.id = id;
             this.idOrg = idOrg;
             this.display = display;
             this.esAdenda = esAdenda;
+            this.eliminado = eliminado;
             this.idContratoDeLaAdenda = idContratoDeLaAdenda;
             this.fecha = fecha;
         }
@@ -117,8 +107,8 @@ var apArea;
             ];
             // Id: [nombre_contrato]_[nombre_adenda]
             this.contratos = [
-                new contratoDto('Contrato_Chorti', 'coopchorti', 'Contrato Chorti', false, null, '10/08/2017'),
-                new contratoDto('Contrato_Chorti_Adenda_I', 'coopchorti', 'Adenda I', true, 'Contrato_Chorti', '11/08/2017')
+                new contratoDto('Contrato_Chorti', 'coopchorti', 'Contrato Chorti', false, false, null, new Date(2017, 1, 17)),
+                new contratoDto('Contrato_Chorti_Adenda_I', 'coopchorti', 'Adenda I', true, false, 'Contrato_Chorti', new Date(2017, 2, 20))
             ];
         }
         return fakeDb;

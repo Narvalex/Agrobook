@@ -21,7 +21,7 @@
 
             <div layout="row">
                 <md-radio-group ng-model="vm.tipoContrato" class="padding-left-20">
-                    <md-radio-button value="adenda">Adenda</md-radio-button>
+                    <md-radio-button value="adenda" ng-disabled="!vm.tieneContrato">Adenda</md-radio-button>
                     <md-radio-button value="contrato" class="md-primary">Contrato</md-radio-button>
                 </md-radio-group>
             </div>
@@ -77,7 +77,7 @@
     <md-list class="width-xs">
         <md-list-item ng-repeat="contrato in vm.contratos">
             <p>{{contrato.display}}</p>
-            <span class="md-secondary">{{contrato.fecha}}</span>
+            <span class="md-secondary">{{vm.formatearFecha(contrato.fecha)}}</span>
 
             <md-button class="md-icon-button md-secondary" aria-label="edit"
                        ng-click="vm.mostrarOpciones($event, contrato)">

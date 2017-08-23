@@ -1081,6 +1081,7 @@
     <Content Include="app\dist\ap\toolbar-header.html" />
     <Content Include="app\dist\ap\views\main-content.html" />
     <Content Include="app\dist\ap\bottom-sheet.html" />
+    <Content Include="app\dist\ap\views\org\menu-panel-tab-contratos.html" />
     <Content Include="app\dist\ap\views\org\org-main-content.html" />
     <Content Include="app\dist\ap\views\org\tab-contratos.html" />
     <Content Include="app\dist\ap\views\org\tab-productores.html" />

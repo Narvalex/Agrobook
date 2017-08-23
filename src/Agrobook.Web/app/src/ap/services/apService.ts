@@ -48,7 +48,7 @@ module apArea {
             });
         }
 
-        eliminar(
+        eliminarParcela(
             idParcela: string,
             callback: common.callbackLite<{}>
         ) {
@@ -64,7 +64,7 @@ module apArea {
             });
         }
 
-        restaurar(
+        restaurarParcela(
             idParcela: string,
             callback: common.callbackLite<{}>
         ) {
@@ -79,5 +79,19 @@ module apArea {
                 data: {}
             });
         }
+
+        registrarNuevoContrato(contrato: contratoDto, callback: common.callbackLite<{}>) {
+
+        }
+
+        editarContrato(contrato: contratoDto, callback: common.callbackLite<{}>) {
+
+        }
+
+        eliminarContrato(idContrato: string, callback: common.callbackLite<{}>) {
+
+        }
+
+
     }
 }

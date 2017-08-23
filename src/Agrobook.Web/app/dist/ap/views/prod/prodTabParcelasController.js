@@ -23,7 +23,7 @@ var apArea;
             this.formIsEditing = false;
             this.mostrarFormYHacerFocus();
         };
-        prodTabParcelasController.prototype.habilitarEdicionDeParcela = function (parcela) {
+        prodTabParcelasController.prototype.habilitarEdicion = function (parcela) {
             this.formIsEditing = true;
             this.parcelaObject = new apArea.edicionParcelaDto();
             this.parcelaObject.display = parcela.display;
@@ -82,7 +82,7 @@ var apArea;
         };
         prodTabParcelasController.prototype.eliminar = function (parcela) {
             var _this = this;
-            this.apService.eliminar(parcela.id, new common.callbackLite(function (value) {
+            this.apService.eliminarParcela(parcela.id, new common.callbackLite(function (value) {
                 for (var i = 0; i < _this.parcelas.length; i++) {
                     if (_this.parcelas[i].id === parcela.id) {
                         _this.parcelas[i].eliminado = true;
@@ -94,7 +94,7 @@ var apArea;
         };
         prodTabParcelasController.prototype.restaurar = function (parcela) {
             var _this = this;
-            this.apService.restaurar(parcela.id, new common.callbackLite(function (value) {
+            this.apService.restaurarParcela(parcela.id, new common.callbackLite(function (value) {
                 for (var i = 0; i < _this.parcelas.length; i++) {
                     if (_this.parcelas[i].id === parcela.id) {
                         _this.parcelas[i].eliminado = false;
@@ -155,33 +155,33 @@ var apArea;
     prodTabParcelasController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel'];
     apArea.prodTabParcelasController = prodTabParcelasController;
     var panelMenuController = (function () {
-        function panelMenuController(mdPanelref) {
-            this.mdPanelref = mdPanelref;
+        function panelMenuController(mdPanelRef) {
+            this.mdPanelRef = mdPanelRef;
         }
         panelMenuController.prototype.editar = function () {
             var _this = this;
-            this.mdPanelref.close().then(function (value) {
-                _this.parent.habilitarEdicionDeParcela(_this.parcela);
+            this.mdPanelRef.close().then(function (value) {
+                _this.parent.habilitarEdicion(_this.parcela);
             })
-                .finally(function () { return _this.mdPanelref.destroy(); });
+                .finally(function () { return _this.mdPanelRef.destroy(); });
         };
         panelMenuController.prototype.eliminar = function () {
             var _this = this;
-            this.mdPanelref.close().then(function (value) {
+            this.mdPanelRef.close().then(function (value) {
                 _this.parent.eliminar(_this.parcela);
             })
-                .finally(function () { return _this.mdPanelref.destroy(); });
+                .finally(function () { return _this.mdPanelRef.destroy(); });
         };
         panelMenuController.prototype.restaurar = function () {
             var _this = this;
-            this.mdPanelref.close().then(function (value) {
+            this.mdPanelRef.close().then(function (value) {
                 _this.parent.restaurar(_this.parcela);
             })
-                .finally(function () { return _this.mdPanelref.destroy(); });
+                .finally(function () { return _this.mdPanelRef.destroy(); });
         };
         panelMenuController.prototype.cancelar = function () {
             var _this = this;
-            this.mdPanelref.close().finally(function () { return _this.mdPanelref.destroy(); });
+            this.mdPanelRef.close().finally(function () { return _this.mdPanelRef.destroy(); });
         };
         return panelMenuController;
     }());
