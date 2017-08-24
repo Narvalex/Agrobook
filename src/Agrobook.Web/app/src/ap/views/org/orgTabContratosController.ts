@@ -2,14 +2,15 @@
 
 module apArea {
     export class orgTabContratosController {
-        static $inject = ['$routeParams', '$mdPanel', 'apQueryService', 'apService', 'toasterLite']
+        static $inject = ['$routeParams', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'awService']
 
         constructor(
             private $routeParams: angular.route.IRouteParamsService,
             private $mdPanel: angular.material.IPanelService,
             private apQueryService: apQueryService,
             private apService: apService,
-            private toasterLite: common.toasterLite
+            private toasterLite: common.toasterLite,
+            private awService: common.archivosWidgetService
         ) {
             this.idOrg = this.$routeParams['idOrg'];
 
@@ -38,6 +39,7 @@ module apArea {
         //--------------------------
         mostrarForm(editMode: boolean) {
             this.editMode = editMode;
+            this.refrescarEstadoDelForm();
             this.formVisible = true;
             setTimeout(() => document.getElementById('nombreContratoInput').focus(), 0);
         }
@@ -218,20 +220,24 @@ module apArea {
                 new common.callbackLite<contratoDto[]>(
                     value => {
                         this.contratos = value.data;
-                        // Preparando
-                        this.soloContratos = this.contratos.filter(x => !x.esAdenda);
-                        // Si tiene contrato
-                        if (this.soloContratos.length > 0) {
-                            this.tieneContrato = true;
-                            this.contratoAdendado = this.soloContratos[0];
-                            this.tipoContrato = 'adenda';
-                        }
-                        else {
-                            this.tipoContrato = 'contrato';
-                        }
+                        this.refrescarEstadoDelForm();
                     },
                     reason => { }
                 ));
+        }
+
+        private refrescarEstadoDelForm() {
+            // Preparando
+            this.soloContratos = this.contratos.filter(x => !x.esAdenda);
+            // Si tiene contrato
+            if (this.soloContratos.length > 0) {
+                this.tieneContrato = true;
+                this.contratoAdendado = this.soloContratos[0];
+                this.tipoContrato = 'adenda';
+            }
+            else {
+                this.tipoContrato = 'contrato';
+            }
         }
 
         private resetForm() {
@@ -243,6 +249,13 @@ module apArea {
         private formatearFecha(fecha: Date): string {
             return moment(fecha).format('DD/MM/YYYY');
         }
+
+        //-----------------------------
+        // Archivos implementation
+        //-----------------------------
+        awTitle = this.tipoContrato === 'adenda' ? 'Documentos de respaldo de la adenda' : 'Documentos de respaldo del contrato';
+        awUploadLink = 'Levantar archivo...';
+        awSelectFiles = () => { }
     }
 
     class panelMenuController {

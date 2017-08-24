@@ -10,6 +10,7 @@ module apArea {
         .service('apQueryService', apQueryService)
         .service('apService', apService)
         .service('fakeDb', fakeDb)
+        .service('awService', common.archivosWidgetService)
         .controller('sidenavController', sidenavController)
         .controller('bottomSheetButtonController', bottomSheetButtonController)
         .controller('bottomSheetController', bottomSheetController)

@@ -26,9 +26,6 @@ var apArea;
                 case 1:
                     tabId = "contratos";
                     break;
-                case 2:
-                    tabId = "productores";
-                    break;
                 default:
                     tabId = "servicios";
                     break;
@@ -43,9 +40,6 @@ var apArea;
                     break;
                 case 'contratos':
                     this.tabIndex = 1;
-                    break;
-                case 'productores':
-                    this.tabIndex = 2;
                     break;
                 default:
                     this.tabIndex = 0;

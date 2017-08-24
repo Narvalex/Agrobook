@@ -2,15 +2,22 @@
 var apArea;
 (function (apArea) {
     var orgTabContratosController = (function () {
-        function orgTabContratosController($routeParams, $mdPanel, apQueryService, apService, toasterLite) {
+        function orgTabContratosController($routeParams, $mdPanel, apQueryService, apService, toasterLite, awService) {
             this.$routeParams = $routeParams;
             this.$mdPanel = $mdPanel;
             this.apQueryService = apQueryService;
             this.apService = apService;
             this.toasterLite = toasterLite;
+            this.awService = awService;
             this.submitting = false;
             this.tieneContrato = false;
             this.ocultarEliminados = true;
+            //-----------------------------
+            // Archivos implementation
+            //-----------------------------
+            this.awTitle = this.tipoContrato === 'adenda' ? 'Documentos de respaldo de la adenda' : 'Documentos de respaldo del contrato';
+            this.awUploadLink = 'Levantar archivo...';
+            this.awSelectFiles = function () { };
             this.idOrg = this.$routeParams['idOrg'];
             this.recuperarContratos();
         }
@@ -19,6 +26,7 @@ var apArea;
         //--------------------------
         orgTabContratosController.prototype.mostrarForm = function (editMode) {
             this.editMode = editMode;
+            this.refrescarEstadoDelForm();
             this.formVisible = true;
             setTimeout(function () { return document.getElementById('nombreContratoInput').focus(); }, 0);
         };
@@ -155,18 +163,21 @@ var apArea;
             var _this = this;
             this.apQueryService.getContratos(this.idOrg, new common.callbackLite(function (value) {
                 _this.contratos = value.data;
-                // Preparando
-                _this.soloContratos = _this.contratos.filter(function (x) { return !x.esAdenda; });
-                // Si tiene contrato
-                if (_this.soloContratos.length > 0) {
-                    _this.tieneContrato = true;
-                    _this.contratoAdendado = _this.soloContratos[0];
-                    _this.tipoContrato = 'adenda';
-                }
-                else {
-                    _this.tipoContrato = 'contrato';
-                }
+                _this.refrescarEstadoDelForm();
             }, function (reason) { }));
+        };
+        orgTabContratosController.prototype.refrescarEstadoDelForm = function () {
+            // Preparando
+            this.soloContratos = this.contratos.filter(function (x) { return !x.esAdenda; });
+            // Si tiene contrato
+            if (this.soloContratos.length > 0) {
+                this.tieneContrato = true;
+                this.contratoAdendado = this.soloContratos[0];
+                this.tipoContrato = 'adenda';
+            }
+            else {
+                this.tipoContrato = 'contrato';
+            }
         };
         orgTabContratosController.prototype.resetForm = function () {
             this.formVisible = false;
@@ -178,7 +189,7 @@ var apArea;
         };
         return orgTabContratosController;
     }());
-    orgTabContratosController.$inject = ['$routeParams', '$mdPanel', 'apQueryService', 'apService', 'toasterLite'];
+    orgTabContratosController.$inject = ['$routeParams', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'awService'];
     apArea.orgTabContratosController = orgTabContratosController;
     var panelMenuController = (function () {
         function panelMenuController(mdPanelRef) {

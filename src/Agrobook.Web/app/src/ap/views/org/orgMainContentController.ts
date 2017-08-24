@@ -34,7 +34,6 @@ module apArea {
             switch (tabIndex) {
                 case 0: tabId = "servicios"; break;
                 case 1: tabId = "contratos"; break;
-                case 2: tabId = "productores"; break;
                 default: tabId = "servicios"; break;
             }
 
@@ -46,7 +45,6 @@ module apArea {
             switch (tabId) {
                 case 'servicios': this.tabIndex = 0; break;
                 case 'contratos': this.tabIndex = 1; break;
-                case 'productores': this.tabIndex = 2; break;
                 default: this.tabIndex = 0; break;
             }
         }

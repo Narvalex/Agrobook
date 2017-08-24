@@ -10,6 +10,7 @@ var apArea;
         .service('apQueryService', apArea.apQueryService)
         .service('apService', apArea.apService)
         .service('fakeDb', apArea.fakeDb)
+        .service('awService', common.archivosWidgetService)
         .controller('sidenavController', apArea.sidenavController)
         .controller('bottomSheetButtonController', apArea.bottomSheetButtonController)
         .controller('bottomSheetController', apArea.bottomSheetController)
