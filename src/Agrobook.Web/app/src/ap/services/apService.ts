@@ -17,6 +17,7 @@ module apArea {
         ) {
             var data = new parcelaDto(dto.idProd + '_' + dto.display.trim(), dto.idProd, dto.display, dto.hectareas);
 
+            // Set validation check
             for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
                 if (this.fakeDb.parcelas[i].id === data.id) {
                     callback.onError(null);
@@ -43,9 +44,7 @@ module apArea {
                 }
             }
 
-            callback.onSuccess({
-                data: {}
-            });
+            callback.onSuccess({});
         }
 
         eliminarParcela(
@@ -80,18 +79,67 @@ module apArea {
             });
         }
 
-        registrarNuevoContrato(contrato: contratoDto, callback: common.callbackLite<{}>) {
+        registrarNuevoContrato(contrato: contratoDto, callback: common.callbackLite<contratoDto>) {
+            let id: string;
+            if (contrato.esAdenda) {
+                id = `${contrato.idContratoDeLaAdenda}_${contrato.display.trim()}`;
+            }
+            else {
+                id = `${contrato.idOrg}_${contrato.display.trim()}`;
+            }
 
+            // Primary key check
+            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
+                if (this.fakeDb.contratos[i].id === id) {
+                    callback.onError(null);
+                    return;
+                }
+            }
+
+            contrato.id = id;
+            this.fakeDb.contratos.push(contrato);
+
+            callback.onSuccess({
+                data: contrato
+            });
         }
 
         editarContrato(contrato: contratoDto, callback: common.callbackLite<{}>) {
+            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
+                if (this.fakeDb.contratos[i].id === contrato.id) {
+                    this.fakeDb.contratos.splice(i, 1);
+                    this.fakeDb.contratos.push(contrato);
+                    break;
+                }
+            }
 
+            callback.onSuccess({});
         }
 
         eliminarContrato(idContrato: string, callback: common.callbackLite<{}>) {
+            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
+                if (this.fakeDb.contratos[i].id === idContrato) {
+                    this.fakeDb.contratos[i].eliminado = true;
+                    break;
+                }
+            }
 
+            callback.onSuccess({
+                data: {}
+            });
         }
 
+        restaurarContrato(idContrato: string, callback: common.callbackLite<{}>) {
+            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
+                if (this.fakeDb.contratos[i].id === idContrato) {
+                    this.fakeDb.contratos[i].eliminado = false;
+                    break;
+                }
+            }
 
+            callback.onSuccess({
+                data: {}
+            });
+        }
     }
 }

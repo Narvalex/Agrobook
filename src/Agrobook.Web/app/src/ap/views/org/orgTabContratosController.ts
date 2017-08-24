@@ -2,13 +2,14 @@
 
 module apArea {
     export class orgTabContratosController {
-        static $inject = ['$routeParams', '$mdPanel', 'apQueryService', 'apService']
+        static $inject = ['$routeParams', '$mdPanel', 'apQueryService', 'apService', 'toasterLite']
 
         constructor(
             private $routeParams: angular.route.IRouteParamsService,
             private $mdPanel: angular.material.IPanelService,
             private apQueryService: apQueryService,
-            private apService: apService
+            private apService: apService,
+            private toasterLite: common.toasterLite
         ) {
             this.idOrg = this.$routeParams['idOrg'];
 
@@ -20,9 +21,10 @@ module apArea {
         editMode: boolean;
         submitting = false;
         tieneContrato = false;
+        ocultarEliminados = true;
 
         // object
-        idOrg: string; 
+        idOrg: string;
         dirty: contratoDto;
         tipoContrato: string;
         contratoAdendado: contratoDto;
@@ -38,6 +40,10 @@ module apArea {
             this.editMode = editMode;
             this.formVisible = true;
             setTimeout(() => document.getElementById('nombreContratoInput').focus(), 0);
+        }
+
+        toggleMostrarEliminados() {
+            this.ocultarEliminados = !this.ocultarEliminados;
         }
 
         cancelar() {
@@ -77,20 +83,131 @@ module apArea {
         }
 
         habilitarEdicion(contrato: contratoDto) {
-            this.dirty = contrato;
+            this.dirty = new contratoDto(
+                contrato.id,
+                contrato.idOrg,
+                contrato.display,
+                contrato.esAdenda,
+                contrato.eliminado,
+                contrato.idContratoDeLaAdenda,
+                contrato.fecha);
+
             this.mostrarForm(true);
         }
 
         eliminar(contrato: contratoDto) {
-            
+            this.apService.eliminarContrato(contrato.id,
+                new common.callbackLite(
+                    value => {
+                        for (var i = 0; i < this.contratos.length; i++) {
+                            if (this.contratos[i].id === contrato.id) {
+                                this.contratos[i].eliminado = true;
+                                break;
+                            }
+                        }
+
+                        for (var i = 0; i < this.soloContratos.length; i++) {
+                            if (this.contratos[i].id === contrato.id) {
+                                this.contratos[i].eliminado = true;
+                                break;
+                            }
+                        }
+
+                        if (this.contratoAdendado.id === contrato.id)
+                            this.contratoAdendado.eliminado = true;
+                    },
+                    reason => { })
+            );
         }
 
         restaurar(contrato: contratoDto) {
+            this.apService.restaurarParcela(contrato.id,
+                new common.callbackLite(
+                    value => {
+                        for (var i = 0; i < this.contratos.length; i++) {
+                            if (this.contratos[i].id === contrato.id) {
+                                this.contratos[i].eliminado = false;
+                                break;
+                            }
+                        }
 
+                        for (var i = 0; i < this.soloContratos.length; i++) {
+                            if (this.contratos[i].id === contrato.id) {
+                                this.contratos[i].eliminado = false;
+                                break;
+                            }
+                        }
+
+                        if (this.contratoAdendado.id === contrato.id)
+                            this.contratoAdendado.eliminado = false;
+                    },
+                    reason => { })
+            );
         }
 
         submit() {
+            if (this.dirty.display.length === 0) {
+                this.toasterLite.error(this.tipoContrato === 'contrato' ? 'Debe especificar el nombre del contrato' : 'Debe especificar el nombre de la adenda');
+                return;
+            }
+            this.submitting = true;
 
+            // Rellenar datos faltantes
+            this.dirty.esAdenda = this.tipoContrato === 'adenda';
+            if (this.dirty.esAdenda)
+                this.dirty.idContratoDeLaAdenda = this.contratoAdendado.id;
+
+            if (this.editMode) {
+                // Edit
+                this.apService.editarContrato(this.dirty,
+                    new common.callbackLite(
+                        value => {
+                            for (var i = 0; i < this.contratos.length; i++) {
+                                if (this.contratos[i].id === this.dirty.id) {
+                                    this.contratos.splice(i, 1);
+                                    this.contratos.push(this.dirty);
+                                    break;
+                                }
+                            }
+
+                            for (var i = 0; i < this.soloContratos.length; i++) {
+                                if (this.soloContratos[i].id === this.dirty.id) {
+                                    this.soloContratos.splice(i, 1);
+                                    this.soloContratos.push(this.dirty);
+                                    break;
+                                }
+                            }
+
+                            this.toasterLite.success("Contrato editado");
+                            this.resetForm();
+                        },
+                        reason => {
+                            this.submitting = false;
+                            this.toasterLite.error('Hubo un error al intentar editar. Verifique por favor.');
+                        }
+                    ));
+            }
+            else {
+                // New
+                this.dirty.idOrg = this.idOrg;
+                this.apService.registrarNuevoContrato(this.dirty,
+                    new common.callbackLite<contratoDto>(
+                        value => {
+                            this.contratos.push(value.data);
+
+                            if (this.tipoContrato === 'contrato') {
+                                this.soloContratos.push(value.data);
+                            }
+
+                            this.toasterLite.success(this.tipoContrato === 'contrato' ? 'Contrato creado' : 'Adenda agregada');
+                            this.resetForm();
+                        },
+                        reason => {
+                            this.submitting = false;
+                            this.toasterLite.error('Hubo un error al intentar registrar el contrato. Verifique por favor.');
+                        })
+                );
+            }
         }
 
         //--------------------------

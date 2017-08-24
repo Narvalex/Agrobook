@@ -111,10 +111,11 @@ module apArea {
             new parcelaDto('kazuoyama_Feliciano', 'kazuoyama', 'Feliciano', '75,18')
         ];
 
-        // Id: [nombre_contrato]_[nombre_adenda]
+        // Id contrato: [idOrg]_[nombre_contrato]
+        // Id adenda: [idContrato]_[nombre_adenda]
         public contratos: contratoDto[] = [
-            new contratoDto('Contrato_Chorti', 'coopchorti', 'Contrato Chorti', false, false, null, new Date(2017, 1, 17)),
-            new contratoDto('Contrato_Chorti_Adenda_I', 'coopchorti', 'Adenda I', true, false, 'Contrato_Chorti', new Date(2017, 2, 20)) 
+            new contratoDto('coopchorti_Contrato Chorti', 'coopchorti', 'Contrato Chorti', false, false, null, new Date(2017, 1, 17)),
+            new contratoDto('coopchorti_Contrato Chorti_Adenda I', 'coopchorti', 'Adenda I', true, false, 'Contrato_Chorti', new Date(2017, 2, 20)) 
         ];
     }
 }

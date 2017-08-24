@@ -41,8 +41,8 @@
         </div>
     </div>
 
-    <md-list>
-        <md-list-item ng-repeat="parcela in vm.parcelas" class="width-xs"
+    <md-list class="width-xs">
+        <md-list-item ng-repeat="parcela in vm.parcelas" 
                       ng-hide="parcela.eliminado && vm.ocultarEliminados">
             <p ng-class="{ 'red-text': parcela.eliminado }"> {{parcela.display}} </p>
             <span class="md-secondary">{{parcela.hectareas}} ha&nbsp;</span>

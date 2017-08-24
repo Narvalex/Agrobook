@@ -21,6 +21,7 @@ var apArea;
         }
         apService.prototype.registrarNuevaParcela = function (dto, callback) {
             var data = new apArea.parcelaDto(dto.idProd + '_' + dto.display.trim(), dto.idProd, dto.display, dto.hectareas);
+            // Set validation check
             for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
                 if (this.fakeDb.parcelas[i].id === data.id) {
                     callback.onError(null);
@@ -40,9 +41,7 @@ var apArea;
                     break;
                 }
             }
-            callback.onSuccess({
-                data: {}
-            });
+            callback.onSuccess({});
         };
         apService.prototype.eliminarParcela = function (idParcela, callback) {
             for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
@@ -67,10 +66,57 @@ var apArea;
             });
         };
         apService.prototype.registrarNuevoContrato = function (contrato, callback) {
+            var id;
+            if (contrato.esAdenda) {
+                id = contrato.idContratoDeLaAdenda + "_" + contrato.display.trim();
+            }
+            else {
+                id = contrato.idOrg + "_" + contrato.display.trim();
+            }
+            // Primary key check
+            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
+                if (this.fakeDb.contratos[i].id === id) {
+                    callback.onError(null);
+                    return;
+                }
+            }
+            contrato.id = id;
+            this.fakeDb.contratos.push(contrato);
+            callback.onSuccess({
+                data: contrato
+            });
         };
         apService.prototype.editarContrato = function (contrato, callback) {
+            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
+                if (this.fakeDb.contratos[i].id === contrato.id) {
+                    this.fakeDb.contratos.splice(i, 1);
+                    this.fakeDb.contratos.push(contrato);
+                    break;
+                }
+            }
+            callback.onSuccess({});
         };
         apService.prototype.eliminarContrato = function (idContrato, callback) {
+            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
+                if (this.fakeDb.contratos[i].id === idContrato) {
+                    this.fakeDb.contratos[i].eliminado = true;
+                    break;
+                }
+            }
+            callback.onSuccess({
+                data: {}
+            });
+        };
+        apService.prototype.restaurarContrato = function (idContrato, callback) {
+            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
+                if (this.fakeDb.contratos[i].id === idContrato) {
+                    this.fakeDb.contratos[i].eliminado = false;
+                    break;
+                }
+            }
+            callback.onSuccess({
+                data: {}
+            });
         };
         return apService;
     }(common.httpLite));

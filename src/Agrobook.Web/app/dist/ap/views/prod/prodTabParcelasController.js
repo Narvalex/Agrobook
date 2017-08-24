@@ -109,9 +109,9 @@ var apArea;
             var _this = this;
             this.parcelaObject.idProd = this.idProd;
             this.apService.registrarNuevaParcela(this.parcelaObject, new common.callbackLite(function (value) {
-                _this.resetForm();
                 _this.parcelas.push(value.data);
                 _this.toasterLite.success('Parcela creada');
+                _this.resetForm();
             }, function (reason) {
                 _this.toasterLite.error('Hubo un error al registrar la parcela. Verifique que el nombre ya no exista por favor');
             }));

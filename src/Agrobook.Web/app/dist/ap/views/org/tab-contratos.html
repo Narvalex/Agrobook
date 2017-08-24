@@ -75,8 +75,9 @@
     <!-- Fin del Formulario de Nuevo Contrato -->
 
     <md-list class="width-xs">
-        <md-list-item ng-repeat="contrato in vm.contratos">
-            <p>{{contrato.display}}</p>
+        <md-list-item ng-repeat="contrato in vm.contratos"
+                      ng-hide="contrato.eliminado && vm.ocultarEliminados">
+            <p ng-class="{ 'red-text': contrato.eliminado }">{{contrato.display}}</p>
             <span class="md-secondary">{{vm.formatearFecha(contrato.fecha)}}</span>
 
             <md-button class="md-icon-button md-secondary" aria-label="edit"
@@ -85,4 +86,12 @@
             </md-button>
         </md-list-item>
     </md-list>
+
+    <md-subheader class="md-no-sticky" ng-show="vm.contratos.length > 0">
+        <span>Tiene {{vm.contratos.length}} contratos y/o adendas. </span>
+        <a href="" ng-click="vm.toggleMostrarEliminados()">{{vm.ocultarEliminados ? 'Mostrar' : 'Ocultar'}}</a> contratos y/o adendas eliminadas.
+    </md-subheader>
+    <md-subheader class="md-no-sticky" ng-hide="vm.contratos.length > 0">
+        <span>No tiene ningún contrato. </span><a href="" ng-click="vm.mostrarForm(false)">Registre uno</a>
+    </md-subheader>
 </md-content>

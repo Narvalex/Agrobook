@@ -113,7 +113,7 @@ module apArea {
 
         eliminar(parcela: parcelaDto) {
             this.apService.eliminarParcela(parcela.id,
-                new common.callbackLite<{}>(
+                new common.callbackLite(
                     value => {
                         for (var i = 0; i < this.parcelas.length; i++) {
                             if (this.parcelas[i].id === parcela.id) {
@@ -151,9 +151,9 @@ module apArea {
             this.apService.registrarNuevaParcela(this.parcelaObject,
                 new common.callbackLite<parcelaDto>(
                     value => {
-                        this.resetForm();
                         this.parcelas.push(value.data);
                         this.toasterLite.success('Parcela creada')
+                        this.resetForm();
                     },
                     reason => {
                         this.toasterLite.error('Hubo un error al registrar la parcela. Verifique que el nombre ya no exista por favor');
