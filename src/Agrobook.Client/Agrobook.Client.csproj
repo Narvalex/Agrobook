@@ -58,8 +58,6 @@
   <ItemGroup>
     <Compile Include="Archivos\ArchivosClient.cs" />
     <Compile Include="Archivos\ArchivosQueryClient.cs" />
-    <Compile Include="ClientBase.cs" />
-    <Compile Include="ClientBaseExtensions.cs" />
     <Compile Include="Login\LoginClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Usuarios\UsuariosDTOs.cs" />

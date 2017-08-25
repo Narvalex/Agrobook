@@ -1,11 +1,9 @@
-﻿using Agrobook.Client;
-using Agrobook.Client.Archivos;
+﻿using Agrobook.Client.Archivos;
 using Agrobook.Client.Login;
 using Agrobook.Client.Usuarios;
 using Agrobook.Common;
 using Agrobook.Infrastructure;
 using Agrobook.Infrastructure.IoC;
-using Agrobook.Infrastructure.Serialization;
 using Eventing.Client.Http;
 using Eventing.Core.Serialization;
 
@@ -23,8 +21,11 @@ namespace Agrobook.Web
         {
             var container = _container;
 
+            // Config
+            var serverUrl = "http://localhost:8081";
+
             var serializer = new NewtonsoftJsonSerializer();
-            var http = new HttpLite("http://localhost:8081");
+            var http = new HttpLite(serverUrl);
 
             var dateTime = new SimpleDateTimeProvider();
 

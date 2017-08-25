@@ -1,5 +1,6 @@
 ﻿using Agrobook.Client;
 using Agrobook.Client.Login;
+using Eventing.Client.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 

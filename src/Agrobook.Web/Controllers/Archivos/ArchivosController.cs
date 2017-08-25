@@ -1,5 +1,6 @@
 ﻿using Agrobook.Client;
 using Agrobook.Client.Archivos;
+using Eventing.Client.Http;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
