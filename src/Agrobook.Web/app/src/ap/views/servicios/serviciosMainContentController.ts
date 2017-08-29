@@ -13,7 +13,9 @@ module apArea {
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
 
-            this.esNuevo = this.idServicio === this.config.conventions.nuevoServicioUrlToken;
+            let action = this.$routeParams['action'];
+            this.action = action === undefined ? 'view' : action;
+            this.esNuevo = this.action === 'new';
 
             this.recuperarProductorYResolverTitulo();
 
@@ -25,6 +27,7 @@ module apArea {
 
         // Estados
         tabIndex: number;
+        action: string;
         esNuevo: boolean;
         title: string;
 
@@ -47,7 +50,7 @@ module apArea {
                 default: tabId = "resumen"; break;
             }
 
-            window.location.replace(`#!/servicios/${this.idProd}/${this.idServicio}?tab=${tabId}`);
+            window.location.replace(`#!/servicios/${this.idProd}/${this.idServicio}?tab=${tabId}&action=${this.action}`);
         }
 
         private abrirTabCorrespondiente() {
@@ -73,10 +76,16 @@ module apArea {
         }
 
         private resolverTitulo() {
-            if (this.esNuevo)
-                this.title = ` Nuevo servicio para ${this.productor.display}`;
-            else
-                this.title = `Servicio ${'place servicio here'}`;
+            switch (this.action) {
+                case 'new':
+                    this.title = ` Nuevo servicio para ${this.productor.display}`;
+                    break;
+                case 'edit':
+                    break;
+                case 'view':
+                    this.title = `Servicio ${'place servicio here'}`;
+                    break;
+            }                
         }
     }
 }

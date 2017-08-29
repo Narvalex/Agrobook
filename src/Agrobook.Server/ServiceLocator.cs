@@ -20,7 +20,7 @@ namespace Agrobook.Server
 {
     public static class ServiceLocator
     {
-        private static ISimpleContainer _container = new SimpleContainer();
+        private static ISimpleContainer _container;
 
         public static T ResolveSingleton<T>() => _container.ResolveSingleton<T>();
 
@@ -28,9 +28,12 @@ namespace Agrobook.Server
 
         public static void Initialize()
         {
-            var container = _container;
+            var container = new SimpleContainer();
+            _container = container;
 
+            // Event Store
             var esm = new EventStoreManager();
+            container.Register<EventStoreManager>(esm);
 
             var sqlDbName = "AgrobookDb";
 
@@ -75,7 +78,6 @@ namespace Agrobook.Server
             container.Register<IJsonSerializer>(jsonSerializer);
             container.Register<IDateTimeProvider>(dateTimeProvider);
             container.Register<ITokenAuthorizationProvider>(usuariosService);
-            container.Register<EventStoreManager>(esm);
             container.Register<SqlDbInitializer<AgrobookDbContext>>(sqlInitializer);
             container.Register<UsuariosService>(usuariosService);
             container.Register<IProveedorDeFirmaDelUsuario>(usuariosService);

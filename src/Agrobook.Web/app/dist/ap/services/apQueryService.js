@@ -22,21 +22,21 @@ var apArea;
         apQueryService.prototype.getClientes = function (filtro, callback) {
             var filteredList;
             if (filtro === "todos")
-                filteredList = this.fakeDb.fakeClientesList;
+                filteredList = this.fakeDb.clientes;
             else if (filtro === "prod")
-                filteredList = this.fakeDb.fakeClientesList.filter(function (x) { return x.tipo === "prod"; });
+                filteredList = this.fakeDb.clientes.filter(function (x) { return x.tipo === "prod"; });
             else if (filtro === "org")
-                filteredList = this.fakeDb.fakeClientesList.filter(function (x) { return x.tipo === "org"; });
+                filteredList = this.fakeDb.clientes.filter(function (x) { return x.tipo === "org"; });
             callback.onSuccess({
                 data: filteredList
             });
         };
         apQueryService.prototype.getOrg = function (id, callback) {
             var dto;
-            for (var i = 0; i < this.fakeDb.fakeClientesList.length; i++) {
-                if (this.fakeDb.fakeClientesList[i].id === id) {
-                    var x = this.fakeDb.fakeClientesList[i];
-                    dto = new apArea.orgDto(x.id, x.nombre);
+            for (var i = 0; i < this.fakeDb.orgs.length; i++) {
+                if (this.fakeDb.orgs[i].id === id) {
+                    var x = this.fakeDb.orgs[i];
+                    dto = new apArea.orgDto(x.id, x.display, x.avatarUrl);
                     break;
                 }
             }
@@ -46,10 +46,10 @@ var apArea;
         };
         apQueryService.prototype.getProd = function (id, callback) {
             var dto;
-            for (var i = 0; i < this.fakeDb.fakeClientesList.length; i++) {
-                if (this.fakeDb.fakeClientesList[i].id === id) {
-                    var x = this.fakeDb.fakeClientesList[i];
-                    dto = new apArea.prodDto(x.id, x.nombre);
+            for (var i = 0; i < this.fakeDb.prods.length; i++) {
+                if (this.fakeDb.prods[i].id === id) {
+                    var x = this.fakeDb.prods[i];
+                    dto = new apArea.prodDto(x.id, x.display, x.avatarUrl, x.orgs);
                     break;
                 }
             }
@@ -59,7 +59,7 @@ var apArea;
         };
         apQueryService.prototype.getServiciosPorOrg = function (idOrg, callback) {
             callback.onSuccess({
-                data: this.fakeDb.fakeServiciosList
+                data: []
             });
         };
         apQueryService.prototype.getParcelasDelProd = function (idProd, callback) {
@@ -73,6 +73,19 @@ var apArea;
             callback.onSuccess({
                 data: list
             });
+        };
+        apQueryService.prototype.getOrgsConContratos = function (idProd, callback) {
+            var _this = this;
+            var orgs;
+            for (var i = 0; i < this.fakeDb.prods.length; i++) {
+                var prod = this.fakeDb.prods[i];
+                if (prod.id === idProd) {
+                    orgs = prod.orgs;
+                    break;
+                }
+            }
+            var list = orgs.map(function (o) { return new apArea.orgConContratos(o, _this.fakeDb.contratos.filter(function (c) { return c.idOrg === o.id; })); });
+            callback.onSuccess({ data: list });
         };
         return apQueryService;
     }(common.httpLite));

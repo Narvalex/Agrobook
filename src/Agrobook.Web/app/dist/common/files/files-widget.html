@@ -1,0 +1,25 @@
+﻿<div>
+    <form>
+        <div id="awFileInputContainer">
+            <input id="awFileInput"
+                   hidden
+                   type="file"
+                   multiple
+                   onchange="angular.element(this).scope().$parent.vm.awPrepareFiles(this)" />
+        </div>
+
+        <p>{{vm.awTitle}}. <a href="" ng-click="vm.awService.selectFiles()">{{vm.awUploadLink}}</a></p>
+
+        <md-list><!--class="md-dense"-->
+            <md-list-item ng-repeat="unit in vm.awFileUnits" class="md-2-line">
+                <img ng-src="./assets/img/fileIcons/file.png" class="md-avatar" alt="{{unit.name}}" />
+                <div class="md-list-item-text">
+                    <h3>{{unit.name}}</h3>
+                    <p>File size: unknown</p>
+                </div>
+                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">More Info</md-button>
+            </md-list-item>
+        </md-list>
+
+    </form>
+</div>

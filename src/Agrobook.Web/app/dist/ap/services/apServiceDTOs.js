@@ -20,9 +20,10 @@ var apArea;
     }());
     apArea.cliente = cliente;
     var orgDto = (function () {
-        function orgDto(id, display) {
+        function orgDto(id, display, avatarUrl) {
             this.id = id;
             this.display = display;
+            this.avatarUrl = avatarUrl;
         }
         return orgDto;
     }());
@@ -37,13 +38,23 @@ var apArea;
     }());
     apArea.servicioDto = servicioDto;
     var prodDto = (function () {
-        function prodDto(id, display) {
+        function prodDto(id, display, avatarUrl, orgs) {
             this.id = id;
             this.display = display;
+            this.avatarUrl = avatarUrl;
+            this.orgs = orgs;
         }
         return prodDto;
     }());
     apArea.prodDto = prodDto;
+    var orgConContratos = (function () {
+        function orgConContratos(org, contratos) {
+            this.org = org;
+            this.contratos = contratos;
+        }
+        return orgConContratos;
+    }());
+    apArea.orgConContratos = orgConContratos;
     /************************
      * Parcela
      ************************/
@@ -86,17 +97,28 @@ var apArea;
     //-----------------------------------------
     var fakeDb = (function () {
         function fakeDb() {
-            this.fakeClientesList = [
-                new cliente("coopchorti", "Cooperativa Chortizer", "Loma Plata", "org", "./assets/img/avatar/org-icon.png"),
-                new cliente("ccuu", "Cooperativa Colonias Unidas", "Itapua", "org", "./assets/img/avatar/org-icon.png"),
-                new cliente("davidelias", "David Elias", "Cooperativa Chortizer", "prod", "./assets/img/avatar/8.png"),
-                new cliente("kazuoyama", "Kazuo Yamazuki", "Cooperativa Pirapo", "prod", "./assets/img/avatar/9.png"),
-                new cliente("adair", "Adair Acosta", "Cooperativa Raul Peña", "prod", "./assets/img/avatar/7.png")
+            // Se genera en otro Bounded Context
+            this.orgs = [
+                new orgDto('coopchorti', 'Cooperativa Chortizer', './assets/img/avatar/org-icon.png'),
+                new orgDto('ccuu', 'Cooperativa Colonias Unidas', './assets/img/avatar/org-icon.png')
             ];
-            this.fakeServiciosList = [
-                new servicioDto("David Elias", "20/12/2018", "Contrato Chorti"),
-                new servicioDto("Kazuo Yamazuki", "20/12/2017", "Contrato Pirapo")
+            // Se genera en otro Bounded Context
+            this.prods = [
+                new prodDto('davidelias', 'David Elías', './assets/img/avatar/8.png', [
+                    new orgDto(this.orgs[0].id, this.orgs[0].display, this.orgs[0].avatarUrl)
+                ]),
+                new prodDto('kazuoyama', 'Kazuo Yamazuki', './assets/img/avatar/9.png', [
+                    new orgDto(this.orgs[1].id, this.orgs[1].display, this.orgs[1].avatarUrl)
+                ]),
+                new prodDto('adair', 'Adair Acosta', './assets/img/avatar/7.png', [
+                    new orgDto(this.orgs[0].id, this.orgs[0].display, this.orgs[0].avatarUrl),
+                    new orgDto(this.orgs[1].id, this.orgs[1].display, this.orgs[1].avatarUrl)
+                ])
             ];
+            //public servicios = [
+            //    new servicioDto("David Elias", "20/12/2018", "Contrato Chorti"),
+            //    new servicioDto("Kazuo Yamazuki", "20/12/2017", "Contrato Pirapo")
+            //];
             // El id de la parcela se puede hacer de la combinacion [prod]_[nombreParcela] debido a que el prod es 
             // igual al usuario, que es unico
             this.parcelas = [
@@ -111,6 +133,16 @@ var apArea;
                 new contratoDto('coopchorti_Contrato Chorti', 'coopchorti', 'Contrato Chorti', false, false, null, new Date(2017, 1, 17)),
                 new contratoDto('coopchorti_Contrato Chorti_Adenda I', 'coopchorti', 'Adenda I', true, false, 'Contrato_Chorti', new Date(2017, 2, 20))
             ];
+            // Cliente preload
+            this.clientes = this.orgs.map(function (x) { return new cliente(x.id, x.display, 'Organización', 'org', x.avatarUrl); })
+                .concat(this.prods
+                .map(function (p) { return new cliente(p.id, p.display, p.orgs.reduce(function (des, org, index, array) {
+                if (des === '')
+                    des = org.display;
+                else
+                    des += (', ' + org.display);
+                return des;
+            }, ''), 'prod', p.avatarUrl); }));
         }
         return fakeDb;
     }());

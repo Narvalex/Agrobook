@@ -1099,7 +1099,7 @@
     <Content Include="app\dist\archivos\sidenav.html" />
     <Content Include="app\dist\archivos\toolbar-header.html" />
     <Content Include="app\dist\archivos\views\main-content.html" />
-    <Content Include="app\dist\common\archivos\archivos-widget.html" />
+    <Content Include="app\dist\common\files\files-widget.html" />
     <Content Include="app\dist\common\toasts\toast-cerrable.html" />
     <Content Include="app\dist\common\userMenu\menu-items-template.html" />
     <Content Include="app\dist\common\userMenu\user-menu-widget.css" />
@@ -1139,7 +1139,7 @@
     <TypeScriptCompile Include="app\src\archivos\dialogs\uploadCenterController.ts" />
     <TypeScriptCompile Include="app\src\archivos\routes.ts" />
     <TypeScriptCompile Include="app\src\archivos\uploadService.ts" />
-    <TypeScriptCompile Include="app\src\common\archivos\archivosWidgetService.ts" />
+    <TypeScriptCompile Include="app\src\common\files\filesWidgetService.ts" />
     <TypeScriptCompile Include="app\src\usuarios\dialogs\nuevoGrupoDialogController.ts" />
     <TypeScriptCompile Include="app\src\archivos\prodSidenavController.ts" />
     <Content Include="app\informes.html" />

@@ -14,7 +14,7 @@ var apArea;
         // Listas
         // Api
         prodTabServiciosController.prototype.nuevoServicio = function () {
-            window.location.replace("#!/servicios/" + this.idProd + "/" + this.config.conventions.nuevoServicioUrlToken);
+            window.location.replace("#!/servicios/" + this.idProd + "/new?tab=resumen&action=new");
         };
         return prodTabServiciosController;
     }());

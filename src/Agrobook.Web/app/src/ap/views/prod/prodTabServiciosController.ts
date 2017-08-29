@@ -26,7 +26,7 @@ module apArea {
 
         // Api
         nuevoServicio() {
-            window.location.replace(`#!/servicios/${this.idProd}/${this.config.conventions.nuevoServicioUrlToken}`);
+            window.location.replace(`#!/servicios/${this.idProd}/new?tab=resumen&action=new`);
         }
 
         // Privados

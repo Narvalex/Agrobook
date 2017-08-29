@@ -7,41 +7,23 @@ using Eventing.GetEventStore;
 using Eventing.Log;
 using Microsoft.Owin.Hosting;
 using System;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Agrobook.Server
 {
-    class Program
+    partial class Program
     {
         private static ILogLite _log = LogManager.GlobalLogger;
-        #region Extern References
-        // Source: http://stackoverflow.com/questions/474679/capture-console-exit-c-sharp
-        [DllImport("Kernel32")]
-        private static extern bool SetConsoleCtrlHandler(ExtConsoleHandler handler, bool add);
-        private delegate bool ExtConsoleHandler(CtrlType signal);
-
-        enum CtrlType
-        {
-            CTRL_C_EVENT = 0,
-            CTRL_BREAK_EVENT = 1,
-            CTRL_CLOSE_EVENT = 2,
-            CTRL_LOGOFF_EVENT = 5,
-            CTRL_SHUTDOWN_EVENT = 6
-        }
-        #endregion
 
         static void Main(string[] args)
         {
-            SetConsoleCtrlHandler(
-              add: true,
-              handler: signal =>
+            SetConsoleCtrlHandler(signal =>
               {
                   OnExit();
                   // Shutdown right away
                   Environment.Exit(-1);
                   return true;
-              });
+              }, true);
 
             // Dependency Container
             Console.WriteLine("Agrobook Server");
@@ -55,8 +37,7 @@ namespace Agrobook.Server
 #if DROP_DB
             _log.Info("The database initializer configuration is DROP AND CREATE");
             es.DropAndCreateDb();
-#endif
-#if !DROP_DB
+#else
             _log.Info("The database initializer configuration is CREATE IF NOT EXISTS");
             es.CreateDbIfNotExists();
 #endif
@@ -81,16 +62,20 @@ namespace Agrobook.Server
             fileManager.CrearDirectoriosSiFaltan();
 #endif
 
-            _log.Verbose("Starting web server...");
             // Web Api
+            _log.Verbose("Starting web server...");
             var baseUri = "http://localhost:8081";
             WebApiStartup.OnAppDisposing = () => OnExit();
             WebApp.Start<WebApiStartup>(baseUri);
-            _log.Verbose("Web server is ready");
-            _log.Success($"Server running at {baseUri}");
+            _log.Success($"Web server is ready! Server running at {baseUri}");
 
-            OnServerStarted();
+            Prelude();
 
+            EnterCommandLoop();
+        }
+
+        private static void EnterCommandLoop()
+        {
             string line;
             do
             {
@@ -109,7 +94,7 @@ namespace Agrobook.Server
                 .TearDown();
         }
 
-        private static void OnServerStarted()
+        private static void Prelude()
         {
             var userService = ServiceLocator.ResolveSingleton<UsuariosService>();
             var userQueryService = ServiceLocator.ResolveSingleton<UsuariosQueryService>();

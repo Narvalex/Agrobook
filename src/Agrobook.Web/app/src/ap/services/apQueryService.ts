@@ -18,11 +18,11 @@ module apArea {
             var filteredList: cliente[];
 
             if (filtro === "todos")
-                filteredList = this.fakeDb.fakeClientesList;
+                filteredList = this.fakeDb.clientes;
             else if (filtro === "prod")
-                filteredList = this.fakeDb.fakeClientesList.filter(x => x.tipo === "prod");
+                filteredList = this.fakeDb.clientes.filter(x => x.tipo === "prod");
             else if (filtro === "org")
-                filteredList = this.fakeDb.fakeClientesList.filter(x => x.tipo === "org");
+                filteredList = this.fakeDb.clientes.filter(x => x.tipo === "org");
 
             callback.onSuccess({
                 data: filteredList});
@@ -33,10 +33,10 @@ module apArea {
             callback: common.callbackLite<orgDto>
         ) {
             var dto: orgDto;
-            for (var i = 0; i < this.fakeDb.fakeClientesList.length; i++) {
-                if (this.fakeDb.fakeClientesList[i].id === id) {
-                    var x = this.fakeDb.fakeClientesList[i];
-                    dto = new orgDto(x.id, x.nombre);
+            for (var i = 0; i < this.fakeDb.orgs.length; i++) {
+                if (this.fakeDb.orgs[i].id === id) {
+                    var x = this.fakeDb.orgs[i];
+                    dto = new orgDto(x.id, x.display, x.avatarUrl);
                     break;
                 }
             }
@@ -50,11 +50,11 @@ module apArea {
             id: string,
             callback: common.callbackLite<prodDto>
         ) {
-            var dto: orgDto;
-            for (var i = 0; i < this.fakeDb.fakeClientesList.length; i++) {
-                if (this.fakeDb.fakeClientesList[i].id === id) {
-                    var x = this.fakeDb.fakeClientesList[i];
-                    dto = new prodDto(x.id, x.nombre);
+            var dto: prodDto;
+            for (var i = 0; i < this.fakeDb.prods.length; i++) {
+                if (this.fakeDb.prods[i].id === id) {
+                    var x = this.fakeDb.prods[i];
+                    dto = new prodDto(x.id, x.display,x.avatarUrl, x.orgs);
                     break;
                 }
             }
@@ -69,7 +69,7 @@ module apArea {
             callback: common.callbackLite<servicioDto[]>
         ) {
             callback.onSuccess({
-                data: this.fakeDb.fakeServiciosList
+                data: []
             });
         }
 
@@ -93,6 +93,21 @@ module apArea {
             callback.onSuccess({
                 data: list
             });
+        }
+
+        getOrgsConContratos(idProd: string, callback: common.callbackLite<orgConContratos[]>) {
+            let orgs: orgDto[];
+            for (var i = 0; i < this.fakeDb.prods.length; i++) {
+                var prod = this.fakeDb.prods[i];
+                if (prod.id === idProd) {
+                    orgs = prod.orgs;
+                    break;
+                }
+            }
+
+            var list = orgs.map(o => new orgConContratos(o, this.fakeDb.contratos.filter(c => c.idOrg === o.id)));
+
+            callback.onSuccess({ data: list });
         }
     }
 }

@@ -1,5 +1,26 @@
 ﻿<md-content ng-controller="serviciosTabResumenController as vm">
-    <div layout="row" ng-show="vm.esNuevo">
+    
+
+    <div layout="row">
+        <md-input-container>
+            <label>Seleccionar organización</label>
+            <md-select ng-model="vm.orgSeleccionada">
+                <md-option ng-repeat="dto in vm.orgsConContratos" ng-value="dto">
+                    {{dto.org.display}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container>
+            <label>Seleccionar contrato</label>
+            <md-select ng-model="vm.contratoSeleccionado">
+                <md-option ng-repeat="contrato in vm.orgSeleccionada.contratos" ng-value="contrato">
+                    {{contrato.display}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+
+    <div layout="row">
         <div>
             <md-button class="md-button md-primary md-raised"
                        ng-disabled="false"

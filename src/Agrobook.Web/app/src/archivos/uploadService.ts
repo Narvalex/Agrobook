@@ -28,7 +28,7 @@ module archivosArea {
             }
         }
 
-        public prepareFiles(files: File[], idProductor: string) {
+        public prepareFiles(files: FileList, idProductor: string) {
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
 

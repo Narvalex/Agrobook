@@ -38,7 +38,7 @@ module archivosArea {
             }, 0);
         }
 
-        prepararArchivosSeleccionados(element) {
+        prepararArchivosSeleccionados(element: HTMLInputElement) {
             var vm = (angular.element(this)[0] as any).vm as uploadCenterController;
             // reset suff 
             var container = document.getElementById('fileInputContainer');

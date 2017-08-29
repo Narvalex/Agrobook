@@ -14,6 +14,8 @@ module apArea {
         ) {
             this.idProd = this.$routeParams['idProd'];
             this.esNuevo = true;
+
+            this.recuperarContratos();
         }
 
         // Estados
@@ -21,9 +23,10 @@ module apArea {
 
         // Objetos
         idProd: string;
+        orgSeleccionada: orgConContratos;
 
         // Listas
-
+        orgsConContratos: orgConContratos[];
 
         // Api
         cancelar() {
@@ -31,6 +34,15 @@ module apArea {
         }
 
         // Privados
-
+        private recuperarContratos() {
+            this.apQueryService.getOrgsConContratos(this.idProd,
+                new common.callbackLite<orgConContratos[]>(
+                    value => {
+                        this.orgsConContratos = value.data;
+                    },
+                    reason => {
+                    })
+            );
+        }
     }
 }

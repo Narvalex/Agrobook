@@ -10,7 +10,9 @@ var apArea;
             this.config = config;
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
-            this.esNuevo = this.idServicio === this.config.conventions.nuevoServicioUrlToken;
+            var action = this.$routeParams['action'];
+            this.action = action === undefined ? 'view' : action;
+            this.esNuevo = this.action === 'new';
             this.recuperarProductorYResolverTitulo();
             this.abrirTabCorrespondiente();
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
@@ -39,7 +41,7 @@ var apArea;
                     tabId = "resumen";
                     break;
             }
-            window.location.replace("#!/servicios/" + this.idProd + "/" + this.idServicio + "?tab=" + tabId);
+            window.location.replace("#!/servicios/" + this.idProd + "/" + this.idServicio + "?tab=" + tabId + "&action=" + this.action);
         };
         serviciosMainContentController.prototype.abrirTabCorrespondiente = function () {
             var tabId = this.$routeParams['tab'];
@@ -69,10 +71,16 @@ var apArea;
             }, function (reason) { }));
         };
         serviciosMainContentController.prototype.resolverTitulo = function () {
-            if (this.esNuevo)
-                this.title = " Nuevo servicio para " + this.productor.display;
-            else
-                this.title = "Servicio " + 'place servicio here';
+            switch (this.action) {
+                case 'new':
+                    this.title = " Nuevo servicio para " + this.productor.display;
+                    break;
+                case 'edit':
+                    break;
+                case 'view':
+                    this.title = "Servicio " + 'place servicio here';
+                    break;
+            }
         };
         return serviciosMainContentController;
     }());

@@ -11,11 +11,19 @@ var apArea;
             this.$mdPanel = $mdPanel;
             this.idProd = this.$routeParams['idProd'];
             this.esNuevo = true;
+            this.recuperarContratos();
         }
-        // Listas
         // Api
         serviciosTabResumenController.prototype.cancelar = function () {
             window.location.replace("#!/prod/" + this.idProd);
+        };
+        // Privados
+        serviciosTabResumenController.prototype.recuperarContratos = function () {
+            var _this = this;
+            this.apQueryService.getOrgsConContratos(this.idProd, new common.callbackLite(function (value) {
+                _this.orgsConContratos = value.data;
+            }, function (reason) {
+            }));
         };
         return serviciosTabResumenController;
     }());

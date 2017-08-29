@@ -2,8 +2,9 @@
 var apArea;
 (function (apArea) {
     var orgTabContratosController = (function () {
-        function orgTabContratosController($routeParams, $mdPanel, apQueryService, apService, toasterLite, awService) {
+        function orgTabContratosController($routeParams, $scope, $mdPanel, apQueryService, apService, toasterLite, awService) {
             this.$routeParams = $routeParams;
+            this.$scope = $scope;
             this.$mdPanel = $mdPanel;
             this.apQueryService = apQueryService;
             this.apService = apService;
@@ -17,7 +18,7 @@ var apArea;
             //-----------------------------
             this.awTitle = this.tipoContrato === 'adenda' ? 'Documentos de respaldo de la adenda' : 'Documentos de respaldo del contrato';
             this.awUploadLink = 'Levantar archivo...';
-            this.awSelectFiles = function () { };
+            this.awFileUnits = [];
             this.idOrg = this.$routeParams['idOrg'];
             this.recuperarContratos();
         }
@@ -187,9 +188,16 @@ var apArea;
         orgTabContratosController.prototype.formatearFecha = function (fecha) {
             return moment(fecha).format('DD/MM/YYYY');
         };
+        orgTabContratosController.prototype.awPrepareFiles = function (element) {
+            this.awService.resetFileInput();
+            var vm = angular.element(this)[0];
+            vm.$scope.$apply(function (scope) {
+                vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
+            });
+        };
         return orgTabContratosController;
     }());
-    orgTabContratosController.$inject = ['$routeParams', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'awService'];
+    orgTabContratosController.$inject = ['$routeParams', '$scope', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'awService'];
     apArea.orgTabContratosController = orgTabContratosController;
     var panelMenuController = (function () {
         function panelMenuController(mdPanelRef) {

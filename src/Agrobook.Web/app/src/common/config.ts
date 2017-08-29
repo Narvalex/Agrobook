@@ -82,7 +82,8 @@ module common {
         }
 
         private _conventions = {
-            nuevoServicioUrlToken: 'nuevo-servicio'
+            // add conventions here
+            //nuevoServicioUrlToken: 'nuevo-servicio'
         }
 
         get keyCodes() { return this._keyCodes; }

@@ -2,15 +2,16 @@
 
 module apArea {
     export class orgTabContratosController {
-        static $inject = ['$routeParams', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'awService']
+        static $inject = ['$routeParams', '$scope', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'awService']
 
         constructor(
             private $routeParams: angular.route.IRouteParamsService,
+            private $scope: angular.IScope,
             private $mdPanel: angular.material.IPanelService,
             private apQueryService: apQueryService,
             private apService: apService,
             private toasterLite: common.toasterLite,
-            private awService: common.archivosWidgetService
+            private awService: common.filesWidgetService
         ) {
             this.idOrg = this.$routeParams['idOrg'];
 
@@ -255,7 +256,15 @@ module apArea {
         //-----------------------------
         awTitle = this.tipoContrato === 'adenda' ? 'Documentos de respaldo de la adenda' : 'Documentos de respaldo del contrato';
         awUploadLink = 'Levantar archivo...';
-        awSelectFiles = () => { }
+        awFileUnits: common.fileUnit[] = [];
+        awPrepareFiles(element: HTMLInputElement) {
+            this.awService.resetFileInput();
+
+            var vm = (angular.element(this)[0] as any) as orgTabContratosController;
+            vm.$scope.$apply(scope => {
+                vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
+            });
+        }
     }
 
     class panelMenuController {
