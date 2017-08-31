@@ -11,7 +11,7 @@ module apArea {
             private config: common.config
         ) {
             this.idProd = this.$routeParams['idProd'];
-            this.idServicio = this.$routeParams['idServicio'];
+            this.servicio = new servicioDto(this.$routeParams['idServicio'], null, null, null, null);
 
             let action = this.$routeParams['action'];
             this.action = action === undefined ? 'view' : action;
@@ -23,6 +23,11 @@ module apArea {
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
                 this.abrirTabCorrespondiente();
             });
+            this.$scope.$on(this.config.eventIndex.ap_servicios.nuevoServicioCreado, (e, args: servicioDto) => {
+                this.esNuevo = false;
+                this.action = 'view';
+                this.servicio = args;
+            });
         }
 
         // Estados
@@ -33,7 +38,7 @@ module apArea {
 
         // Objetos seleccionados
         idProd: string;
-        idServicio: string;
+        servicio: servicioDto;
         productor: prodDto;
 
         //--------------------------
@@ -50,7 +55,7 @@ module apArea {
                 default: tabId = "resumen"; break;
             }
 
-            window.location.replace(`#!/servicios/${this.idProd}/${this.idServicio}?tab=${tabId}&action=${this.action}`);
+            window.location.replace(`#!/servicios/${this.idProd}/${this.servicio.id}?tab=${tabId}&action=${this.action}`);
         }
 
         private abrirTabCorrespondiente() {
@@ -69,23 +74,9 @@ module apArea {
                 new common.callbackLite<prodDto>(
                     value => {
                         this.productor = value.data;
-                        this.resolverTitulo();
                     },
                     reason => { }
                 ));
-        }
-
-        private resolverTitulo() {
-            switch (this.action) {
-                case 'new':
-                    this.title = ` Nuevo servicio para ${this.productor.display}`;
-                    break;
-                case 'edit':
-                    break;
-                case 'view':
-                    this.title = `Servicio ${'place servicio here'}`;
-                    break;
-            }                
         }
     }
 }

@@ -141,5 +141,17 @@ module apArea {
                 data: {}
             });
         }
+
+        registrarNuevoServicio(servicio: servicioDto, callback: common.callbackLite<string>) {
+            var serviciosDelProductor = this.fakeDb.servicios.filter(x => x.idProd === servicio.idProd);
+            var idQueLeSigue = serviciosDelProductor.length + 1;
+            servicio.id = `${servicio.idProd}_servicio${idQueLeSigue}`;
+
+            this.fakeDb.servicios.push(servicio);
+
+            setTimeout(() => {
+                callback.onSuccess({ data: servicio.id });
+            }, 2000);
+        }
     }
 }

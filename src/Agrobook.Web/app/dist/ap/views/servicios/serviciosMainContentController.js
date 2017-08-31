@@ -9,7 +9,7 @@ var apArea;
             this.apQueryService = apQueryService;
             this.config = config;
             this.idProd = this.$routeParams['idProd'];
-            this.idServicio = this.$routeParams['idServicio'];
+            this.servicio = new apArea.servicioDto(this.$routeParams['idServicio'], null, null, null, null);
             var action = this.$routeParams['action'];
             this.action = action === undefined ? 'view' : action;
             this.esNuevo = this.action === 'new';
@@ -17,6 +17,11 @@ var apArea;
             this.abrirTabCorrespondiente();
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
                 _this.abrirTabCorrespondiente();
+            });
+            this.$scope.$on(this.config.eventIndex.ap_servicios.nuevoServicioCreado, function (e, args) {
+                _this.esNuevo = false;
+                _this.action = 'view';
+                _this.servicio = args;
             });
         }
         //--------------------------
@@ -41,7 +46,7 @@ var apArea;
                     tabId = "resumen";
                     break;
             }
-            window.location.replace("#!/servicios/" + this.idProd + "/" + this.idServicio + "?tab=" + tabId + "&action=" + this.action);
+            window.location.replace("#!/servicios/" + this.idProd + "/" + this.servicio.id + "?tab=" + tabId + "&action=" + this.action);
         };
         serviciosMainContentController.prototype.abrirTabCorrespondiente = function () {
             var tabId = this.$routeParams['tab'];
@@ -67,20 +72,7 @@ var apArea;
             var _this = this;
             this.apQueryService.getProd(this.idProd, new common.callbackLite(function (value) {
                 _this.productor = value.data;
-                _this.resolverTitulo();
             }, function (reason) { }));
-        };
-        serviciosMainContentController.prototype.resolverTitulo = function () {
-            switch (this.action) {
-                case 'new':
-                    this.title = " Nuevo servicio para " + this.productor.display;
-                    break;
-                case 'edit':
-                    break;
-                case 'view':
-                    this.title = "Servicio " + 'place servicio here';
-                    break;
-            }
         };
         return serviciosMainContentController;
     }());

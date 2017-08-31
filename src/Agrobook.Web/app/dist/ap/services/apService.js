@@ -118,6 +118,15 @@ var apArea;
                 data: {}
             });
         };
+        apService.prototype.registrarNuevoServicio = function (servicio, callback) {
+            var serviciosDelProductor = this.fakeDb.servicios.filter(function (x) { return x.idProd === servicio.idProd; });
+            var idQueLeSigue = serviciosDelProductor.length + 1;
+            servicio.id = servicio.idProd + "_servicio" + idQueLeSigue;
+            this.fakeDb.servicios.push(servicio);
+            setTimeout(function () {
+                callback.onSuccess({ data: servicio.id });
+            }, 2000);
+        };
         return apService;
     }(common.httpLite));
     apService.$inject = ['$http', 'fakeDb'];

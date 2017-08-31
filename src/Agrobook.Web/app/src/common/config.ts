@@ -67,6 +67,9 @@ module common {
                 productorSeleccionado: 'productorSeleccionado',
                 abrirCuadroDeCargaDeArchivos: 'abrirCuadroDeCargaDeArchivos',
                 filtrar: 'filtrar'
+            },
+            ap_servicios: {
+                nuevoServicioCreado: 'nuevoServicioCreado'
             }
         }
 

@@ -13,10 +13,11 @@ var apArea;
 (function (apArea) {
     var apQueryService = (function (_super) {
         __extends(apQueryService, _super);
-        function apQueryService($http, fakeDb) {
+        function apQueryService($http, fakeDb, $timeout) {
             var _this = _super.call(this, $http, 'ap/query') || this;
             _this.$http = $http;
             _this.fakeDb = fakeDb;
+            _this.$timeout = $timeout;
             return _this;
         }
         apQueryService.prototype.getClientes = function (filtro, callback) {
@@ -58,9 +59,12 @@ var apArea;
             });
         };
         apQueryService.prototype.getServiciosPorOrg = function (idOrg, callback) {
-            callback.onSuccess({
-                data: []
-            });
+            var list = this.fakeDb.servicios.filter(function (x) { return x.idOrg === idOrg; });
+            this.$timeout(function () { return callback.onSuccess({ data: list }); }, 750);
+        };
+        apQueryService.prototype.getServiciosPorProd = function (idProd, callback) {
+            var lista = this.fakeDb.servicios.filter(function (x) { return x.idProd === idProd; });
+            this.$timeout(function () { return callback.onSuccess({ data: lista }); }, 750);
         };
         apQueryService.prototype.getParcelasDelProd = function (idProd, callback) {
             var list = this.fakeDb.parcelas.filter(function (x) { return x.idProd === idProd; });
@@ -89,7 +93,7 @@ var apArea;
         };
         return apQueryService;
     }(common.httpLite));
-    apQueryService.$inject = ['$http', 'fakeDb'];
+    apQueryService.$inject = ['$http', 'fakeDb', '$timeout'];
     apArea.apQueryService = apQueryService;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=apQueryService.js.map

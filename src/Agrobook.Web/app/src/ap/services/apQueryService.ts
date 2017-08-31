@@ -2,11 +2,12 @@
 
 module apArea {
     export class apQueryService extends common.httpLite {
-        static $inject = ['$http', 'fakeDb'];
+        static $inject = ['$http', 'fakeDb', '$timeout'];
 
         constructor(
             private $http: ng.IHttpService,
-            private fakeDb: fakeDb
+            private fakeDb: fakeDb,
+            private $timeout: angular.ITimeoutService
         ) {
             super($http, 'ap/query');
         }
@@ -68,9 +69,15 @@ module apArea {
             idOrg: string,
             callback: common.callbackLite<servicioDto[]>
         ) {
-            callback.onSuccess({
-                data: []
-            });
+            var list = this.fakeDb.servicios.filter(x => x.idOrg === idOrg);
+
+            this.$timeout(() => callback.onSuccess({ data: list }), 750);
+        }
+
+        getServiciosPorProd(idProd: string, callback: common.callbackLite<servicioDto[]>) {
+            var lista = this.fakeDb.servicios.filter(x => x.idProd === idProd);
+
+            this.$timeout(() => callback.onSuccess({ data: lista }), 750);
         }
 
         getParcelasDelProd(

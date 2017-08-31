@@ -202,6 +202,7 @@
     <Content Include="EventStore\Newtonsoft.Json.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="EventStore\Newtonsoft.Json.xml" />
     <Content Include="EventStore\NLog.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

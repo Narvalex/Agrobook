@@ -26,9 +26,15 @@ module apArea {
 
     export class servicioDto {
         constructor(
-            public productorDisplay: string,
-            public fecha: string,
-            public contrato: string
+            public id: string,
+            public idContrato: string,
+            public idOrg: string,
+            public idProd: string,
+            public fecha: Date,
+            // With Defaults
+            public eliminado: boolean = false,
+            public parcelaId: string = null,
+            public parcelaDisplay: string = null
         ) {
         }
     }
@@ -95,6 +101,7 @@ module apArea {
     //-----------------------------------------
     export class fakeDb {
         static $inject = [];
+        precargar: boolean = true;
 
         constructor(
         ) {
@@ -110,9 +117,26 @@ module apArea {
                             return des;
                         }, ''),
                         'prod', p.avatarUrl)));
-        }
 
-        public clientes: cliente[];
+            if (this.precargar) {
+                this.parcelas = [
+                    new parcelaDto('davidelias_DeLaSeñora', 'davidelias', 'De la Señora', '31,66'),
+                    new parcelaDto('davidelias_Apepu', 'davidelias', 'Apepu', '72,18'),
+                    new parcelaDto('adair_Mariscal', 'adair', 'Mariscal', '73,18'),
+                    new parcelaDto('adair_Feliciano', 'adair', 'Feliciano', '75,18')
+                ];
+
+                this.contratos = [
+                    new contratoDto('coopchorti_Contrato Chorti', 'coopchorti', 'Contrato Chorti', false, false, null, new Date(2017, 1, 17)),
+                    new contratoDto('coopchorti_Contrato Chorti_Adenda I', 'coopchorti', 'Adenda I', true, false, 'Contrato_Chorti', new Date(2017, 2, 20))
+                ];
+
+                this.servicios = [
+                    new servicioDto('adair_servicio1', 'coopchorti_Contrato Chorti', 'coopchorti', 'adair', new Date(2017, 12, 1)),
+                    new servicioDto('adair_servicio2', 'coopchorti_Contrato Chorti_Adenda I', 'coopchorti', 'adair', new Date(2017, 12, 30))
+                ];
+            }
+        }
         
         // Se genera en otro Bounded Context
         public orgs = [
@@ -134,25 +158,20 @@ module apArea {
             ])
         ];
 
-        //public servicios = [
-        //    new servicioDto("David Elias", "20/12/2018", "Contrato Chorti"),
-        //    new servicioDto("Kazuo Yamazuki", "20/12/2017", "Contrato Pirapo")
-        //];
-
         // El id de la parcela se puede hacer de la combinacion [prod]_[nombreParcela] debido a que el prod es 
         // igual al usuario, que es unico
-        public parcelas: parcelaDto[] = [
-            new parcelaDto('davidelias_DeLaSeñora', 'davidelias', 'De la Señora', '31,66'),
-            new parcelaDto('davidelias_Apepu', 'davidelias', 'Apepu', '72,18'),
-            new parcelaDto('kazuoyama_Mariscal', 'kazuoyama', 'Mariscal', '73,18'),
-            new parcelaDto('kazuoyama_Feliciano', 'kazuoyama', 'Feliciano', '75,18')
-        ];
+        public parcelas: parcelaDto[] = [];
 
         // Id contrato: [idOrg]_[nombre_contrato]
         // Id adenda: [idContrato]_[nombre_adenda]
-        public contratos: contratoDto[] = [
-            new contratoDto('coopchorti_Contrato Chorti', 'coopchorti', 'Contrato Chorti', false, false, null, new Date(2017, 1, 17)),
-            new contratoDto('coopchorti_Contrato Chorti_Adenda I', 'coopchorti', 'Adenda I', true, false, 'Contrato_Chorti', new Date(2017, 2, 20))
-        ];
+        public contratos: contratoDto[] = [];
+
+        // Id: Id productor o id org, no serian iguales
+        public clientes: cliente[] = []; // se carga en el constructor
+
+        /**
+        * Id: [idProd]_servicio[number + 1]
+        */
+        public servicios: servicioDto[] = [];
     }
 }

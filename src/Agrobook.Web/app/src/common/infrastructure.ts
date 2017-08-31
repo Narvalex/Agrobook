@@ -30,7 +30,7 @@ module common {
         static $inject = ['$mdToast'];
 
         private defaultDelay = 5000; // 5 seconds
-        private defaultPosition = 'top right';
+        private defaultPosition = 'bottom right';
 
         constructor(
             private $mdToast: angular.material.IToastService) { 
@@ -76,6 +76,21 @@ module common {
                 controllerAs: 'vm',
                 templateUrl: './dist/common/toasts/toast-cerrable.html',
                 toastClass: 'error',
+                controller: class {
+                    message: string = message;
+                    close = () => { self.$mdToast.hide(); }
+                }
+            };
+            this.$mdToast.show(options);
+        }
+
+        default(message: string, delay: number = this.defaultDelay, closeButton: boolean = true, position: string = this.defaultPosition) {
+            var self = this;
+            let options: angular.material.IToastOptions = {
+                hideDelay: delay,
+                position: position,
+                controllerAs: 'vm',
+                templateUrl: './dist/common/toasts/toast-cerrable.html',
                 controller: class {
                     message: string = message;
                     close = () => { self.$mdToast.hide(); }

@@ -29,10 +29,20 @@ var apArea;
     }());
     apArea.orgDto = orgDto;
     var servicioDto = (function () {
-        function servicioDto(productorDisplay, fecha, contrato) {
-            this.productorDisplay = productorDisplay;
+        function servicioDto(id, idContrato, idOrg, idProd, fecha, 
+            // With Defaults
+            eliminado, parcelaId, parcelaDisplay) {
+            if (eliminado === void 0) { eliminado = false; }
+            if (parcelaId === void 0) { parcelaId = null; }
+            if (parcelaDisplay === void 0) { parcelaDisplay = null; }
+            this.id = id;
+            this.idContrato = idContrato;
+            this.idOrg = idOrg;
+            this.idProd = idProd;
             this.fecha = fecha;
-            this.contrato = contrato;
+            this.eliminado = eliminado;
+            this.parcelaId = parcelaId;
+            this.parcelaDisplay = parcelaDisplay;
         }
         return servicioDto;
     }());
@@ -97,6 +107,7 @@ var apArea;
     //-----------------------------------------
     var fakeDb = (function () {
         function fakeDb() {
+            this.precargar = true;
             // Se genera en otro Bounded Context
             this.orgs = [
                 new orgDto('coopchorti', 'Cooperativa Chortizer', './assets/img/avatar/org-icon.png'),
@@ -115,24 +126,18 @@ var apArea;
                     new orgDto(this.orgs[1].id, this.orgs[1].display, this.orgs[1].avatarUrl)
                 ])
             ];
-            //public servicios = [
-            //    new servicioDto("David Elias", "20/12/2018", "Contrato Chorti"),
-            //    new servicioDto("Kazuo Yamazuki", "20/12/2017", "Contrato Pirapo")
-            //];
             // El id de la parcela se puede hacer de la combinacion [prod]_[nombreParcela] debido a que el prod es 
             // igual al usuario, que es unico
-            this.parcelas = [
-                new parcelaDto('davidelias_DeLaSeñora', 'davidelias', 'De la Señora', '31,66'),
-                new parcelaDto('davidelias_Apepu', 'davidelias', 'Apepu', '72,18'),
-                new parcelaDto('kazuoyama_Mariscal', 'kazuoyama', 'Mariscal', '73,18'),
-                new parcelaDto('kazuoyama_Feliciano', 'kazuoyama', 'Feliciano', '75,18')
-            ];
+            this.parcelas = [];
             // Id contrato: [idOrg]_[nombre_contrato]
             // Id adenda: [idContrato]_[nombre_adenda]
-            this.contratos = [
-                new contratoDto('coopchorti_Contrato Chorti', 'coopchorti', 'Contrato Chorti', false, false, null, new Date(2017, 1, 17)),
-                new contratoDto('coopchorti_Contrato Chorti_Adenda I', 'coopchorti', 'Adenda I', true, false, 'Contrato_Chorti', new Date(2017, 2, 20))
-            ];
+            this.contratos = [];
+            // Id: Id productor o id org, no serian iguales
+            this.clientes = []; // se carga en el constructor
+            /**
+            * Id: [idProd]_servicio[number + 1]
+            */
+            this.servicios = [];
             // Cliente preload
             this.clientes = this.orgs.map(function (x) { return new cliente(x.id, x.display, 'Organización', 'org', x.avatarUrl); })
                 .concat(this.prods
@@ -143,6 +148,22 @@ var apArea;
                     des += (', ' + org.display);
                 return des;
             }, ''), 'prod', p.avatarUrl); }));
+            if (this.precargar) {
+                this.parcelas = [
+                    new parcelaDto('davidelias_DeLaSeñora', 'davidelias', 'De la Señora', '31,66'),
+                    new parcelaDto('davidelias_Apepu', 'davidelias', 'Apepu', '72,18'),
+                    new parcelaDto('adair_Mariscal', 'adair', 'Mariscal', '73,18'),
+                    new parcelaDto('adair_Feliciano', 'adair', 'Feliciano', '75,18')
+                ];
+                this.contratos = [
+                    new contratoDto('coopchorti_Contrato Chorti', 'coopchorti', 'Contrato Chorti', false, false, null, new Date(2017, 1, 17)),
+                    new contratoDto('coopchorti_Contrato Chorti_Adenda I', 'coopchorti', 'Adenda I', true, false, 'Contrato_Chorti', new Date(2017, 2, 20))
+                ];
+                this.servicios = [
+                    new servicioDto('adair_servicio1', 'coopchorti_Contrato Chorti', 'coopchorti', 'adair', new Date(2017, 12, 1)),
+                    new servicioDto('adair_servicio2', 'coopchorti_Contrato Chorti_Adenda I', 'coopchorti', 'adair', new Date(2017, 12, 30))
+                ];
+            }
         }
         return fakeDb;
     }());

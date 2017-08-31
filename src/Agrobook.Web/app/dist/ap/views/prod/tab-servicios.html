@@ -7,6 +7,34 @@
                 <ng-md-icon icon="add"></ng-md-icon>&nbsp;Nuevo servicio
             </md-button>
         </div>
-
     </div>
+
+    <div ng-show="vm.loadingServicios" layout="row" layout-align="center center">
+        <md-progress-circular md-mode="indeterminate"
+                              ng-disabled="!vm.loadingServicios"></md-progress-circular>
+    </div>
+    <md-list class="width-sm">
+        <md-list-item ng-repeat="s in vm.servicios"
+                      ng-hide="s.eliminado && vm.ocultarEliminados"
+                      ng-click="vm.irAServicio(s)">
+            <p ng-class="{ 'red-text': s.eliminado }"> {{s.parcelaId === null ? 'Servicio sin parcela especificada' : 'Servicio en parcela ' + s.parcelaDisplay}} </p>
+            <span class="md-secondary">{{vm.momentInstance(s.fecha).format('DD/MM/YYYY')}}</span>
+
+            <md-button class="md-icon-button md-secondary" aria-label="edit"
+                       ng-click="vm.mostrarOpciones($event, parcela)">
+                <ng-md-icon icon="more_horiz"></ng-md-icon>
+            </md-button>
+        </md-list-item>
+    </md-list>
+
+    <div ng-hide="vm.loadingServicios">
+        <md-subheader class="md-no-sticky" ng-show="vm.servicios.length > 0">
+            <span>Tiene {{vm.servicios.length}} servicios. </span>
+            <a href="" ng-click="vm.toggleMostrarEliminados()">{{vm.ocultarEliminados ? 'Mostrar' : 'Ocultar'}}</a> servicios eliminados.
+        </md-subheader>
+        <md-subheader class="md-no-sticky" ng-hide="vm.servicios.length > 0">
+            <span>No tiene ningún servicio. </span><a href="" ng-click="vm.nuevoServicio()">Registre el primero</a>
+        </md-subheader>
+    </div>
+
 </md-content>
