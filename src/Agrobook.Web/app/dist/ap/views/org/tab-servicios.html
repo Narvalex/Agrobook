@@ -10,11 +10,6 @@
                       ng-click="vm.irAServicio(s)">
             <p ng-class="{ 'red-text': s.eliminado }"> {{s.parcelaId === null ? 'Servicio sin parcela especificada' : 'Servicio en parcela ' + s.parcelaDisplay}} </p>
             <span class="md-secondary">{{vm.momentInstance(s.fecha).format('DD/MM/YYYY')}}</span>
-
-            <md-button class="md-icon-button md-secondary" aria-label="edit"
-                       ng-click="vm.mostrarOpciones($event, parcela)">
-                <ng-md-icon icon="more_horiz"></ng-md-icon>
-            </md-button>
         </md-list-item>
     </md-list>
 
