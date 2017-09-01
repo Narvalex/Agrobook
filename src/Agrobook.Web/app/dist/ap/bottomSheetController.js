@@ -2,16 +2,22 @@
 var apArea;
 (function (apArea) {
     var bottomSheetController = (function () {
-        function bottomSheetController($mdBottomSheet) {
+        function bottomSheetController($mdBottomSheet, $mdSidenav) {
             this.$mdBottomSheet = $mdBottomSheet;
+            this.$mdSidenav = $mdSidenav;
             this.items = [
-                new bottomSheetItem("Ver Planilla General de Servicios", "planillaGeneral", "add"),
-                new bottomSheetItem("Ver Resumen de Costos", "costos", "add")
+                new bottomSheetItem(" Ir al inicio de Agricultura de Precisión", "home", 'ap.html#!/'),
+                new bottomSheetItem(" Ir al centro de ayuda", "Help", 'ap.html#!/')
             ];
         }
+        bottomSheetController.prototype.goTo = function (item) {
+            window.location.replace(item.url);
+            this.$mdSidenav('left').close();
+            this.$mdBottomSheet.hide();
+        };
         return bottomSheetController;
     }());
-    bottomSheetController.$inject = ['$mdBottomSheet'];
+    bottomSheetController.$inject = ['$mdBottomSheet', '$mdSidenav'];
     apArea.bottomSheetController = bottomSheetController;
     var bottomSheetButtonController = (function () {
         function bottomSheetButtonController($mdBottomSheet) {
@@ -32,10 +38,10 @@ var apArea;
     bottomSheetButtonController.$inject = ['$mdBottomSheet'];
     apArea.bottomSheetButtonController = bottomSheetButtonController;
     var bottomSheetItem = (function () {
-        function bottomSheetItem(display, id, icon) {
+        function bottomSheetItem(display, icon, url) {
             this.display = display;
-            this.id = id;
             this.icon = icon;
+            this.url = url;
         }
         return bottomSheetItem;
     }());

@@ -3,7 +3,7 @@
     <md-list>
         <md-list-item ng-repeat="item in vm.items">
 
-            <md-button ng-click="listItemClick($index)"
+            <md-button ng-click="vm.goTo(item)"
                        md-autofocus="$index == 2"
                        class="md-list-item-content">
                 <ng-md-icon icon="{{item.icon}}"></ng-md-icon>

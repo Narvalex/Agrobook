@@ -3,18 +3,25 @@
 module apArea {
 
     export class bottomSheetController {
-        static $inject = ['$mdBottomSheet']
+        static $inject = ['$mdBottomSheet', '$mdSidenav']
 
         constructor(
-            private $mdBottomSheet: angular.material.IBottomSheetService
+            private $mdBottomSheet: angular.material.IBottomSheetService,
+            private $mdSidenav: angular.material.ISidenavService
         ) {
             this.items = [
-                new bottomSheetItem("Ver Planilla General de Servicios", "planillaGeneral", "add"),
-                new bottomSheetItem("Ver Resumen de Costos", "costos", "add")
+                new bottomSheetItem(" Ir al inicio de Agricultura de Precisión", "home", 'ap.html#!/'),
+                new bottomSheetItem(" Ir al centro de ayuda", "Help", 'ap.html#!/')
             ];
         }
 
         items: bottomSheetItem[];
+
+        goTo(item: bottomSheetItem) {
+            window.location.replace(item.url);
+            this.$mdSidenav('left').close();
+            this.$mdBottomSheet.hide();
+        }
     }
 
     export class bottomSheetButtonController {
@@ -40,8 +47,8 @@ module apArea {
     class bottomSheetItem {
         constructor(
             public display: string,
-            public id: string,
-            public icon: string
+            public icon: string,
+            public url: string
         ) {
         }
     }
