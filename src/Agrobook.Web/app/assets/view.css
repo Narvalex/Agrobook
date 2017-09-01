@@ -47,4 +47,13 @@ md-autocomplete input:not(.md-input) {
     color: red;
 }
 
+.h2-subtitle {
+    font-size: 16px;
+    color: #9b9b9b
+}
+
+.clickable  {
+    cursor: pointer;
+}
+
 

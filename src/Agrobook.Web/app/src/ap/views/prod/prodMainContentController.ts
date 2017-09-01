@@ -25,6 +25,11 @@ module apArea {
         // Objetos seleccionados
         prod: prodDto;
 
+        // API
+        irAOrg(org: orgDto) {
+            window.location.replace(`#!/org/${org.id}`);
+        }
+
         //--------------------------
         // Private
         //--------------------------

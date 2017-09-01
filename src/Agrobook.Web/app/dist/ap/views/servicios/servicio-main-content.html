@@ -4,7 +4,7 @@
         &nbsp;Nuevo servicio para <a href="#!/prod/{{vm.productor.id}}">{{vm.productor.display}}</a>
     </h2>
     <h2 class="md-title" ng-hide="vm.esNuevo">
-        Servicio a <a href="#!/prod/{{vm.productor.id}}">{{vm.productor.display}}</a>
+        Servicio a {{vm.servicio.parcelaId === null ? 'una parcela que falta especificar de ' : 'la parcela ' + vm.servicio.pardelaDisplay}} <a href="#!/prod/{{vm.productor.id}}">{{vm.productor.display}}</a>
     </h2>
     <div>
         <md-tabs md-dynamic-height="" md-selected="vm.tabIndex">

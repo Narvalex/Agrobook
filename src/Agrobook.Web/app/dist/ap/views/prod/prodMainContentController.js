@@ -14,6 +14,10 @@ var apArea;
                 _this.abrirTabCorrespondiente();
             });
         }
+        // API
+        prodMainContentController.prototype.irAOrg = function (org) {
+            window.location.replace("#!/org/" + org.id);
+        };
         //--------------------------
         // Private
         //--------------------------
