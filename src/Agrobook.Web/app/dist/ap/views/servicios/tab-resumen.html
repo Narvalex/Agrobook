@@ -46,6 +46,12 @@
         </div>
 
         <div layout="row">
+            <div ng-include="'dist/common/files/files-widget.html'"
+                 ng-controller="serviciosTabResumenController as vm">
+            </div>
+        </div>
+
+        <div layout="row">
             <div>
                 <md-button class="md-button md-primary md-raised"
                            ng-disabled="vm.submitting"

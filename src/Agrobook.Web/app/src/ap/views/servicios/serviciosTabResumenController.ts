@@ -2,7 +2,7 @@
 
 module apArea {
     export class serviciosTabResumenController {
-        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', '$rootScope', '$scope'];
+        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', '$rootScope', '$scope', 'awService'];
 
         constructor(
             private config: common.config,
@@ -12,7 +12,8 @@ module apArea {
             private $routeParams: angular.route.IRouteParamsService,
             private $mdPanel: angular.material.IPanelService,
             private $rootScope: angular.IRootScopeService,
-            private $scope: angular.IScope
+            private $scope: angular.IScope,
+            private awService: common.filesWidgetService
         ) {
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
@@ -126,12 +127,15 @@ module apArea {
         // Privados
         private establecerElEstado(forceRefresh = false) {
             if (this.action === 'new') {
+                this.awAllowUpload = true;
                 this.recuperarYEstablecerContratos();
             }
             if (this.action === 'edit') {
+                this.awAllowUpload = true;
                 this.recuperarServicio(() => this.recuperarYEstablecerContratos());
             }
             else if (this.action === 'view') {
+                this.awAllowUpload = false;
                 if (this.servicio === undefined || forceRefresh)
                     this.recuperarServicio();
             }
@@ -220,6 +224,22 @@ module apArea {
                         this.submitting = false;
                     })
             );
+        }
+
+        //-----------------------------
+        // Archivos implementation
+        //-----------------------------
+        awTitle = 'Documento del informe final.';
+        awUploadLink = 'Levantar archivo...';
+        awFileUnits: common.fileUnit[] = [];
+        awAllowUpload: boolean;
+        awPrepareFiles(element: HTMLInputElement) {
+            this.awService.resetFileInput();
+
+            var vm = (angular.element(this)[0] as any) as serviciosTabResumenController;
+            vm.$scope.$apply(scope => {
+                vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
+            });
         }
     }
 }

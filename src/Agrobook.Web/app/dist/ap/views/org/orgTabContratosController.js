@@ -16,7 +16,7 @@ var apArea;
             //-----------------------------
             // Archivos implementation
             //-----------------------------
-            this.awTitle = this.tipoContrato === 'adenda' ? 'Documentos de respaldo de la adenda' : 'Documentos de respaldo del contrato';
+            this.awTitle = this.tipoContrato === 'adenda' ? 'Documentos de respaldo de la adenda.' : 'Documentos de respaldo del contrato.';
             this.awUploadLink = 'Levantar archivo...';
             this.awFileUnits = [];
             this.idOrg = this.$routeParams['idOrg'];

@@ -254,7 +254,7 @@ module apArea {
         //-----------------------------
         // Archivos implementation
         //-----------------------------
-        awTitle = this.tipoContrato === 'adenda' ? 'Documentos de respaldo de la adenda' : 'Documentos de respaldo del contrato';
+        awTitle = this.tipoContrato === 'adenda' ? 'Documentos de respaldo de la adenda.' : 'Documentos de respaldo del contrato.';
         awUploadLink = 'Levantar archivo...';
         awFileUnits: common.fileUnit[] = [];
         awPrepareFiles(element: HTMLInputElement) {

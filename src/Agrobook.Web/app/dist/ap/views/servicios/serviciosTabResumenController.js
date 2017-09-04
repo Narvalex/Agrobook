@@ -2,7 +2,7 @@
 var apArea;
 (function (apArea) {
     var serviciosTabResumenController = (function () {
-        function serviciosTabResumenController(config, apService, apQueryService, toasterLite, $routeParams, $mdPanel, $rootScope, $scope) {
+        function serviciosTabResumenController(config, apService, apQueryService, toasterLite, $routeParams, $mdPanel, $rootScope, $scope, awService) {
             var _this = this;
             this.config = config;
             this.apService = apService;
@@ -12,12 +12,19 @@ var apArea;
             this.$mdPanel = $mdPanel;
             this.$rootScope = $rootScope;
             this.$scope = $scope;
+            this.awService = awService;
             this.submitting = false;
             this.eliminando = false;
             this.restaurando = false;
             this.loading = false;
             // Objetos---------------------------------------
             this.momentInstance = moment;
+            //-----------------------------
+            // Archivos implementation
+            //-----------------------------
+            this.awTitle = 'Documento del informe final.';
+            this.awUploadLink = 'Levantar archivo...';
+            this.awFileUnits = [];
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
             this.action = this.$routeParams['action'] === undefined ? 'view' : this.$routeParams['action'];
@@ -86,12 +93,15 @@ var apArea;
             var _this = this;
             if (forceRefresh === void 0) { forceRefresh = false; }
             if (this.action === 'new') {
+                this.awAllowUpload = true;
                 this.recuperarYEstablecerContratos();
             }
             if (this.action === 'edit') {
+                this.awAllowUpload = true;
                 this.recuperarServicio(function () { return _this.recuperarYEstablecerContratos(); });
             }
             else if (this.action === 'view') {
+                this.awAllowUpload = false;
                 if (this.servicio === undefined || forceRefresh)
                     this.recuperarServicio();
             }
@@ -164,9 +174,16 @@ var apArea;
                 _this.submitting = false;
             }));
         };
+        serviciosTabResumenController.prototype.awPrepareFiles = function (element) {
+            this.awService.resetFileInput();
+            var vm = angular.element(this)[0];
+            vm.$scope.$apply(function (scope) {
+                vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
+            });
+        };
         return serviciosTabResumenController;
     }());
-    serviciosTabResumenController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', '$rootScope', '$scope'];
+    serviciosTabResumenController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', '$rootScope', '$scope', 'awService'];
     apArea.serviciosTabResumenController = serviciosTabResumenController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=serviciosTabResumenController.js.map
