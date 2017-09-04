@@ -6,8 +6,7 @@ var apArea;
             this.$mdBottomSheet = $mdBottomSheet;
             this.$mdSidenav = $mdSidenav;
             this.items = [
-                new bottomSheetItem(" Ir al inicio de Agricultura de Precisión", "home", 'ap.html#!/'),
-                new bottomSheetItem(" Ir al centro de ayuda", "Help", 'ap.html#!/')
+                new bottomSheetItem("Ir al inicio de Agricultura de Precisión", "home", 'ap.html#!/')
             ];
         }
         bottomSheetController.prototype.goTo = function (item) {

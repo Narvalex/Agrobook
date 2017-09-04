@@ -11,16 +11,15 @@ module apArea {
             private config: common.config
         ) {
             this.idProd = this.$routeParams['idProd'];
-            this.servicio = new servicioDto(this.$routeParams['idServicio'], null, null, null, null);
-
-            let action = this.$routeParams['action'];
-            this.action = action === undefined ? 'view' : action;
-            this.esNuevo = this.action === 'new';
+            this.servicio = new servicioDto(this.$routeParams['idServicio'], null, null, null, null, null, null);
+            
+            this.resolveAction();
 
             this.recuperarProductorYResolverTitulo();
 
             this.abrirTabCorrespondiente();
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
+                this.resolveAction();
                 this.abrirTabCorrespondiente();
             });
             this.$scope.$on(this.config.eventIndex.ap_servicios.nuevoServicioCreado, (e, args: servicioDto) => {
@@ -44,6 +43,12 @@ module apArea {
         //--------------------------
         // Private
         //--------------------------
+
+        private resolveAction() {
+            let action = this.$routeParams['action'];
+            this.action = action === undefined ? 'view' : action;
+            this.esNuevo = this.action === 'new';
+        }
 
         private onTabSelected(tabIndex: number) {
             let tabId: string;

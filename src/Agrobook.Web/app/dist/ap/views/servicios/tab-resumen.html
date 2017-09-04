@@ -1,46 +1,61 @@
-﻿<md-content ng-controller="serviciosTabResumenController as vm" class="padding-top">
+﻿<div layout="column" ng-controller="serviciosTabResumenController as vm" class="padding-top">
+
+    <!-- Loading -->
+    <div ng-show="vm.loading" layout="row" layout-align="center center">
+        <md-progress-circular md-mode="indeterminate"
+                              ng-disabled="!vm.loading"></md-progress-circular>
+    </div>
+    
+    <!-- View -->
+    <md-content flex layout-padding ng-show="!vm.loading && vm.action === 'view'">
+        <p>
+            El servicio se realizó a {{vm.servicio.parcelaId === null ? 'una parcela todavía no especificada' : 'la parcela ' + vm.servicio.parcelaDisplay}} bajo el contrato "{{vm.servicio.contratoDisplay}}" con "{{vm.servicio.orgDisplay}}". El mismo fue completado el día {{vm.momentInstance(vm.servicio.fecha).format('DD/MM/YYYY')}}.
+        </p>
+        <p ng-hide="vm.eliminando || vm.servicio.eliminado">Puede <a href="" ng-click="vm.enableEditMode()">actualizar</a> el servicio, o incluso, <a href="" ng-click="vm.eliminar()">eliminarlo</a>.</p>
+        <p ng-show="vm.servicio.eliminado && !vm.eliminando && !vm.restaurando">Puede <a href="" ng-click="vm.restaurar()">restaurar</a> este servicio eliminado.</p>
+        <p ng-show="vm.eliminando">Eliminando servicio...</p>
+        <p ng-show="vm.restaurando">Restaurando servicio...</p>
+    </md-content>
 
     <!-- Formulario -->
+    <md-content ng-hide="vm.loading || vm.action === 'view'">
+        <div layout-gt-xs="row">
+            <md-input-container>
+                <label>Organización</label>
+                <md-select ng-model="vm.orgConContratosSeleccionada" required>
+                    <md-option ng-repeat="dto in vm.orgsConContratos" ng-value="dto">
+                        {{dto.org.display}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container>
+                <label>Contrato</label>
+                <md-select ng-model="vm.contratoSeleccionado" required>
+                    <md-option ng-repeat="contrato in vm.orgConContratosSeleccionada.contratos" ng-value="contrato">
+                        {{contrato.display}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
 
-    <div layout-gt-xs="row" ng-hide="vm.action === 'view'">
-        <md-input-container>
-            <label>Organización</label>
-            <md-select ng-model="vm.orgConContratosSeleccionada" required>
-                <md-option ng-repeat="dto in vm.orgsConContratos" ng-value="dto">
-                    {{dto.org.display}}
-                </md-option>
-            </md-select>
-        </md-input-container>
-        <md-input-container>
-            <label>Contrato</label>
-            <md-select ng-model="vm.contratoSeleccionado" required>
-                <md-option ng-repeat="contrato in vm.orgConContratosSeleccionada.contratos" ng-value="contrato">
-                    {{contrato.display}}
-                </md-option>
-            </md-select>
-        </md-input-container>
-
-        <md-input-container>
-            <label>Fecha</label>
-            <md-datepicker ng-model="vm.fechaSeleccionada"
-                           ng-disabled="false"
-                           required></md-datepicker>
-        </md-input-container>
-    </div>
-
-    <div layout="row" ng-hide="vm.action === 'view'">
-        <div>
-            <md-button class="md-button md-primary md-raised"
-                       ng-disabled="vm.submitting"
-                       ng-click="vm.submit()">
-                {{ vm.action === 'new' ? 'Registrar nuevo contrato' : 'Not implemented'}}
-            </md-button>
+            <md-input-container>
+                <label>Fecha</label>
+                <md-datepicker ng-model="vm.fechaSeleccionada"
+                               ng-disabled="false"
+                               required></md-datepicker>
+            </md-input-container>
         </div>
-        <div>
-            <md-button ng-click="vm.cancelar()" ng-disabled="vm.submitting" class="md-button">Cancelar</md-button>
+
+        <div layout="row">
+            <div>
+                <md-button class="md-button md-primary md-raised"
+                           ng-disabled="vm.submitting"
+                           ng-click="vm.submit()">
+                    {{ vm.action === 'new' ? 'Registrar nuevo servicio' : 'Actualizar datos básicos'}}
+                </md-button>
+            </div>
+            <div>
+                <md-button ng-click="vm.cancelar()" ng-disabled="vm.submitting" class="md-button">Cancelar</md-button>
+            </div>
         </div>
-    </div>
-
-    <!-- Fin Formulario-->
-
-</md-content>
+    </md-content>
+</div>

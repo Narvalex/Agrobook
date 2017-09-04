@@ -9,13 +9,12 @@ var apArea;
             this.apQueryService = apQueryService;
             this.config = config;
             this.idProd = this.$routeParams['idProd'];
-            this.servicio = new apArea.servicioDto(this.$routeParams['idServicio'], null, null, null, null);
-            var action = this.$routeParams['action'];
-            this.action = action === undefined ? 'view' : action;
-            this.esNuevo = this.action === 'new';
+            this.servicio = new apArea.servicioDto(this.$routeParams['idServicio'], null, null, null, null, null, null);
+            this.resolveAction();
             this.recuperarProductorYResolverTitulo();
             this.abrirTabCorrespondiente();
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
+                _this.resolveAction();
                 _this.abrirTabCorrespondiente();
             });
             this.$scope.$on(this.config.eventIndex.ap_servicios.nuevoServicioCreado, function (e, args) {
@@ -27,6 +26,11 @@ var apArea;
         //--------------------------
         // Private
         //--------------------------
+        serviciosMainContentController.prototype.resolveAction = function () {
+            var action = this.$routeParams['action'];
+            this.action = action === undefined ? 'view' : action;
+            this.esNuevo = this.action === 'new';
+        };
         serviciosMainContentController.prototype.onTabSelected = function (tabIndex) {
             var tabId;
             switch (tabIndex) {

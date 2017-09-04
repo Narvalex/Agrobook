@@ -80,6 +80,17 @@ module apArea {
             this.$timeout(() => callback.onSuccess({ data: lista }), 750);
         }
 
+        getServicio(idServicio: string, callback: common.callbackLite<servicioDto>) {
+            let servicio: servicioDto;
+            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+                servicio = this.fakeDb.servicios[i];
+                if (servicio.id === idServicio)
+                    break;
+            }
+
+            this.$timeout(() => callback.onSuccess({ data: servicio }), 500);
+        }
+
         getParcelasDelProd(
             idProd: string,
             callback: common.callbackLite<parcelaDto[]>
@@ -114,7 +125,7 @@ module apArea {
 
             var list = orgs.map(o => new orgConContratos(o, this.fakeDb.contratos.filter(c => c.idOrg === o.id)));
 
-            callback.onSuccess({ data: list });
+            this.$timeout(() => callback.onSuccess({ data: list }), 500);
         }
     }
 }

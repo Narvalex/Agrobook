@@ -2,11 +2,12 @@
 
 module apArea {
     export class apService extends common.httpLite {
-        static $inject = ['$http', 'fakeDb'];
+        static $inject = ['$http', 'fakeDb', '$timeout'];
 
         constructor(
             private $http: ng.IHttpService,
-            private fakeDb: fakeDb
+            private fakeDb: fakeDb,
+            private timer: angular.ITimeoutService
         ) {
             super($http, 'ap');
         }
@@ -152,6 +153,41 @@ module apArea {
             setTimeout(() => {
                 callback.onSuccess({ data: servicio.id });
             }, 2000);
+        }
+
+        actualizarServicio(servicio: servicioDto, callback: common.callbackLite<any>) {
+            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+                let recuperado = this.fakeDb.servicios[i];
+                if (recuperado.id === servicio.id) {
+                    this.fakeDb.servicios.splice(i, 1);
+                    this.fakeDb.servicios.push(servicio);
+                    break;
+                }
+            }
+
+            this.timer(() => callback.onSuccess({}), 500);
+        }
+
+        eliminarServicio(idServicio: string, callback: common.callbackLite<any>) {
+            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+                if (this.fakeDb.servicios[i].id === idServicio) {
+                    this.fakeDb.servicios[i].eliminado = true;
+                    break;
+                }
+            }
+
+            this.timer(() => callback.onSuccess({ data: {} }), 500);
+        }
+
+        restaurarServicio(idServicio: string, callback: common.callbackLite<any>) {
+            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+                if (this.fakeDb.servicios[i].id === idServicio) {
+                    this.fakeDb.servicios[i].eliminado = false;
+                    break;
+                }
+            }
+
+            this.timer(() => callback.onSuccess({ data: {} }), 500);
         }
     }
 }

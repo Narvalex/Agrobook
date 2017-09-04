@@ -13,10 +13,11 @@ var apArea;
 (function (apArea) {
     var apService = (function (_super) {
         __extends(apService, _super);
-        function apService($http, fakeDb) {
+        function apService($http, fakeDb, timer) {
             var _this = _super.call(this, $http, 'ap') || this;
             _this.$http = $http;
             _this.fakeDb = fakeDb;
+            _this.timer = timer;
             return _this;
         }
         apService.prototype.registrarNuevaParcela = function (dto, callback) {
@@ -127,9 +128,38 @@ var apArea;
                 callback.onSuccess({ data: servicio.id });
             }, 2000);
         };
+        apService.prototype.actualizarServicio = function (servicio, callback) {
+            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+                var recuperado = this.fakeDb.servicios[i];
+                if (recuperado.id === servicio.id) {
+                    this.fakeDb.servicios.splice(i, 1);
+                    this.fakeDb.servicios.push(servicio);
+                    break;
+                }
+            }
+            this.timer(function () { return callback.onSuccess({}); }, 500);
+        };
+        apService.prototype.eliminarServicio = function (idServicio, callback) {
+            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+                if (this.fakeDb.servicios[i].id === idServicio) {
+                    this.fakeDb.servicios[i].eliminado = true;
+                    break;
+                }
+            }
+            this.timer(function () { return callback.onSuccess({ data: {} }); }, 500);
+        };
+        apService.prototype.restaurarServicio = function (idServicio, callback) {
+            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+                if (this.fakeDb.servicios[i].id === idServicio) {
+                    this.fakeDb.servicios[i].eliminado = false;
+                    break;
+                }
+            }
+            this.timer(function () { return callback.onSuccess({ data: {} }); }, 500);
+        };
         return apService;
     }(common.httpLite));
-    apService.$inject = ['$http', 'fakeDb'];
+    apService.$inject = ['$http', 'fakeDb', '$timeout'];
     apArea.apService = apService;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=apService.js.map
