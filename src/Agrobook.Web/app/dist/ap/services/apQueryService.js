@@ -81,6 +81,14 @@ var apArea;
                 data: list
             });
         };
+        apQueryService.prototype.getParcela = function (idParcela, callback) {
+            var dto = this.fakeDb.parcelas.filter(function (x) { return x.id === idParcela; });
+            this.$timeout(function () {
+                return callback.onSuccess({
+                    data: dto[0]
+                });
+            }, 500);
+        };
         apQueryService.prototype.getContratos = function (idOrg, callback) {
             var list = this.fakeDb.contratos.filter(function (x) { return x.idOrg === idOrg; });
             callback.onSuccess({

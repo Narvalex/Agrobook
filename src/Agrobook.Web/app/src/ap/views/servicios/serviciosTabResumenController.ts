@@ -2,7 +2,7 @@
 
 module apArea {
     export class serviciosTabResumenController {
-        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', '$rootScope', '$scope', 'awService'];
+        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope', 'awService'];
 
         constructor(
             private config: common.config,
@@ -10,21 +10,19 @@ module apArea {
             private apQueryService: apQueryService,
             private toasterLite: common.toasterLite,
             private $routeParams: angular.route.IRouteParamsService,
-            private $mdPanel: angular.material.IPanelService,
             private $rootScope: angular.IRootScopeService,
             private $scope: angular.IScope,
             private awService: common.filesWidgetService
         ) {
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
-            this.action = this.$routeParams['action'] === undefined ? 'view' : this.$routeParams['action'];
 
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
-                this.action = this.$routeParams['action'];
-                this.establecerElEstado();
+                this.cargarDatosSegunEstado();
             });
 
-            this.establecerElEstado();
+            this.cargarDatosSegunEstado();
+            this.awInit();
         }
 
         // Estados--------------------------------------
@@ -125,18 +123,16 @@ module apArea {
         }
 
         // Privados
-        private establecerElEstado(forceRefresh = false) {
+        private cargarDatosSegunEstado() {
+            this.action = this.$routeParams['action'] === undefined ? 'view' : this.$routeParams['action'];
+
             if (this.action === 'new') {
-                this.awAllowUpload = true;
                 this.recuperarYEstablecerContratos();
             }
             if (this.action === 'edit') {
-                this.awAllowUpload = true;
                 this.recuperarServicio(() => this.recuperarYEstablecerContratos());
             }
             else if (this.action === 'view') {
-                this.awAllowUpload = false;
-                if (this.servicio === undefined || forceRefresh)
                     this.recuperarServicio();
             }
         }
@@ -229,10 +225,15 @@ module apArea {
         //-----------------------------
         // Archivos implementation
         //-----------------------------
-        awTitle = 'Documento del informe final.';
-        awUploadLink = 'Levantar archivo...';
+        awTitle: string;
+        awUploadLink: string;
         awFileUnits: common.fileUnit[] = [];
         awAllowUpload: boolean;
+        awInit() {
+            this.awTitle = 'Documento del informe final.';
+            this.awAllowUpload = true;
+            this.awUploadLink = 'Levantar archivo...';
+        }
         awPrepareFiles(element: HTMLInputElement) {
             this.awService.resetFileInput();
 

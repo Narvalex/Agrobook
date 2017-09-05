@@ -102,6 +102,18 @@ module apArea {
             });
         }
 
+        getParcela(
+            idParcela: string,
+            callback: common.callbackLite<parcelaDto>
+        ) {
+            var dto = this.fakeDb.parcelas.filter(x => x.id === idParcela);
+
+            this.$timeout(() =>
+            callback.onSuccess({
+                data: dto[0]
+            }), 500);
+        }
+
         getContratos(
             idOrg: string,
             callback: common.callbackLite<contratoDto[]>

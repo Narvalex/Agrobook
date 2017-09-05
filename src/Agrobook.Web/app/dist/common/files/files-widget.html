@@ -8,7 +8,7 @@
                    onchange="angular.element(this).scope().$parent.vm.awPrepareFiles(this)" />
         </div>
 
-        <p>{{vm.awTitle}} <a href="" ng-show="vm.awAllowUpload" ng-click="vm.awService.selectFiles()">{{vm.awUploadLink}}</a></p>
+        <p ng-click="vm.toggleShow()">{{vm.awTitle}} <a href="" ng-show="vm.awAllowUpload" ng-click="vm.awService.selectFiles()">{{vm.awUploadLink}}</a></p>
 
         <md-list><!--class="md-dense"-->
             <md-list-item ng-repeat="unit in vm.awFileUnits" class="md-2-line">

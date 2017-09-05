@@ -1,4 +1,43 @@
-﻿<md-content>
-    <h2>Parcela</h2>
-    <p>Limites de la parcela</p>
-</md-content>
+﻿<div layout="column" ng-controller="serviciosTabParcelaController as vm" class="padding-top">
+    <!-- Loading -->
+    <div ng-show="vm.loading" layout="row" layout-align="center center">
+        <md-progress-circular md-mode="indeterminate"
+                              ng-disabled="!vm.loading"></md-progress-circular>
+    </div>
+
+    <!-- View -->
+    <md-content ng-show="!vm.loading && vm.action === 'view'">
+        <p>
+            {{vm.tieneParcela ? 'Parcela ' + vm.parcela.display + ' de ' + vm.parcela.hectareas + ' ha' : 'La parcela no está especificada'}}
+        </p>
+        <p>
+            <a href="" ng-click="vm.actualizar()">{{vm.tieneParcela ? '¿No es esta la parcela?' : 'Especificar la parcela...'}}</a>
+        </p>
+    </md-content>
+
+    <!-- Formulario -->
+    <md-content ng-hide="vm.loading || vm.action === 'view'">
+        <p>Especifique la parcela al cual se realizó el servicio:</p>
+        <md-input-container>
+            <label>Parcela</label>
+            <md-select ng-model="vm.parcelaSeleccionada" required>
+                <md-option ng-repeat="parcela in vm.parcelas" ng-value="parcela">
+                    {{parcela.display}} {{parcela.hectareas}} ha
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <div layout="row">
+            <div>
+                <md-button class="md-button md-primary md-raised"
+                           ng-disabled="vm.submitting"
+                           ng-click="vm.submit()">
+                    {{vm.tieneParcela ? 'Cambiar parcela' : 'Especificar esta parcela'}}
+                </md-button>
+            </div>
+            <div>
+                <md-button ng-click="vm.cancelar()" ng-disabled="vm.submitting" class="md-button">Cancelar</md-button>
+            </div>
+        </div>
+    </md-content>
+</div>

@@ -157,6 +157,28 @@ var apArea;
             }
             this.timer(function () { return callback.onSuccess({ data: {} }); }, 500);
         };
+        apService.prototype.especificarParcelaDelServicio = function (idServicio, parcela, callback) {
+            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+                var servicio = this.fakeDb.servicios[i];
+                if (servicio.id === idServicio) {
+                    this.fakeDb.servicios[i].parcelaId = parcela.id;
+                    this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
+                    break;
+                }
+            }
+            this.timer(function () { return callback.onSuccess({}); }, 500);
+        };
+        apService.prototype.cambiarParcelaDelServicio = function (idServicio, parcela, callback) {
+            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+                var servicio = this.fakeDb.servicios[i];
+                if (servicio.id === idServicio) {
+                    this.fakeDb.servicios[i].parcelaId = parcela.id;
+                    this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
+                    break;
+                }
+            }
+            this.timer(function () { return callback.onSuccess({}); }, 500);
+        };
         return apService;
     }(common.httpLite));
     apService.$inject = ['$http', 'fakeDb', '$timeout'];

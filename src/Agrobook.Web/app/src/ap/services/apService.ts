@@ -27,7 +27,7 @@ module apArea {
             }
 
             this.fakeDb.parcelas.push(data);
-                 
+
             callback.onSuccess({
                 data: data
             });
@@ -188,6 +188,32 @@ module apArea {
             }
 
             this.timer(() => callback.onSuccess({ data: {} }), 500);
+        }
+
+        especificarParcelaDelServicio(idServicio: string, parcela: parcelaDto, callback: common.callbackLite<any>) {
+            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+                let servicio = this.fakeDb.servicios[i];
+                if (servicio.id === idServicio) {
+                    this.fakeDb.servicios[i].parcelaId = parcela.id;
+                    this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
+                    break;
+                }
+            }
+
+            this.timer(() => callback.onSuccess({}), 500);
+        }
+
+        cambiarParcelaDelServicio(idServicio: string, parcela: parcelaDto, callback: common.callbackLite<any>) {
+            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+                let servicio = this.fakeDb.servicios[i];
+                if (servicio.id === idServicio) {
+                    this.fakeDb.servicios[i].parcelaId = parcela.id;
+                    this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
+                    break;
+                }
+            }
+
+            this.timer(() => callback.onSuccess({}), 500);
         }
     }
 }

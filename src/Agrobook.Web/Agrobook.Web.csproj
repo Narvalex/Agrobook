@@ -1132,6 +1132,7 @@
     <TypeScriptCompile Include="app\src\ap\views\prod\prodMainContentController.ts" />
     <TypeScriptCompile Include="app\src\ap\views\prod\prodTabParcelasController.ts" />
     <TypeScriptCompile Include="app\src\ap\views\prod\prodTabServiciosController.ts" />
+    <TypeScriptCompile Include="app\src\ap\views\servicios\serviciosTabParcelaController.ts" />
     <TypeScriptCompile Include="app\src\ap\views\servicios\serviciosTabResumenController.ts" />
     <TypeScriptCompile Include="app\src\ap\views\servicios\serviciosMainContentController.ts" />
     <TypeScriptCompile Include="app\src\archivos\archivosDTOs.ts" />

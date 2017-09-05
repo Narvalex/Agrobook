@@ -2,14 +2,13 @@
 var apArea;
 (function (apArea) {
     var serviciosTabResumenController = (function () {
-        function serviciosTabResumenController(config, apService, apQueryService, toasterLite, $routeParams, $mdPanel, $rootScope, $scope, awService) {
+        function serviciosTabResumenController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope, awService) {
             var _this = this;
             this.config = config;
             this.apService = apService;
             this.apQueryService = apQueryService;
             this.toasterLite = toasterLite;
             this.$routeParams = $routeParams;
-            this.$mdPanel = $mdPanel;
             this.$rootScope = $rootScope;
             this.$scope = $scope;
             this.awService = awService;
@@ -19,20 +18,14 @@ var apArea;
             this.loading = false;
             // Objetos---------------------------------------
             this.momentInstance = moment;
-            //-----------------------------
-            // Archivos implementation
-            //-----------------------------
-            this.awTitle = 'Documento del informe final.';
-            this.awUploadLink = 'Levantar archivo...';
             this.awFileUnits = [];
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
-            this.action = this.$routeParams['action'] === undefined ? 'view' : this.$routeParams['action'];
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
-                _this.action = _this.$routeParams['action'];
-                _this.establecerElEstado();
+                _this.cargarDatosSegunEstado();
             });
-            this.establecerElEstado();
+            this.cargarDatosSegunEstado();
+            this.awInit();
         }
         // Api
         serviciosTabResumenController.prototype.enableEditMode = function () {
@@ -89,21 +82,17 @@ var apArea;
             }
         };
         // Privados
-        serviciosTabResumenController.prototype.establecerElEstado = function (forceRefresh) {
+        serviciosTabResumenController.prototype.cargarDatosSegunEstado = function () {
             var _this = this;
-            if (forceRefresh === void 0) { forceRefresh = false; }
+            this.action = this.$routeParams['action'] === undefined ? 'view' : this.$routeParams['action'];
             if (this.action === 'new') {
-                this.awAllowUpload = true;
                 this.recuperarYEstablecerContratos();
             }
             if (this.action === 'edit') {
-                this.awAllowUpload = true;
                 this.recuperarServicio(function () { return _this.recuperarYEstablecerContratos(); });
             }
             else if (this.action === 'view') {
-                this.awAllowUpload = false;
-                if (this.servicio === undefined || forceRefresh)
-                    this.recuperarServicio();
+                this.recuperarServicio();
             }
         };
         serviciosTabResumenController.prototype.recuperarYEstablecerContratos = function () {
@@ -174,6 +163,11 @@ var apArea;
                 _this.submitting = false;
             }));
         };
+        serviciosTabResumenController.prototype.awInit = function () {
+            this.awTitle = 'Documento del informe final.';
+            this.awAllowUpload = true;
+            this.awUploadLink = 'Levantar archivo...';
+        };
         serviciosTabResumenController.prototype.awPrepareFiles = function (element) {
             this.awService.resetFileInput();
             var vm = angular.element(this)[0];
@@ -183,7 +177,7 @@ var apArea;
         };
         return serviciosTabResumenController;
     }());
-    serviciosTabResumenController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', '$rootScope', '$scope', 'awService'];
+    serviciosTabResumenController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope', 'awService'];
     apArea.serviciosTabResumenController = serviciosTabResumenController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=serviciosTabResumenController.js.map
