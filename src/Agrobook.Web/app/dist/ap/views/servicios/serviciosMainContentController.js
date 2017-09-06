@@ -22,6 +22,9 @@ var apArea;
                 _this.action = 'view';
                 _this.servicio = args;
             });
+            this.$scope.$on(this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, function (e, parcelaDisplay) {
+                _this.servicio.parcelaDisplay = parcelaDisplay;
+            });
         }
         //--------------------------
         // Private

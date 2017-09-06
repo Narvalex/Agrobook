@@ -2,7 +2,7 @@
 var apArea;
 (function (apArea) {
     var serviciosTabParcelaController = (function () {
-        function serviciosTabParcelaController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope, awService) {
+        function serviciosTabParcelaController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope) {
             var _this = this;
             this.config = config;
             this.apService = apService;
@@ -11,19 +11,17 @@ var apArea;
             this.$routeParams = $routeParams;
             this.$rootScope = $rootScope;
             this.$scope = $scope;
-            this.awService = awService;
             // Estados--------------------------------------
             this.loading = false;
             this.tieneParcela = false;
             this.submitting = false;
-            this.awFileUnits = [];
             this.idProd = this.$routeParams['idProd'];
+            this.coleccionId = this.config.categoriaDeArchivos.servicioParcelas + "-" + this.idProd;
             this.idServicio = this.$routeParams['idServicio'];
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
                 _this.cargarDatosSegunEstado();
             });
             this.cargarDatosSegunEstado();
-            this.awInit();
         }
         // Api
         serviciosTabParcelaController.prototype.actualizar = function () {
@@ -45,6 +43,7 @@ var apArea;
                     this.toasterLite.info('La parcela es la misma que antes. No hay cambios');
                     this.submitting = false;
                     this.cancelar();
+                    return;
                 }
             }
             if (this.tieneParcela)
@@ -108,8 +107,9 @@ var apArea;
                 _this.parcela = parcela;
                 _this.toasterLite.success('Parcela especificada correctamente');
                 _this.tieneParcela = true;
-                _this.submitting = false;
+                _this.$rootScope.$broadcast(_this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, parcela.display);
                 window.location.replace("#!/servicios/" + _this.idProd + "/" + _this.idServicio + "?tab=parcela&action=view");
+                _this.submitting = false;
             }, function (reason) {
                 _this.submitting = false;
             }));
@@ -122,27 +122,16 @@ var apArea;
                 _this.servicio.parcelaDisplay = parcela.display;
                 _this.parcela = parcela;
                 _this.toasterLite.success('La parcela ha sido cambiada');
-                _this.submitting = false;
+                _this.$rootScope.$broadcast(_this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, parcela.display);
                 window.location.replace("#!/servicios/" + _this.idProd + "/" + _this.idServicio + "?tab=parcela&action=view");
+                _this.submitting = false;
             }, function (reason) {
                 _this.submitting = false;
             }));
         };
-        serviciosTabParcelaController.prototype.awInit = function () {
-            this.awTitle = 'Mapas de límites y puntos georeferenciados';
-            this.awAllowUpload = true;
-            this.awUploadLink = 'Levantar archivo...';
-        };
-        serviciosTabParcelaController.prototype.awPrepareFiles = function (element) {
-            this.awService.resetFileInput();
-            var vm = angular.element(this)[0];
-            vm.$scope.$apply(function (scope) {
-                vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
-            });
-        };
         return serviciosTabParcelaController;
     }());
-    serviciosTabParcelaController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope', 'awService'];
+    serviciosTabParcelaController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope'];
     apArea.serviciosTabParcelaController = serviciosTabParcelaController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=serviciosTabParcelaController.js.map

@@ -2,7 +2,7 @@
 var apArea;
 (function (apArea) {
     var serviciosTabResumenController = (function () {
-        function serviciosTabResumenController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope, awService) {
+        function serviciosTabResumenController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope) {
             var _this = this;
             this.config = config;
             this.apService = apService;
@@ -11,21 +11,22 @@ var apArea;
             this.$routeParams = $routeParams;
             this.$rootScope = $rootScope;
             this.$scope = $scope;
-            this.awService = awService;
             this.submitting = false;
             this.eliminando = false;
             this.restaurando = false;
             this.loading = false;
             // Objetos---------------------------------------
             this.momentInstance = moment;
-            this.awFileUnits = [];
             this.idProd = this.$routeParams['idProd'];
+            this.coleccionId = this.config.categoriaDeArchivos.servicioDatosBasicos + "-" + this.idProd;
             this.idServicio = this.$routeParams['idServicio'];
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
                 _this.cargarDatosSegunEstado();
             });
+            this.$scope.$on(this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, function (e, parcelaDisplay) {
+                _this.servicio.parcelaDisplay = parcelaDisplay;
+            });
             this.cargarDatosSegunEstado();
-            this.awInit();
         }
         // Api
         serviciosTabResumenController.prototype.enableEditMode = function () {
@@ -92,7 +93,9 @@ var apArea;
                 this.recuperarServicio(function () { return _this.recuperarYEstablecerContratos(); });
             }
             else if (this.action === 'view') {
-                this.recuperarServicio();
+                // Esta logica esta aqui para que no se cargue el tab cada vez que se pasa por el 
+                if (this.servicio === undefined || this.servicio === null)
+                    this.recuperarServicio();
             }
         };
         serviciosTabResumenController.prototype.recuperarYEstablecerContratos = function () {
@@ -163,21 +166,9 @@ var apArea;
                 _this.submitting = false;
             }));
         };
-        serviciosTabResumenController.prototype.awInit = function () {
-            this.awTitle = 'Documento del informe final.';
-            this.awAllowUpload = true;
-            this.awUploadLink = 'Levantar archivo...';
-        };
-        serviciosTabResumenController.prototype.awPrepareFiles = function (element) {
-            this.awService.resetFileInput();
-            var vm = angular.element(this)[0];
-            vm.$scope.$apply(function (scope) {
-                vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
-            });
-        };
         return serviciosTabResumenController;
     }());
-    serviciosTabResumenController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope', 'awService'];
+    serviciosTabResumenController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope'];
     apArea.serviciosTabResumenController = serviciosTabResumenController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=serviciosTabResumenController.js.map

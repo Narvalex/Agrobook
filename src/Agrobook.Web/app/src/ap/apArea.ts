@@ -3,6 +3,7 @@
 module apArea {
     angular.module('apArea', ['ngRoute', 'ngMaterial', 'ngMdIcons'])
         .value('config', new common.config())
+        // Services
         .service('toasterLite', common.toasterLite)
         .service('localStorageLite', common.localStorageLite)
         .service('loginService', login.loginService) // to log out...! do not remove this!
@@ -10,7 +11,9 @@ module apArea {
         .service('apQueryService', apQueryService)
         .service('apService', apService)
         .service('fakeDb', fakeDb)
-        .service('awService', common.filesWidgetService)
+        // Directives
+        .directive('fileWidget', common.filesWidgetDirectiveFactory)
+        // Controllers
         .controller('sidenavController', sidenavController)
         .controller('bottomSheetButtonController', bottomSheetButtonController)
         .controller('bottomSheetController', bottomSheetController)

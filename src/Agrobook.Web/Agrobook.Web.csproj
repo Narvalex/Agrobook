@@ -1117,6 +1117,7 @@
     <Content Include="app\dist\usuarios\views\perfil.html" />
     <Content Include="app\home.html" />
     <TypeScriptCompile Include="app\bower_components\moment\moment.d.ts" />
+    <TypeScriptCompile Include="app\src\common\files\filesWidgetDirective.ts" />
     <TypeScriptCompile Include="app\src\ap\apArea.ts" />
     <TypeScriptCompile Include="app\src\ap\bottomSheetController.ts" />
     <TypeScriptCompile Include="app\src\ap\routes.ts" />

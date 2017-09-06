@@ -65,7 +65,8 @@ var common;
                     filtrar: 'filtrar'
                 },
                 ap_servicios: {
-                    nuevoServicioCreado: 'nuevoServicioCreado'
+                    nuevoServicioCreado: 'nuevoServicioCreado',
+                    cambioDeParcelaEnServicio: 'cambioDeParcelaEnServicio'
                 }
             };
             this._tiposDeArchivos = {
@@ -79,6 +80,10 @@ var common;
                 powerPoint: new TipoDeArchivo("PowerPoint", "powerPoint")
             };
             this._conventions = {};
+            this._categoriaDeArchivos = {
+                servicioDatosBasicos: 'servicioDatosBasicos',
+                servicioParcelas: 'servicioParcelas'
+            };
         }
         Object.defineProperty(config.prototype, "keyCodes", {
             get: function () { return this._keyCodes; },
@@ -112,6 +117,11 @@ var common;
         });
         Object.defineProperty(config.prototype, "conventions", {
             get: function () { return this._conventions; },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(config.prototype, "categoriaDeArchivos", {
+            get: function () { return this._categoriaDeArchivos; },
             enumerable: true,
             configurable: true
         });

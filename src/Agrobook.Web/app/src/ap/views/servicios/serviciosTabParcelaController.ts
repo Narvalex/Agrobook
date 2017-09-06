@@ -2,7 +2,7 @@
 
 module apArea {
     export class serviciosTabParcelaController {
-        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope', 'awService'];
+        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope'];
 
         constructor(
             private config: common.config,
@@ -12,9 +12,9 @@ module apArea {
             private $routeParams: angular.route.IRouteParamsService,
             private $rootScope: angular.IRootScopeService,
             private $scope: angular.IScope,
-            private awService: common.filesWidgetService
         ) {
             this.idProd = this.$routeParams['idProd'];
+            this.coleccionId = `${this.config.categoriaDeArchivos.servicioParcelas}-${this.idProd}`;
             this.idServicio = this.$routeParams['idServicio'];
 
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
@@ -22,7 +22,6 @@ module apArea {
             });
 
             this.cargarDatosSegunEstado();
-            this.awInit();
         }
 
         // Estados--------------------------------------
@@ -36,6 +35,7 @@ module apArea {
         idProd: string;
         servicio: servicioDto;
         parcela: parcelaDto;
+        coleccionId: string;
         // Edit/New
         parcelaSeleccionada: parcelaDto;
 
@@ -66,6 +66,7 @@ module apArea {
                     this.toasterLite.info('La parcela es la misma que antes. No hay cambios');
                     this.submitting = false;
                     this.cancelar();
+                    return;
                 }
             }
 
@@ -143,8 +144,9 @@ module apArea {
                         this.parcela = parcela;
                         this.toasterLite.success('Parcela especificada correctamente');
                         this.tieneParcela = true;
-                        this.submitting = false;
+                        this.$rootScope.$broadcast(this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, parcela.display);
                         window.location.replace(`#!/servicios/${this.idProd}/${this.idServicio}?tab=parcela&action=view`);
+                        this.submitting = false;
                     },
                     reason => {
                         this.submitting = false;
@@ -161,8 +163,9 @@ module apArea {
                         this.servicio.parcelaDisplay = parcela.display;
                         this.parcela = parcela;
                         this.toasterLite.success('La parcela ha sido cambiada');
-                        this.submitting = false;
+                        this.$rootScope.$broadcast(this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, parcela.display);
                         window.location.replace(`#!/servicios/${this.idProd}/${this.idServicio}?tab=parcela&action=view`);
+                        this.submitting = false;
                     },
                     reason => {
                         this.submitting = false;
@@ -173,22 +176,22 @@ module apArea {
         //-----------------------------
         // Archivos implementation
         //-----------------------------
-        awTitle: string;
-        awUploadLink: string;
-        awFileUnits: common.fileUnit[] = [];
-        awAllowUpload: boolean;
-        awInit() {
-            this.awTitle = 'Mapas de límites y puntos georeferenciados';
-            this.awAllowUpload = true;
-            this.awUploadLink = 'Levantar archivo...';
-        }
-        awPrepareFiles(element: HTMLInputElement) {
-            this.awService.resetFileInput();
+        //awTitle: string;
+        //awUploadLink: string;
+        //awFileUnits: common.fileUnit[] = [];
+        //awAllowUpload: boolean;
+        //awInit() {
+        //    this.awTitle = 'Mapas de límites y puntos georeferenciados.';
+        //    this.awAllowUpload = true;
+        //    this.awUploadLink = 'Agregar archivo/s...';
+        //}
+        //awPrepareFiles(element: HTMLInputElement) {
+        //    this.awService.resetFileInput();
 
-            var vm = (angular.element(this)[0] as any) as serviciosTabParcelaController;
-            vm.$scope.$apply(scope => {
-                vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
-            });
-        }
+        //    var vm = (angular.element(this)[0] as any) as serviciosTabParcelaController;
+        //    vm.$scope.$apply(scope => {
+        //        vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
+        //    });
+        //}
     }
 }

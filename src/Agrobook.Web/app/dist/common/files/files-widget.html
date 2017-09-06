@@ -1,4 +1,4 @@
-﻿<div>
+﻿<!--<div>
     <form>
         <div id="awFileInputContainer">
             <input id="awFileInput"
@@ -10,7 +10,7 @@
 
         <p ng-click="vm.toggleShow()">{{vm.awTitle}} <a href="" ng-show="vm.awAllowUpload" ng-click="vm.awService.selectFiles()">{{vm.awUploadLink}}</a></p>
 
-        <md-list><!--class="md-dense"-->
+        <md-list><!--class="md-dense"
             <md-list-item ng-repeat="unit in vm.awFileUnits" class="md-2-line">
                 <img ng-src="./assets/img/fileIcons/file.png" class="md-avatar" alt="{{unit.name}}" />
                 <div class="md-list-item-text">
@@ -21,5 +21,17 @@
             </md-list-item>
         </md-list>
 
+    </form>
+</div>-->
+
+<div>
+    <form>
+        <!-- Add hidden attr to the input -->
+        <div id="{{idFileInputContainer}}">
+            <input id="{{idFileInput}}"
+                   type="file"
+                   multiple
+                   onchange="console.log('input-change')"/>
+        </div>
     </form>
 </div>

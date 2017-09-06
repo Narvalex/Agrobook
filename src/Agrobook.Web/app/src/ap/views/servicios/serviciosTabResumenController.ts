@@ -2,7 +2,7 @@
 
 module apArea {
     export class serviciosTabResumenController {
-        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope', 'awService'];
+        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope'];
 
         constructor(
             private config: common.config,
@@ -12,17 +12,19 @@ module apArea {
             private $routeParams: angular.route.IRouteParamsService,
             private $rootScope: angular.IRootScopeService,
             private $scope: angular.IScope,
-            private awService: common.filesWidgetService
         ) {
             this.idProd = this.$routeParams['idProd'];
+            this.coleccionId = `${this.config.categoriaDeArchivos.servicioDatosBasicos}-${this.idProd}`;
             this.idServicio = this.$routeParams['idServicio'];
 
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
                 this.cargarDatosSegunEstado();
             });
+            this.$scope.$on(this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, (e, parcelaDisplay: string) => {
+                this.servicio.parcelaDisplay = parcelaDisplay;
+            });
 
             this.cargarDatosSegunEstado();
-            this.awInit();
         }
 
         // Estados--------------------------------------
@@ -36,6 +38,7 @@ module apArea {
         momentInstance = moment;
         idServicio: string;
         idProd: string;
+        coleccionId: string;
         // Edit/New
         orgConContratosSeleccionada: orgConContratos;
         contratoSeleccionado: contratoDto;
@@ -133,6 +136,8 @@ module apArea {
                 this.recuperarServicio(() => this.recuperarYEstablecerContratos());
             }
             else if (this.action === 'view') {
+                // Esta logica esta aqui para que no se cargue el tab cada vez que se pasa por el 
+                if (this.servicio === undefined || this.servicio === null)
                     this.recuperarServicio();
             }
         }
@@ -225,22 +230,22 @@ module apArea {
         //-----------------------------
         // Archivos implementation
         //-----------------------------
-        awTitle: string;
-        awUploadLink: string;
-        awFileUnits: common.fileUnit[] = [];
-        awAllowUpload: boolean;
-        awInit() {
-            this.awTitle = 'Documento del informe final.';
-            this.awAllowUpload = true;
-            this.awUploadLink = 'Levantar archivo...';
-        }
-        awPrepareFiles(element: HTMLInputElement) {
-            this.awService.resetFileInput();
+        //awTitle: string;
+        //awUploadLink: string;
+        //awFileUnits: common.fileUnit[] = [];
+        //awAllowUpload: boolean;
+        //awInit() {
+        //    this.awTitle = 'Documento del informe final.';
+        //    this.awAllowUpload = true;
+        //    this.awUploadLink = 'Levantar archivo...';
+        //}
+        //awPrepareFiles(element: HTMLInputElement) {
+        //    this.awService.resetFileInput();
 
-            var vm = (angular.element(this)[0] as any) as serviciosTabResumenController;
-            vm.$scope.$apply(scope => {
-                vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
-            });
-        }
+        //    var vm = (angular.element(this)[0] as any) as serviciosTabResumenController;
+        //    vm.$scope.$apply(scope => {
+        //        vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
+        //    });
+        //}
     }
 }

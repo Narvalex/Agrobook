@@ -27,6 +27,9 @@ module apArea {
                 this.action = 'view';
                 this.servicio = args;
             });
+            this.$scope.$on(this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, (e, parcelaDisplay: string) => {
+                this.servicio.parcelaDisplay = parcelaDisplay;
+            });
         }
 
         // Estados

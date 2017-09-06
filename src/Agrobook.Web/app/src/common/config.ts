@@ -69,7 +69,8 @@ module common {
                 filtrar: 'filtrar'
             },
             ap_servicios: {
-                nuevoServicioCreado: 'nuevoServicioCreado'
+                nuevoServicioCreado: 'nuevoServicioCreado',
+                cambioDeParcelaEnServicio: 'cambioDeParcelaEnServicio'
             }
         }
 
@@ -89,6 +90,11 @@ module common {
             //nuevoServicioUrlToken: 'nuevo-servicio'
         }
 
+        private _categoriaDeArchivos = {
+            servicioDatosBasicos: 'servicioDatosBasicos',
+            servicioParcelas: 'servicioParcelas'
+        }
+
         get keyCodes() { return this._keyCodes; }
         get repoIndex() { return this._repoIndex; }
         get eventIndex() { return this._eventIndex; }
@@ -96,6 +102,7 @@ module common {
         get claims() { return this._claims; }
         get tiposDeArchivos() { return this._tiposDeArchivos; }
         get conventions() { return this._conventions }
+        get categoriaDeArchivos() { return this._categoriaDeArchivos }
     }
 
     export class TipoDeArchivo {
