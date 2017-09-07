@@ -33,7 +33,7 @@ var common;
                 }
                 if (alreadyExists)
                     continue;
-                var unit = new fileUnit(name_1, file);
+                var unit = new common.fileUnit(name_1, file);
                 existing.push(unit);
             }
             return existing;
@@ -42,13 +42,5 @@ var common;
     }());
     filesWidgetService.$inject = [];
     common.filesWidgetService = filesWidgetService;
-    var fileUnit = (function () {
-        function fileUnit(name, file) {
-            this.name = name;
-            this.file = file;
-        }
-        return fileUnit;
-    }());
-    common.fileUnit = fileUnit;
 })(common || (common = {}));
 //# sourceMappingURL=filesWidgetService.js.map

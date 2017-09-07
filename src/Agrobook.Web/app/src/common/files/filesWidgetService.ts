@@ -51,12 +51,4 @@ module common {
             return existing;
         }
     }
-
-    export class fileUnit {
-        constructor(
-            public name,
-            public file: File
-        ) {
-        }
-    }
 }

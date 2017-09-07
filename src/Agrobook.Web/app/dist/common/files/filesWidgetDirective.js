@@ -7,7 +7,8 @@ var common;
         return {
             restrict: 'EA',
             scope: {
-                coleccionId: '=' // a que coleccion pertenece el archivo. {archivos}-{prodId}
+                coleccionId: '=',
+                header: '='
             },
             templateUrl: './dist/common/files/files-widget.html',
             controller: filesWidgetController //Embed a custom controller in the directive,
@@ -17,12 +18,56 @@ var common;
     var filesWidgetController = (function () {
         function filesWidgetController($scope) {
             this.$scope = $scope;
-            console.log('cargando coleccion id: ' + this.$scope.coleccionId);
-            this.$scope.fileInputId = this.$scope.coleccionId + 'fileInputId';
-            this.$scope.fileInputIdContainer = this.$scope.coleccionId + 'fileInputIdContainer';
+            var vm = this.$scope;
+            vm.scope = this.$scope;
+            vm.fileInputId = vm.coleccionId + 'fileInputId';
+            vm.addFiles = this.addFiles;
+            vm.prepareFiles = this.prepareFiles;
+            vm.units = [];
         }
+        filesWidgetController.prototype.addFiles = function () {
+            document.getElementById(this.fileInputId).click();
+        };
+        filesWidgetController.prototype.prepareFiles = function (element) {
+            // reset input first
+            var container = element.parentElement;
+            var content = container.innerHTML;
+            container.innerHTML = content;
+            // try load to current list;
+            this.scope.$apply(function (scp) {
+                var files = element.files;
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    var alreadyExists = false;
+                    var newName = file.name; // file.webkitRelativePath could be a name too
+                    for (var j = 0; j < scp.units.length; j++) {
+                        var existing = scp.units[j];
+                        if (existing.name === newName) {
+                            console.log('File "' + newName + '" was not added because already exists!');
+                            alreadyExists = true;
+                            break;
+                        }
+                    }
+                    if (alreadyExists)
+                        continue;
+                    var unit = new fileUnit(newName, file);
+                    scp.units.push(unit);
+                    console.log('File "' + newName + '" was added');
+                }
+            });
+        };
         return filesWidgetController;
     }());
     filesWidgetController.$inject = ['$scope'];
+    var fileUnit = (function () {
+        function fileUnit(
+            // icon an such later
+            name, file) {
+            this.name = name;
+            this.file = file;
+        }
+        return fileUnit;
+    }());
+    common.fileUnit = fileUnit;
 })(common || (common = {}));
 //# sourceMappingURL=filesWidgetDirective.js.map

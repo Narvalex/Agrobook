@@ -2,7 +2,7 @@
 
 module apArea {
     export class orgTabContratosController {
-        static $inject = ['$routeParams', '$scope', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'awService']
+        static $inject = ['$routeParams', '$scope', '$mdPanel', 'apQueryService', 'apService', 'toasterLite']
 
         constructor(
             private $routeParams: angular.route.IRouteParamsService,
@@ -10,8 +10,7 @@ module apArea {
             private $mdPanel: angular.material.IPanelService,
             private apQueryService: apQueryService,
             private apService: apService,
-            private toasterLite: common.toasterLite,
-            private awService: common.filesWidgetService
+            private toasterLite: common.toasterLite
         ) {
             this.idOrg = this.$routeParams['idOrg'];
 
@@ -254,17 +253,17 @@ module apArea {
         //-----------------------------
         // Archivos implementation
         //-----------------------------
-        awTitle = this.tipoContrato === 'adenda' ? 'Documentos de respaldo de la adenda.' : 'Documentos de respaldo del contrato.';
-        awUploadLink = 'Levantar archivo...';
-        awFileUnits: common.fileUnit[] = [];
-        awPrepareFiles(element: HTMLInputElement) {
-            this.awService.resetFileInput();
+        //awTitle = this.tipoContrato === 'adenda' ? 'Documentos de respaldo de la adenda.' : 'Documentos de respaldo del contrato.';
+        //awUploadLink = 'Levantar archivo...';
+        //awFileUnits: common.fileUnit[] = [];
+        //awPrepareFiles(element: HTMLInputElement) {
+        //    this.awService.resetFileInput();
 
-            var vm = (angular.element(this)[0] as any) as orgTabContratosController;
-            vm.$scope.$apply(scope => {
-                vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
-            });
-        }
+        //    var vm = (angular.element(this)[0] as any) as orgTabContratosController;
+        //    vm.$scope.$apply(scope => {
+        //        vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
+        //    });
+        //}
     }
 
     class panelMenuController {
