@@ -1141,7 +1141,6 @@
     <TypeScriptCompile Include="app\src\archivos\dialogs\uploadCenterController.ts" />
     <TypeScriptCompile Include="app\src\archivos\routes.ts" />
     <TypeScriptCompile Include="app\src\archivos\uploadService.ts" />
-    <TypeScriptCompile Include="app\src\common\files\filesWidgetService.ts" />
     <TypeScriptCompile Include="app\src\usuarios\dialogs\nuevoGrupoDialogController.ts" />
     <TypeScriptCompile Include="app\src\archivos\prodSidenavController.ts" />
     <Content Include="app\informes.html" />

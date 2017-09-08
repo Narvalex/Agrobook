@@ -1,31 +1,5 @@
-﻿<!--<div>
-    <form>
-        <div id="awFileInputContainer">
-            <input id="awFileInput"
-                   hidden
-                   type="file"
-                   multiple
-                   onchange="angular.element(this).scope().$parent.vm.awPrepareFiles(this)" />
-        </div>
-
-        <p ng-click="vm.toggleShow()">{{vm.awTitle}} <a href="" ng-show="vm.awAllowUpload" ng-click="vm.awService.selectFiles()">{{vm.awUploadLink}}</a></p>
-
-        <md-list><!--class="md-dense"
-            <md-list-item ng-repeat="unit in vm.awFileUnits" class="md-2-line">
-                <img ng-src="./assets/img/fileIcons/file.png" class="md-avatar" alt="{{unit.name}}" />
-                <div class="md-list-item-text">
-                    <h3>{{unit.name}}</h3>
-                    <p>File size: unknown</p>
-                </div>
-                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">More Info</md-button>
-            </md-list-item>
-        </md-list>
-
-    </form>
-</div>-->
-
-<md-content>
-    <form>
+﻿<md-content>
+    <form enctype="multipart/form-data" name="uploadForm">
         <!-- Add hidden attr to the input -->
         <div>
             <input id="{{fileInputId}}"
@@ -49,33 +23,40 @@
             <md-list-item ng-repeat="unit in units" class="md-2-line">
                 <img ng-src="./assets/img/fileIcons/file.png" class="md-avatar" alt="{{unit.name}}" />
 
-                <md-progress-circular md-mode="determinate" value="100"></md-progress-circular>
-
                 <div class="md-list-item-text">
                     <h3>{{unit.name}}</h3>
                     <p>File size: unknown</p>
+                    <md-progress-linear ng-show="unit.state === 'uploading'"
+                                        md-mode="determinate" 
+                                        value="{{unit.progress}}"></md-progress-linear>
                 </div>
-                <md-button class="md-secondary md-icon-button launch md-primary" 
+
+                <md-button ng-show="unit.state === 'pending'"
+                           class="md-secondary md-icon-button launch md-primary" 
                            aria-label="action"
-                           ng-click="doSecondaryAction($event)">
+                           ng-click="uploadFile(unit)">
                     <ng-md-icon icon="file_upload"></ng-md-icon>
                 </md-button>
-                <md-button class="md-secondary md-icon-button launch" 
+                <md-button ng-show="unit.state === 'pending'"
+                           class="md-secondary md-icon-button launch" 
                            aria-label="action"
-                           ng-click="doSecondaryAction($event)">
+                           ng-click="removeFile(unit)">
                     <ng-md-icon icon="close"></ng-md-icon>
                 </md-button>
-                <md-button class="md-secondary md-icon-button launch md-primary"
+                <md-button ng-show="unit.state === 'uploaded'"
+                           class="md-secondary md-icon-button launch md-primary"
                            aria-label="action"
                            ng-click="doSecondaryAction($event)">
                     <ng-md-icon icon="file_download"></ng-md-icon>
                 </md-button>
-                <md-button class="md-secondary md-icon-button launch"
+                <md-button ng-show="unit.state === 'uploaded'"
+                           class="md-secondary md-icon-button launch"
                            aria-label="action"
                            ng-click="doSecondaryAction($event)">
                     <ng-md-icon icon="more_vert"></ng-md-icon>
                 </md-button>
-                <md-button class="md-secondary md-icon-button launch md-warn"
+                <md-button ng-show="unit.state === 'uploading'"
+                           class="md-secondary md-icon-button launch md-warn"
                            aria-label="action"
                            ng-click="doSecondaryAction($event)">
                     <ng-md-icon icon="stop"></ng-md-icon>

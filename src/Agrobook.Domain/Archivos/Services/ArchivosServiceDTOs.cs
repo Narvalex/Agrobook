@@ -2,7 +2,7 @@
 
 namespace Agrobook.Domain.Archivos.Services
 {
-    public class MetadatosDelArchivo
+    public class MetadatosDelArchivoDelProductor
     {
         public string Nombre { get; set; }
         public string Extension { get; set; }
@@ -11,6 +11,16 @@ namespace Agrobook.Domain.Archivos.Services
         // En Bytes
         public int Size { get; set; }
         public string IdProductor { get; set; }
+    }
+
+    public class MetadatosDeArchivo
+    {
+        public string Nombre { get; set; }
+        public string Extension { get; set; }
+        public DateTime Fecha { get; set; }
+        // En Bytes
+        public int Size { get; set; }
+        public string ColeccionId { get; set; }
     }
 
     public class ResultadoDelUpload

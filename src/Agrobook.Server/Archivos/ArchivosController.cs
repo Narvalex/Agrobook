@@ -1,5 +1,4 @@
-﻿using Agrobook.Common;
-using Agrobook.Domain.Archivos;
+﻿using Agrobook.Domain.Archivos;
 using Agrobook.Domain.Archivos.Services;
 using Eventing.Core.Serialization;
 using System.Linq;
@@ -29,7 +28,7 @@ namespace Agrobook.Server.Archivos
             var fileContent = streamProvider.Contents.First();
 
             var metadatosSerializados = await streamProvider.Contents[1].ReadAsStringAsync();
-            var metadatos = this.serializer.Deserialize<MetadatosDelArchivo>(metadatosSerializados);
+            var metadatos = this.serializer.Deserialize<MetadatosDelArchivoDelProductor>(metadatosSerializados);
 
 
             var command = new AgregarArchivoAColeccion(null, metadatos.IdProductor,
@@ -45,7 +44,26 @@ namespace Agrobook.Server.Archivos
 
             return this.Ok(dto);
         }
+
+        [HttpPost]
+        [Route("upload/v2")]
+        public async Task<IHttpActionResult> UploadV2()
+        {
+            var content = this.Request.Content;
+
+            if (!content.IsMimeMultipartContent())
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+
+            var streamProvider = await content.ReadAsMultipartAsync();
+            var fileContent = streamProvider.Contents.First();
+
+            var metadatosSerializados = await streamProvider.Contents[1].ReadAsStringAsync();
+            var metadatos = this.serializer.Deserialize<MetadatosDeArchivo>(metadatosSerializados);
+
+            // command being processed here;
+            var result = new ResultadoDelUpload(true, false);
+
+            return this.Ok(result);
+        }
     }
-
-
 }

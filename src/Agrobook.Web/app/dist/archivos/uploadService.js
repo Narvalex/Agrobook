@@ -191,6 +191,30 @@ var archivosArea;
             self.uploading = true;
             self.failed = false;
             self.blockEdition = true;
+            var form = document.forms.namedItem('uploadForm');
+            var formData = new FormData(form);
+            formData.append('uploadedFile', self.file);
+            formData.append('metadatos', JSON.stringify(this.metadatos));
+            // More info to try on edge: http://jsfiddle.net/pthoty2e/
+            // Issue on edge: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/12224510/
+            self.xhr = new XMLHttpRequest();
+            self.xhr.upload.addEventListener("progress", progress, false);
+            self.xhr.onprogress = progress;
+            self.xhr.upload.addEventListener("load", load, false);
+            self.xhr.addEventListener("error", error, false);
+            self.xhr.addEventListener("abort", abort, false);
+            self.xhr.addEventListener("timeout", timeout, false);
+            self.xhr.addEventListener("readystatechange", readyStateChange, false);
+            self.xhr.addEventListener("loadstart", loadStart, false);
+            self.xhr.addEventListener("loadend", loadEnd, false);
+            self.xhr.open("POST", "./archivos/upload", true);
+            self.xhr.setRequestHeader("Authorization", this.authToken);
+            try {
+                self.xhr.send(formData);
+            }
+            catch (e) {
+                console.log('error on send');
+            }
             function progress(e) {
                 try {
                     if (!self.scope || !self.uploading)
@@ -287,30 +311,6 @@ var archivosArea;
             }
             function loadEnd(e) {
                 console.log("load end");
-            }
-            var form = document.forms.namedItem('uploadForm');
-            var formData = new FormData(form);
-            formData.append('uploadedFile', self.file);
-            formData.append('metadatos', JSON.stringify(this.metadatos));
-            // More info to try on edge: http://jsfiddle.net/pthoty2e/
-            // Issue on edge: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/12224510/
-            self.xhr = new XMLHttpRequest();
-            self.xhr.upload.addEventListener("progress", progress, false);
-            self.xhr.onprogress = progress;
-            self.xhr.upload.addEventListener("load", load, false);
-            self.xhr.addEventListener("error", error, false);
-            self.xhr.addEventListener("abort", abort, false);
-            self.xhr.addEventListener("timeout", timeout, false);
-            self.xhr.addEventListener("readystatechange", readyStateChange, false);
-            self.xhr.addEventListener("loadstart", loadStart, false);
-            self.xhr.addEventListener("loadend", loadEnd, false);
-            self.xhr.open("POST", "./archivos/upload", true);
-            self.xhr.setRequestHeader("Authorization", this.authToken);
-            try {
-                self.xhr.send(formData);
-            }
-            catch (e) {
-                console.log('error on send');
             }
         };
         return uploadUnit;
