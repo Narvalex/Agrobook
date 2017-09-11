@@ -33,6 +33,7 @@ module apArea {
         }
 
         // Estados
+        loading: boolean;
         tabIndex: number;
         action: string;
         esNuevo: boolean;
@@ -78,12 +79,25 @@ module apArea {
         }
 
         private recuperarProductorYResolverTitulo() {
+            this.loading = true;
             this.apQueryService.getProd(this.idProd,
                 new common.callbackLite<prodDto>(
                     value => {
                         this.productor = value.data;
+                        this.apQueryService.getServicio(this.servicio.id,
+                            new common.callbackLite<servicioDto>(
+                                value => {
+                                    this.servicio = value.data;
+                                    this.loading = false;
+                                },
+                                reason => {
+                                    this.loading = false;
+                                })
+                        );
                     },
-                    reason => { }
+                    reason => {
+                        this.loading = false;
+                    }
                 ));
         }
     }

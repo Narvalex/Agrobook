@@ -100,7 +100,17 @@ module apArea {
                         this.servicio = value.data;
                         this.tieneParcela = this.servicio.parcelaId !== undefined && this.servicio.parcelaId !== null;
                         if (this.tieneParcela) {
-                            this.apQueryService.getParcelasDelProd
+                            // esta logica no tiene sentido... solamente esta por las hectareas
+                            this.apQueryService.getParcela(this.servicio.parcelaId,
+                                new common.callbackLite<parcelaDto>(
+                                    value => {
+                                        this.parcela = value.data;
+                                        this.loading = false;
+                                    },
+                                    reason => {
+                                        this.loading = false;
+                                    })
+                            );
                         }
                         else 
                             this.loading = false;

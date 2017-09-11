@@ -71,7 +71,13 @@ var apArea;
                 _this.servicio = value.data;
                 _this.tieneParcela = _this.servicio.parcelaId !== undefined && _this.servicio.parcelaId !== null;
                 if (_this.tieneParcela) {
-                    _this.apQueryService.getParcelasDelProd;
+                    // esta logica no tiene sentido... solamente esta por las hectareas
+                    _this.apQueryService.getParcela(_this.servicio.parcelaId, new common.callbackLite(function (value) {
+                        _this.parcela = value.data;
+                        _this.loading = false;
+                    }, function (reason) {
+                        _this.loading = false;
+                    }));
                 }
                 else
                     _this.loading = false;

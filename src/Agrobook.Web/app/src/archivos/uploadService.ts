@@ -311,13 +311,13 @@ module archivosArea {
 
             function readyStateChange(e) {
                 console.log("ready state change. status:" + e.target.status + " " + e.target.statusText);
-                var errorComun = 'Error al cargar archivo';
+                var errorNoEspecificado = 'Error al cargar archivo';
                 var elArchivoYaExiste = 'Ya existe un archivo con ese nombre';
                 switch (e.target.status) {
                     case 500:
-                        setFailure(errorComun)
+                        setFailure(errorNoEspecificado)
                         self.scope.$apply(() => {
-                            setFailure(errorComun);
+                            setFailure(errorNoEspecificado);
                         });
                         break;
 

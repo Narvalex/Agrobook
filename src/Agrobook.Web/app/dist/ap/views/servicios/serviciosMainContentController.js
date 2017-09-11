@@ -77,9 +77,18 @@ var apArea;
         };
         serviciosMainContentController.prototype.recuperarProductorYResolverTitulo = function () {
             var _this = this;
+            this.loading = true;
             this.apQueryService.getProd(this.idProd, new common.callbackLite(function (value) {
                 _this.productor = value.data;
-            }, function (reason) { }));
+                _this.apQueryService.getServicio(_this.servicio.id, new common.callbackLite(function (value) {
+                    _this.servicio = value.data;
+                    _this.loading = false;
+                }, function (reason) {
+                    _this.loading = false;
+                }));
+            }, function (reason) {
+                _this.loading = false;
+            }));
         };
         return serviciosMainContentController;
     }());

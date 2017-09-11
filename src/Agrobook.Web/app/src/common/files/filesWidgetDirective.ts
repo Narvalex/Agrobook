@@ -18,7 +18,7 @@ module common {
 
     class filesWidgetController  {
         static $inject = ['$scope', 'toasterLite', 'localStorageLite', 'config'];
-        private states: { pending: string, uploading: string }
+        private states: { pending: string, uploading: string, uploaded: string, uploadFailed: string }
 
         constructor(
             private $scope: ng.IScope,
@@ -29,12 +29,13 @@ module common {
             var vm = this.$scope;
             vm.toasterLite = this.toasterLite;
             vm.loginInfo = this.localStorageLite.get<login.loginResult>(this.config.repoIndex.login.usuarioActual);
-            vm.states = { pending: 'pending', uploading: 'uploading' };
+            vm.states = { pending: 'pending', uploading: 'uploading', uploaded: 'uploaded', uploadFailed: 'uploadFailed' };
             vm.fileInputId = vm.coleccionId + 'fileInputId';
             vm.addFiles = this.addFiles;
             vm.prepareFiles = this.prepareFiles;
             vm.removeFile = this.removeFile;
             vm.uploadFile = this.uploadFile;
+            vm.setIconUrlAndSvgs = this.setIconUrlAndSvgs;
             vm.units = [];
         }
 
@@ -72,7 +73,7 @@ module common {
                     let file = files[i];
 
                     let alreadyExists = false;
-                    let newName = file.name; // file.webkitRelativePath could be a name too
+                    let newName = file.name ? file.name : file.webkitRelativePath;
                     for (var j = 0; j < vm.units.length; j++) {
                         let existing = vm.units[j];
                         if (existing.name === newName) {
@@ -84,8 +85,11 @@ module common {
 
                     if (alreadyExists) continue;
 
-                    let unit = new fileUnit(newName, vm.states.pending, file);
+                    let unit = new fileUnit(newName, vm.states.pending, file, file.size,
+                        file.size > 1024 * 1024 ? `${(file.size / 1024 / 1024).toFixed(1)} MB` : `${(file.size / 1024).toFixed(1)} KB`);
+                    vm.setIconUrlAndSvgs(unit);
                     vm.units.push(unit);
+
                     console.log('File "' + newName + '" was added');
                 }
             });
@@ -106,6 +110,53 @@ module common {
             }
         }
 
+        setIconUrlAndSvgs(unit: fileUnit) {
+            var deconstructed = unit.name.split('.');
+            var ext = deconstructed.pop().toLowerCase();
+
+            if (ext === 'jpg' || ext === 'jpeg' || ext === 'png') {
+                unit.isAPicture = true;
+                unit.iconSvg = 'picture';
+
+                var vm = this;
+                let reader = new FileReader();
+                reader.onload = (e: any) => {
+                    vm.$apply(() => {
+                        unit.iconUrl = e.target.result;
+                    });
+                };
+
+                reader.readAsDataURL(unit.file);
+            }
+            else {
+                unit.isAPicture = false;
+                unit.iconUrl = './assets/img/fileIcons/file.png';
+                let iconSvg: string;
+                if (ext === 'pdf') {
+                    iconSvg = 'pdf';
+                }
+                else if (ext === 'jpg' || ext === 'jpeg' || ext === 'png') {
+                    iconSvg = 'picture';
+                }
+                else if (ext === 'kmz' || ext === 'kml') {
+                    iconSvg = 'google-earth';
+                }
+                else if (ext === 'xls' || ext === 'xlsx') {
+                    iconSvg = 'excel';
+                }
+                else if (ext === 'doc' || ext === 'docx' || ext === 'text' || ext === 'txt' || ext === 'rtf') {
+                    iconSvg = 'word';
+                }
+                else if (ext === 'ppt' || ext === 'pptx') {
+                    iconSvg = 'powerPoint';
+                }
+                else {
+                    iconSvg = 'generic-file';
+                }
+                unit.iconSvg = iconSvg;
+            }
+        }
+
         uploadFile(unit: fileUnit) {
             var vm = this;
             unit.state = vm.states.uploading;
@@ -118,6 +169,7 @@ module common {
             // More info to try on edge: http://jsfiddle.net/pthoty2e/
             // Issue on edge: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/12224510/
             var xhr = new XMLHttpRequest();
+            unit.stopUpload = stopUpload;
             xhr.upload.addEventListener('progress', progress, false);
             xhr.onprogress = progress;
             xhr.upload.addEventListener('load', load, false);
@@ -134,6 +186,17 @@ module common {
                 xhr.send(formData);
             } catch (e) {
                 console.log('error on send');
+            }
+
+            function stopUpload() {
+                if (!xhr) return;
+                if (unit.waitingServer) {
+                    console.log('Upload can not be canceled. Is waiting for server response');
+                    return;
+                }
+
+                xhr.abort();
+                setFailure('Carga cancelada');
             }
 
             function progress(e: ProgressEvent) {
@@ -173,33 +236,96 @@ module common {
             }
 
             function timeout(e) {
-                vm.toasterLite.error('timeout');
+                vm.toasterLite.error('El servidor de carga dio timeout...');
             }
 
             function readyStateChange(e) {
-                vm.toasterLite.error('ready state change');
+                console.log("ready state change. status:" + e.target.status + " " + e.target.statusText);
+                var errorNoEspecificado = 'Error al cargar archivo';
+                var elArchivoYaExiste = 'Ya existe un archivo con ese nombre';
+                switch (e.target.status) {
+                    case 500:
+                        setFailure(errorNoEspecificado)
+                        vm.$apply(() => {
+                            setFailure(errorNoEspecificado);
+                        });
+                        break;
+
+                    case 200:
+                        var serialized = e.target.response;
+                        if (serialized === "")
+                            return;
+                        var result = JSON.parse(serialized) as { exitoso: boolean, yaExiste: boolean }
+                        if (result.exitoso) {
+                            setUploaded()
+                            vm.$apply(() => {
+                                setUploaded();
+                            });
+
+                            console.log('El archivo se recibio correctamente en el servidor');
+                        }
+                        else {
+                            setFailure(elArchivoYaExiste)
+                            vm.$apply(() => {
+                                setFailure(elArchivoYaExiste);
+                            });
+                        }
+                        break;
+
+                    case 0:
+                    case '':
+                        break;
+
+                    default:
+                        vm.toasterLite.error('Error desconocido al cargar archivo');
+                        break;
+                }
             }
 
             function loadStart(e) {
-                vm.toasterLite.error('load start');
+                console.log('Load start');
             }
 
             function loadEnd(e) {
-                vm.toasterLite.error('load end');
+                console.log('Load end');
+            }
+
+            // Helpers
+            function setUploaded() {
+                unit.progress = 100;
+                unit.state = vm.states.uploaded;
+                unit.justUploaded = true,
+                unit.waitingServer = false;
+            }
+
+            function setFailure(message: string) {
+                unit.progress = 0;
+
+                unit.state = vm.states.uploadFailed;
+                unit.waitingServer = false;
+                unit.errorMessage = message;
             }
         }
     }
 
     export class fileUnit {
         constructor(
-            // icon an such later
             public name: string,
             public state: string,
             public file: File,
+            public size: number, // in bytes
+            public formattedSize: string,
 
             // Presets
+            public iconUrl: string = '',
+            public iconSvg: string = '',
+            public isAPicture: boolean = false,
             public progress: any = 0,
-            public waitingServer: boolean = false
+            public waitingServer: boolean = false,
+            public justUploaded: boolean = false,
+            public errorMessage: string = '',
+            // Methods
+            public stopUpload: () => any = null,
         ) {
         }
     }

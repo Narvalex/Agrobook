@@ -1,25 +1,28 @@
 ﻿<div class="padding-all" ng-controller="serviciosMainContentController as vm">
-    <h2 class="md-title" ng-show="vm.esNuevo">
-        <ng-md-icon icon="add"></ng-md-icon>
-        &nbsp;Nuevo servicio para <a href="#!/prod/{{vm.productor.id}}">{{vm.productor.display}}</a>
-    </h2>
-    <h2 class="md-title" ng-hide="vm.esNuevo">
-        Servicio a {{vm.servicio.parcelaDisplay === null ? 'una parcela que falta especificar' : 'la parcela ' + vm.servicio.parcelaDisplay}} de <a href="#!/prod/{{vm.productor.id}}">{{vm.productor.display}}</a>
-    </h2>
-    <div>
-        <md-tabs md-dynamic-height="" md-selected="vm.tabIndex">
-            <md-tab label="{{vm.esNuevo ? 'Datos básicos' : 'Resumen'}}" md-on-select="vm.onTabSelected(0)">
-                <div ng-include="'./dist/ap/views/servicios/tab-resumen.html'"></div>
-            </md-tab>
-            <md-tab label="Parcela" md-on-select="vm.onTabSelected(1)" ng-if="!vm.esNuevo">
-                <div ng-include="'./dist/ap/views/servicios/tab-parcela.html'"></div>
-            </md-tab>
-            <md-tab label="Diagnóstico" md-on-select="vm.onTabSelected(2)" ng-if="!vm.esNuevo">
-                <div ng-include="'./dist/ap/views/servicios/tab-diagnostico.html'"></div>
-            </md-tab>
-            <md-tab label="Prescripciones" md-on-select="vm.onTabSelected(3)" ng-if="!vm.esNuevo">
-                <div ng-include="'./dist/ap/views/servicios/tab-prescripciones.html'"></div>
-            </md-tab>
-        </md-tabs>
+    <md-progress-linear md-mode="indeterminate" ng-disabled="!vm.loading"></md-progress-linear>
+    <div ng-hide="vm.loading">
+        <h2 class="md-title" ng-show="vm.esNuevo">
+            <ng-md-icon icon="add"></ng-md-icon>
+            &nbsp;Nuevo servicio para <a href="#!/prod/{{vm.productor.id}}">{{vm.productor.display}}</a>
+        </h2>
+        <h2 class="md-title" ng-hide="vm.esNuevo">
+            Servicio a {{vm.servicio.parcelaDisplay === null ? 'una parcela que falta especificar' : 'la parcela ' + vm.servicio.parcelaDisplay}} de <a href="#!/prod/{{vm.productor.id}}">{{vm.productor.display}}</a>
+        </h2>
+        <div>
+            <md-tabs md-dynamic-height="" md-selected="vm.tabIndex">
+                <md-tab label="{{vm.esNuevo ? 'Datos básicos' : 'Resumen'}}" md-on-select="vm.onTabSelected(0)">
+                    <div ng-include="'./dist/ap/views/servicios/tab-resumen.html'"></div>
+                </md-tab>
+                <md-tab label="Parcela" md-on-select="vm.onTabSelected(1)" ng-if="!vm.esNuevo">
+                    <div ng-include="'./dist/ap/views/servicios/tab-parcela.html'"></div>
+                </md-tab>
+                <md-tab label="Diagnóstico" md-on-select="vm.onTabSelected(2)" ng-if="!vm.esNuevo">
+                    <div ng-include="'./dist/ap/views/servicios/tab-diagnostico.html'"></div>
+                </md-tab>
+                <md-tab label="Prescripciones" md-on-select="vm.onTabSelected(3)" ng-if="!vm.esNuevo">
+                    <div ng-include="'./dist/ap/views/servicios/tab-prescripciones.html'"></div>
+                </md-tab>
+            </md-tabs>
+        </div>
     </div>
 </div>

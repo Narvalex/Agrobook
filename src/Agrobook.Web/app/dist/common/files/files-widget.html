@@ -21,24 +21,41 @@
 
         <md-list>
             <md-list-item ng-repeat="unit in units" class="md-2-line">
-                <img ng-src="./assets/img/fileIcons/file.png" class="md-avatar" alt="{{unit.name}}" />
-
+                <img ng-if="unit.isAPicture" ng-src="{{unit.iconUrl}}" class="md-avatar" alt="..." />
+                <md-icon ng-if="!unit.isAPicture" md-svg-icon="{{unit.iconSvg}}"></md-icon>
                 <div class="md-list-item-text">
-                    <h3>{{unit.name}}</h3>
-                    <p>File size: unknown</p>
-                    <md-progress-linear ng-show="unit.state === 'uploading'"
-                                        md-mode="determinate" 
+                    <h3>
+                        <ng-md-icon ng-show="unit.state === 'uploadFailed'" title="{{unit.errorMessage}}" style="color:red" icon="warning"></ng-md-icon>
+                        <ng-md-icon ng-show="unit.state === 'uploaded' && unit.justUploaded" title="Carga completada" style="color:#4caf50" icon="check_circle"></ng-md-icon>
+                        {{unit.name}}
+                    </h3>
+                    <div ng-switch="unit.state">
+                        <p ng-switch-when="pending">
+                            {{unit.formattedSize}}
+                        </p>
+                        <p ng-switch-when="uploadFailed">
+                            {{unit.errorMessage}}
+                        </p>
+                        <p ng-switch-when="uploading">
+                            {{unit.progress}}% de {{unit.formattedSize}} {{unit.waitingServer ? '- Esperando al servidor...' : ''}}
+                        </p>
+                        <p ng-switch-when="uploaded">
+                            {{unit.formattedSize}}
+                        </p>
+                    </div>
+                    <md-progress-linear ng-show="unit.state === 'uploading' || unit.state === 'uploadFailed'"
+                                        md-mode="determinate"
                                         value="{{unit.progress}}"></md-progress-linear>
                 </div>
 
-                <md-button ng-show="unit.state === 'pending'"
-                           class="md-secondary md-icon-button launch md-primary" 
+                <md-button ng-show="unit.state === 'pending' || unit.state === 'uploadFailed'"
+                           class="md-secondary md-icon-button launch md-primary"
                            aria-label="action"
                            ng-click="uploadFile(unit)">
                     <ng-md-icon icon="file_upload"></ng-md-icon>
                 </md-button>
-                <md-button ng-show="unit.state === 'pending'"
-                           class="md-secondary md-icon-button launch" 
+                <md-button ng-show="unit.state === 'pending' || unit.state === 'uploadFailed'"
+                           class="md-secondary md-icon-button launch"
                            aria-label="action"
                            ng-click="removeFile(unit)">
                     <ng-md-icon icon="close"></ng-md-icon>
@@ -58,7 +75,8 @@
                 <md-button ng-show="unit.state === 'uploading'"
                            class="md-secondary md-icon-button launch md-warn"
                            aria-label="action"
-                           ng-click="doSecondaryAction($event)">
+                           ng-disabled="unit.waitingServer"
+                           ng-click="unit.stopUpload()">
                     <ng-md-icon icon="stop"></ng-md-icon>
                 </md-button>
             </md-list-item>
