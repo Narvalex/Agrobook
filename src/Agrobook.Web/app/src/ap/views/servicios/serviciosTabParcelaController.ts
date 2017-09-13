@@ -14,7 +14,7 @@ module apArea {
             private $scope: angular.IScope,
         ) {
             this.idProd = this.$routeParams['idProd'];
-            this.coleccionId = `${this.config.categoriaDeArchivos.servicioParcelas}-${this.idProd}`;
+            this.idColeccion = `${this.config.categoriaDeArchivos.servicioParcelas}-${this.idProd}`;
             this.idServicio = this.$routeParams['idServicio'];
 
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
@@ -35,7 +35,7 @@ module apArea {
         idProd: string;
         servicio: servicioDto;
         parcela: parcelaDto;
-        coleccionId: string;
+        idColeccion: string;
         // Edit/New
         parcelaSeleccionada: parcelaDto;
 

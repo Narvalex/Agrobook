@@ -1,11 +1,9 @@
 ﻿using Agrobook.Domain.Common;
-using Agrobook.Domain.Usuarios;
 using Eventing.Core.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Archivos.Services
@@ -16,71 +14,26 @@ namespace Agrobook.Domain.Archivos.Services
             : base(contextFactory, reader)
         { }
 
-        public async Task<IList<ProductorDto>> ObtenerProductores()
+        public async Task<IList<MetadatosDeArchivo>> ObtenerArchivos(string idColeccion)
         {
             return await this.QueryAsync(async context =>
             {
-                var productores = await context.Usuarios.Where(u => u.EsProductor).ToListAsync();
+                var rawList = await context.Archivos.Where(x => x.IdColeccion == idColeccion)
+                .ToArrayAsync();
 
-                // I Really need a document db here...
-                var organizaciones = await context.OrganizacionesDeUsuarios.ToListAsync();
-                var grupos = await context.GruposDeUsuarios.ToListAsync();
-
-                var list = productores.Select(p =>
-                new ProductorDto
+                var list = rawList.Select(x =>
+                new MetadatosDeArchivo
                 {
-                    Id = p.Id,
-                    Display = p.Display,
-                    AvatarUrl = p.AvatarUrl,
-                    Organizaciones = organizaciones
-                    .Where(o => o.UsuarioId == p.Id)
-                    .Select(o =>
-                    new OrganizacionDto
-                    {
-                        // Display no mas por que el usuario no tendria por que saber el id
-                        Display = o.OrganizacionDisplay,
-                        Grupos = armarListaDeGrupos(grupos, o.OrganizacionId, p.Id)
-                    })
-                    .ToArray()
+                    Nombre = x.Nombre,
+                    Extension = x.Extension,
+                    Size = x.Size,
+                    Tipo = x.Tipo,
+                    Fecha = x.Fecha,
+                    IdColeccion = x.IdColeccion
                 })
                 .ToList();
 
                 return list;
-            });
-
-            string armarListaDeGrupos(List<GrupoDeUsuarioEntity> grupos, string orgId, string usuarioId)
-            {
-                var sb = new StringBuilder();
-                grupos
-                .Where(g => g.OrganizacionId == orgId && g.UsuarioId == usuarioId)
-                .Select(g => g.GrupoDisplay)
-                .ToList()
-                .ForEach(g =>
-                {
-                    if (g != UsuariosConstants.DefaultGrupoDisplayName)
-                        sb.Append(g + " ");
-                });
-
-                return sb.ToString();
-            }
-        }
-
-        public async Task<IList<ArchivoDto>> ObtenerArchivosDelProductor(string idProductor)
-        {
-            return await this.QueryAsync(async context =>
-            {
-                var rawlist = await context.Archivos.Where(x => x.IdProductor == idProductor)
-                .ToArrayAsync();
-
-                return rawlist.Select(x =>
-                new ArchivoDto
-                {
-                    Nombre = x.Nombre,
-                    Extension = x.Extension,
-                    Fecha = x.Fecha.ToShortDateString(),
-                    Desc = x.Descripcion
-                })
-                .ToList();
             });
         }
     }

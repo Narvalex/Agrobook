@@ -11,13 +11,13 @@ namespace Agrobook.Domain.Archivos.Services
     public class ArchivosIndexerService : AgrobookDenormalizer,
         IEventHandler<NuevoArchivoAgregadoALaColeccion>
     {
-        private readonly IArchivosDelProductorFileManager fileManager;
+        private readonly IFileWriter fileManager;
 
         public ArchivosIndexerService(IEventSubscriber subscriber, Func<AgrobookDbContext> contextFactory,
-            IArchivosDelProductorFileManager fileManager)
+            IFileWriter fileManager)
             : base(subscriber, contextFactory,
                   typeof(ArchivosIndexerService).Name,
-                  StreamCategoryAttribute.GetCategoryProjectionStream<ColeccionDeArchivosDelProductor>())
+                  StreamCategoryAttribute.GetCategoryProjectionStream<ColeccionDeArchivos>())
         {
             Ensure.NotNull(fileManager, nameof(fileManager));
 
@@ -26,18 +26,18 @@ namespace Agrobook.Domain.Archivos.Services
 
         public async Task Handle(long eventNumber, NuevoArchivoAgregadoALaColeccion e)
         {
-            var renombrado = this.fileManager.SetFileAsIndexedIfNeeded(e.IdProductor, e.Archivo);
+            var renombrado = this.fileManager.SetFileAsIndexedIfNeeded(e.IdColeccion, e.Descriptor);
 
             await this.Denormalize(eventNumber, context =>
             {
                 context.Archivos.Add(new ArchivosEntity
                 {
-                    IdProductor = e.IdProductor,
-                    Nombre = e.Archivo.Nombre,
-                    Fecha = e.Archivo.Fecha,
-                    Extension = e.Archivo.Extension,
-                    Descripcion = e.Archivo.Descripcion,
-                    Size = e.Archivo.Size
+                    IdColeccion = e.IdColeccion,
+                    Nombre = e.Descriptor.Nombre,
+                    Fecha = e.Descriptor.Fecha,
+                    Extension = e.Descriptor.Extension,
+                    Tipo = e.Descriptor.Tipo,
+                    Size = e.Descriptor.Size
                 });
             });
         }

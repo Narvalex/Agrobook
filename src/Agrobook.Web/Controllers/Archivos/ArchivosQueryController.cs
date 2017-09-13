@@ -1,5 +1,4 @@
-﻿using Agrobook.Client;
-using Agrobook.Client.Archivos;
+﻿using Agrobook.Client.Archivos;
 using Eventing.Client.Http;
 using System.IO;
 using System.Net;
@@ -21,40 +20,51 @@ namespace Agrobook.Web.Controllers.Archivos
             this.client = ServiceLocator.ResolveNewOf<ArchivosQueryClient>().WithTokenProvider(this.TokenProvider);
         }
 
+        //[HttpGet]
+        //[Route("productores")]
+        //public async Task<IHttpActionResult> ObtenerProductores()
+        //{
+        //    var dto = await this.client.ObtenerProductores();
+        //    return this.Ok(dto);
+        //}
+
+        //[HttpGet]
+        //[Route("archivos-del-productor/{idProductor}")]
+        //public async Task<IHttpActionResult> ObtenerArchivosDelProductor([FromUri]string idProductor)
+        //{
+        //    var dto = await this.client.ObtenerArchivosDelProductor(idProductor);
+        //    return this.Ok(dto);
+        //}
+
         [HttpGet]
-        [Route("productores")]
-        public async Task<IHttpActionResult> ObtenerProductores()
+        [Route("coleccion/{idColeccion}")]
+        public async Task<IHttpActionResult> ObtenerListaDeArchivos([FromUri]string idColeccion)
         {
-            var dto = await this.client.ObtenerProductores();
-            return this.Ok(dto);
+            var list = await this.client.ObtenerListaDeArchivos(idColeccion);
+            return this.Ok(list);
         }
 
         [HttpGet]
-        [Route("archivos-del-productor/{idProductor}")]
-        public async Task<IHttpActionResult> ObtenerArchivosDelProductor([FromUri]string idProductor)
+        [Route("download/{idColeccion}/{nombreArchivo}/{usuario}")]
+        public async Task<HttpResponseMessage> Download([FromUri]string idColeccion, [FromUri] string nombreArchivo, [FromUri]string usuario) // security bug here
         {
-            var dto = await this.client.ObtenerArchivosDelProductor(idProductor);
-            return this.Ok(dto);
-        }
-
-        [HttpGet]
-        [Route("download/{idProductor}/{nombreArchivo}/{extension}/{usuario}")]
-        public async Task<HttpResponseMessage> Download([FromUri]string idProductor, [FromUri] string nombreArchivo, [FromUri] string extension, [FromUri]string usuario)
-        {
-            var stream = await this.client.Download(idProductor, nombreArchivo, extension, usuario);
+            var stream = await this.client.Download(idColeccion, nombreArchivo, usuario);
 
             var response = this.Request.CreateResponse(HttpStatusCode.OK);
             response.Content = new StreamContent(stream);
             response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-            response.Content.Headers.ContentDisposition.FileName = $"{nombreArchivo}.{extension}";
+            response.Content.Headers.ContentDisposition.FileName = nombreArchivo;
 
             return response;
         }
 
         [HttpGet]
-        [Route("file-icon/{idProductor}/{archivo}/{extension}")]
-        public async Task<HttpResponseMessage> GetFileIcon([FromUri]string idProductor, [FromUri]string archivo, [FromUri]string extension)
+        [Route("file-icon/{idProductor}/{archivo}")]
+        public async Task<HttpResponseMessage> GetFileIcon([FromUri]string idProductor, [FromUri]string archivo)
         {
+            // TODO: extract extension
+            var extension = default(string);
+
             byte[] byteArray;
             extension = extension.ToLowerInvariant();
             if (extension != "jpg"

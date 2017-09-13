@@ -1,25 +1,24 @@
-﻿using Agrobook.Common;
-using Eventing.Core.Domain;
+﻿using Eventing.Core.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Agrobook.Domain.Archivos
 {
-    [StreamCategory("agrobook.coleccionesDeArchivosDelProductor")]
-    public class ColeccionDeArchivosDelProductor : EventSourced
+    [StreamCategory("agrobook.coleccionesDeArchivos")]
+    public class ColeccionDeArchivos : EventSourced
     {
         private IDictionary<string, int> filesWithSize = new Dictionary<string, int>();
 
-        public ColeccionDeArchivosDelProductor()
+        public ColeccionDeArchivos()
         {
-            this.On<NuevaColeccionDeArchivosDelProductorCreada>(e =>
+            this.On<NuevaColeccionDeArchivosCreada>(e =>
             {
-                this.SetStreamNameById(e.IdProductor);
+                this.SetStreamNameById(e.IdColeccion);
             });
             this.On<NuevoArchivoAgregadoALaColeccion>(e =>
             {
-                this.filesWithSize.Add(e.Archivo.Nombre, e.Archivo.Size);
+                this.filesWithSize.Add(e.Descriptor.Nombre, e.Descriptor.Size);
             });
         }
 
@@ -54,19 +53,20 @@ namespace Agrobook.Domain.Archivos
 
     public class ArchivoDescriptor
     {
-        public ArchivoDescriptor(string nombre, string extension, DateTime fecha, string descripcion, int size)
+        public ArchivoDescriptor(string nombre, string extension, DateTime fecha, string tipo, int size)
         {
             this.Nombre = nombre;
             this.Extension = extension;
             this.Fecha = fecha;
-            this.Descripcion = descripcion;
+            this.Tipo = tipo;
             this.Size = size;
         }
 
         public string Nombre { get; }
         public string Extension { get; }
+        public string Tipo { get; }
         public DateTime Fecha { get; }
-        public string Descripcion { get; }
+        // En Byte
         public int Size { get; }
     }
 }

@@ -16,11 +16,11 @@ namespace Agrobook.Domain
 
     public class ArchivosEntity
     {
-        public string IdProductor { get; set; }
+        public string IdColeccion { get; set; }
         public string Nombre { get; set; }
         public string Extension { get; set; }
         public DateTime Fecha { get; set; }
-        public string Descripcion { get; set; }
+        public string Tipo { get; set; }
         public int Size { get; set; }
     }
 
@@ -28,7 +28,7 @@ namespace Agrobook.Domain
     {
         public ArchivosEntityMap()
         {
-            this.HasKey(x => new { x.IdProductor, x.Nombre });
+            this.HasKey(x => new { x.IdColeccion, x.Nombre });
 
             this.ToTable("Archivos");
         }

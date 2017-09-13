@@ -7,7 +7,7 @@ var common;
         return {
             restrict: 'EA',
             scope: {
-                coleccionId: '=',
+                idColeccion: '=',
                 header: '='
             },
             templateUrl: './dist/common/files/files-widget.html',
@@ -16,22 +16,34 @@ var common;
     }
     common.filesWidgetDirectiveFactory = filesWidgetDirectiveFactory;
     var filesWidgetController = (function () {
-        function filesWidgetController($scope, toasterLite, localStorageLite, config) {
+        function filesWidgetController($scope, toasterLite, localStorageLite, config, $http) {
             this.$scope = $scope;
             this.toasterLite = toasterLite;
             this.localStorageLite = localStorageLite;
             this.config = config;
+            this.$http = $http;
             var vm = this.$scope;
             vm.toasterLite = this.toasterLite;
             vm.loginInfo = this.localStorageLite.get(this.config.repoIndex.login.usuarioActual);
             vm.states = { pending: 'pending', uploading: 'uploading', uploaded: 'uploaded', uploadFailed: 'uploadFailed' };
-            vm.fileInputId = vm.coleccionId + 'fileInputId';
+            vm.fileInputId = vm.idColeccion + 'fileInputId';
             vm.addFiles = this.addFiles;
             vm.prepareFiles = this.prepareFiles;
             vm.removeFile = this.removeFile;
             vm.uploadFile = this.uploadFile;
+            vm.downloadFile = this.downloadFile;
             vm.setIconUrlAndSvgs = this.setIconUrlAndSvgs;
             vm.units = [];
+            $http.get('archivos/query/coleccion/' + vm.idColeccion).then(function (value) {
+                for (var i = 0; i < value.data.length; i++) {
+                    var meta = value.data[i];
+                    var unit = new fileUnit(meta.nombre, meta.extension, vm.states.uploaded, null, meta.size, meta.size > 1024 * 1024 ? (meta.size / 1024 / 1024).toFixed(1) + " MB" : (meta.size / 1024).toFixed(1) + " KB");
+                    vm.setIconUrlAndSvgs(unit);
+                    vm.units.push(unit);
+                }
+            }, function (response) {
+                vm.toasterLite.error('Hubo un error al recuperar los archivos cargados');
+            });
         }
         // angular typing
         filesWidgetController.prototype.$apply = function (action) {
@@ -62,7 +74,9 @@ var common;
                     }
                     if (alreadyExists)
                         continue;
-                    var unit = new fileUnit(newName, vm.states.pending, file, file.size, file.size > 1024 * 1024 ? (file.size / 1024 / 1024).toFixed(1) + " MB" : (file.size / 1024).toFixed(1) + " KB");
+                    var deconstructed = newName.split('.');
+                    var ext = deconstructed.pop().toLowerCase();
+                    var unit = new fileUnit(newName, ext, vm.states.pending, file, file.size, file.size > 1024 * 1024 ? (file.size / 1024 / 1024).toFixed(1) + " MB" : (file.size / 1024).toFixed(1) + " KB");
                     vm.setIconUrlAndSvgs(unit);
                     vm.units.push(unit);
                     console.log('File "' + newName + '" was added');
@@ -83,8 +97,7 @@ var common;
             }
         };
         filesWidgetController.prototype.setIconUrlAndSvgs = function (unit) {
-            var deconstructed = unit.name.split('.');
-            var ext = deconstructed.pop().toLowerCase();
+            var ext = unit.extension;
             if (ext === 'jpg' || ext === 'jpeg' || ext === 'png') {
                 unit.isAPicture = true;
                 unit.iconSvg = 'picture';
@@ -125,13 +138,18 @@ var common;
                 unit.iconSvg = iconSvg;
             }
         };
+        filesWidgetController.prototype.downloadFile = function (unit) {
+            // Could be improved here: https://stackoverflow.com/questions/24080018/download-file-from-an-asp-net-web-api-method-using-angularjs
+            window.open("./archivos/query/download/" + this.idColeccion + "/" + unit.name + "/" + this.loginInfo.usuario, '_blank', '');
+        };
         filesWidgetController.prototype.uploadFile = function (unit) {
             var vm = this;
             unit.state = vm.states.uploading;
             var form = document.forms.namedItem('uploadForm');
             var formData = new FormData(form);
             formData.append('uploadedFile', unit.file);
-            formData.append('metadatos', JSON.stringify({ nombre: 'nombre', extension: 'extension', fecha: new Date(), desc: 'desc', size: 1000, coleccionId: 'fulano' }));
+            var metadatos = new metadatosDeArchivo(unit.name, unit.extension, unit.file.type, unit.file.lastModifiedDate, unit.size, vm.idColeccion);
+            formData.append('metadatos', JSON.stringify(metadatos));
             // More info to try on edge: http://jsfiddle.net/pthoty2e/
             // Issue on edge: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/12224510/
             var xhr = new XMLHttpRequest();
@@ -145,7 +163,7 @@ var common;
             xhr.addEventListener("readystatechange", readyStateChange, false);
             xhr.addEventListener("loadstart", loadStart, false);
             xhr.addEventListener("loadend", loadEnd, false);
-            xhr.open("POST", "./archivos/upload/v2", true);
+            xhr.open("POST", "./archivos/upload", true);
             xhr.setRequestHeader("Authorization", vm.loginInfo.token);
             try {
                 xhr.send(formData);
@@ -160,8 +178,8 @@ var common;
                     console.log('Upload can not be canceled. Is waiting for server response');
                     return;
                 }
-                xhr.abort();
                 setFailure('Carga cancelada');
+                xhr.abort();
             }
             function progress(e) {
                 try {
@@ -257,9 +275,9 @@ var common;
         };
         return filesWidgetController;
     }());
-    filesWidgetController.$inject = ['$scope', 'toasterLite', 'localStorageLite', 'config'];
+    filesWidgetController.$inject = ['$scope', 'toasterLite', 'localStorageLite', 'config', '$http'];
     var fileUnit = (function () {
-        function fileUnit(name, state, file, size, // in bytes
+        function fileUnit(name, extension, state, file, size, // in bytes
             formattedSize, 
             // Presets
             iconUrl, iconSvg, isAPicture, progress, waitingServer, justUploaded, errorMessage, 
@@ -274,6 +292,7 @@ var common;
             if (errorMessage === void 0) { errorMessage = ''; }
             if (stopUpload === void 0) { stopUpload = null; }
             this.name = name;
+            this.extension = extension;
             this.state = state;
             this.file = file;
             this.size = size;
@@ -290,5 +309,17 @@ var common;
         return fileUnit;
     }());
     common.fileUnit = fileUnit;
+    var metadatosDeArchivo = (function () {
+        function metadatosDeArchivo(nombre, extension, tipo, fecha, size, idColeccion) {
+            this.nombre = nombre;
+            this.extension = extension;
+            this.tipo = tipo;
+            this.fecha = fecha;
+            this.size = size;
+            this.idColeccion = idColeccion;
+        }
+        return metadatosDeArchivo;
+    }());
+    common.metadatosDeArchivo = metadatosDeArchivo;
 })(common || (common = {}));
 //# sourceMappingURL=filesWidgetDirective.js.map

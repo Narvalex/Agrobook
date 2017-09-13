@@ -61,9 +61,10 @@
                     <ng-md-icon icon="close"></ng-md-icon>
                 </md-button>
                 <md-button ng-show="unit.state === 'uploaded'"
+                           title="Descargar..."
                            class="md-secondary md-icon-button launch md-primary"
                            aria-label="action"
-                           ng-click="doSecondaryAction($event)">
+                           ng-click="downloadFile(unit)">
                     <ng-md-icon icon="file_download"></ng-md-icon>
                 </md-button>
                 <md-button ng-show="unit.state === 'uploaded'"

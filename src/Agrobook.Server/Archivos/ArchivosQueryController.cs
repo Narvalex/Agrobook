@@ -15,64 +15,54 @@ namespace Agrobook.Server.Archivos
     {
         private readonly ArchivosService service = ServiceLocator.ResolveSingleton<ArchivosService>();
         private readonly ArchivosQueryService queryService = ServiceLocator.ResolveSingleton<ArchivosQueryService>();
-        private readonly IArchivosDelProductorFileManager fileManager = ServiceLocator.ResolveSingleton<IArchivosDelProductorFileManager>();
+        private readonly IFileWriter fileManager = ServiceLocator.ResolveSingleton<IFileWriter>();
 
         [HttpGet]
-        [Route("productores")]
-        public async Task<IHttpActionResult> ObtenerProductores()
+        [Route("coleccion/{idColeccion}")]
+        public async Task<IHttpActionResult> ObtenerListaDeArchivos([FromUri]string idColeccion)
         {
-            var dto = await this.queryService.ObtenerProductores();
-            return this.Ok(dto);
+            var lista = await this.queryService.ObtenerArchivos(idColeccion);
+            return this.Ok(lista);
         }
 
         [HttpGet]
-        [Route("archivos-del-productor/{idProductor}")]
-        public async Task<IHttpActionResult> ObtenerArchivosDelProductor([FromUri]string idProductor)
-        {
-            var dto = await this.queryService.ObtenerArchivosDelProductor(idProductor);
-            return this.Ok(dto);
-        }
-
-        [HttpGet]
-        [Route("download/{idProductor}/{nombreArchivo}/{extension}/{usuario}")]
-        public async Task<HttpResponseMessage> Download([FromUri]string idProductor, [FromUri] string nombreArchivo, [FromUri] string extension, [FromUri] string usuario)
+        [Route("download/{idColeccion}/{nombreArchivo}/{usuario}")]
+        public async Task<HttpResponseMessage> Download([FromUri]string idColeccion, [FromUri] string nombreArchivo, [FromUri] string usuario)
         {
             //if (!File.Exists(localFilePath))
             //{
             //    result = Request.CreateResponse(HttpStatusCode.Gone);
             //}
 
-            var response = this.PrepareFileResponse(idProductor, nombreArchivo, extension);
+            var response = this.PrepareFileResponse(idColeccion, nombreArchivo);
 
-            await this.service.HandleAsync(new RegistrarDescargaExitosa(new Firma(usuario, DateTime.Now), idProductor, nombreArchivo));
+            await this.service.HandleAsync(new RegistrarDescargaExitosa(new Firma(usuario, DateTime.Now), idColeccion, nombreArchivo));
 
             return response;
         }
 
         [HttpGet]
-        [Route("preview/{idProductor}/{nombreArchivo}/{extension}")]
-        public HttpResponseMessage Preview([FromUri]string idProductor, [FromUri] string nombreArchivo, [FromUri] string extension)
+        [Route("preview/{idProductor}/{nombreArchivo}")]
+        public HttpResponseMessage Preview([FromUri]string idProductor, [FromUri] string nombreArchivo)
         {
             // VALIDAR AQUI QUE NO SEA UN ARCHIVO GRANDE
-            if (extension != "jpg"
-                && extension != "JPG"
-                && extension != "png"
-                && extension != "PNG")
+            // TODO: validar que no sea imagen. Si es imagen, hay que rechazar...
+            if (true)
             {
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            var response = this.PrepareFileResponse(idProductor, nombreArchivo, extension);
+            var response = this.PrepareFileResponse(idProductor, nombreArchivo);
             return response;
         }
 
-        private HttpResponseMessage PrepareFileResponse(string idProductor, string nombreArchivo, string extension)
+        private HttpResponseMessage PrepareFileResponse(string idProductor, string nombreArchivo)
         {
             var result = this.Request.CreateResponse(HttpStatusCode.OK);
-            var fileStream = this.fileManager.GetFile(idProductor, nombreArchivo, extension);
+            var fileStream = this.fileManager.GetFile(idProductor, nombreArchivo);
             result.Content = new StreamContent(fileStream);
             result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-            result.Content.Headers.ContentDisposition.FileName = $"{nombreArchivo}.{extension}";
+            result.Content.Headers.ContentDisposition.FileName = $"{nombreArchivo}";
             return result;
         }
     }

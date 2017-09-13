@@ -7,21 +7,21 @@ using System.IO;
 
 namespace Agrobook.Domain.Tests.Archivos
 {
-    public class TestableFileManager : IArchivosDelProductorFileManager
+    public class TestableFileManager : IFileWriter
     {
         public bool RetornarResultadoExitoso { get; set; } = true;
 
-        public void BorrarTodoYEmpezarDeNuevo()
+        public void DeleteAllAndStartAgain()
         {
             throw new NotImplementedException();
         }
 
-        public void CrearDirectoriosSiFaltan()
+        public void CreateDirectoryIfNeeded()
         {
             throw new NotImplementedException();
         }
 
-        public FileStream GetFile(string idProductor, string nombreArchivo, string extension)
+        public FileStream GetFile(string idProductor, string nombreArchivo)
         {
             throw new NotImplementedException();
         }

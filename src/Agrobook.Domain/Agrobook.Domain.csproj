@@ -64,15 +64,14 @@
   <ItemGroup>
     <Compile Include="Archivos\Messages\ArchivosCommands.cs" />
     <Compile Include="Archivos\Messages\ArchivosEvents.cs" />
-    <Compile Include="Archivos\ColeccionDeArchivosDelProductor.cs" />
+    <Compile Include="Archivos\ColeccionDeArchivos.cs" />
     <Compile Include="Archivos\Services\ArchivosDbContext.cs" />
     <Compile Include="Archivos\Services\ArchivosIndexerService.cs" />
     <Compile Include="Archivos\Services\ArchivosQueryService.cs" />
-    <Compile Include="Archivos\Services\ArchivosQueryServiceDTOs.cs" />
     <Compile Include="Archivos\Services\ArchivosService.cs" />
     <Compile Include="Archivos\Services\ArchivosServiceDTOs.cs" />
-    <Compile Include="Archivos\Services\DurableArchivosDelProductorFileManager.cs" />
-    <Compile Include="Archivos\Services\IArchivosDelProductorFileManager.cs" />
+    <Compile Include="Archivos\Services\FileWriter.cs" />
+    <Compile Include="Archivos\Services\IFileWriter.cs" />
     <Compile Include="Common\AgrobookDbContext.cs" />
     <Compile Include="Common\AgrobookDenormalizer.cs" />
     <Compile Include="Common\AgrobookQueryService.cs" />

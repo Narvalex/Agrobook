@@ -13,19 +13,7 @@ namespace Agrobook.Client.Archivos
             : base(http, tokenProvider, "archivos/query")
         { }
 
-        public async Task<IList<ProductorDto>> ObtenerProductores()
-        {
-            var lista = await base.Get<IList<ProductorDto>>("productores");
-            return lista;
-        }
-
-        public async Task<IList<ArchivoDto>> ObtenerArchivosDelProductor(string idProductor)
-        {
-            var lista = await base.Get<IList<ArchivoDto>>("archivos-del-productor/" + idProductor);
-            return lista;
-        }
-
-        public async Task<Stream> Download(string idProductor, string nombreArchivo, string extension, string usuario = null)
+        public async Task<Stream> Download(string idColeccion, string nombreArchivo, string usuario = null)
         {
             string prefix, sufix;
             if (usuario is null)
@@ -38,8 +26,14 @@ namespace Agrobook.Client.Archivos
                 prefix = "download";
                 sufix = $"/{usuario}";
             }
-            var stream = await base.Get($"{prefix}/{idProductor}/{nombreArchivo}/{extension}" + sufix);
+            var stream = await base.Get($"{prefix}/{idColeccion}/{nombreArchivo}" + sufix);
             return stream;
+        }
+
+        public async Task<IList<MetadatosDeArchivo>> ObtenerListaDeArchivos(string idColeccion)
+        {
+            var lista = await base.Get<IList<MetadatosDeArchivo>>("coleccion/" + idColeccion);
+            return lista;
         }
     }
 }

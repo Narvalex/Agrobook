@@ -37,12 +37,12 @@ namespace Agrobook.Domain.Tests.Archivos
             .Then(events =>
             {
                 Assert.AreEqual(2, events.Count);
-                Assert.AreEqual(1, events.OfType<NuevaColeccionDeArchivosDelProductorCreada>().Count());
+                Assert.AreEqual(1, events.OfType<NuevaColeccionDeArchivosCreada>().Count());
                 Assert.AreEqual(1, events.OfType<NuevoArchivoAgregadoALaColeccion>().Count());
             })
             .And<ColeccionDeArchivosDelProductorSnapshot>(s =>
             {
-                var coleccion = s.Rehydrate<ColeccionDeArchivosDelProductor>();
+                var coleccion = s.Rehydrate<ColeccionDeArchivos>();
 
                 Assert.IsTrue(coleccion.YaTieneArchivo("foto"));
             });
@@ -65,13 +65,13 @@ namespace Agrobook.Domain.Tests.Archivos
             {
                 // Solamente de la primera operacion es esto...
                 Assert.AreEqual(2, events.Count);
-                Assert.AreEqual(1, events.OfType<NuevaColeccionDeArchivosDelProductorCreada>().Count());
+                Assert.AreEqual(1, events.OfType<NuevaColeccionDeArchivosCreada>().Count());
                 Assert.AreEqual(1, events.OfType<NuevoArchivoAgregadoALaColeccion>().Count());
             })
             .And<ColeccionDeArchivosDelProductorSnapshot>(s =>
             {
                 // Tambien esto es de la primera operacion
-                var coleccion = s.Rehydrate<ColeccionDeArchivosDelProductor>();
+                var coleccion = s.Rehydrate<ColeccionDeArchivos>();
 
                 Assert.IsTrue(coleccion.YaTieneArchivo("foto"));
             });
@@ -121,7 +121,7 @@ namespace Agrobook.Domain.Tests.Archivos
             })
             .And<ColeccionDeArchivosDelProductorSnapshot>(s =>
             {
-                var coleccion = s.Rehydrate<ColeccionDeArchivosDelProductor>();
+                var coleccion = s.Rehydrate<ColeccionDeArchivos>();
 
                 Assert.IsTrue(coleccion.YaTieneArchivo("foto"));
                 Assert.IsTrue(coleccion.YaTieneArchivo("foto2"));
@@ -146,7 +146,7 @@ namespace Agrobook.Domain.Tests.Archivos
 
                 var e = events.OfType<ArchivoDescargadoExitosamente>().Single();
 
-                Assert.AreEqual("fulano", e.Productor);
+                Assert.AreEqual("fulano", e.IdColeccion);
                 Assert.AreEqual(archivo.Nombre, e.NombreArchivo);
                 Assert.AreEqual(archivo.Size, e.Size);
             });

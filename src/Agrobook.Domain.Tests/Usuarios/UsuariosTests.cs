@@ -120,7 +120,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         }
 
         [TestMethod]
-        [Ignore]
+        [Ignore] // is ignored because the in-memory event store does not check set validation
         public void CuandoElUsuarioYaExisteEntoncesNoSePuedeAgregarOtroIgual()
         {
             var usuario = "agrobook.usuarios-user1";

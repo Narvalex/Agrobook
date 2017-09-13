@@ -5,29 +5,29 @@ namespace Agrobook.Domain.Archivos
 {
     public class AgregarArchivoAColeccion : MensajeAuditable
     {
-        public AgregarArchivoAColeccion(Firma metadatos, string idProductor, ArchivoDescriptor archivo, HttpContent fileContent) : base(metadatos)
+        public AgregarArchivoAColeccion(Firma metadatos, string idColeccion, ArchivoDescriptor descriptor, HttpContent fileContent) : base(metadatos)
         {
-            this.IdProductor = idProductor;
-            this.Archivo = archivo;
+            this.idColeccion = idColeccion;
+            this.Descriptor = descriptor;
             this.FileContent = fileContent;
         }
 
-        public string IdProductor { get; }
-        public ArchivoDescriptor Archivo { get; }
+        public string idColeccion { get; }
+        public ArchivoDescriptor Descriptor { get; }
         public HttpContent FileContent { get; }
     }
 
     public class RegistrarDescargaExitosa : MensajeAuditable
     {
-        public RegistrarDescargaExitosa(Firma metadatos, string productor, string nombreArchivo)
+        public RegistrarDescargaExitosa(Firma metadatos, string idColeccion, string nombreArchivo)
             : base(metadatos)
         {
-            this.Productor = productor;
+            this.IdColeccion = idColeccion;
             this.NombreArchivo = nombreArchivo;
         }
 
         // Este es al que pertenece el archivo
-        public string Productor { get; }
+        public string IdColeccion { get; }
         public string NombreArchivo { get; }
     }
 }

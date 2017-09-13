@@ -4,11 +4,11 @@ module common {
     // https://weblogs.asp.net/dwahlin/creating-custom-angularjs-directives-part-i-the-fundamentals
     // https://docs.angularjs.org/guide/directive
 
-    export function filesWidgetDirectiveFactory() : ng.IDirective {
+    export function filesWidgetDirectiveFactory(): ng.IDirective {
         return {
             restrict: 'EA', //E = element, A = attribute, C = class, M = comment
             scope: {
-                coleccionId: '=', // a que coleccion pertenece el archivo. {archivos}-{prodId}
+                idColeccion: '=', // a que coleccion pertenece el archivo. {archivos}-{prodId}
                 header: '='
             },
             templateUrl: './dist/common/files/files-widget.html',
@@ -16,33 +16,49 @@ module common {
         };
     }
 
-    class filesWidgetController  {
-        static $inject = ['$scope', 'toasterLite', 'localStorageLite', 'config'];
+    class filesWidgetController {
+        static $inject = ['$scope', 'toasterLite', 'localStorageLite', 'config', '$http'];
         private states: { pending: string, uploading: string, uploaded: string, uploadFailed: string }
 
         constructor(
             private $scope: ng.IScope,
             private toasterLite: common.toasterLite,
             private localStorageLite: common.localStorageLite,
-            private config: common.config
+            private config: common.config,
+            private $http: ng.IHttpService
         ) {
             var vm = this.$scope;
             vm.toasterLite = this.toasterLite;
             vm.loginInfo = this.localStorageLite.get<login.loginResult>(this.config.repoIndex.login.usuarioActual);
             vm.states = { pending: 'pending', uploading: 'uploading', uploaded: 'uploaded', uploadFailed: 'uploadFailed' };
-            vm.fileInputId = vm.coleccionId + 'fileInputId';
+            vm.fileInputId = vm.idColeccion + 'fileInputId';
             vm.addFiles = this.addFiles;
             vm.prepareFiles = this.prepareFiles;
             vm.removeFile = this.removeFile;
             vm.uploadFile = this.uploadFile;
+            vm.downloadFile = this.downloadFile;
             vm.setIconUrlAndSvgs = this.setIconUrlAndSvgs;
             vm.units = [];
+
+            $http.get<metadatosDeArchivo[]>('archivos/query/coleccion/' + vm.idColeccion).then(
+                value => {
+                    for (var i = 0; i < value.data.length; i++) {
+                        var meta = value.data[i];
+                        var unit = new fileUnit(meta.nombre, meta.extension, vm.states.uploaded, null, meta.size,
+                            meta.size > 1024 * 1024 ? `${(meta.size / 1024 / 1024).toFixed(1)} MB` : `${(meta.size / 1024).toFixed(1)} KB`);
+                        vm.setIconUrlAndSvgs(unit);
+                        vm.units.push(unit);
+                    }
+                },
+                response => {
+                    vm.toasterLite.error('Hubo un error al recuperar los archivos cargados');
+                });
         }
 
         // two-way binding
         scope: ng.IScope;
         title: string
-        coleccionId: string;
+        idColeccion: string;
 
         // object 
         loginInfo: login.loginResult;
@@ -85,7 +101,9 @@ module common {
 
                     if (alreadyExists) continue;
 
-                    let unit = new fileUnit(newName, vm.states.pending, file, file.size,
+                    var deconstructed = newName.split('.');
+                    var ext = deconstructed.pop().toLowerCase();
+                    let unit = new fileUnit(newName, ext, vm.states.pending, file, file.size,
                         file.size > 1024 * 1024 ? `${(file.size / 1024 / 1024).toFixed(1)} MB` : `${(file.size / 1024).toFixed(1)} KB`);
                     vm.setIconUrlAndSvgs(unit);
                     vm.units.push(unit);
@@ -111,8 +129,7 @@ module common {
         }
 
         setIconUrlAndSvgs(unit: fileUnit) {
-            var deconstructed = unit.name.split('.');
-            var ext = deconstructed.pop().toLowerCase();
+            let ext = unit.extension;
 
             if (ext === 'jpg' || ext === 'jpeg' || ext === 'png') {
                 unit.isAPicture = true;
@@ -157,6 +174,11 @@ module common {
             }
         }
 
+        downloadFile(unit: fileUnit) {
+            // Could be improved here: https://stackoverflow.com/questions/24080018/download-file-from-an-asp-net-web-api-method-using-angularjs
+            window.open(`./archivos/query/download/${this.idColeccion}/${unit.name}/${this.loginInfo.usuario}`, '_blank', '');
+        }
+
         uploadFile(unit: fileUnit) {
             var vm = this;
             unit.state = vm.states.uploading;
@@ -164,7 +186,8 @@ module common {
             var form = document.forms.namedItem('uploadForm');
             var formData = new FormData(form);
             formData.append('uploadedFile', unit.file);
-            formData.append('metadatos', JSON.stringify({ nombre: 'nombre', extension: 'extension', fecha: new Date(), desc: 'desc', size: 1000, coleccionId: 'fulano' }));
+            let metadatos = new metadatosDeArchivo(unit.name, unit.extension, unit.file.type, unit.file.lastModifiedDate, unit.size, vm.idColeccion);
+            formData.append('metadatos', JSON.stringify(metadatos));
 
             // More info to try on edge: http://jsfiddle.net/pthoty2e/
             // Issue on edge: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/12224510/
@@ -180,7 +203,7 @@ module common {
             xhr.addEventListener("loadstart", loadStart, false);
             xhr.addEventListener("loadend", loadEnd, false);
 
-            xhr.open("POST", "./archivos/upload/v2", true);
+            xhr.open("POST", "./archivos/upload", true);
             xhr.setRequestHeader("Authorization", vm.loginInfo.token);
             try {
                 xhr.send(formData);
@@ -195,8 +218,8 @@ module common {
                     return;
                 }
 
-                xhr.abort();
                 setFailure('Carga cancelada');
+                xhr.abort();
             }
 
             function progress(e: ProgressEvent) {
@@ -295,7 +318,7 @@ module common {
                 unit.progress = 100;
                 unit.state = vm.states.uploaded;
                 unit.justUploaded = true,
-                unit.waitingServer = false;
+                    unit.waitingServer = false;
             }
 
             function setFailure(message: string) {
@@ -311,6 +334,7 @@ module common {
     export class fileUnit {
         constructor(
             public name: string,
+            public extension: string,
             public state: string,
             public file: File,
             public size: number, // in bytes
@@ -326,6 +350,18 @@ module common {
             public errorMessage: string = '',
             // Methods
             public stopUpload: () => any = null,
+        ) {
+        }
+    }
+
+    export class metadatosDeArchivo {
+        constructor(
+            public nombre: string,
+            public extension: string,
+            public tipo: string,
+            public fecha: Date,
+            public size: number,
+            public idColeccion: string
         ) {
         }
     }

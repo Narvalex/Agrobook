@@ -67,7 +67,7 @@ namespace Agrobook.Server
 
             var organizacionesQueryService = new OrganizacionesQueryService(readOnlyDbContextFactory, eventSourcedRepository);
 
-            var archivosDelProductorFileManager = new DurableArchivosDelProductorFileManager(LogManager.GetLoggerFor<DurableArchivosDelProductorFileManager>(), jsonSerializer);
+            var archivosDelProductorFileManager = new FileWriter(LogManager.GetLoggerFor<FileWriter>(), jsonSerializer);
 
             var archivosService = new ArchivosService(archivosDelProductorFileManager, eventSourcedRepository);
 
@@ -85,7 +85,7 @@ namespace Agrobook.Server
             container.Register<UsuariosDenormalizer>(usuariosDenormalizer);
             container.Register<OrganizacionesDenormalizer>(organizacionesDenormalizer);
             container.Register<OrganizacionesQueryService>(organizacionesQueryService);
-            container.Register<IArchivosDelProductorFileManager>(archivosDelProductorFileManager);
+            container.Register<IFileWriter>(archivosDelProductorFileManager);
             container.Register<ArchivosService>(archivosService);
             container.Register<ArchivosQueryService>(archivosQueryService);
             container.Register<ArchivosIndexerService>(fileIndexer);

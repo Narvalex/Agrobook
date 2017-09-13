@@ -2,38 +2,38 @@
 
 namespace Agrobook.Domain.Archivos
 {
-    public class NuevaColeccionDeArchivosDelProductorCreada : MensajeAuditable
+    public class NuevaColeccionDeArchivosCreada : MensajeAuditable
     {
-        public NuevaColeccionDeArchivosDelProductorCreada(Firma metadatos, string idProductor) : base(metadatos)
+        public NuevaColeccionDeArchivosCreada(Firma metadatos, string idColeccion) : base(metadatos)
         {
-            this.IdProductor = idProductor;
+            this.IdColeccion = idColeccion;
         }
 
-        public string IdProductor { get; }
+        public string IdColeccion { get; }
     }
 
     public class NuevoArchivoAgregadoALaColeccion : MensajeAuditable
     {
-        public NuevoArchivoAgregadoALaColeccion(Firma metadatos, string idProductor, ArchivoDescriptor archivo) : base(metadatos)
+        public NuevoArchivoAgregadoALaColeccion(Firma metadatos, string idColeccion, ArchivoDescriptor descriptor) : base(metadatos)
         {
-            this.IdProductor = idProductor;
-            this.Archivo = archivo;
+            this.IdColeccion = idColeccion;
+            this.Descriptor = descriptor;
         }
 
-        public string IdProductor { get; }
-        public ArchivoDescriptor Archivo { get; }
+        public string IdColeccion { get; }
+        public ArchivoDescriptor Descriptor { get; }
     }
 
     public class ArchivoDescargadoExitosamente : MensajeAuditable
     {
-        public ArchivoDescargadoExitosamente(Firma metadatos, string productor, string nombreArchivo, int size) : base(metadatos)
+        public ArchivoDescargadoExitosamente(Firma metadatos, string idColeccion, string nombreArchivo, int size) : base(metadatos)
         {
-            this.Productor = productor;
+            this.IdColeccion = idColeccion;
             this.NombreArchivo = nombreArchivo;
             this.Size = size;
         }
 
-        public string Productor { get; }
+        public string IdColeccion { get; }
         public string NombreArchivo { get; }
         public int Size { get; }
     }

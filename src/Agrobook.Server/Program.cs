@@ -54,12 +54,12 @@ namespace Agrobook.Server
             _log.Verbose("SQL Compact is ready");
 
 
-            var fileManager = ServiceLocator.ResolveSingleton<IArchivosDelProductorFileManager>();
+            var fileManager = ServiceLocator.ResolveSingleton<IFileWriter>();
 #if DROP_DB
-            fileManager.BorrarTodoYEmpezarDeNuevo();
+            fileManager.DeleteAllAndStartAgain();
 #endif
 #if !DROP_DB
-            fileManager.CrearDirectoriosSiFaltan();
+            fileManager.CreateDirectoryIfNeeded();
 #endif
 
             // Web Api

@@ -16,7 +16,7 @@ var apArea;
             this.tieneParcela = false;
             this.submitting = false;
             this.idProd = this.$routeParams['idProd'];
-            this.coleccionId = this.config.categoriaDeArchivos.servicioParcelas + "-" + this.idProd;
+            this.idColeccion = this.config.categoriaDeArchivos.servicioParcelas + "-" + this.idProd;
             this.idServicio = this.$routeParams['idServicio'];
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
                 _this.cargarDatosSegunEstado();

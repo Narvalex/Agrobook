@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Archivos.Services
 {
-    public class DurableArchivosDelProductorFileManager : IArchivosDelProductorFileManager
+    public class FileWriter : IFileWriter
     {
         private readonly ILogLite log;
         private readonly IJsonSerializer serializer;
         private readonly string path;
         private readonly string unindexedPrefix = "unindexed-";
 
-        public DurableArchivosDelProductorFileManager(ILogLite log, IJsonSerializer serializer)
+        public FileWriter(ILogLite log, IJsonSerializer serializer)
         {
             Ensure.NotNull(serializer, nameof(serializer));
             Ensure.NotNull(log, nameof(log));
@@ -25,7 +25,7 @@ namespace Agrobook.Domain.Archivos.Services
             //this.path = @".\archivos";
         }
 
-        public void CrearDirectoriosSiFaltan()
+        public void CreateDirectoryIfNeeded()
         {
             if (Directory.Exists(this.path))
             {
@@ -38,7 +38,7 @@ namespace Agrobook.Domain.Archivos.Services
             this.log.Verbose($"El directorio {this.path} fué creado exitosamente");
         }
 
-        public void BorrarTodoYEmpezarDeNuevo()
+        public void DeleteAllAndStartAgain()
         {
             this.log.Warning($"Borrando todo los archivos en {this.path}");
             if (!Directory.Exists(this.path))
@@ -51,20 +51,20 @@ namespace Agrobook.Domain.Archivos.Services
                 this.log.Warning($"Fueron borrados todos los archivos en {this.path}");
             }
 
-            this.CrearDirectoriosSiFaltan();
+            this.CreateDirectoryIfNeeded();
         }
 
-        public async Task<bool> TryWriteUnindexedIfNotExists(HttpContent fileContent, string idProductor, ArchivoDescriptor metadatos)
+        public async Task<bool> TryWriteUnindexedIfNotExists(HttpContent fileContent, string idColeccion, ArchivoDescriptor descriptor)
         {
             //var fileName = new string(fileContent.Headers.ContentDisposition.FileName.Trim().Where(c => c != '"').ToArray());
-            var fileName = $"{metadatos.Nombre}.{metadatos.Extension}";
+            var fileName = descriptor.Nombre;
 
-            var coleccionPath = $"{this.path}\\{idProductor}";
+            var coleccionPath = $"{this.path}\\{idColeccion}";
             if (!Directory.Exists(coleccionPath))
             {
-                this.log.Info($"Creando el directorio para la nueva colección de archivos de {idProductor}...");
+                this.log.Info($"Creando el directorio para la nueva colección de archivos de {idColeccion}...");
                 Directory.CreateDirectory(coleccionPath);
-                this.log.Info($"Creacion exitosa del directorio {idProductor}");
+                this.log.Info($"Creacion exitosa del directorio {idColeccion}");
             }
 
             using (var stream = await fileContent.ReadAsStreamAsync())
@@ -86,10 +86,10 @@ namespace Agrobook.Domain.Archivos.Services
         }
 
         // Returns false if not needed
-        public bool SetFileAsIndexedIfNeeded(string idProductor, ArchivoDescriptor archivo)
+        public bool SetFileAsIndexedIfNeeded(string idColeccion, ArchivoDescriptor descriptor)
         {
-            var fileName = $"{archivo.Nombre}.{archivo.Extension}";
-            var colectionPath = $"{this.path}\\{idProductor}";
+            var fileName = descriptor.Nombre;
+            var colectionPath = $"{this.path}\\{idColeccion}";
 
             var fullIndexedPath = $"{colectionPath}\\{fileName}";
             var fullUnindexedPath = $"{colectionPath}\\{this.unindexedPrefix}{fileName}";
@@ -101,9 +101,9 @@ namespace Agrobook.Domain.Archivos.Services
             return true;
         }
 
-        public FileStream GetFile(string idProductor, string nombreArchivo, string extension)
+        public FileStream GetFile(string idColeccion, string fileName)
         {
-            var fileStream = new FileStream($"{this.path}\\{idProductor}\\{nombreArchivo}.{extension}", FileMode.Open, FileAccess.Read);
+            var fileStream = new FileStream($"{this.path}\\{idColeccion}\\{fileName}", FileMode.Open, FileAccess.Read);
             return fileStream;
         }
     }

@@ -17,36 +17,6 @@ namespace Agrobook.Server.Archivos
 
         [HttpPost]
         [Route("upload")]
-        public async Task<IHttpActionResult> Upload()
-        {
-            var content = this.Request.Content;
-
-            if (!content.IsMimeMultipartContent())
-                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
-
-            var streamProvider = await content.ReadAsMultipartAsync();
-            var fileContent = streamProvider.Contents.First();
-
-            var metadatosSerializados = await streamProvider.Contents[1].ReadAsStringAsync();
-            var metadatos = this.serializer.Deserialize<MetadatosDelArchivoDelProductor>(metadatosSerializados);
-
-
-            var command = new AgregarArchivoAColeccion(null, metadatos.IdProductor,
-                new ArchivoDescriptor(metadatos.Nombre,
-                            metadatos.Extension,
-                            metadatos.Fecha,
-                            metadatos.Desc,
-                            metadatos.Size),
-                fileContent)
-            .ConMetadatos(this.ActionContext);
-
-            var dto = await this.service.HandleAsync(command);
-
-            return this.Ok(dto);
-        }
-
-        [HttpPost]
-        [Route("upload/v2")]
         public async Task<IHttpActionResult> UploadV2()
         {
             var content = this.Request.Content;
@@ -61,7 +31,12 @@ namespace Agrobook.Server.Archivos
             var metadatos = this.serializer.Deserialize<MetadatosDeArchivo>(metadatosSerializados);
 
             // command being processed here;
-            var result = new ResultadoDelUpload(true, false);
+            var command = new AgregarArchivoAColeccion(null, metadatos.IdColeccion,
+                new ArchivoDescriptor(metadatos.Nombre, metadatos.Extension, metadatos.Fecha, metadatos.Tipo, metadatos.Size),
+                fileContent)
+                .ConMetadatos(this.ActionContext);
+
+            var result = await this.service.HandleAsync(command);
 
             return this.Ok(result);
         }
