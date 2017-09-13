@@ -96,8 +96,6 @@ module common {
                 new menuItem('Inicio', 'home.html', 'home'),
                 new menuItem('Ag. de Precisión', 'ap.html', 'my_location'),
                 new menuItem(esTecnicoOSuperior
-                    ? 'Archivos' : 'Mis archivos', 'archivos.html', 'folder'),
-                new menuItem(esTecnicoOSuperior
                     ? 'Usuarios' : 'Mi Perfil', 'usuarios.html#!/', 'people')
             ];
         }
