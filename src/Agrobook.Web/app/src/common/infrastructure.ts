@@ -42,7 +42,7 @@ module common {
                 hideDelay: delay,
                 position: this.defaultPosition,
                 controllerAs: 'vm',
-                templateUrl: './dist/common/toasts/toast-cerrable.html',
+                templateUrl: './src/common/toasts/toast-cerrable.html',
                 toastClass: 'info',
                 controller: class {
                     message: string = message;
@@ -58,7 +58,7 @@ module common {
                 hideDelay: delay,
                 position: this.defaultPosition,
                 controllerAs: 'vm',
-                templateUrl: './dist/common/toasts/toast-cerrable.html',
+                templateUrl: './src/common/toasts/toast-cerrable.html',
                 toastClass: 'success',
                 controller: class {
                     message: string = message;
@@ -74,7 +74,7 @@ module common {
                 hideDelay: delay,
                 position: this.defaultPosition,
                 controllerAs: 'vm',
-                templateUrl: './dist/common/toasts/toast-cerrable.html',
+                templateUrl: './src/common/toasts/toast-cerrable.html',
                 toastClass: 'error',
                 controller: class {
                     message: string = message;
@@ -90,7 +90,7 @@ module common {
                 hideDelay: delay,
                 position: position,
                 controllerAs: 'vm',
-                templateUrl: './dist/common/toasts/toast-cerrable.html',
+                templateUrl: './src/common/toasts/toast-cerrable.html',
                 controller: class {
                     message: string = message;
                     close = () => { self.$mdToast.hide(); }

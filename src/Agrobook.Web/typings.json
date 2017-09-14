@@ -5,6 +5,8 @@
   },
   "globalDependencies": {
     "angularjs/legacy/angular": "registry:dt/angularjs/legacy/angular#1.4.0+20160724063439",
-    "jquery": "registry:dt/jquery#1.10.0+20170104155652"
+    "jquery": "registry:dt/jquery#1.10.0+20170104155652",
+    "moment": "registry:dt/moment#2.11.1+20161010105546",
+    "moment-timezone": "registry:dt/moment-timezone#0.2.5+20161208060822"
   }
 }

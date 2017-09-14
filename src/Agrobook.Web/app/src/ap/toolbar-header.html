@@ -1,0 +1,34 @@
+﻿<md-toolbar ng-controller="toolbarHeaderController as vm">
+    <div class="md-toolbar-tools">
+        <md-button class="md-icon-button"
+                   ng-show="vm.mostrarSidenav"
+                   hide-gt-sm
+                   ng-click="vm.toggleSideNav()"
+                   aria-label="Toggle side nav">
+            <md-icon md-svg-icon="menu"></md-icon>
+        </md-button>
+        <md-icon ng-click="vm.goTo('../')"
+                 style="cursor:pointer;"
+                 md-svg-icon="agrobook-white"></md-icon>
+        <h2 hide-gt-sm md-truncate><a href="../app/ap.html">&nbsp;&nbsp;Agricultura de Precisión</a></h2>
+        <h2 hide-xs hide-sm md-truncate><a href="../">&nbsp;&nbsp;Agrobook</a></h2>
+
+        <span flex></span>
+
+        <div hide-sm hide-xs>
+            <md-button ng-click="vm.goTo('../app/ap.html')"
+                       title="Archivos"
+                       aria-label="Archivos">
+                &nbsp;Ag. de Precisión
+            </md-button>
+            <md-button ng-click="vm.goTo('../app/usuarios.html')"
+                       title="Usuarios"
+                       aria-label="Usuarios">
+                &nbsp;{{vm.tituloUsuarios}}
+            </md-button>
+        </div>
+
+        <div ng-include="'src/common/userMenu/widget.html'"
+             ng-controller="userMenuWidgetController as vm"></div>
+    </div>
+</md-toolbar>

@@ -9,9 +9,9 @@ module apArea {
             private $scope: angular.IScope,
             private apQueryService: apQueryService,
         ) {
-            let idOrg = this.$routeParams['idOrg'];
+            this.idOrg = this.$routeParams['idOrg'];
 
-            this.recuperarOrg(idOrg);
+            this.recuperarOrg();
 
             this.abrirTabCorrespondiente();
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
@@ -23,6 +23,7 @@ module apArea {
         tabIndex: number;
 
         // Objetos seleccionados
+        idOrg: string;
         org: orgDto;
 
         //--------------------------
@@ -37,7 +38,7 @@ module apArea {
                 default: tabId = "servicios"; break;
             }
 
-            window.location.replace(`#!/org/${this.org.id}?tab=${tabId}`);
+            window.location.replace(`#!/org/${this.idOrg}?tab=${tabId}`);
         }
 
         private abrirTabCorrespondiente() {
@@ -49,8 +50,8 @@ module apArea {
             }
         }
 
-        private recuperarOrg(id: string) {
-            this.apQueryService.getOrg(id,
+        private recuperarOrg() {
+            this.apQueryService.getOrg(this.idOrg,
                 new common.callbackLite<orgDto>(
                     value => {
                         this.org = value.data;

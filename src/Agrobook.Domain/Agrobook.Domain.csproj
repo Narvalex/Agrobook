@@ -62,6 +62,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ap\Services\ApDTOs.cs" />
+    <Compile Include="Ap\Services\ApQueryService.cs" />
     <Compile Include="Archivos\Messages\ArchivosCommands.cs" />
     <Compile Include="Archivos\Messages\ArchivosEvents.cs" />
     <Compile Include="Archivos\ColeccionDeArchivos.cs" />

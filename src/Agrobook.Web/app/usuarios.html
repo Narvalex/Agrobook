@@ -18,7 +18,7 @@
     <!-- Custom -->
     <link href="./assets/spinner.css" rel="stylesheet" />
     <link href="./assets/dialogs.css" rel="stylesheet" />
-    <link href="./dist/common/userMenu/user-menu-widget.css" rel="stylesheet" />
+    <link href="./src/common/userMenu/user-menu-widget.css" rel="stylesheet" />
     <link href="./assets/view.css" rel="stylesheet" />
     <link href="./assets/md-toasts.css" rel="stylesheet" />
     <link href="./assets/sidenav.css" rel="stylesheet" />
@@ -39,10 +39,10 @@
             <div class="dot2"></div>
         </div>
     </div>
-    <div ng-include="'./dist/usuarios/sidenav.html'" layout="vertical" ng-controller="sidenavController as vm"></div>
+    <div ng-include="'./src/usuarios/sidenav.html'" layout="vertical" ng-controller="sidenavController as vm"></div>
 
     <div layout="column" flex>
-        <div ng-include="'./dist/usuarios/toolbar-header.html'"></div>
+        <div ng-include="'./src/usuarios/toolbar-header.html'"></div>
         <!-- This content is routed -->
         <md-content flex>
             <div ng-view></div>
@@ -56,30 +56,30 @@
     <script src="./bower_components/angular-material/angular-material.min.js"></script>
     <script src="./bower_components/angular-material-icons/angular-material-icons.min.js"></script>
     <!-- functions -->
-    <script src="./dist/common/httpInterceptorRegistry.js"></script>
-    <script src="./dist/usuarios/routes.js"></script>
+    <script src="./src/common/httpInterceptorRegistry.js"></script>
+    <script src="./src/usuarios/routes.js"></script>
     <!-- values -->
-    <script src="./dist/common/config.js"></script>
+    <script src="./src/common/config.js"></script>
     <!--Models-->
-    <script src="./dist/common/commonDTOs.js"></script>
-    <script src="./dist/usuarios/usuariosDTOs.js"></script>
+    <script src="./src/common/commonDTOs.js"></script>
+    <script src="./src/usuarios/usuariosDTOs.js"></script>
     <!--Services-->
-    <script src="./dist/common/infrastructure.js"></script>
-    <script src="./dist/login/loginService.js"></script>
-    <script src="./dist/login/loginQueryService.js"></script>
-    <script src="./dist/usuarios/usuariosService.js"></script>
-    <script src="./dist/usuarios/usuariosQueryService.js"></script>
+    <script src="./src/common/infrastructure.js"></script>
+    <script src="./src/login/loginService.js"></script>
+    <script src="./src/login/loginQueryService.js"></script>
+    <script src="./src/usuarios/usuariosService.js"></script>
+    <script src="./src/usuarios/usuariosQueryService.js"></script>
     <!--Controllers-->
-    <script src="./dist/common/userMenu/widgetController.js"></script>
-    <script src="./dist/usuarios/dialogs/nuevoUsuarioDialogController.js"></script>
-    <script src="./dist/usuarios/dialogs/nuevoGrupoDialogController.js"></script>
-    <script src="./dist/usuarios/sidenavController.js"></script>
-    <script src="./dist/usuarios/toolbarHeaderController.js"></script>
-    <script src="./dist/usuarios/views/mainContentController.js"></script>
-    <script src="./dist/usuarios/views/perfilController.js"></script>
-    <script src="./dist/usuarios/views/organizacionesController.js"></script>
-    <script src="./dist/usuarios/views/gruposController.js"></script>
+    <script src="./src/common/userMenu/widgetController.js"></script>
+    <script src="./src/usuarios/dialogs/nuevoUsuarioDialogController.js"></script>
+    <script src="./src/usuarios/dialogs/nuevoGrupoDialogController.js"></script>
+    <script src="./src/usuarios/sidenavController.js"></script>
+    <script src="./src/usuarios/toolbarHeaderController.js"></script>
+    <script src="./src/usuarios/views/mainContentController.js"></script>
+    <script src="./src/usuarios/views/perfilController.js"></script>
+    <script src="./src/usuarios/views/organizacionesController.js"></script>
+    <script src="./src/usuarios/views/gruposController.js"></script>
     <!--Boot-->
-    <script src="./dist/usuarios/usuariosArea.js"></script>
+    <script src="./src/usuarios/usuariosArea.js"></script>
 </body>
 </html>

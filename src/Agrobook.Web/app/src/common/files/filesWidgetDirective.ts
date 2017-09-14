@@ -11,7 +11,7 @@ module common {
                 idColeccion: '=', // a que coleccion pertenece el archivo. {archivos}-{prodId}
                 header: '='
             },
-            templateUrl: './dist/common/files/files-widget.html',
+            templateUrl: './src/common/files/files-widget.html',
             controller: filesWidgetController //Embed a custom controller in the directive,
         };
     }

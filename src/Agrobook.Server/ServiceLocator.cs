@@ -1,5 +1,6 @@
 ﻿using Agrobook.Common;
 using Agrobook.Domain;
+using Agrobook.Domain.Ap.Services;
 using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Common;
 using Agrobook.Domain.Usuarios;
@@ -89,6 +90,10 @@ namespace Agrobook.Server
             container.Register<ArchivosService>(archivosService);
             container.Register<ArchivosQueryService>(archivosQueryService);
             container.Register<ArchivosIndexerService>(fileIndexer);
+
+            // Ordenado a partir de aqui
+            var apQueryService = new ApQueryService(readOnlyDbContextFactory, eventSourcedRepository);
+            container.Register<ApQueryService>(apQueryService);
         }
     }
 }

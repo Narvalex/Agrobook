@@ -16,35 +16,14 @@ module apArea {
             filtro: string,
             callback: common.callbackLite<cliente[]>
         ) {
-            var filteredList: cliente[];
-
-            if (filtro === "todos")
-                filteredList = this.fakeDb.clientes;
-            else if (filtro === "prod")
-                filteredList = this.fakeDb.clientes.filter(x => x.tipo === "prod");
-            else if (filtro === "org")
-                filteredList = this.fakeDb.clientes.filter(x => x.tipo === "org");
-
-            callback.onSuccess({
-                data: filteredList});
+            super.getWithCallback('clientes?filtro=' + filtro, callback);
         }
 
         getOrg(
             id: string,
             callback: common.callbackLite<orgDto>
         ) {
-            var dto: orgDto;
-            for (var i = 0; i < this.fakeDb.orgs.length; i++) {
-                if (this.fakeDb.orgs[i].id === id) {
-                    var x = this.fakeDb.orgs[i];
-                    dto = new orgDto(x.id, x.display, x.avatarUrl);
-                    break;
-                }
-            }
-
-            callback.onSuccess({
-                data: dto
-            });
+            super.getWithCallback('org/' + id, callback);
         }
 
         getProd(

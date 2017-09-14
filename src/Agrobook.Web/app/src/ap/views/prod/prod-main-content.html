@@ -1,0 +1,18 @@
+﻿<div class="padding-all" ng-controller="prodMainContentController as vm">
+    <h2 class="md-title">
+        {{vm.prod.display}}
+        <span class="h2-subtitle clickable" ng-show="vm.prod.orgs.length > 0"> de</span>
+        <span class="h2-subtitle clickable" ng-click="vm.irAOrg(vm.prod.orgs[0])"> {{vm.prod.orgs[0].display}}</span>
+        <span class="h2-subtitle clickable" ng-click="vm.irAOrg(org)" ng-repeat="org in vm.prod.orgs" ng-hide="$index === 0">{{', ' + org.display}}</span>
+    </h2>
+    <div>
+        <md-tabs md-dynamic-height="" md-selected="vm.tabIndex">
+            <md-tab label="Servicios" md-on-select="vm.onTabSelected(0)">
+                <div ng-include="'./src/ap/views/prod/tab-servicios.html'"></div>
+            </md-tab>
+            <md-tab label="Parcelas" md-on-select="vm.onTabSelected(1)">
+                <div ng-include="'./src/ap/views/prod/tab-parcelas.html'"></div>
+            </md-tab>
+        </md-tabs>
+    </div>
+</div>

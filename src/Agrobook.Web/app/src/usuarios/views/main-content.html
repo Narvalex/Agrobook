@@ -1,0 +1,33 @@
+﻿<div ng-controller="mainContentController as vm">
+    <div class="padding-all">
+        <md-content layout-padding ng-hide="vm.loaded">
+            <div layout="row">
+                <md-progress-circular md-mode="indeterminate"
+                                      ng-disabled="vm.loaded"></md-progress-circular>
+            </div>
+        </md-content>
+        <div ng-show="vm.loaded" layout="column" ng-cloak>
+            <table>
+                <tr>
+                    <td><img ng-src="{{vm.usuario.avatarUrl}}" alt="Imagen de perfil" style="height:125px" /></td>
+                    <td><h2>{{vm.usuario.nombreParaMostrar}}</h2><p>{{vm.usuario.nombre}}</p></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div ng-show="vm.loaded"> 
+        <md-tabs md-dynamic-height=""
+                 md-selected="vm.tabIndex">
+            <md-tab label="Perfil" md-on-select="vm.onTabSelect(0)">
+                <div ng-include="'./src/usuarios/views/perfil.html'"></div>
+            </md-tab>
+            <md-tab ng-if="vm.mostrarOrganizacionesYGrupos" label="Grupos" md-on-select="vm.onTabSelect(1)">
+                <div ng-include="'./src/usuarios/views/grupos.html'"></div>
+            </md-tab>
+            <md-tab ng-if="vm.mostrarOrganizacionesYGrupos" label="Organizaciones" md-on-select="vm.onTabSelect(2)">
+                <div ng-include="'./src/usuarios/views/organizaciones.html'"></div>
+            </md-tab>
+        </md-tabs>
+    </div>
+</div>

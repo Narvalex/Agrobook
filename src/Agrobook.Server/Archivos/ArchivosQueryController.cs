@@ -52,8 +52,8 @@ namespace Agrobook.Server.Archivos
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            var response = this.PrepareFileResponse(idProductor, nombreArchivo);
-            return response;
+            //var response = this.PrepareFileResponse(idProductor, nombreArchivo);
+            //return response;
         }
 
         private HttpResponseMessage PrepareFileResponse(string idProductor, string nombreArchivo)
