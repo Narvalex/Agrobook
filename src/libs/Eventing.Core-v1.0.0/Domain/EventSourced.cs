@@ -8,14 +8,20 @@ namespace Eventing.Core.Domain
         public const int NoStreamVersionNumber = -1;
         private string streamName;
 
-        private readonly ICollection<object> newEvents = new List<object>();
+        private readonly List<object> newEvents = new List<object>();
         private readonly IDictionary<Type, Action<object>> handlers = new Dictionary<Type, Action<object>>();
 
         public int Version { get; private set; } = NoStreamVersionNumber; // ExpectedVersion.NoStream; // Empty/NoExistent stream, in Event Store
 
         public string StreamName => this.streamName;
 
-        ICollection<object> IEventSourced.NewEvents => this.newEvents;
+        ICollection<object> IEventSourced.Dehydrate()
+        {
+            var events = new object[this.newEvents.Count];
+            this.newEvents.CopyTo(events);
+            this.newEvents.Clear();
+            return events;
+        }
 
         protected void SetStreamNameById(string id)
         {
@@ -52,7 +58,5 @@ namespace Eventing.Core.Domain
 
 
         protected virtual ISnapshot TakeSnapshot() => new Snapshot(this.StreamName, this.Version);
-
-        void IEventSourced.MarkAsCommited() => this.newEvents.Clear();
     }
 }

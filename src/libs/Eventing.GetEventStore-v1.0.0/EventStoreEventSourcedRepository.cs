@@ -87,7 +87,7 @@ namespace Eventing.GetEventStore
         public async Task SaveAsync(IEventSourced eventSourced)
         {
 
-            var newEvents = eventSourced.NewEvents;
+            var newEvents = eventSourced.Dehydrate();
             if (newEvents.Count < 1)
                 return;
 
@@ -114,7 +114,6 @@ namespace Eventing.GetEventStore
             }
 
             this.snapshotCache.Cache(eventSourced.TakeSnapshot());
-            eventSourced.MarkAsCommited();
         }
 
         private object Deserialize(ResolvedEvent e)

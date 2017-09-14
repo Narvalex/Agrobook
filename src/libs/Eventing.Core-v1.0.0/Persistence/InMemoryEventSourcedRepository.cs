@@ -23,9 +23,8 @@ namespace Eventing.Core.Persistence
                 if (!this.streams.ContainsKey(eventSourced.StreamName))
                     this.streams.Add(eventSourced.StreamName, new List<string>());
 
-                this.streams[eventSourced.StreamName].AddRange(eventSourced.NewEvents.Select(e => this.serializer.Serialize(e)));
+                this.streams[eventSourced.StreamName].AddRange(eventSourced.Dehydrate().Select(e => this.serializer.Serialize(e)));
                 this.snapshots[eventSourced.StreamName] = this.serializer.Serialize(eventSourced.TakeSnapshot());
-                eventSourced.MarkAsCommited();
             }
             await Task.CompletedTask;
         }

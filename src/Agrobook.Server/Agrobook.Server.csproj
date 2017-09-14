@@ -112,6 +112,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ap\ApController.cs" />
     <Compile Include="Ap\ApQueryController.cs" />
     <Compile Include="Archivos\ArchivosController.cs" />
     <Compile Include="Archivos\ArchivosQueryController.cs" />

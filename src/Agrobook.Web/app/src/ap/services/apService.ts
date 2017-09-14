@@ -103,6 +103,8 @@ module apArea {
             callback.onSuccess({
                 data: contrato
             });
+
+
         }
 
         editarContrato(contrato: contratoDto, callback: common.callbackLite<{}>) {

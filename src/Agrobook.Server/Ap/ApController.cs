@@ -1,16 +1,13 @@
 ﻿using Agrobook.Domain.Ap.Services;
 using System.Web.Http;
 
-namespace Agrobook.Web.Controllers.Ap
+namespace Agrobook.Server.Ap
 {
-    [RoutePrefix("app/ap")]
-    public class ApController : ApiControllerBase
+    [RoutePrefix("ap")]
+    public class ApController : ApiController
     {
         private readonly ApService service = ServiceLocator.ResolveSingleton<ApService>();
 
-        public ApController()
-        {
 
-        }
     }
 }
