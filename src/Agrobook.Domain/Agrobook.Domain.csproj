@@ -67,6 +67,7 @@
     <Compile Include="Ap\Messages\ContratosEvents.cs" />
     <Compile Include="Ap\Services\ApDTOs.cs" />
     <Compile Include="Ap\Services\ApQueryService.cs" />
+    <Compile Include="Ap\Services\ApService.Contratos.cs" />
     <Compile Include="Ap\Services\ApService.cs" />
     <Compile Include="Archivos\Messages\ArchivosCommands.cs" />
     <Compile Include="Archivos\Messages\ArchivosEvents.cs" />

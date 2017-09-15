@@ -1,15 +1,12 @@
 ﻿using System.Linq;
 
-namespace Agrobook.Common
+namespace System
 {
     public static class StringExtensions
     {
-        public static string ToLowerTrimmedAndWhiteSpaceless(this string text)
+        public static string ToTrimmedAndWhiteSpaceless(this string text)
         {
-            // Removing white spaces:
-            // http://stackoverflow.com/questions/6219454/efficient-way-to-remove-all-whitespace-from-stringS
-
-            text = new string(text.Trim().Where(c => !char.IsWhiteSpace(c)).ToArray()).ToLowerInvariant();
+            text = new string(text.Trim().Where(c => !char.IsWhiteSpace(c)).ToArray());
             return text;
         }
 

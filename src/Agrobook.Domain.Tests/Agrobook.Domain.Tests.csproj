@@ -59,6 +59,9 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ap\ApSpec.cs" />
+    <Compile Include="Ap\Contratos\DadoNingunContrato.cs" />
+    <Compile Include="Ap\Contratos\DadoNuevoContrato.cs" />
     <Compile Include="Archivos\ArchivosTests.cs" />
     <Compile Include="Archivos\TestableFileManager.cs" />
     <Compile Include="MesajesAuditablesTests.cs" />
@@ -96,6 +99,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

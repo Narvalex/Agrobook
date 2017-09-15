@@ -3,7 +3,8 @@ using Eventing.Core.Persistence;
 
 namespace Agrobook.Domain.Ap.Services
 {
-    public class ApService : EventSourcedService
+    // Base
+    public partial class ApService : EventSourcedService
     {
         public ApService(IEventSourcedRepository repository) : base(repository)
         { }

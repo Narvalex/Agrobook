@@ -23,6 +23,7 @@ namespace Agrobook.Domain.Usuarios
         public const string DefaultGrupoDisplayName = "Todos";
     }
 
+    // TODO: se podria implementar el sistema de clases parciales con esta super clase
     public class UsuariosService : EventSourcedService, ITokenAuthorizationProvider, IProveedorDeFirmaDelUsuario
     {
         private readonly IDateTimeProvider dateTime;
@@ -204,7 +205,7 @@ namespace Agrobook.Domain.Usuarios
             var organizacion = new Organizacion();
 
             var nombreFormateadoParaDisplay = cmd.NombreCrudo.Trim();
-            var nombreFormateadoParaId = cmd.NombreCrudo.ToLowerTrimmedAndWhiteSpaceless();
+            var nombreFormateadoParaId = cmd.NombreCrudo.ToTrimmedAndWhiteSpaceless().ToLowerInvariant();
 
             organizacion.Emit(new NuevaOrganizacionCreada(cmd.Firma, nombreFormateadoParaId, nombreFormateadoParaDisplay));
 
@@ -215,11 +216,11 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task<GrupoDto> HandleAsync(CrearNuevoGrupo cmd)
         {
-            if (cmd.GrupoDisplayName.ToLowerTrimmedAndWhiteSpaceless() == UsuariosConstants.DefaultGrupoId)
+            if (cmd.GrupoDisplayName.ToTrimmedAndWhiteSpaceless().ToLowerInvariant() == UsuariosConstants.DefaultGrupoId)
                 throw new InvalidOperationException($"El nombre del grupo no puede ser {cmd.GrupoDisplayName}");
 
             var org = await this.repository.GetOrFailByIdAsync<Organizacion>(cmd.IdOrganizacion);
-            var idGrupo = cmd.GrupoDisplayName.ToLowerTrimmedAndWhiteSpaceless();
+            var idGrupo = cmd.GrupoDisplayName.ToTrimmedAndWhiteSpaceless().ToLowerInvariant();
             if (org.YaTieneGrupoConId(idGrupo))
                 throw new InvalidOperationException($"Ya existe el grupo con id {idGrupo} en la organización {org.NombreParaMostrar}");
             org.Emit(new NuevoGrupoCreado(cmd.Firma, idGrupo, cmd.GrupoDisplayName, cmd.IdOrganizacion));
