@@ -77,8 +77,8 @@ namespace Eventing.TestHelpers
         private ICollection<string> lastCommited;
         private string lastSnapshot;
 
-        public ICollection<object> LastCommited => this.lastCommited.Select(x => this.serializer.Deserialize(x)).ToArray();
-        public ISnapshot LastSnapshot => this.serializer.Deserialize<ISnapshot>(this.lastSnapshot);
+        public ICollection<object> LastCommited => this.lastCommited?.Select(x => this.serializer.Deserialize(x)).ToArray();
+        public ISnapshot LastSnapshot => this.lastSnapshot is null ? null : this.serializer.Deserialize<ISnapshot>(this.lastSnapshot);
 
         public void Preload(string streamName, object[] @events)
         {
@@ -90,8 +90,7 @@ namespace Eventing.TestHelpers
         public async new Task SaveAsync(IEventSourced eventSourced)
         {
             // var events = eventSourced.NewEvents; // this reference will die.
-            var events = new List<object>();
-            events.AddRange(eventSourced.Dehydrate());
+            var events = eventSourced.Peek();
             var snapshot = eventSourced.TakeSnapshot();
             await base.SaveAsync(eventSourced);
             this.lastCommited = events.Select(x => this.serializer.Serialize(x)).ToList();

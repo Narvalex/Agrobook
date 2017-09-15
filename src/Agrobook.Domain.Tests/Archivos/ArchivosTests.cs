@@ -133,7 +133,7 @@ namespace Agrobook.Domain.Tests.Archivos
         [TestMethod]
         public void CuandoUnArchivoDeDescargoEntoncesSeRegistraEnElServidor()
         {
-            var archivo = new ArchivoDescriptor("foto", "jpg", DateTime.Now, null, 1024);
+            var archivo = new ArchivoDescriptor("foto", "jpg", DateTime.Now, "jpg", 1024);
             this.sut
             .When(s =>
             {

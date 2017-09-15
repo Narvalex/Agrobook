@@ -9,6 +9,7 @@ namespace Eventing.Core.Domain
         void Rehydrate(ISnapshot snapshot);
         void Apply(object @event);
         void Emit(object @event);
+        ICollection<object> Peek();
         ICollection<object> Dehydrate();
         ISnapshot TakeSnapshot();
     }

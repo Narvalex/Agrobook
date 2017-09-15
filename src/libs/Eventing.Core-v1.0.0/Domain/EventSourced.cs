@@ -17,11 +17,12 @@ namespace Eventing.Core.Domain
 
         ICollection<object> IEventSourced.Dehydrate()
         {
-            var events = new object[this.newEvents.Count];
-            this.newEvents.CopyTo(events);
+            var events = this.GetACopyOfNewEvents();
             this.newEvents.Clear();
             return events;
         }
+
+        ICollection<object> IEventSourced.Peek() => this.GetACopyOfNewEvents();
 
         protected void SetStreamNameById(string id)
         {
@@ -58,5 +59,12 @@ namespace Eventing.Core.Domain
 
 
         protected virtual ISnapshot TakeSnapshot() => new Snapshot(this.StreamName, this.Version);
+
+        private object[] GetACopyOfNewEvents()
+        {
+            var events = new object[this.newEvents.Count];
+            this.newEvents.CopyTo(events);
+            return events;
+        }
     }
 }
