@@ -34,7 +34,7 @@ namespace Agrobook.Server
             _container = container;
 
             // Event Store
-            var esm = new EventStoreManager();
+            var esm = new EventStoreManager(resilientConnectionNamePrefix: "AgrobookSubscriptions", failFastConnectionNamePrefix: "AgrobookEventSourcedRepository");
             container.Register<EventStoreManager>(esm);
 
             var sqlDbName = "AgrobookDb";
