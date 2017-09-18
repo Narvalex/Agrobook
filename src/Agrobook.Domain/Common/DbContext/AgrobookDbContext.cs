@@ -15,13 +15,14 @@ namespace Agrobook.Domain
 
         public IDbSet<CheckpointEntity> Checkpoints { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(DbModelBuilder builder)
         {
-            modelBuilder.Configurations.Add(new CheckpointEntityMap());
+            builder.Configurations.Add(new CheckpointEntityMap());
 
-            this.OnUsuariosModelCreating(modelBuilder);
-            this.OnOrganizacionesModelCreating(modelBuilder);
-            this.OnArchivosModelCreating(modelBuilder);
+            this.AddUsuariosModel(builder);
+            this.AddOrganizacinoesModel(builder);
+            this.AddArchivosModel(builder);
+            this.AddContratosModel(builder);
         }
 
         public async Task<int> SaveChangesAsync(string subscriptionName, long? lastCheckpoint)

@@ -1,4 +1,5 @@
 ﻿using Agrobook.Domain;
+using Agrobook.Domain.Ap.Denormalizers;
 using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Services;
@@ -104,6 +105,18 @@ namespace Agrobook.Server
 
         private static void Prelude()
         {
+            // Denormalizers
+            var usuariosDenormalizer = ServiceLocator.ResolveSingleton<UsuariosDenormalizer>();
+            var organizacionesDenormalizer = ServiceLocator.ResolveSingleton<OrganizacionesDenormalizer>();
+            var fileIndexer = ServiceLocator.ResolveSingleton<ArchivosIndexerService>();
+            var contratosDenormalizer = ServiceLocator.ResolveSingleton<ContratosDenormalizer>();
+
+            usuariosDenormalizer.Start();
+            organizacionesDenormalizer.Start();
+            fileIndexer.Start();
+            contratosDenormalizer.Start();
+
+            // Crear usuario admin si hace falta
             var userService = ServiceLocator.ResolveSingleton<UsuariosService>();
             var userQueryService = ServiceLocator.ResolveSingleton<UsuariosQueryService>();
             var intentos = 0;
@@ -123,14 +136,6 @@ namespace Agrobook.Server
                 Thread.Sleep(1500);
                 CrearUsuarioAdminSiHaceFalta(userQueryService, userService);
             }
-
-            var usuariosDenormalizer = ServiceLocator.ResolveSingleton<UsuariosDenormalizer>();
-            var organizacionesDenormalizer = ServiceLocator.ResolveSingleton<OrganizacionesDenormalizer>();
-            var fileIndexer = ServiceLocator.ResolveSingleton<ArchivosIndexerService>();
-
-            usuariosDenormalizer.Start();
-            organizacionesDenormalizer.Start();
-            fileIndexer.Start();
         }
 
         private static void CrearUsuarioAdminSiHaceFalta(UsuariosQueryService query, UsuariosService userService)

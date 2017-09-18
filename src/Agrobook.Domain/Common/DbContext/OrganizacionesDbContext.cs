@@ -10,7 +10,7 @@ namespace Agrobook.Domain
         public IDbSet<OrganizacionDeUsuarioEntity> OrganizacionesDeUsuarios { get; set; }
         public IDbSet<GrupoDeUsuarioEntity> GruposDeUsuarios { get; set; }
 
-        protected void OnOrganizacionesModelCreating(DbModelBuilder modelBuilder)
+        protected void AddOrganizacinoesModel(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new OrganizacionEntityMap());
             modelBuilder.Configurations.Add(new GrupoEntityMap());

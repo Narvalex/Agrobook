@@ -18,5 +18,10 @@ namespace Agrobook.Server.Ap
         [Route("org/{idOrg}")]
         public async Task<IHttpActionResult> ObtenerOrg(string idOrg)
             => this.Ok(await this.service.ObtenerOrg(idOrg));
+
+        [HttpGet]
+        [Route("contratos/{idOrg}")]
+        public async Task<IHttpActionResult> ObtenerContratos(string idOrg)
+            => this.Ok(await this.service.ObtenerContratos(idOrg));
     }
 }

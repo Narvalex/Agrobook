@@ -7,7 +7,7 @@ namespace Agrobook.Domain
     {
         public IDbSet<UsuarioEntity> Usuarios { get; set; }
 
-        protected void OnUsuariosModelCreating(DbModelBuilder modelBuilder)
+        protected void AddUsuariosModel(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new UsuariosEntityMap());
         }

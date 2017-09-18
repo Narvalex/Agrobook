@@ -1,4 +1,5 @@
-﻿using Agrobook.Domain.Ap.Services;
+﻿using Agrobook.Domain;
+using Agrobook.Domain.Ap.Services;
 using Eventing.Client.Http;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,8 @@ namespace Agrobook.Client.Ap
 
         public async Task<OrgDto> ObtenerOrg(string idOrg)
             => await base.Get<OrgDto>("org/" + idOrg);
+
+        public async Task<IList<ContratoEntity>> ObtenerContratos(string idOrg)
+            => await base.Get<IList<ContratoEntity>>("contratos/" + idOrg);
     }
 }

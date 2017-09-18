@@ -71,10 +71,7 @@ var apArea;
             }, 500);
         };
         apQueryService.prototype.getContratos = function (idOrg, callback) {
-            var list = this.fakeDb.contratos.filter(function (x) { return x.idOrg === idOrg; });
-            callback.onSuccess({
-                data: list
-            });
+            _super.prototype.getWithCallback.call(this, 'contratos/' + idOrg, callback);
         };
         apQueryService.prototype.getOrgsConContratos = function (idProd, callback) {
             var _this = this;

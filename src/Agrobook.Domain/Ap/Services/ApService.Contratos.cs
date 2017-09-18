@@ -17,6 +17,8 @@ namespace Agrobook.Domain.Ap.Services
             if (string.IsNullOrWhiteSpace(cmd.NombreDelContrato))
                 throw new InvalidOperationException("El nombre debe estar especificado");
 
+            cmd.Fecha.EnsureIsNotDefault("fecha del contrato");
+
             var contrato = new Contrato();
 
             var idContrato = $"{cmd.IdOrganizacion.ToTrimmedAndWhiteSpaceless()}_{cmd.NombreDelContrato.ToTrimmedAndWhiteSpaceless()}";
@@ -30,6 +32,8 @@ namespace Agrobook.Domain.Ap.Services
         {
             Ensure.NotNullOrWhiteSpace(cmd.IdContrato, nameof(cmd.IdContrato));
             Ensure.NotNullOrWhiteSpace(cmd.NombreDeLaAdenda, nameof(cmd.NombreDeLaAdenda));
+
+            cmd.Fecha.EnsureIsNotDefault("Fecha de la adenda");
 
             var contrato = await this.repository.GetOrFailByIdAsync<Contrato>(cmd.IdContrato);
 

@@ -30,5 +30,13 @@ namespace Agrobook.Web.Controllers.Ap
             var org = await this.client.ObtenerOrg(idOrg);
             return this.Ok(org);
         }
+
+        [HttpGet]
+        [Route("contratos/{idOrg}")]
+        public async Task<IHttpActionResult> ObtenerContratos([FromUri]string idOrg)
+        {
+            var contratos = await this.client.ObtenerContratos(idOrg);
+            return this.Ok(contratos);
+        }
     }
 }

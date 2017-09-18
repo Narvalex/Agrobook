@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthorizationProvider.cs" />
+    <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="EventStreamHandler.cs" />
     <Compile Include="IEvent.cs" />
     <Compile Include="StringExtensions.cs" />

@@ -75,5 +75,9 @@ namespace Agrobook.Domain.Ap.Services
                 };
             });
         }
+
+        public async Task<IList<ContratoEntity>> ObtenerContratos(string idOrg)
+            => await this.QueryAsync(async context =>
+                await context.Contratos.Where(x => x.IdOrg == idOrg).ToListAsync());
     }
 }

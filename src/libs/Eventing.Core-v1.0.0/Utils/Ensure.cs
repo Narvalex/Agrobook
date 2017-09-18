@@ -26,5 +26,11 @@ namespace Eventing
             if (number < 0)
                 throw new ArgumentOutOfRangeException(argumentName, $"{argumentName} should be positive.");
         }
+
+        public static void NotDefaultValue<T>(T argument, string argumentName) where T : class
+        {
+            if (argument == default(T))
+                throw new ArgumentOutOfRangeException(argumentName, $"{argumentName} has default value");
+        }
     }
 }

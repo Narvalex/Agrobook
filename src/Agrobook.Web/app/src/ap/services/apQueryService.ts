@@ -97,11 +97,7 @@ module apArea {
             idOrg: string,
             callback: common.callbackLite<contratoDto[]>
         ) {
-            var list = this.fakeDb.contratos.filter(x => x.idOrg === idOrg);
-
-            callback.onSuccess({
-                data: list
-            });
+            super.getWithCallback('contratos/' + idOrg, callback);
         }
 
         getOrgsConContratos(idProd: string, callback: common.callbackLite<orgConContratos[]>) {

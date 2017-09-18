@@ -8,7 +8,7 @@ namespace Agrobook.Domain
     {
         public IDbSet<ArchivosEntity> Archivos { get; set; }
 
-        protected void OnArchivosModelCreating(DbModelBuilder modelBuilder)
+        protected void AddArchivosModel(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new ArchivosEntityMap());
         }

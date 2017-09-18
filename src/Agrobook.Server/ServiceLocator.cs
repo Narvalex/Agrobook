@@ -1,5 +1,6 @@
 ﻿using Agrobook.Common;
 using Agrobook.Domain;
+using Agrobook.Domain.Ap.Denormalizers;
 using Agrobook.Domain.Ap.Services;
 using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Common;
@@ -97,6 +98,9 @@ namespace Agrobook.Server
 
             var apService = new ApService(eventSourcedRepository);
             container.Register<ApService>(apService);
+
+            var contratoDenormalizer = new ContratosDenormalizer(eventStreamSubscriber, dbContextFactory);
+            container.Register<ContratosDenormalizer>(contratoDenormalizer);
         }
     }
 }
