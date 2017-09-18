@@ -29,7 +29,7 @@ namespace Agrobook.Domain.Tests.Archivos
             var archivo = new ArchivoDescriptor("foto", "jpg", DateTime.Now, null, 1024);
             this.sut.When(s =>
             {
-                var result = s.HandleAsync(new AgregarArchivoAColeccion(TestMeta.New, "fulano", archivo, null)).Result;
+                var result = s.HandleAsync(new AgregarArchivoAColeccion(TestFirma.New, "fulano", archivo, null)).Result;
 
                 Assert.IsTrue(result.Exitoso);
                 Assert.IsFalse(result.YaExiste);
@@ -54,7 +54,7 @@ namespace Agrobook.Domain.Tests.Archivos
             var archivo = new ArchivoDescriptor("foto", "jpg", DateTime.Now, null, 1024);
             this.sut.When(s =>
             {
-                var command = new AgregarArchivoAColeccion(TestMeta.New, "fulano", archivo, null);
+                var command = new AgregarArchivoAColeccion(TestFirma.New, "fulano", archivo, null);
                 s.HandleAsync(command).Wait();
                 var result = s.HandleAsync(command).Result;
 
@@ -84,7 +84,7 @@ namespace Agrobook.Domain.Tests.Archivos
             var archivo = new ArchivoDescriptor("foto", "jpg", DateTime.Now, null, 1024);
             this.sut.When(s =>
             {
-                var command = new AgregarArchivoAColeccion(TestMeta.New, "fulano", archivo, null);
+                var command = new AgregarArchivoAColeccion(TestFirma.New, "fulano", archivo, null);
                 var result = s.HandleAsync(command).Result;
 
                 Assert.IsFalse(result.Exitoso);
@@ -106,9 +106,9 @@ namespace Agrobook.Domain.Tests.Archivos
             var archivo = new ArchivoDescriptor("foto", "jpg", DateTime.Now, null, 1024);
             this.sut.When(s =>
             {
-                var command = new AgregarArchivoAColeccion(TestMeta.New, "fulano", archivo, null);
+                var command = new AgregarArchivoAColeccion(TestFirma.New, "fulano", archivo, null);
                 s.HandleAsync(command).Wait();
-                command = new AgregarArchivoAColeccion(TestMeta.New, "fulano", new ArchivoDescriptor("foto2", "jpg", DateTime.Now, null, 1024), null);
+                command = new AgregarArchivoAColeccion(TestFirma.New, "fulano", new ArchivoDescriptor("foto2", "jpg", DateTime.Now, null, 1024), null);
                 var result = s.HandleAsync(command).Result;
 
                 Assert.IsTrue(result.Exitoso);
@@ -137,8 +137,8 @@ namespace Agrobook.Domain.Tests.Archivos
             this.sut
             .When(s =>
             {
-                s.HandleAsync(new AgregarArchivoAColeccion(TestMeta.New, "fulano", archivo, null)).Wait();
-                s.HandleAsync(new RegistrarDescargaExitosa(TestMeta.New, "fulano", "foto")).Wait();
+                s.HandleAsync(new AgregarArchivoAColeccion(TestFirma.New, "fulano", archivo, null)).Wait();
+                s.HandleAsync(new RegistrarDescargaExitosa(TestFirma.New, "fulano", "foto")).Wait();
             })
             .Then(events =>
             {

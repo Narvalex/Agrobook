@@ -9,7 +9,7 @@ namespace Agrobook.Server
 {
     public static class MensajeAuditableExtensions
     {
-        public static T ConMetadatos<T>(this T mensaje, HttpActionContext context) where T : MensajeAuditable
+        public static T ConFirma<T>(this T mensaje, HttpActionContext context) where T : MensajeAuditable
         {
             var proveedor = ServiceLocator.ResolveSingleton<IProveedorDeFirmaDelUsuario>();
 

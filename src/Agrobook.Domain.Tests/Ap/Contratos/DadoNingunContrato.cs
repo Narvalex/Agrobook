@@ -14,10 +14,11 @@ namespace Agrobook.Domain.Tests.Ap.Contratos
         [Test]
         public void CuandoSeQuiereRegistrarContratoSeAcepta()
         {
-            var cmd = new RegistrarNuevoContrato(this.idOrg, "Nuevo contrato");
+            var cmd = new RegistrarNuevoContrato(TestFirma.New, this.idOrg, "Nuevo contrato", DateTime.Now);
+            string result = null;
             this.sut.When(s =>
             {
-                s.HandleAsync(cmd).Wait();
+                result = s.HandleAsync(cmd).Result;
             })
             .Then(events =>
             {
@@ -29,13 +30,15 @@ namespace Agrobook.Domain.Tests.Ap.Contratos
                 Assert.AreEqual("chorti", e.IdOrganizacion);
                 Assert.AreEqual("Nuevo contrato", e.NombreDelContrato);
                 Assert.AreEqual(e.IdContrato, e.StreamId);
+                Assert.AreEqual(e.IdContrato, result);
+                Assert.AreEqual(cmd.Fecha, e.Fecha);
             });
         }
 
         [Test]
         public void CuandoSeQuiereRegistrarAdendaEntoncesFalla()
         {
-            var cmd = new RegistrarNuevaAdenda("chorti_Nuevocontrato", "Nueva adenda");
+            var cmd = new RegistrarNuevaAdenda(TestFirma.New, "chorti_Nuevocontrato", "Nueva adenda", DateTime.Now);
             this.sut.When(s =>
             {
                 Assert.ThrowsException<InvalidOperationException>(() =>

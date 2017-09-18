@@ -17,7 +17,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void ElNombreDelStreamSeGeneraCorrectamente()
         {
             var usuario = new Usuario();
-            usuario.Emit(new NuevoUsuarioCreado(TestMeta.New, "user", "Us Er", "avatar.png", "encriptedata"));
+            usuario.Emit(new NuevoUsuarioCreado(TestFirma.New, "user", "Us Er", "avatar.png", "encriptedata"));
 
             Assert.AreEqual("agrobook.usuarios-user", usuario.StreamName);
         }
@@ -69,7 +69,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var avatarUrl = "app/avatar.png";
             this.sut.When(s =>
-                        s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "user1", "User One", avatarUrl, "123", null)).Wait())
+                        s.HandleAsync(new CrearNuevoUsuario(TestFirma.New, "user1", "User One", avatarUrl, "123", null)).Wait())
                     .Then(e =>
                     {
                         var ev = e.OfType<NuevoUsuarioCreado>().Single();
@@ -108,7 +108,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                             try
                             {
                                 s.HandleAsync(new CrearNuevoUsuario(
-                                TestMeta.New,
+                                TestFirma.New,
                                 "user with spaces ", "User One", avatarUrl, "123", null)).Wait();
                             }
                             catch (Exception ex)
@@ -125,14 +125,14 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var usuario = "agrobook.usuarios-user1";
             var avatarUrl = "picurl";
-            this.sut.Given(usuario, new NuevoUsuarioCreado(TestMeta.New, "user1", "User Lastname", avatarUrl, "123"))
+            this.sut.Given(usuario, new NuevoUsuarioCreado(TestFirma.New, "user1", "User Lastname", avatarUrl, "123"))
                     .When(s =>
                     {
                         Assert.ThrowsException<UniqueConstraintViolationException>(() =>
                         {
                             try
                             {
-                                s.HandleAsync(new CrearNuevoUsuario(TestMeta.New, "user1", "User One", avatarUrl, "123", new string[0])).Wait();
+                                s.HandleAsync(new CrearNuevoUsuario(TestFirma.New, "user1", "User One", avatarUrl, "123", new string[0])).Wait();
                             }
                             catch (AggregateException ex)
                             {
@@ -168,7 +168,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var loginInfo = new LoginInfo("user1", "123", new string[] { ClaimDef.Roles.Admin });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
             this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("user1"), new NuevoUsuarioCreado(TestMeta.New, "user1", "User Name", "", eLoginInfo))
+                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("user1"), new NuevoUsuarioCreado(TestFirma.New, "user1", "User Name", "", eLoginInfo))
                 .When(s =>
                 {
                     var result = s.HandleAsync(new IniciarSesion("user1", "123", now)).Result;
@@ -188,7 +188,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var loginInfo = new LoginInfo("user1", "123", new string[] { ClaimDef.Roles.Admin });
             var eLoginInfo = this.crypto.Serialize(loginInfo);
             this.sut
-                .Given("user1", new NuevoUsuarioCreado(TestMeta.New, "user1", "Name Lastname", "", eLoginInfo))
+                .Given("user1", new NuevoUsuarioCreado(TestFirma.New, "user1", "Name Lastname", "", eLoginInfo))
                 .When(s =>
                 {
                     var result = s.HandleAsync(new IniciarSesion("user1", "wrongPassword", DateTime.Now)).Result;
@@ -211,7 +211,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
-                .Given("productor", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
+                .Given("productor", new NuevoUsuarioCreado(TestFirma.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
                     var autorizado = s.TryAuthorize(eLoginInfo, ClaimDef.Roles.Tecnico);
@@ -227,7 +227,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
-                .Given("productor", new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
+                .Given("productor", new NuevoUsuarioCreado(TestFirma.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
                     var autorizado = s.TryAuthorize(eLoginInfo, ClaimDef.Roles.Tecnico);
@@ -243,7 +243,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("productor"), new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
+                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("productor"), new NuevoUsuarioCreado(TestFirma.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
                     var autorizado = s.TryAuthorize(eLoginInfo, ClaimDef.Roles.Tecnico);
@@ -259,7 +259,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var eLoginInfo = this.crypto.Serialize(loginInfo);
 
             this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestMeta.New, "productor", "Prod Apell", "", eLoginInfo))
+                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "productor", "Prod Apell", "", eLoginInfo))
                 .When(s =>
                 {
                     var autorizado = s.TryAuthorize(eLoginInfo, ClaimDef.Roles.Tecnico);
@@ -279,7 +279,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                 {
                     try
                     {
-                        s.HandleAsync(new ActualizarPerfil(TestMeta.New, "admin", null, null, null, null)).Wait();
+                        s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, null, null, null)).Wait();
                     }
                     catch (Exception ex)
                     {
@@ -293,10 +293,10 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void CuandoLasOpcionesSonNulasEntoncesNoSeActualizaPerfil()
         {
             this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestMeta.New, "admin", "admin", "avatar.png", "..."))
+                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "admin", "avatar.png", "..."))
                 .When(s =>
                 {
-                    s.HandleAsync(new ActualizarPerfil(TestMeta.New, "admin", null, null, null, null)).Wait();
+                    s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, null, null, null)).Wait();
                 })
                 .Then(events =>
                 {
@@ -308,10 +308,10 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void CuandoCambioSoloElAvatarEntoncesSoloSeCambiaElAvatar()
         {
             this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestMeta.New, "admin", "admin", "avatar.png", "..."))
+                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "admin", "avatar.png", "..."))
                 .When(s =>
                 {
-                    s.HandleAsync(new ActualizarPerfil(TestMeta.New, "admin", "newAvatar.png", null, null, null)).Wait();
+                    s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", "newAvatar.png", null, null, null)).Wait();
                 })
                 .Then(events =>
                 {
@@ -328,10 +328,10 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void CuandoSoloSeCambioElNombreParaMostrarEntoncesSoloSeCambiaElNombreParaMostrar()
         {
             this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestMeta.New, "admin", "admin", "avatar.png", "..."))
+                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "admin", "avatar.png", "..."))
                 .When(s =>
                 {
-                    s.HandleAsync(new ActualizarPerfil(TestMeta.New, "admin", null, "Pe Pito", null, null)).Wait();
+                    s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, "Pe Pito", null, null)).Wait();
                 })
                 .Then(events =>
                 {
@@ -349,14 +349,14 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var encriptado = this.crypto.Serialize(new LoginInfo("admin", "123", null));
             this.sut
-                .Given<Usuario>("admin", new NuevoUsuarioCreado(TestMeta.New, "admin", "Ad Min", "pic1.jpg", encriptado))
+                .Given<Usuario>("admin", new NuevoUsuarioCreado(TestFirma.New, "admin", "Ad Min", "pic1.jpg", encriptado))
                 .When(s =>
                 {
                     Assert.ThrowsException<InvalidOperationException>(() =>
                     {
                         try
                         {
-                            s.HandleAsync(new ActualizarPerfil(TestMeta.New, "admin", null, null, "probando...", "newPass")).Wait();
+                            s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, null, "probando...", "newPass")).Wait();
                         }
                         catch (Exception ex)
                         {
@@ -373,10 +373,10 @@ namespace Agrobook.Domain.Tests.Usuarios
             var encriptado = this.crypto.Serialize(new LoginInfo("admin", "123", null));
             var expectedEncriptado = this.crypto.Serialize(new LoginInfo("admin", "newPass", null));
             this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestMeta.New, "admin", "Ad Min", "pic1.jpg", encriptado))
+                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "Ad Min", "pic1.jpg", encriptado))
                 .When(s =>
                 {
-                    s.HandleAsync(new ActualizarPerfil(TestMeta.New, "admin", null, null, "123", "newPass")).Wait();
+                    s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, null, "123", "newPass")).Wait();
                 })
                 .Then(events =>
                 {
@@ -395,10 +395,10 @@ namespace Agrobook.Domain.Tests.Usuarios
             var encriptado = this.crypto.Serialize(new LoginInfo("admin", "123", null));
             var expectedEncriptado = this.crypto.Serialize(new LoginInfo("admin", "newPass", null));
             this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestMeta.New, "admin", "Ad Min", "pic1.jpg", encriptado))
+                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "Ad Min", "pic1.jpg", encriptado))
                 .When(s =>
                 {
-                    s.HandleAsync(new ActualizarPerfil(TestMeta.New, "admin", "pic2.jpg", "SuperAdmin", "123", "newPass")).Wait();
+                    s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", "pic2.jpg", "SuperAdmin", "123", "newPass")).Wait();
                 })
                 .Then(events =>
                 {
@@ -427,7 +427,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                 {
                     try
                     {
-                        s.HandleAsync(new ResetearPassword(TestMeta.New, "admin")).Wait();
+                        s.HandleAsync(new ResetearPassword(TestFirma.New, "admin")).Wait();
                     }
                     catch (Exception ex)
                     {
@@ -443,10 +443,10 @@ namespace Agrobook.Domain.Tests.Usuarios
             var userName = "randomUser";
             var infoEncriptado = this.crypto.Serialize(new LoginInfo(userName, "pass", null));
             this.sut
-               .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>(userName), new NuevoUsuarioCreado(TestMeta.New, userName, userName, "avatar.png", infoEncriptado))
+               .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>(userName), new NuevoUsuarioCreado(TestFirma.New, userName, userName, "avatar.png", infoEncriptado))
                .When(s =>
                {
-                   s.HandleAsync(new ResetearPassword(TestMeta.New, userName)).Wait();
+                   s.HandleAsync(new ResetearPassword(TestFirma.New, userName)).Wait();
                })
                .Then(events =>
                {
@@ -474,7 +474,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var userName = "admin";
             var infoEncriptado = this.crypto.Serialize(new LoginInfo(userName, "pass", null));
-            this.sut.Given<Usuario>("user", new NuevoUsuarioCreado(TestMeta.New, userName, "Admin", "pic.png", infoEncriptado))
+            this.sut.Given<Usuario>("user", new NuevoUsuarioCreado(TestFirma.New, userName, "Admin", "pic.png", infoEncriptado))
                 .When(s =>
                 {
                     var claims = s.ObtenerListaDeClaimsDisponiblesParaElUsuario(null).Result;
@@ -488,7 +488,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var userName = "admin";
             var infoEncriptado = this.crypto.Serialize(new LoginInfo(userName, "pass", new string[] { Roles.Admin }));
-            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestMeta.New, userName, "Admin", "pic.png", infoEncriptado))
+            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestFirma.New, userName, "Admin", "pic.png", infoEncriptado))
                 .When(s =>
                 {
                     var claims = s.ObtenerListaDeClaimsDisponiblesParaElUsuario(infoEncriptado).Result;
@@ -508,7 +508,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var userName = "juancito";
             var infoEncriptado = this.crypto.Serialize(new LoginInfo(userName, "pass", new string[] { Roles.Gerente }));
-            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestMeta.New, userName, userName, "pic.png", infoEncriptado))
+            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestFirma.New, userName, userName, "pic.png", infoEncriptado))
                 .When(s =>
                 {
                     var claims = s.ObtenerListaDeClaimsDisponiblesParaElUsuario(infoEncriptado).Result;
@@ -530,7 +530,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var userName = "juancito";
             var infoEncriptado = this.crypto.Serialize(
                 new LoginInfo(userName, "pass", new string[] { Roles.Tecnico }));
-            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestMeta.New, userName, userName, "pic.png", infoEncriptado))
+            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestFirma.New, userName, userName, "pic.png", infoEncriptado))
                 .When(s =>
                 {
                     var claims = s.ObtenerListaDeClaimsDisponiblesParaElUsuario(infoEncriptado).Result;
@@ -547,7 +547,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var userName = "juancito";
             var infoEncriptado = this.crypto.Serialize(
                 new LoginInfo(userName, "pass", new string[] { Roles.Productor }));
-            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestMeta.New, userName, userName, "pic.png", infoEncriptado))
+            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestFirma.New, userName, userName, "pic.png", infoEncriptado))
                 .When(s =>
                 {
                     var claims = s.ObtenerListaDeClaimsDisponiblesParaElUsuario(infoEncriptado).Result;
@@ -562,7 +562,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             var userName = "juancito";
             var infoEncriptado = this.crypto.Serialize(
                 new LoginInfo(userName, "pass", new string[] { Roles.Invitado }));
-            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestMeta.New, userName, userName, "pic.png", infoEncriptado))
+            this.sut.Given<Usuario>(userName, new NuevoUsuarioCreado(TestFirma.New, userName, userName, "pic.png", infoEncriptado))
                 .When(s =>
                 {
                     var claims = s.ObtenerListaDeClaimsDisponiblesParaElUsuario(infoEncriptado).Result;
@@ -581,7 +581,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void DadoUsuarioAdminNoSePuedeRemoverPermisoDeAdminPorQueEsElAdmin()
         {
             var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo("admin", "pass", new string[] { ClaimDef.Roles.Admin }));
-            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, "admin", "admin", "avatar.png", loginInfoEncriptado);
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestFirma.New, "admin", "admin", "avatar.png", loginInfoEncriptado);
             this.sut
                 .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), eventoUsuarioCreado)
                 .When(s =>
@@ -590,7 +590,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                     {
                         try
                         {
-                            s.HandleAsync(new RetirarPermiso(TestMeta.New, "admin", ClaimDef.Roles.Admin)).Wait();
+                            s.HandleAsync(new RetirarPermiso(TestFirma.New, "admin", ClaimDef.Roles.Admin)).Wait();
                         }
                         catch (Exception ex)
                         {
@@ -605,12 +605,12 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var nombreDeUsuario = "jorgito";
             var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Productor }));
-            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestFirma.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
             this.sut
                 .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>(nombreDeUsuario), eventoUsuarioCreado)
                 .When(s =>
                 {
-                    s.HandleAsync(new RetirarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Productor))
+                    s.HandleAsync(new RetirarPermiso(TestFirma.New, nombreDeUsuario, ClaimDef.Roles.Productor))
                     .Wait();
                 })
                 .Then(events =>
@@ -630,12 +630,12 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var nombreDeUsuario = "jorgito";
             var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Tecnico }));
-            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestFirma.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
             this.sut
                 .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>(nombreDeUsuario), eventoUsuarioCreado)
                 .When(s =>
                 {
-                    s.HandleAsync(new RetirarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Tecnico))
+                    s.HandleAsync(new RetirarPermiso(TestFirma.New, nombreDeUsuario, ClaimDef.Roles.Tecnico))
                     .Wait();
                 })
                 .Then(events =>
@@ -656,12 +656,12 @@ namespace Agrobook.Domain.Tests.Usuarios
 
             var nombreDeUsuario = "jorgito";
             var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Gerente }));
-            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestFirma.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
             this.sut
                 .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>(nombreDeUsuario), eventoUsuarioCreado)
                 .When(s =>
                 {
-                    s.HandleAsync(new RetirarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Gerente))
+                    s.HandleAsync(new RetirarPermiso(TestFirma.New, nombreDeUsuario, ClaimDef.Roles.Gerente))
                     .Wait();
                 })
                 .Then(events =>
@@ -681,12 +681,12 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var nombreDeUsuario = "jorgito";
             var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Admin }));
-            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestFirma.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
             this.sut
                 .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>(nombreDeUsuario), eventoUsuarioCreado)
                 .When(s =>
                 {
-                    s.HandleAsync(new RetirarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Admin))
+                    s.HandleAsync(new RetirarPermiso(TestFirma.New, nombreDeUsuario, ClaimDef.Roles.Admin))
                     .Wait();
                 })
                 .Then(events =>
@@ -706,12 +706,12 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var nombreDeUsuario = "jorgito";
             var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Gerente, ClaimDef.Roles.Admin }));
-            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestFirma.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
             this.sut
                 .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>(nombreDeUsuario), eventoUsuarioCreado)
                 .When(s =>
                 {
-                    s.HandleAsync(new RetirarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Admin))
+                    s.HandleAsync(new RetirarPermiso(TestFirma.New, nombreDeUsuario, ClaimDef.Roles.Admin))
                     .Wait();
                 })
                 .Then(events =>
@@ -729,7 +729,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var nombreDeUsuario = "jorgito";
             var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Invitado }));
-            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestFirma.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
             this.sut
                 .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>(nombreDeUsuario), eventoUsuarioCreado)
                 .When(s =>
@@ -738,7 +738,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                     {
                         try
                         {
-                            s.HandleAsync(new RetirarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Invitado))
+                            s.HandleAsync(new RetirarPermiso(TestFirma.New, nombreDeUsuario, ClaimDef.Roles.Invitado))
                             .Wait();
                         }
                         catch (Exception ex)
@@ -756,7 +756,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var nombreDeUsuario = "jorgito";
             var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Invitado }));
-            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestFirma.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
             this.sut
                 .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>(nombreDeUsuario), eventoUsuarioCreado)
                 .When(s =>
@@ -765,7 +765,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                     {
                         try
                         {
-                            s.HandleAsync(new OtorgarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Invitado))
+                            s.HandleAsync(new OtorgarPermiso(TestFirma.New, nombreDeUsuario, ClaimDef.Roles.Invitado))
                             .Wait();
                         }
                         catch (Exception ex)
@@ -781,12 +781,12 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             var nombreDeUsuario = "jorgito";
             var loginInfoEncriptado = this.crypto.Serialize(new LoginInfo(nombreDeUsuario, "pass", new string[] { ClaimDef.Roles.Invitado }));
-            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestMeta.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
+            var eventoUsuarioCreado = new NuevoUsuarioCreado(TestFirma.New, nombreDeUsuario, nombreDeUsuario, "avatar.png", loginInfoEncriptado);
             this.sut
                 .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>(nombreDeUsuario), eventoUsuarioCreado)
                 .When(s =>
                 {
-                    s.HandleAsync(new OtorgarPermiso(TestMeta.New, nombreDeUsuario, ClaimDef.Roles.Admin))
+                    s.HandleAsync(new OtorgarPermiso(TestFirma.New, nombreDeUsuario, ClaimDef.Roles.Admin))
                     .Wait();
                 })
                 .Then(events =>

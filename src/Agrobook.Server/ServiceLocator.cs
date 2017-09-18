@@ -94,6 +94,9 @@ namespace Agrobook.Server
             // Ordenado a partir de aqui
             var apQueryService = new ApQueryService(readOnlyDbContextFactory, eventSourcedRepository);
             container.Register<ApQueryService>(apQueryService);
+
+            var apService = new ApService(eventSourcedRepository);
+            container.Register<ApService>(apService);
         }
     }
 }

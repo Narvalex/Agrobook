@@ -138,9 +138,10 @@ var apArea;
                 // New
                 this.dirty.idOrg = this.idOrg;
                 this.apService.registrarNuevoContrato(this.dirty, new common.callbackLite(function (value) {
-                    _this.contratos.push(value.data);
+                    var contrato = new apArea.contratoDto(value.data, _this.dirty.idOrg, _this.dirty.display, _this.dirty.esAdenda, _this.dirty.eliminado, _this.dirty.idContratoDeLaAdenda, _this.dirty.fecha);
+                    _this.contratos.push(contrato);
                     if (_this.tipoContrato === 'contrato') {
-                        _this.soloContratos.push(value.data);
+                        _this.soloContratos.push(contrato);
                     }
                     _this.toasterLite.success(_this.tipoContrato === 'contrato' ? 'Contrato creado' : 'Adenda agregada');
                     _this.resetForm();

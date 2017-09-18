@@ -31,7 +31,7 @@ namespace Agrobook.Server.Usuarios
 
             if (puedeProceder)
             {
-                await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+                await this.service.HandleAsync(command.ConFirma(this.ActionContext));
                 return this.Ok();
             }
 
@@ -42,7 +42,7 @@ namespace Agrobook.Server.Usuarios
         [Route("actualizar-perfil")]
         public async Task<IHttpActionResult> ActualizarPerfil([FromBody]ActualizarPerfil command)
         {
-            await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            await this.service.HandleAsync(command.ConFirma(this.ActionContext));
             return this.Ok();
         }
 
@@ -50,7 +50,7 @@ namespace Agrobook.Server.Usuarios
         [Route("resetear-password")]
         public async Task<IHttpActionResult> ResetearPassword([FromBody]ResetearPassword command)
         {
-            await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            await this.service.HandleAsync(command.ConFirma(this.ActionContext));
             return this.Ok();
         }
 
@@ -58,7 +58,7 @@ namespace Agrobook.Server.Usuarios
         [Route("crear-nueva-organizacion")]
         public async Task<IHttpActionResult> CrearNuevaOrganizacion([FromBody]CrearNuevaOrganizacion command)
         {
-            var result = await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            var result = await this.service.HandleAsync(command.ConFirma(this.ActionContext));
             return this.Ok(result);
         }
 
@@ -66,7 +66,7 @@ namespace Agrobook.Server.Usuarios
         [Route("crear-nuevo-grupo")]
         public async Task<IHttpActionResult> CrearNuevoGrupo([FromBody]CrearNuevoGrupo command)
         {
-            var grupo = await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            var grupo = await this.service.HandleAsync(command.ConFirma(this.ActionContext));
             return this.Ok(grupo);
         }
 
@@ -74,7 +74,7 @@ namespace Agrobook.Server.Usuarios
         [Route("agregar-usuario-a-la-organizacion")]
         public async Task<IHttpActionResult> AgregarUsuarioALaOrganizacion([FromBody]AgregarUsuarioALaOrganizacion command)
         {
-            await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            await this.service.HandleAsync(command.ConFirma(this.ActionContext));
             return this.Ok();
         }
 
@@ -82,7 +82,7 @@ namespace Agrobook.Server.Usuarios
         [Route("agregar-usuario-a-grupo")]
         public async Task<IHttpActionResult> AgregarUsuarioAGrupo([FromBody]AgregarUsuarioAUnGrupo command)
         {
-            await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            await this.service.HandleAsync(command.ConFirma(this.ActionContext));
             return this.Ok();
         }
 
@@ -90,7 +90,7 @@ namespace Agrobook.Server.Usuarios
         [Route("remover-usuario-de-un-grupo")]
         public async Task<IHttpActionResult> RemoverUsuarioDeUnGrupo([FromBody]RemoverUsuarioDeUnGrupo command)
         {
-            await this.service.HandleAsync(command.ConMetadatos(this.ActionContext));
+            await this.service.HandleAsync(command.ConFirma(this.ActionContext));
             return this.Ok();
         }
 
@@ -98,7 +98,7 @@ namespace Agrobook.Server.Usuarios
         [Route("otorgar-permiso")]
         public async Task<IHttpActionResult> OtorgarPermiso([FromBody]OtorgarPermiso cmd)
         {
-            await this.service.HandleAsync(cmd.ConMetadatos(this.ActionContext));
+            await this.service.HandleAsync(cmd.ConFirma(this.ActionContext));
             return this.Ok();
         }
 
@@ -106,7 +106,7 @@ namespace Agrobook.Server.Usuarios
         [Route("retirar-permiso")]
         public async Task<IHttpActionResult> RetirarPermiso([FromBody]RetirarPermiso cmd)
         {
-            await this.service.HandleAsync(cmd.ConMetadatos(this.ActionContext));
+            await this.service.HandleAsync(cmd.ConFirma(this.ActionContext));
             return this.Ok();
         }
     }

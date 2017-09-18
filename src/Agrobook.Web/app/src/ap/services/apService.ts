@@ -80,31 +80,13 @@ module apArea {
             });
         }
 
-        registrarNuevoContrato(contrato: contratoDto, callback: common.callbackLite<contratoDto>) {
-            let id: string;
+        registrarNuevoContrato(contrato: contratoDto, callback: common.callbackLite<string>) {
             if (contrato.esAdenda) {
-                id = `${contrato.idContratoDeLaAdenda}_${contrato.display.trim()}`;
+                super.postWithCallback('registrar-adenda', { IdContrato: contrato.idContratoDeLaAdenda, NombreDeLaAdenda: contrato.display, Fecha: contrato.fecha }, callback);
             }
             else {
-                id = `${contrato.idOrg}_${contrato.display.trim()}`;
+                super.postWithCallback('registrar-contrato', { IdOrganizacion: contrato.idOrg, NombreDelContrato: contrato.display, fecha: contrato.fecha }, callback);
             }
-
-            // Primary key check
-            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
-                if (this.fakeDb.contratos[i].id === id) {
-                    callback.onError(null);
-                    return;
-                }
-            }
-
-            contrato.id = id;
-            this.fakeDb.contratos.push(contrato);
-
-            callback.onSuccess({
-                data: contrato
-            });
-
-
         }
 
         editarContrato(contrato: contratoDto, callback: common.callbackLite<{}>) {

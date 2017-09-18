@@ -34,7 +34,7 @@ namespace Agrobook.Server.Archivos
             var command = new AgregarArchivoAColeccion(null, metadatos.IdColeccion,
                 new ArchivoDescriptor(metadatos.Nombre, metadatos.Extension, metadatos.Fecha, metadatos.Tipo, metadatos.Size),
                 fileContent)
-                .ConMetadatos(this.ActionContext);
+                .ConFirma(this.ActionContext);
 
             var result = await this.service.HandleAsync(command);
 

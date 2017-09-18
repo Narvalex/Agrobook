@@ -1,14 +1,18 @@
 ﻿using Agrobook.Core;
+using Agrobook.Domain.Common;
+using System;
 
 namespace Agrobook.Domain.Ap.Messages
 {
-    public class NuevoContrato : IEvent
+    public class NuevoContrato : MensajeAuditable, IEvent
     {
-        public NuevoContrato(string idContrato, string idOrganizacion, string nombreDelContrato)
+        public NuevoContrato(Firma firma, string idContrato, string idOrganizacion, string nombreDelContrato, DateTime fecha)
+            : base(firma)
         {
             this.IdContrato = idContrato;
             this.IdOrganizacion = idOrganizacion;
             this.NombreDelContrato = nombreDelContrato;
+            this.Fecha = fecha;
         }
 
         /// <summary>
@@ -17,6 +21,7 @@ namespace Agrobook.Domain.Ap.Messages
         public string IdContrato { get; }
         public string IdOrganizacion { get; }
         public string NombreDelContrato { get; }
+        public DateTime Fecha { get; }
 
         /// <summary>
         /// Todo lo que le ocurre al contrato
@@ -24,14 +29,16 @@ namespace Agrobook.Domain.Ap.Messages
         public string StreamId => this.IdContrato;
     }
 
-    public class NuevaAdenda : IEvent
+    public class NuevaAdenda : MensajeAuditable, IEvent
     {
-        public NuevaAdenda(string idOrganizacion, string idContrato, string idAdenda, string nombreDeLaAdenda)
+        public NuevaAdenda(Firma firma, string idOrganizacion, string idContrato, string idAdenda, string nombreDeLaAdenda, DateTime fecha)
+            : base(firma)
         {
             this.IdContrato = idContrato;
             this.IdOrganizacion = idOrganizacion;
             this.IdAdenda = idAdenda;
             this.NombreDeLaAdenda = nombreDeLaAdenda;
+            this.Fecha = fecha;
         }
 
         public string IdContrato { get; }
@@ -42,6 +49,7 @@ namespace Agrobook.Domain.Ap.Messages
         /// </summary>
         public string IdAdenda { get; }
         public string NombreDeLaAdenda { get; }
+        public DateTime Fecha { get; }
 
         /// <summary>
         /// El contrato al que pertenece la adenda.

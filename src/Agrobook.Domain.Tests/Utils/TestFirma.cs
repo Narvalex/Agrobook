@@ -1,9 +1,9 @@
 ﻿using Agrobook.Domain.Common;
 using System;
 
-namespace Agrobook.Domain.Tests.Utils
+namespace Agrobook.Domain.Tests
 {
-    public static class TestMeta
+    public static class TestFirma
     {
         public static Firma New => new Firma("Test", DateTime.Now);
     }

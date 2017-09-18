@@ -25,6 +25,14 @@ namespace Agrobook.Server
                   return true;
               }, true);
 
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                if (e.ExceptionObject is Exception)
+                    _log.Error((Exception)e.ExceptionObject, "Ocurrió un error no manejado");
+                else
+                    _log.Error("Ocurrió un error no manejado desconocido");
+            };
+
             // Dependency Container
             Console.WriteLine("Agrobook Server");
             _log.Verbose("Resolving dependencies...");

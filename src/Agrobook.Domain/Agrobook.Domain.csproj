@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ap\Contrato.cs" />
+    <Compile Include="Ap\Denormalizers\ContratoDenormalizer.cs" />
     <Compile Include="Ap\Messages\ContratosCommands.cs" />
     <Compile Include="Ap\Messages\ContratosEvents.cs" />
     <Compile Include="Ap\Services\ApDTOs.cs" />
@@ -72,14 +73,14 @@
     <Compile Include="Archivos\Messages\ArchivosCommands.cs" />
     <Compile Include="Archivos\Messages\ArchivosEvents.cs" />
     <Compile Include="Archivos\ColeccionDeArchivos.cs" />
-    <Compile Include="Archivos\Services\ArchivosDbContext.cs" />
-    <Compile Include="Archivos\Services\ArchivosIndexerService.cs" />
+    <Compile Include="Common\DbContext\ArchivosDbContext.cs" />
+    <Compile Include="Archivos\Subscribers\ArchivosIndexerService.cs" />
     <Compile Include="Archivos\Services\ArchivosQueryService.cs" />
     <Compile Include="Archivos\Services\ArchivosService.cs" />
     <Compile Include="Archivos\Services\ArchivosServiceDTOs.cs" />
     <Compile Include="Archivos\Services\FileWriter.cs" />
     <Compile Include="Archivos\Services\IFileWriter.cs" />
-    <Compile Include="Common\AgrobookDbContext.cs" />
+    <Compile Include="Common\DbContext\AgrobookDbContext.cs" />
     <Compile Include="Common\AgrobookDenormalizer.cs" />
     <Compile Include="Common\AgrobookQueryService.cs" />
     <Compile Include="Common\MensajeAuditable.cs" />
@@ -92,11 +93,11 @@
     <Compile Include="Usuarios\Messages\OrganizacionCommands.cs" />
     <Compile Include="Usuarios\Messages\OrganizacionEvents.cs" />
     <Compile Include="Usuarios\OrganizacionSnapshot.cs" />
-    <Compile Include="Usuarios\Services\OrganizacionesDbContext.cs" />
-    <Compile Include="Usuarios\Services\OrganizacionesDenormalizer.cs" />
+    <Compile Include="Common\DbContext\OrganizacionesDbContext.cs" />
+    <Compile Include="Usuarios\Denormalizers\OrganizacionesDenormalizer.cs" />
     <Compile Include="Usuarios\Services\OrganizacionesQueryService.cs" />
-    <Compile Include="Usuarios\Services\UsuariosDbContext.cs" />
-    <Compile Include="Usuarios\Services\UsuariosDenormalizer.cs" />
+    <Compile Include="Common\DbContext\UsuariosDbContext.cs" />
+    <Compile Include="Usuarios\Denormalizers\UsuariosDenormalizer.cs" />
     <Compile Include="Usuarios\Services\UsuariosQueryService.cs" />
     <Compile Include="Usuarios\Services\UsuariosQueryServiceDTOs.cs" />
     <Compile Include="Usuarios\Services\UsuariosService.cs" />

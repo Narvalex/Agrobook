@@ -28,6 +28,8 @@ namespace Agrobook.Domain.Ap
 
         protected override void Rehydrate(ISnapshot snapshot)
         {
+            base.Rehydrate(snapshot);
+
             var state = (ContratoSnapshot)snapshot;
             this.IdOrganizacion = state.IdOrganizacion;
         }

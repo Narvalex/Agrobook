@@ -2,6 +2,7 @@
 using Agrobook.Domain.Ap.Messages;
 using Eventing.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 
 namespace Agrobook.Domain.Tests.Ap.Contratos
@@ -11,16 +12,17 @@ namespace Agrobook.Domain.Tests.Ap.Contratos
     {
         public DadoNuevoContrato()
         {
-            this.sut.Given<Contrato>("chorti_Nuevocontrato", new NuevoContrato("chorti_Nuevocontrato", "chorti", "Nuevo contrato"));
+            this.sut.Given<Contrato>("chorti_Nuevocontrato", new NuevoContrato(TestFirma.New, "chorti_Nuevocontrato", "chorti", "Nuevo contrato", DateTime.Now));
         }
 
         [Test]
         public void CuandoSeQuiereRegistrarAdendaEntoncesSeAcepta()
         {
-            var cmd = new RegistrarNuevaAdenda("chorti_Nuevocontrato", "Adenda I");
+            var cmd = new RegistrarNuevaAdenda(TestFirma.New, "chorti_Nuevocontrato", "Adenda I", DateTime.Now);
+            string result = null;
             this.sut.When(s =>
             {
-                s.HandleAsync(cmd).Wait();
+                result = s.HandleAsync(cmd).Result;
             })
             .Then(evs =>
             {
@@ -31,6 +33,7 @@ namespace Agrobook.Domain.Tests.Ap.Contratos
                 Assert.AreEqual("chorti_Nuevocontrato", e.IdContrato);
                 Assert.AreEqual("chorti", e.IdOrganizacion);
                 Assert.AreEqual("Adenda I", e.NombreDeLaAdenda);
+                Assert.AreEqual(e.IdAdenda, result);
                 Assert.AreEqual(e.IdContrato, e.StreamId);
             });
         }

@@ -193,12 +193,13 @@ module apArea {
                 // New
                 this.dirty.idOrg = this.idOrg;
                 this.apService.registrarNuevoContrato(this.dirty,
-                    new common.callbackLite<contratoDto>(
+                    new common.callbackLite<string>(
                         value => {
-                            this.contratos.push(value.data);
+                            var contrato = new contratoDto(value.data, this.dirty.idOrg, this.dirty.display, this.dirty.esAdenda, this.dirty.eliminado, this.dirty.idContratoDeLaAdenda, this.dirty.fecha)
+                            this.contratos.push(contrato);
 
                             if (this.tipoContrato === 'contrato') {
-                                this.soloContratos.push(value.data);
+                                this.soloContratos.push(contrato);
                             }
 
                             this.toasterLite.success(this.tipoContrato === 'contrato' ? 'Contrato creado' : 'Adenda agregada');

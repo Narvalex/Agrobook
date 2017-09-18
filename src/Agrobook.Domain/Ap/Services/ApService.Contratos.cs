@@ -1,4 +1,5 @@
 ﻿using Agrobook.Domain.Ap.Messages;
+using Eventing;
 using Eventing.Core.Domain;
 using System;
 using System.Threading.Tasks;
@@ -8,27 +9,35 @@ namespace Agrobook.Domain.Ap.Services
     // Contratos
     public partial class ApService
     {
-        public async Task HandleAsync(RegistrarNuevoContrato cmd)
+        public async Task<string> HandleAsync(RegistrarNuevoContrato cmd)
         {
-            var contrato = new Contrato();
-
             if (string.IsNullOrWhiteSpace(cmd.IdOrganizacion))
                 throw new InvalidOperationException("La organización debe estar especificada.");
 
             if (string.IsNullOrWhiteSpace(cmd.NombreDelContrato))
                 throw new InvalidOperationException("El nombre debe estar especificado");
 
+            var contrato = new Contrato();
+
             var idContrato = $"{cmd.IdOrganizacion.ToTrimmedAndWhiteSpaceless()}_{cmd.NombreDelContrato.ToTrimmedAndWhiteSpaceless()}";
-            contrato.Emit(new NuevoContrato(idContrato, cmd.IdOrganizacion, cmd.NombreDelContrato));
+            contrato.Emit(new NuevoContrato(cmd.Firma, idContrato, cmd.IdOrganizacion, cmd.NombreDelContrato, cmd.Fecha));
 
             await this.repository.SaveAsync(contrato);
+            return idContrato;
         }
 
-        public async Task HandleAsync(RegistrarNuevaAdenda cmd)
+        public async Task<string> HandleAsync(RegistrarNuevaAdenda cmd)
         {
+            Ensure.NotNullOrWhiteSpace(cmd.IdContrato, nameof(cmd.IdContrato));
+            Ensure.NotNullOrWhiteSpace(cmd.NombreDeLaAdenda, nameof(cmd.NombreDeLaAdenda));
+
             var contrato = await this.repository.GetOrFailByIdAsync<Contrato>(cmd.IdContrato);
 
-            //contrato.Emit(new NuevaAdenda(cmd.))
+            var idAdenda = $"{cmd.IdContrato}_{cmd.NombreDeLaAdenda.ToTrimmedAndWhiteSpaceless()}";
+            contrato.Emit(new NuevaAdenda(cmd.Firma, contrato.IdOrganizacion, cmd.IdContrato, idAdenda, cmd.NombreDeLaAdenda, cmd.Fecha));
+
+            await this.repository.SaveAsync(contrato);
+            return idAdenda;
         }
     }
 }

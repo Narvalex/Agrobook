@@ -16,7 +16,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             this.sut.When(s =>
             {
-                s.HandleAsync(new CrearNuevaOrganizacion(TestMeta.New, "Cooperativa X")).Wait();
+                s.HandleAsync(new CrearNuevaOrganizacion(TestFirma.New, "Cooperativa X")).Wait();
             })
             .Then(events =>
             {
@@ -39,7 +39,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             this.sut.When(s =>
             {
-                var result = s.HandleAsync(new CrearNuevaOrganizacion(TestMeta.New, "Cooperativa Equis")).Result;
+                var result = s.HandleAsync(new CrearNuevaOrganizacion(TestFirma.New, "Cooperativa Equis")).Result;
 
                 Assert.AreEqual("cooperativaequis", result.Id);
                 Assert.AreEqual("Cooperativa Equis", result.Display);
@@ -51,7 +51,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             this.sut.When(s =>
             {
-                s.HandleAsync(new CrearNuevaOrganizacion(TestMeta.New, " Cooperativa X ")).Wait();
+                s.HandleAsync(new CrearNuevaOrganizacion(TestFirma.New, " Cooperativa X ")).Wait();
             })
             .Then(events =>
             {
@@ -75,14 +75,14 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void DadaOrganizacionNoSePuedeCrearGrupoLlamadoIgualAlPorDefecto()
         {
             this.sut
-            .Given<Organizacion>("coop", new NuevaOrganizacionCreada(TestMeta.New, "coop", "Coop"))
+            .Given<Organizacion>("coop", new NuevaOrganizacionCreada(TestFirma.New, "coop", "Coop"))
             .When(s =>
             {
                 Assert.ThrowsException<InvalidOperationException>(() =>
                 {
                     try
                     {
-                        s.HandleAsync(new CrearNuevoGrupo(TestMeta.New, "coop", "ToDos")).Wait();
+                        s.HandleAsync(new CrearNuevoGrupo(TestFirma.New, "coop", "ToDos")).Wait();
                     }
                     catch (Exception ex)
                     {
@@ -97,10 +97,10 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void DadaOrganizacionSinGruposSePuedeCrearPrimerGrupo()
         {
             this.sut
-            .Given<Organizacion>("coop", new NuevaOrganizacionCreada(TestMeta.New, "coop", "Coop"))
+            .Given<Organizacion>("coop", new NuevaOrganizacionCreada(TestFirma.New, "coop", "Coop"))
             .When(s =>
             {
-                s.HandleAsync(new CrearNuevoGrupo(TestMeta.New, "coop", "Grupo de Admines")).Wait();
+                s.HandleAsync(new CrearNuevoGrupo(TestFirma.New, "coop", "Grupo de Admines")).Wait();
             })
             .Then(events =>
             {
@@ -127,15 +127,15 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             this.sut
             .Given<Organizacion>("coop",
-                new NuevaOrganizacionCreada(TestMeta.New, "coop", "Coop"),
-                new NuevoGrupoCreado(TestMeta.New, "grupoadmin", "Grupo Admin", "coop"))
+                new NuevaOrganizacionCreada(TestFirma.New, "coop", "Coop"),
+                new NuevoGrupoCreado(TestFirma.New, "grupoadmin", "Grupo Admin", "coop"))
             .When(s =>
             {
                 Assert.ThrowsException<InvalidOperationException>(() =>
                 {
                     try
                     {
-                        s.HandleAsync(new CrearNuevoGrupo(TestMeta.New, "coop", "Grupo admin ")).Wait();
+                        s.HandleAsync(new CrearNuevoGrupo(TestFirma.New, "coop", "Grupo admin ")).Wait();
                     }
                     catch (Exception ex)
                     {
@@ -151,10 +151,10 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void DadoUnaOrganizacionNuevaEntoncesSePuedeAgregarUsuario()
         {
             this.sut
-                .Given<Organizacion>("cooperativax", new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X"))
+                .Given<Organizacion>("cooperativax", new NuevaOrganizacionCreada(TestFirma.New, "cooperativax", "Cooperativa X"))
                 .When(s =>
                 {
-                    s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestMeta.New, "cooperativax", "prod")).Wait();
+                    s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestFirma.New, "cooperativax", "prod")).Wait();
                 })
                 .Then(events =>
                 {
@@ -179,8 +179,8 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             this.sut
                .Given<Organizacion>("cooperativax",
-                    new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X"),
-                    new UsuarioAgregadoALaOrganizacion(TestMeta.New, "cooperativax", "prod")
+                    new NuevaOrganizacionCreada(TestFirma.New, "cooperativax", "Cooperativa X"),
+                    new UsuarioAgregadoALaOrganizacion(TestFirma.New, "cooperativax", "prod")
                 )
                .When(s =>
                {
@@ -188,7 +188,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                     {
                         try
                         {
-                            s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestMeta.New, "cooperativax", "prod")).Wait();
+                            s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestFirma.New, "cooperativax", "prod")).Wait();
                         }
                         catch (Exception ex)
                         {
@@ -203,12 +203,12 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             this.sut
                .Given<Organizacion>("cooperativax",
-                    new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X")
+                    new NuevaOrganizacionCreada(TestFirma.New, "cooperativax", "Cooperativa X")
                 )
                .When(s =>
                {
-                   s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestMeta.New, "cooperativax", "prod")).Wait();
-                   s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestMeta.New, "cooperativax", "prod2")).Wait();
+                   s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestFirma.New, "cooperativax", "prod")).Wait();
+                   s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestFirma.New, "cooperativax", "prod2")).Wait();
                })
                .Then(events =>
                {
@@ -234,7 +234,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             this.sut
                .Given<Organizacion>("cooperativax",
-                    new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X")
+                    new NuevaOrganizacionCreada(TestFirma.New, "cooperativax", "Cooperativa X")
                 )
                .When(s =>
                {
@@ -242,7 +242,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                    {
                        try
                        {
-                           s.HandleAsync(new AgregarUsuarioAUnGrupo(TestMeta.New, "cooperativax", "braulio", "grupoInexistente")).Wait();
+                           s.HandleAsync(new AgregarUsuarioAUnGrupo(TestFirma.New, "cooperativax", "braulio", "grupoInexistente")).Wait();
                        }
                        catch (Exception ex)
                        {
@@ -257,8 +257,8 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             this.sut
                .Given<Organizacion>("cooperativax",
-                    new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X"),
-                    new NuevoGrupoCreado(TestMeta.New, "grupito", "Grupito", "cooperativax")
+                    new NuevaOrganizacionCreada(TestFirma.New, "cooperativax", "Cooperativa X"),
+                    new NuevoGrupoCreado(TestFirma.New, "grupito", "Grupito", "cooperativax")
                 )
                .When(s =>
                {
@@ -266,7 +266,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                    {
                        try
                        {
-                           s.HandleAsync(new AgregarUsuarioAUnGrupo(TestMeta.New, "cooperativax", "braulio", "grupoInexistente")).Wait();
+                           s.HandleAsync(new AgregarUsuarioAUnGrupo(TestFirma.New, "cooperativax", "braulio", "grupoInexistente")).Wait();
                        }
                        catch (Exception ex)
                        {
@@ -281,8 +281,8 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             this.sut
                .Given<Organizacion>("cooperativax",
-                    new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X"),
-                    new UsuarioAgregadoALaOrganizacion(TestMeta.New, "cooperativax", "prod")
+                    new NuevaOrganizacionCreada(TestFirma.New, "cooperativax", "Cooperativa X"),
+                    new UsuarioAgregadoALaOrganizacion(TestFirma.New, "cooperativax", "prod")
                 )
                .When(s =>
                {
@@ -290,7 +290,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                    {
                        try
                        {
-                           s.HandleAsync(new AgregarUsuarioAUnGrupo(TestMeta.New, "cooperativax", "prod", "grupoInexistente")).Wait();
+                           s.HandleAsync(new AgregarUsuarioAUnGrupo(TestFirma.New, "cooperativax", "prod", "grupoInexistente")).Wait();
                        }
                        catch (Exception ex)
                        {
@@ -305,13 +305,13 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             this.sut
                .Given<Organizacion>("cooperativax",
-                    new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X"),
-                    new UsuarioAgregadoALaOrganizacion(TestMeta.New, "cooperativax", "prod"),
-                    new NuevoGrupoCreado(TestMeta.New, "grupito", "Grupito", "cooperativax")
+                    new NuevaOrganizacionCreada(TestFirma.New, "cooperativax", "Cooperativa X"),
+                    new UsuarioAgregadoALaOrganizacion(TestFirma.New, "cooperativax", "prod"),
+                    new NuevoGrupoCreado(TestFirma.New, "grupito", "Grupito", "cooperativax")
                 )
                .When(s =>
                {
-                   s.HandleAsync(new AgregarUsuarioAUnGrupo(TestMeta.New, "cooperativax", "prod", "grupito")).Wait();
+                   s.HandleAsync(new AgregarUsuarioAUnGrupo(TestFirma.New, "cooperativax", "prod", "grupito")).Wait();
                })
                .Then(events =>
                {
@@ -331,7 +331,7 @@ namespace Agrobook.Domain.Tests.Usuarios
         [TestMethod]
         public void DadoGrupoConUnUsuarioCuandoSeQuiereAgregarAlMismoUsuarioOtraVezEntoncesFalla()
         {
-            var meta = TestMeta.New;
+            var meta = TestFirma.New;
             this.sut
                .Given<Organizacion>("cooperativax",
                     new NuevaOrganizacionCreada(meta, "cooperativax", "Cooperativa X"),
@@ -345,7 +345,7 @@ namespace Agrobook.Domain.Tests.Usuarios
                    {
                        try
                        {
-                           s.HandleAsync(new AgregarUsuarioAUnGrupo(TestMeta.New, "cooperativax", "prod", "grupito")).Wait();
+                           s.HandleAsync(new AgregarUsuarioAUnGrupo(TestFirma.New, "cooperativax", "prod", "grupito")).Wait();
                        }
                        catch (Exception ex)
                        {
@@ -360,15 +360,15 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             this.sut
                .Given<Organizacion>("cooperativax",
-                    new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X"),
-                    new UsuarioAgregadoALaOrganizacion(TestMeta.New, "cooperativax", "prod"),
-                    new NuevoGrupoCreado(TestMeta.New, "grupito", "Grupito", "cooperativax"),
-                    new UsuarioAgregadoAUnGrupo(TestMeta.New, "cooperativax", "prod", "grupito"),
-                    new UsuarioAgregadoALaOrganizacion(TestMeta.New, "cooperativax", "prod2")
+                    new NuevaOrganizacionCreada(TestFirma.New, "cooperativax", "Cooperativa X"),
+                    new UsuarioAgregadoALaOrganizacion(TestFirma.New, "cooperativax", "prod"),
+                    new NuevoGrupoCreado(TestFirma.New, "grupito", "Grupito", "cooperativax"),
+                    new UsuarioAgregadoAUnGrupo(TestFirma.New, "cooperativax", "prod", "grupito"),
+                    new UsuarioAgregadoALaOrganizacion(TestFirma.New, "cooperativax", "prod2")
                 )
                .When(s =>
                {
-                   s.HandleAsync(new AgregarUsuarioAUnGrupo(TestMeta.New, "cooperativax", "prod2", "grupito")).Wait();
+                   s.HandleAsync(new AgregarUsuarioAUnGrupo(TestFirma.New, "cooperativax", "prod2", "grupito")).Wait();
                })
                .Then(events =>
                {
@@ -393,10 +393,10 @@ namespace Agrobook.Domain.Tests.Usuarios
         public void DadoUnaOrganizacionNuevaCuandoSeAgregaSuPrimerUsuarioEntoncesSeCreaElPrimerGrupoPorDefectoYSeAgregaUsuario()
         {
             this.sut
-                .Given<Organizacion>("cooperativax", new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X"))
+                .Given<Organizacion>("cooperativax", new NuevaOrganizacionCreada(TestFirma.New, "cooperativax", "Cooperativa X"))
                 .When(s =>
                 {
-                    s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestMeta.New, "cooperativax", "prod")).Wait();
+                    s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestFirma.New, "cooperativax", "prod")).Wait();
                 })
                 .Then(events =>
                 {
@@ -419,13 +419,13 @@ namespace Agrobook.Domain.Tests.Usuarios
         {
             this.sut
                 .Given<Organizacion>("cooperativax",
-                        new NuevaOrganizacionCreada(TestMeta.New, "cooperativax", "Cooperativa X"),
-                        new UsuarioAgregadoALaOrganizacion(TestMeta.New, "cooperativax", "prod1"),
-                        new NuevoGrupoCreado(TestMeta.New, "todos", "Todos", "cooperativax"),
-                        new UsuarioAgregadoAUnGrupo(TestMeta.New, "cooperativax", "prod1", "todos"))
+                        new NuevaOrganizacionCreada(TestFirma.New, "cooperativax", "Cooperativa X"),
+                        new UsuarioAgregadoALaOrganizacion(TestFirma.New, "cooperativax", "prod1"),
+                        new NuevoGrupoCreado(TestFirma.New, "todos", "Todos", "cooperativax"),
+                        new UsuarioAgregadoAUnGrupo(TestFirma.New, "cooperativax", "prod1", "todos"))
                 .When(s =>
                 {
-                    s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestMeta.New, "cooperativax", "prod2")).Wait();
+                    s.HandleAsync(new AgregarUsuarioALaOrganizacion(TestFirma.New, "cooperativax", "prod2")).Wait();
                 })
                 .Then(events =>
                 {
