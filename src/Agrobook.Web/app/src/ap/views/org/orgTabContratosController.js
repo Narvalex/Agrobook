@@ -63,7 +63,7 @@ var apArea;
         };
         orgTabContratosController.prototype.eliminar = function (contrato) {
             var _this = this;
-            this.apService.eliminarContrato(contrato.id, new common.callbackLite(function (value) {
+            var callback = new common.callbackLite(function (value) {
                 for (var i = 0; i < _this.contratos.length; i++) {
                     if (_this.contratos[i].id === contrato.id) {
                         _this.contratos[i].eliminado = true;
@@ -78,7 +78,11 @@ var apArea;
                 }
                 if (_this.contratoAdendado.id === contrato.id)
                     _this.contratoAdendado.eliminado = true;
-            }, function (reason) { }));
+            }, function (reason) { });
+            if (contrato.esAdenda)
+                this.apService.eliminarAdenda(contrato.idContratoDeLaAdenda, contrato.id, callback);
+            else
+                this.apService.eliminarContrato(contrato.id, callback);
         };
         orgTabContratosController.prototype.restaurar = function (contrato) {
             var _this = this;

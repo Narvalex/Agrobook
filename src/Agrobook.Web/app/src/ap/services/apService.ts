@@ -110,16 +110,11 @@ module apArea {
         }
 
         eliminarContrato(idContrato: string, callback: common.callbackLite<{}>) {
-            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
-                if (this.fakeDb.contratos[i].id === idContrato) {
-                    this.fakeDb.contratos[i].eliminado = true;
-                    break;
-                }
-            }
+            super.postWithCallback('eliminar-contrato/' + idContrato, {}, callback); 
+        }
 
-            callback.onSuccess({
-                data: {}
-            });
+        eliminarAdenda(idContrato: string, idAdenda: string, callback: common.callbackLite<{}>) {
+            super.postWithCallback('eliminar-adenda?idContrato=' + idContrato + '&idAdenda=' + idAdenda, {}, callback);
         }
 
         restaurarContrato(idContrato: string, callback: common.callbackLite<{}>) {

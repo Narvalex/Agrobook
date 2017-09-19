@@ -39,6 +39,18 @@ namespace Agrobook.Domain.Ap.Services
             await this.repository.SaveAsync(contrato);
         }
 
+        public async Task HandleAsync(EliminarContrato cmd)
+        {
+            var contrato = await this.repository.GetOrFailByIdAsync<Contrato>(cmd.Id);
+
+            if (contrato.EstaEliminado)
+                throw new InvalidOperationException("El contrato ya está eliminado");
+
+            contrato.Emit(new ContratoEliminado(cmd.Firma, cmd.Id));
+
+            await this.repository.SaveAsync(contrato);
+        }
+
         public async Task<string> HandleAsync(RegistrarNuevaAdenda cmd)
         {
             Ensure.NotNullOrWhiteSpace(cmd.IdContrato, nameof(cmd.IdContrato));
@@ -71,6 +83,18 @@ namespace Agrobook.Domain.Ap.Services
             contrato.Emit(new AdendaEditada(cmd.Firma, cmd.IdContrato, cmd.IdAdenda, cmd.NombreDeLaAdenda, cmd.Fecha));
 
             await this.repository.SaveAsync(contrato);
+        }
+
+        public async Task HandleAsync(EliminarAdenda cmd)
+        {
+            var contrato = await this.repository.GetOrFailByIdAsync<Contrato>(cmd.IdContrato);
+
+            if (!contrato.TieneAdenda(cmd.IdAdenda))
+                throw new InvalidOperationException("El contrato no tiene esa adenda");
+            if (contrato.LaAdendaEstaEliminada(cmd.IdAdenda))
+                throw new InvalidOperationException("La adenda ya esta eliminada");
+
+            contrato.Emit(new AdendaEliminada(cmd.Firma, cmd.IdContrato, cmd.IdAdenda));
         }
     }
 }

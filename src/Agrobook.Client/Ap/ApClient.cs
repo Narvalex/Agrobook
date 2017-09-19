@@ -22,6 +22,9 @@ namespace Agrobook.Client.Ap
         public async Task Send(EditarContrato cmd)
             => await base.Post("editar-contrato", cmd);
 
+        public async Task EliminarContrato(string id)
+            => await base.Post("eliminar-contrato/" + id, "");
+
         /// <summary>
         /// Registra un nueva adenda
         /// </summary>
@@ -33,5 +36,8 @@ namespace Agrobook.Client.Ap
 
         public async Task Send(EditarAdenda cmd)
             => await base.Post("editar-adenda", cmd);
+
+        public async Task EliminarAdenda(string idContrato, string idAdenda)
+            => await base.Post("eliminar-adenda?idContrato=" + idContrato + "&idAdenda=" + idAdenda, "");
     }
 }

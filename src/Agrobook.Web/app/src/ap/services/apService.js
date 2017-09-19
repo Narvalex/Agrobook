@@ -94,15 +94,10 @@ var apArea;
             }
         };
         apService.prototype.eliminarContrato = function (idContrato, callback) {
-            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
-                if (this.fakeDb.contratos[i].id === idContrato) {
-                    this.fakeDb.contratos[i].eliminado = true;
-                    break;
-                }
-            }
-            callback.onSuccess({
-                data: {}
-            });
+            _super.prototype.postWithCallback.call(this, 'eliminar-contrato/' + idContrato, {}, callback);
+        };
+        apService.prototype.eliminarAdenda = function (idContrato, idAdenda, callback) {
+            _super.prototype.postWithCallback.call(this, 'eliminar-adenda?idContrato=' + idContrato + '&idAdenda=' + idAdenda, {}, callback);
         };
         apService.prototype.restaurarContrato = function (idContrato, callback) {
             for (var i = 0; i < this.fakeDb.contratos.length; i++) {

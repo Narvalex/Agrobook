@@ -98,28 +98,31 @@ module apArea {
         }
 
         eliminar(contrato: contratoDto) {
-            this.apService.eliminarContrato(contrato.id,
-                new common.callbackLite(
-                    value => {
-                        for (var i = 0; i < this.contratos.length; i++) {
-                            if (this.contratos[i].id === contrato.id) {
-                                this.contratos[i].eliminado = true;
-                                break;
-                            }
+            let callback = new common.callbackLite(
+                value => {
+                    for (var i = 0; i < this.contratos.length; i++) {
+                        if (this.contratos[i].id === contrato.id) {
+                            this.contratos[i].eliminado = true;
+                            break;
                         }
+                    }
 
-                        for (var i = 0; i < this.soloContratos.length; i++) {
-                            if (this.contratos[i].id === contrato.id) {
-                                this.contratos[i].eliminado = true;
-                                break;
-                            }
+                    for (var i = 0; i < this.soloContratos.length; i++) {
+                        if (this.contratos[i].id === contrato.id) {
+                            this.contratos[i].eliminado = true;
+                            break;
                         }
+                    }
 
-                        if (this.contratoAdendado.id === contrato.id)
-                            this.contratoAdendado.eliminado = true;
-                    },
-                    reason => { })
-            );
+                    if (this.contratoAdendado.id === contrato.id)
+                        this.contratoAdendado.eliminado = true;
+                },
+                reason => { });
+
+            if (contrato.esAdenda)
+                this.apService.eliminarAdenda(contrato.idContratoDeLaAdenda, contrato.id, callback);
+            else
+                this.apService.eliminarContrato(contrato.id, callback);
         }
 
         restaurar(contrato: contratoDto) {

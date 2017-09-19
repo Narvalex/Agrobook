@@ -13,23 +13,24 @@ namespace Agrobook.Domain.Ap
     [StreamCategory("agrobook.contratos")]
     public class Contrato : EventSourced
     {
-        private readonly IDictionary<string, object> adendasById = new Dictionary<string, object>();
+        private readonly IDictionary<string, bool> adendasById = new Dictionary<string, bool>(); // if true = adenda eliminada
 
         public Contrato()
         {
+            this.EstaEliminado = false;
             this.On<NuevoContrato>(e =>
             {
                 this.SetStreamNameById(e.IdContrato);
                 this.IdOrganizacion = e.IdOrganizacion;
             });
-            this.On<NuevaAdenda>(e => this.adendasById.Add(e.IdAdenda, null));
+            this.On<NuevaAdenda>(e => this.adendasById.Add(e.IdAdenda, false));
+            this.On<ContratoEliminado>(e => this.EstaEliminado = true);
         }
-
-        public string IdOrganizacion { get; private set; }
 
         protected override ISnapshot TakeSnapshot()
         {
-            return new ContratoSnapshot(this.StreamName, this.Version, this.IdOrganizacion, this.adendasById.Keys.ToArray());
+            return new ContratoSnapshot(this.StreamName, this.Version, this.IdOrganizacion, this.adendasById.ToArray(),
+                this.EstaEliminado);
         }
 
         protected override void Rehydrate(ISnapshot snapshot)
@@ -38,21 +39,29 @@ namespace Agrobook.Domain.Ap
 
             var state = (ContratoSnapshot)snapshot;
             this.IdOrganizacion = state.IdOrganizacion;
-            state.Adendas.ForEach(x => this.adendasById.Add(x, null));
+            state.Adendas.ForEach(x => this.adendasById.Add(x.Key, x.Value));
+            this.EstaEliminado = state.EstaEliminado;
         }
 
+        public string IdOrganizacion { get; private set; }
         public bool TieneAdenda(string idAdenda) => this.adendasById.ContainsKey(idAdenda);
+        public bool LaAdendaEstaEliminada(string idAdenda) => this.adendasById.ContainsKey(idAdenda) && this.adendasById[idAdenda];
+        public bool EstaEliminado { get; private set; }
     }
 
     public class ContratoSnapshot : Snapshot
     {
-        public ContratoSnapshot(string streamName, int version, string idOrganizacion, string[] adendas) : base(streamName, version)
+        public ContratoSnapshot(string streamName, int version, string idOrganizacion, KeyValuePair<string, bool>[] adendas,
+            bool estaEliminado)
+            : base(streamName, version)
         {
             this.IdOrganizacion = idOrganizacion;
             this.Adendas = adendas;
+            this.EstaEliminado = estaEliminado;
         }
 
         public string IdOrganizacion { get; }
-        public string[] Adendas { get; }
+        public KeyValuePair<string, bool>[] Adendas { get; }
+        public bool EstaEliminado { get; }
     }
 }

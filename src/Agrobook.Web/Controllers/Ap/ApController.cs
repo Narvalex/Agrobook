@@ -33,6 +33,14 @@ namespace Agrobook.Web.Controllers.Ap
         }
 
         [HttpPost]
+        [Route("eliminar-contrato/{id}")]
+        public async Task<IHttpActionResult> EliminarContrato([FromUri]string id)
+        {
+            await this.client.EliminarContrato(id);
+            return this.Ok();
+        }
+
+        [HttpPost]
         [Route("registrar-adenda")]
         public async Task<IHttpActionResult> RegistrarAdenda([FromBody]RegistrarNuevaAdenda cmd)
         {
@@ -45,6 +53,14 @@ namespace Agrobook.Web.Controllers.Ap
         public async Task<IHttpActionResult> EditarContrato([FromBody]EditarAdenda cmd)
         {
             await this.client.Send(cmd);
+            return this.Ok();
+        }
+
+        [HttpPost]
+        [Route("eliminar-adenda")]
+        public async Task<IHttpActionResult> EliminarAdenda([FromUri]string idContrato, [FromUri]string idAdenda)
+        {
+            await this.client.EliminarAdenda(idContrato, idAdenda);
             return this.Ok();
         }
     }
