@@ -75,14 +75,23 @@ var apArea;
             }
         };
         apService.prototype.editarContrato = function (contrato, callback) {
-            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
-                if (this.fakeDb.contratos[i].id === contrato.id) {
-                    this.fakeDb.contratos.splice(i, 1);
-                    this.fakeDb.contratos.push(contrato);
-                    break;
-                }
+            if (contrato.esAdenda) {
+                var cmd = {
+                    idContrato: contrato.idContratoDeLaAdenda,
+                    idAdenda: contrato.id,
+                    nombreDeLaAdenda: contrato.display,
+                    fecha: contrato.fecha
+                };
+                _super.prototype.postWithCallback.call(this, 'editar-adenda', cmd, callback);
             }
-            callback.onSuccess({});
+            else {
+                var cmd = {
+                    idContrato: contrato.id,
+                    nombreDelContrato: contrato.display,
+                    fecha: contrato.fecha
+                };
+                _super.prototype.postWithCallback.call(this, 'editar-contrato', cmd, callback);
+            }
         };
         apService.prototype.eliminarContrato = function (idContrato, callback) {
             for (var i = 0; i < this.fakeDb.contratos.length; i++) {

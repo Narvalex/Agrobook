@@ -25,11 +25,27 @@ namespace Agrobook.Web.Controllers.Ap
         }
 
         [HttpPost]
+        [Route("editar-contrato")]
+        public async Task<IHttpActionResult> EditarContrato([FromBody]EditarContrato cmd)
+        {
+            await this.client.Send(cmd);
+            return this.Ok();
+        }
+
+        [HttpPost]
         [Route("registrar-adenda")]
         public async Task<IHttpActionResult> RegistrarAdenda([FromBody]RegistrarNuevaAdenda cmd)
         {
             var idContrato = await this.client.Send(cmd);
             return this.Ok(idContrato);
+        }
+
+        [HttpPost]
+        [Route("editar-adenda")]
+        public async Task<IHttpActionResult> EditarContrato([FromBody]EditarAdenda cmd)
+        {
+            await this.client.Send(cmd);
+            return this.Ok();
         }
     }
 }

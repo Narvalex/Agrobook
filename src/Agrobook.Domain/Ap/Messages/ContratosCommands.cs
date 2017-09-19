@@ -18,6 +18,21 @@ namespace Agrobook.Domain.Ap.Messages
         public DateTime Fecha { get; }
     }
 
+    public class EditarContrato : MensajeAuditable
+    {
+        public EditarContrato(Firma firma, string idContrato, string nombreDelContrato, DateTime fecha)
+            : base(firma)
+        {
+            this.IdContrato = idContrato;
+            this.NombreDelContrato = nombreDelContrato;
+            this.Fecha = fecha;
+        }
+
+        public string IdContrato { get; }
+        public string NombreDelContrato { get; }
+        public DateTime Fecha { get; }
+    }
+
     public class RegistrarNuevaAdenda : MensajeAuditable
     {
         public RegistrarNuevaAdenda(Firma firma, string idContrato, string nombreDeLaAdenda, DateTime fecha)
@@ -29,6 +44,23 @@ namespace Agrobook.Domain.Ap.Messages
         }
 
         public string IdContrato { get; }
+        public string NombreDeLaAdenda { get; }
+        public DateTime Fecha { get; }
+    }
+
+    public class EditarAdenda : MensajeAuditable
+    {
+        public EditarAdenda(Firma firma, string idContrato, string idAdenda, string nombreDeLaAdenda, DateTime fecha)
+            : base(firma)
+        {
+            this.IdContrato = idContrato;
+            this.IdAdenda = idAdenda;
+            this.NombreDeLaAdenda = nombreDeLaAdenda;
+            this.Fecha = fecha;
+        }
+
+        public string IdContrato { get; }
+        public string IdAdenda { get; }
         public string NombreDeLaAdenda { get; }
         public DateTime Fecha { get; }
     }

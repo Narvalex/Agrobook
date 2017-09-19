@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ap\ApSpec.cs" />
+    <Compile Include="Ap\Contratos\DadaAdenda.cs" />
     <Compile Include="Ap\Contratos\DadoNingunContrato.cs" />
     <Compile Include="Ap\Contratos\DadoNuevoContrato.cs" />
     <Compile Include="Archivos\ArchivosTests.cs" />

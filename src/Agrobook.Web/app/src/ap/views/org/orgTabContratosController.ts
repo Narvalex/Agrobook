@@ -19,7 +19,7 @@ module apArea {
 
         // estados
         formVisible: boolean;
-        editMode: boolean;
+        editMode: boolean; // si es edicion
         submitting = false;
         tieneContrato = false;
         ocultarEliminados = true;
@@ -65,7 +65,7 @@ module apArea {
                 controller: panelMenuController,
                 controllerAs: 'vm',
                 hasBackdrop: true,
-                templateUrl: './dist/ap/views/org/menu-panel-tab-contratos.html',
+                templateUrl: './src/ap/views/org/menu-panel-tab-contratos.html',
                 position: position,
                 trapFocus: true,
                 locals: {
@@ -228,16 +228,29 @@ module apArea {
         }
 
         private refrescarEstadoDelForm() {
-            // Preparando
-            this.soloContratos = this.contratos.filter(x => !x.esAdenda);
-            // Si tiene contrato
-            if (this.soloContratos.length > 0) {
-                this.tieneContrato = true;
-                this.contratoAdendado = this.soloContratos[0];
-                this.tipoContrato = 'adenda';
+            if (this.editMode) {
+                this.tipoContrato = this.dirty.esAdenda ? 'adenda' : 'contrato';
+
+                for (var i = 0; i < this.soloContratos.length; i++) {
+                    let contrato = this.soloContratos[i];
+                    if (contrato.id === this.dirty.idContratoDeLaAdenda) {
+                        this.contratoAdendado = contrato;
+                        break;
+                    }
+                }
             }
             else {
-                this.tipoContrato = 'contrato';
+                // Preparando
+                this.soloContratos = this.contratos.filter(x => !x.esAdenda);
+                // Si tiene contrato
+                if (this.soloContratos.length > 0) {
+                    this.tieneContrato = true;
+
+                    this.tipoContrato = 'adenda'; // valores por defecto
+                }
+                else {
+                    this.tipoContrato = 'contrato'; // valores por defecto si es new
+                }
             }
         }
 
@@ -251,20 +264,6 @@ module apArea {
             return moment(fecha).format('DD/MM/YYYY');
         }
 
-        //-----------------------------
-        // Archivos implementation
-        //-----------------------------
-        //awTitle = this.tipoContrato === 'adenda' ? 'Documentos de respaldo de la adenda.' : 'Documentos de respaldo del contrato.';
-        //awUploadLink = 'Levantar archivo...';
-        //awFileUnits: common.fileUnit[] = [];
-        //awPrepareFiles(element: HTMLInputElement) {
-        //    this.awService.resetFileInput();
-
-        //    var vm = (angular.element(this)[0] as any) as orgTabContratosController;
-        //    vm.$scope.$apply(scope => {
-        //        vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
-        //    });
-        //}
     }
 
     class panelMenuController {

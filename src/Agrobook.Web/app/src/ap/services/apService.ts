@@ -90,15 +90,23 @@ module apArea {
         }
 
         editarContrato(contrato: contratoDto, callback: common.callbackLite<{}>) {
-            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
-                if (this.fakeDb.contratos[i].id === contrato.id) {
-                    this.fakeDb.contratos.splice(i, 1);
-                    this.fakeDb.contratos.push(contrato);
-                    break;
-                }
+            if (contrato.esAdenda) {
+                let cmd = {
+                    idContrato: contrato.idContratoDeLaAdenda,
+                    idAdenda: contrato.id,
+                    nombreDeLaAdenda: contrato.display,
+                    fecha: contrato.fecha
+                };
+                super.postWithCallback('editar-adenda', cmd, callback);
             }
-
-            callback.onSuccess({});
+            else {
+                let cmd = {
+                    idContrato: contrato.id,
+                    nombreDelContrato: contrato.display,
+                    fecha: contrato.fecha
+                };
+                super.postWithCallback('editar-contrato', cmd, callback);
+            }
         }
 
         eliminarContrato(idContrato: string, callback: common.callbackLite<{}>) {

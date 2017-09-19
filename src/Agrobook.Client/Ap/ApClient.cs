@@ -19,6 +19,9 @@ namespace Agrobook.Client.Ap
         public async Task<string> Send(RegistrarNuevoContrato cmd)
             => await base.Post<RegistrarNuevoContrato, string>("registrar-contrato", cmd);
 
+        public async Task Send(EditarContrato cmd)
+            => await base.Post("editar-contrato", cmd);
+
         /// <summary>
         /// Registra un nueva adenda
         /// </summary>
@@ -26,5 +29,9 @@ namespace Agrobook.Client.Ap
         /// <returns>El id de la adenda</returns>
         public async Task<string> Send(RegistrarNuevaAdenda cmd)
             => await base.Post<RegistrarNuevaAdenda, string>("registrar-adenda", cmd);
+
+
+        public async Task Send(EditarAdenda cmd)
+            => await base.Post("editar-adenda", cmd);
     }
 }

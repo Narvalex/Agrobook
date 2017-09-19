@@ -1,5 +1,8 @@
 ﻿using Agrobook.Domain.Ap.Messages;
+using Eventing;
 using Eventing.Core.Domain;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Agrobook.Domain.Ap
 {
@@ -10,6 +13,8 @@ namespace Agrobook.Domain.Ap
     [StreamCategory("agrobook.contratos")]
     public class Contrato : EventSourced
     {
+        private readonly IDictionary<string, object> adendasById = new Dictionary<string, object>();
+
         public Contrato()
         {
             this.On<NuevoContrato>(e =>
@@ -17,13 +22,14 @@ namespace Agrobook.Domain.Ap
                 this.SetStreamNameById(e.IdContrato);
                 this.IdOrganizacion = e.IdOrganizacion;
             });
+            this.On<NuevaAdenda>(e => this.adendasById.Add(e.IdAdenda, null));
         }
 
         public string IdOrganizacion { get; private set; }
 
         protected override ISnapshot TakeSnapshot()
         {
-            return new ContratoSnapshot(this.StreamName, this.Version, this.IdOrganizacion);
+            return new ContratoSnapshot(this.StreamName, this.Version, this.IdOrganizacion, this.adendasById.Keys.ToArray());
         }
 
         protected override void Rehydrate(ISnapshot snapshot)
@@ -32,16 +38,21 @@ namespace Agrobook.Domain.Ap
 
             var state = (ContratoSnapshot)snapshot;
             this.IdOrganizacion = state.IdOrganizacion;
+            state.Adendas.ForEach(x => this.adendasById.Add(x, null));
         }
+
+        public bool TieneAdenda(string idAdenda) => this.adendasById.ContainsKey(idAdenda);
     }
 
     public class ContratoSnapshot : Snapshot
     {
-        public ContratoSnapshot(string streamName, int version, string idOrganizacion) : base(streamName, version)
+        public ContratoSnapshot(string streamName, int version, string idOrganizacion, string[] adendas) : base(streamName, version)
         {
             this.IdOrganizacion = idOrganizacion;
+            this.Adendas = adendas;
         }
 
         public string IdOrganizacion { get; }
+        public string[] Adendas { get; }
     }
 }

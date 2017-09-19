@@ -96,7 +96,7 @@ namespace Agrobook.Server
             var apQueryService = new ApQueryService(readOnlyDbContextFactory, eventSourcedRepository);
             container.Register<ApQueryService>(apQueryService);
 
-            var apService = new ApService(eventSourcedRepository);
+            var apService = new ApService(eventSourcedRepository, dateTimeProvider);
             container.Register<ApService>(apService);
 
             var contratoDenormalizer = new ContratosDenormalizer(eventStreamSubscriber, dbContextFactory);

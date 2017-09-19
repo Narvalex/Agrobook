@@ -19,11 +19,27 @@ namespace Agrobook.Server.Ap
         }
 
         [HttpPost]
+        [Route("editar-contrato")]
+        public async Task<IHttpActionResult> EditarContrato([FromBody]EditarContrato cmd)
+        {
+            await this.service.HandleAsync(cmd.ConFirma(this.ActionContext));
+            return this.Ok();
+        }
+
+        [HttpPost]
         [Route("registrar-adenda")]
         public async Task<IHttpActionResult> RegistrarAdenda([FromBody]RegistrarNuevaAdenda cmd)
         {
             var idAdenda = await this.service.HandleAsync(cmd.ConFirma(this.ActionContext));
             return this.Ok(idAdenda);
+        }
+
+        [HttpPost]
+        [Route("editar-adenda")]
+        public async Task<IHttpActionResult> EditarAdenda([FromBody]EditarAdenda cmd)
+        {
+            await this.service.HandleAsync(cmd.ConFirma(this.ActionContext));
+            return this.Ok();
         }
     }
 }

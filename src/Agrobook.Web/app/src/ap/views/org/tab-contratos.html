@@ -9,24 +9,27 @@
         </md-button>
     </div>
 
-    <!-- Formulario de Nuevo Contrato -->
+    <!-- Formulario de Nuevo/Editar Contrato -->
     <md-card ng-show="vm.formVisible">
         <md-card-title>
-            <md-card-title-text>
+            <md-card-title-text ng-if="!vm.editMode">
                 <span class="md-headline">{{vm.tipoContrato === 'adenda' ? 'Nueva adenda' : 'Nuevo contrato'}}</span>
                 <span class="md-subhead">No se olvide de adjuntar el documento de respaldo</span>
+            </md-card-title-text>
+            <md-card-title-text ng-if="vm.editMode">
+                <span class="md-headline">{{vm.tipoContrato === 'adenda' ? 'Editar adenda de ' + vm.contratoAdendado.display : 'Editar contrato'}}</span>
             </md-card-title-text>
         </md-card-title>
         <md-card-content>
 
-            <div layout="row">
+            <div layout="row" ng-if="!vm.editMode">
                 <md-radio-group ng-model="vm.tipoContrato" class="padding-left-20">
                     <md-radio-button value="adenda" ng-disabled="!vm.tieneContrato">Adenda</md-radio-button>
                     <md-radio-button value="contrato" class="md-primary">Contrato</md-radio-button>
                 </md-radio-group>
             </div>
 
-            <div layout="row" ng-hide="vm.tipoContrato === 'contrato'">
+            <div layout="row" ng-hide="vm.editMode || vm.tipoContrato === 'contrato'">
                 <md-input-container>
                     <label>{{vm.tieneContrato ? vm.contratoAdendado.display : 'Contrato a adendar'}}</label>
                     <md-select ng-model="vm.contratoAdendado">
@@ -46,7 +49,7 @@
                            required
                            autofocus>
                     <div ng-messages="">
-                        <div ng-message="required">Debe especificar un nombre al contrato</div>
+                        <div ng-message="required">Debe especificar un nombre {{vm.tipoContrato === 'adenda' ? 'a la adenda' : 'al contrato'}}</div>
                     </div>
                 </md-input-container>
 
@@ -72,7 +75,7 @@
 
         </md-card-content>
     </md-card>
-    <!-- Fin del Formulario de Nuevo Contrato -->
+    <!-- Fin del Formulario de Nuevo/Editar Contrato -->
 
     <md-list class="width-xs">
         <md-list-item ng-repeat="contrato in vm.contratos"

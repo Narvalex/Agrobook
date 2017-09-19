@@ -40,7 +40,7 @@ var apArea;
                 controller: panelMenuController,
                 controllerAs: 'vm',
                 hasBackdrop: true,
-                templateUrl: './dist/ap/views/org/menu-panel-tab-contratos.html',
+                templateUrl: './src/ap/views/org/menu-panel-tab-contratos.html',
                 position: position,
                 trapFocus: true,
                 locals: {
@@ -162,16 +162,27 @@ var apArea;
             }, function (reason) { }));
         };
         orgTabContratosController.prototype.refrescarEstadoDelForm = function () {
-            // Preparando
-            this.soloContratos = this.contratos.filter(function (x) { return !x.esAdenda; });
-            // Si tiene contrato
-            if (this.soloContratos.length > 0) {
-                this.tieneContrato = true;
-                this.contratoAdendado = this.soloContratos[0];
-                this.tipoContrato = 'adenda';
+            if (this.editMode) {
+                this.tipoContrato = this.dirty.esAdenda ? 'adenda' : 'contrato';
+                for (var i = 0; i < this.soloContratos.length; i++) {
+                    var contrato = this.soloContratos[i];
+                    if (contrato.id === this.dirty.idContratoDeLaAdenda) {
+                        this.contratoAdendado = contrato;
+                        break;
+                    }
+                }
             }
             else {
-                this.tipoContrato = 'contrato';
+                // Preparando
+                this.soloContratos = this.contratos.filter(function (x) { return !x.esAdenda; });
+                // Si tiene contrato
+                if (this.soloContratos.length > 0) {
+                    this.tieneContrato = true;
+                    this.tipoContrato = 'adenda'; // valores por defecto
+                }
+                else {
+                    this.tipoContrato = 'contrato'; // valores por defecto si es new
+                }
             }
         };
         orgTabContratosController.prototype.resetForm = function () {

@@ -29,6 +29,23 @@ namespace Agrobook.Domain.Ap.Messages
         public string StreamId => this.IdContrato;
     }
 
+    public class ContratoEditado : MensajeAuditable, IEvent
+    {
+        public ContratoEditado(Firma firma, string idContrato, string nombreDelContrato, DateTime fecha)
+            : base(firma)
+        {
+            this.IdContrato = idContrato;
+            this.NombreDelContrato = nombreDelContrato;
+            this.Fecha = fecha;
+        }
+
+        public string IdContrato { get; }
+        public string NombreDelContrato { get; }
+        public DateTime Fecha { get; }
+
+        public string StreamId => this.IdContrato;
+    }
+
     public class NuevaAdenda : MensajeAuditable, IEvent
     {
         public NuevaAdenda(Firma firma, string idOrganizacion, string idContrato, string idAdenda, string nombreDeLaAdenda, DateTime fecha)
@@ -54,6 +71,25 @@ namespace Agrobook.Domain.Ap.Messages
         /// <summary>
         /// El contrato al que pertenece la adenda.
         /// </summary>
+        public string StreamId => this.IdContrato;
+    }
+
+    public class AdendaEditada : MensajeAuditable, IEvent
+    {
+        public AdendaEditada(Firma firma, string idContrato, string idAdenda, string nombreDeLaAdenda, DateTime fecha)
+            : base(firma)
+        {
+            this.IdContrato = idContrato;
+            this.IdAdenda = idAdenda;
+            this.NombreDeLaAdenda = nombreDeLaAdenda;
+            this.Fecha = fecha;
+        }
+
+        public string IdContrato { get; }
+        public string IdAdenda { get; }
+        public string NombreDeLaAdenda { get; }
+        public DateTime Fecha { get; }
+
         public string StreamId => this.IdContrato;
     }
 }
