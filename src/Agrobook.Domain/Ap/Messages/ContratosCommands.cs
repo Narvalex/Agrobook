@@ -35,12 +35,21 @@ namespace Agrobook.Domain.Ap.Messages
 
     public class EliminarContrato : MensajeAuditable
     {
-        private object firma;
-
         public EliminarContrato(Firma firma, string id) : base(firma)
         {
             this.Id = id;
         }
+
+        public string Id { get; }
+    }
+
+    public class RestaurarContrato : MensajeAuditable
+    {
+        public RestaurarContrato(Firma firma, string id) : base(firma)
+        {
+            this.Id = id;
+        }
+
         public string Id { get; }
     }
 
@@ -78,9 +87,19 @@ namespace Agrobook.Domain.Ap.Messages
 
     public class EliminarAdenda : MensajeAuditable
     {
-        private object firma;
-
         public EliminarAdenda(Firma firma, string idContrato, string idAdenda) : base(firma)
+        {
+            this.IdContrato = idContrato;
+            this.IdAdenda = idAdenda;
+        }
+
+        public string IdContrato { get; }
+        public string IdAdenda { get; }
+    }
+
+    public class RestaurarAdenda : MensajeAuditable
+    {
+        public RestaurarAdenda(Firma firma, string idContrato, string idAdenda) : base(firma)
         {
             this.IdContrato = idContrato;
             this.IdAdenda = idAdenda;

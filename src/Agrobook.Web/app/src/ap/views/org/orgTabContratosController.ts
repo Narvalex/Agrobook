@@ -114,10 +114,12 @@ module apArea {
                         }
                     }
 
-                    if (this.contratoAdendado.id === contrato.id)
+                    if (this.contratoAdendado && this.contratoAdendado.id === contrato.id)
                         this.contratoAdendado.eliminado = true;
+
+                    this.toasterLite.info(contrato.esAdenda ? 'Adenda eliminada' : 'Contrato eliminado');
                 },
-                reason => { });
+                reason => this.toasterLite.error('No se pudo eliminar ' + (contrato.esAdenda ? 'la adenda' : 'el contrato')));
 
             if (contrato.esAdenda)
                 this.apService.eliminarAdenda(contrato.idContratoDeLaAdenda, contrato.id, callback);
@@ -126,28 +128,33 @@ module apArea {
         }
 
         restaurar(contrato: contratoDto) {
-            this.apService.restaurarParcela(contrato.id,
-                new common.callbackLite(
-                    value => {
-                        for (var i = 0; i < this.contratos.length; i++) {
-                            if (this.contratos[i].id === contrato.id) {
-                                this.contratos[i].eliminado = false;
-                                break;
-                            }
+            var callback = new common.callbackLite(
+                value => {
+                    for (var i = 0; i < this.contratos.length; i++) {
+                        if (this.contratos[i].id === contrato.id) {
+                            this.contratos[i].eliminado = false;
+                            break;
                         }
+                    }
 
-                        for (var i = 0; i < this.soloContratos.length; i++) {
-                            if (this.contratos[i].id === contrato.id) {
-                                this.contratos[i].eliminado = false;
-                                break;
-                            }
+                    for (var i = 0; i < this.soloContratos.length; i++) {
+                        if (this.contratos[i].id === contrato.id) {
+                            this.contratos[i].eliminado = false;
+                            break;
                         }
+                    }
 
-                        if (this.contratoAdendado.id === contrato.id)
-                            this.contratoAdendado.eliminado = false;
-                    },
-                    reason => { })
-            );
+                    if (this.contratoAdendado && this.contratoAdendado.id === contrato.id)
+                        this.contratoAdendado.eliminado = false;
+
+                    this.toasterLite.success(contrato.esAdenda ? 'Adenda restaurada' : 'Contrato restaurado');
+                },
+                reason => this.toasterLite.error('Hubo un error al intentar restaurar'));
+
+            if (contrato.esAdenda)
+                this.apService.restaurarAdenda(contrato.idContratoDeLaAdenda, contrato.id, callback);
+            else
+                this.apService.restaurarContrato(contrato.id, callback);
         }
 
         submit() {

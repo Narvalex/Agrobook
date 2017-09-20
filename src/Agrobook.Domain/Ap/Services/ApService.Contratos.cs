@@ -51,6 +51,18 @@ namespace Agrobook.Domain.Ap.Services
             await this.repository.SaveAsync(contrato);
         }
 
+        public async Task HandleAsync(RestaurarContrato cmd)
+        {
+            var contrato = await this.repository.GetOrFailByIdAsync<Contrato>(cmd.Id);
+
+            if (!contrato.EstaEliminado)
+                throw new InvalidOperationException("No se puede restaurar contrato que no está eliminado");
+
+            contrato.Emit(new ContratoRestaurado(cmd.Firma, cmd.Id));
+
+            await this.repository.SaveAsync(contrato);
+        }
+
         public async Task<string> HandleAsync(RegistrarNuevaAdenda cmd)
         {
             Ensure.NotNullOrWhiteSpace(cmd.IdContrato, nameof(cmd.IdContrato));
@@ -95,6 +107,23 @@ namespace Agrobook.Domain.Ap.Services
                 throw new InvalidOperationException("La adenda ya esta eliminada");
 
             contrato.Emit(new AdendaEliminada(cmd.Firma, cmd.IdContrato, cmd.IdAdenda));
+
+            await this.repository.SaveAsync(contrato);
+        }
+
+        public async Task HandleAsync(RestaurarAdenda cmd)
+        {
+            var contrato = await this.repository.GetOrFailByIdAsync<Contrato>(cmd.IdContrato);
+
+            if (!contrato.TieneAdenda(cmd.IdAdenda))
+                throw new InvalidOperationException("El contrato ni siquiere tiene la adenda que se quiere restaurar");
+
+            if (!contrato.LaAdendaEstaEliminada(cmd.IdAdenda))
+                throw new InvalidOperationException("La adenda no esta eliminada como para restaurar");
+
+            contrato.Emit(new AdendaRestaurada(cmd.Firma, cmd.IdContrato, cmd.IdAdenda));
+
+            await this.repository.SaveAsync(contrato);
         }
     }
 }

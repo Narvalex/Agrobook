@@ -117,17 +117,12 @@ module apArea {
             super.postWithCallback('eliminar-adenda?idContrato=' + idContrato + '&idAdenda=' + idAdenda, {}, callback);
         }
 
-        restaurarContrato(idContrato: string, callback: common.callbackLite<{}>) {
-            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
-                if (this.fakeDb.contratos[i].id === idContrato) {
-                    this.fakeDb.contratos[i].eliminado = false;
-                    break;
-                }
-            }
+        restaurarAdenda(idContrato: string, idAdenda: string, callback: common.callbackLite<{}>) {
+            super.postWithCallback('restaurar-adenda?idContrato=' + idContrato + '&idAdenda=' + idAdenda, {}, callback);
+        }
 
-            callback.onSuccess({
-                data: {}
-            });
+        restaurarContrato(idContrato: string, callback: common.callbackLite<{}>) {
+            super.postWithCallback('restaurar-contrato/' + idContrato, {}, callback); 
         }
 
         registrarNuevoServicio(servicio: servicioDto, callback: common.callbackLite<string>) {

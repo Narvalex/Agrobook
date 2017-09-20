@@ -14,7 +14,7 @@ namespace Agrobook.Domain.Ap
     public class Contrato : EventSourced
     {
         private readonly IDictionary<string, bool> adendasById = new Dictionary<string, bool>(); // if true = adenda eliminada
-
+            
         public Contrato()
         {
             this.EstaEliminado = false;
@@ -25,6 +25,9 @@ namespace Agrobook.Domain.Ap
             });
             this.On<NuevaAdenda>(e => this.adendasById.Add(e.IdAdenda, false));
             this.On<ContratoEliminado>(e => this.EstaEliminado = true);
+            this.On<ContratoRestaurado>(e => this.EstaEliminado = false);
+            this.On<AdendaEliminada>(e => this.adendasById[e.IdAdenda] = true);
+            this.On<AdendaRestaurada>(e => this.adendasById[e.IdAdenda] = false);
         }
 
         protected override ISnapshot TakeSnapshot()

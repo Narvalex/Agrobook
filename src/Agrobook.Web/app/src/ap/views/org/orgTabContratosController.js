@@ -76,9 +76,10 @@ var apArea;
                         break;
                     }
                 }
-                if (_this.contratoAdendado.id === contrato.id)
+                if (_this.contratoAdendado && _this.contratoAdendado.id === contrato.id)
                     _this.contratoAdendado.eliminado = true;
-            }, function (reason) { });
+                _this.toasterLite.info(contrato.esAdenda ? 'Adenda eliminada' : 'Contrato eliminado');
+            }, function (reason) { return _this.toasterLite.error('No se pudo eliminar ' + (contrato.esAdenda ? 'la adenda' : 'el contrato')); });
             if (contrato.esAdenda)
                 this.apService.eliminarAdenda(contrato.idContratoDeLaAdenda, contrato.id, callback);
             else
@@ -86,7 +87,7 @@ var apArea;
         };
         orgTabContratosController.prototype.restaurar = function (contrato) {
             var _this = this;
-            this.apService.restaurarParcela(contrato.id, new common.callbackLite(function (value) {
+            var callback = new common.callbackLite(function (value) {
                 for (var i = 0; i < _this.contratos.length; i++) {
                     if (_this.contratos[i].id === contrato.id) {
                         _this.contratos[i].eliminado = false;
@@ -99,9 +100,14 @@ var apArea;
                         break;
                     }
                 }
-                if (_this.contratoAdendado.id === contrato.id)
+                if (_this.contratoAdendado && _this.contratoAdendado.id === contrato.id)
                     _this.contratoAdendado.eliminado = false;
-            }, function (reason) { }));
+                _this.toasterLite.success(contrato.esAdenda ? 'Adenda restaurada' : 'Contrato restaurado');
+            }, function (reason) { return _this.toasterLite.error('Hubo un error al intentar restaurar'); });
+            if (contrato.esAdenda)
+                this.apService.restaurarAdenda(contrato.idContratoDeLaAdenda, contrato.id, callback);
+            else
+                this.apService.restaurarContrato(contrato.id, callback);
         };
         orgTabContratosController.prototype.submit = function () {
             var _this = this;

@@ -58,6 +58,18 @@ namespace Agrobook.Domain.Ap.Messages
         public string StreamId => this.IdContrato;
     }
 
+    public class ContratoRestaurado : MensajeAuditable, IEvent
+    {
+        public ContratoRestaurado(Firma firma, string idContrato) : base(firma)
+        {
+            this.IdContrato = idContrato;
+        }
+
+        public string IdContrato { get; }
+
+        public string StreamId => this.IdContrato;
+    }
+
     public class NuevaAdenda : MensajeAuditable, IEvent
     {
         public NuevaAdenda(Firma firma, string idOrganizacion, string idContrato, string idAdenda, string nombreDeLaAdenda, DateTime fecha)
@@ -108,6 +120,20 @@ namespace Agrobook.Domain.Ap.Messages
     public class AdendaEliminada : MensajeAuditable, IEvent
     {
         public AdendaEliminada(Firma firma, string idContrato, string idAdenda) : base(firma)
+        {
+            this.IdContrato = idContrato;
+            this.IdAdenda = idAdenda;
+        }
+
+        public string IdContrato { get; }
+        public string IdAdenda { get; }
+
+        public string StreamId => this.IdContrato;
+    }
+
+    public class AdendaRestaurada : MensajeAuditable, IEvent
+    {
+        public AdendaRestaurada(Firma firma, string idContrato, string idAdenda) : base(firma)
         {
             this.IdContrato = idContrato;
             this.IdAdenda = idAdenda;

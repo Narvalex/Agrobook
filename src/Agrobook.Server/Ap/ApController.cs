@@ -35,6 +35,14 @@ namespace Agrobook.Server.Ap
         }
 
         [HttpPost]
+        [Route("restaurar-contrato/{id}")]
+        public async Task<IHttpActionResult> RestaurarContrato([FromUri]string id)
+        {
+            await this.service.HandleAsync(new RestaurarContrato(null, id).ConFirma(this.ActionContext));
+            return this.Ok();
+        }
+
+        [HttpPost]
         [Route("registrar-adenda")]
         public async Task<IHttpActionResult> RegistrarAdenda([FromBody]RegistrarNuevaAdenda cmd)
         {
@@ -55,6 +63,14 @@ namespace Agrobook.Server.Ap
         public async Task<IHttpActionResult> EliminarAdenda([FromUri]string idContrato, [FromUri]string idAdenda)
         {
             await this.service.HandleAsync(new EliminarAdenda(null, idContrato, idAdenda).ConFirma(this.ActionContext));
+            return this.Ok();
+        }
+
+        [HttpPost]
+        [Route("restaurar-adenda")]
+        public async Task<IHttpActionResult> RestaurarAdenda([FromUri]string idContrato, [FromUri]string idAdenda)
+        {
+            await this.service.HandleAsync(new RestaurarAdenda(null, idContrato, idAdenda).ConFirma(this.ActionContext));
             return this.Ok();
         }
     }

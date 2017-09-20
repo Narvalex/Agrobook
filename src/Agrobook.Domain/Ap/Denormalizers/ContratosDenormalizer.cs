@@ -12,8 +12,12 @@ namespace Agrobook.Domain.Ap.Denormalizers
     public class ContratosDenormalizer : AgrobookDenormalizer,
         IEventHandler<NuevoContrato>,
         IEventHandler<ContratoEditado>,
+        IEventHandler<ContratoEliminado>,
+        IEventHandler<ContratoRestaurado>,
         IEventHandler<NuevaAdenda>,
-        IEventHandler<AdendaEditada>
+        IEventHandler<AdendaEditada>,
+        IEventHandler<AdendaEliminada>,
+        IEventHandler<AdendaRestaurada>
     {
         public ContratosDenormalizer(IEventSubscriber subscriber, Func<AgrobookDbContext> contextFactory)
             : base(subscriber, contextFactory,
@@ -49,6 +53,24 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
+        public async Task Handle(long eventNumber, ContratoEliminado e)
+        {
+            await this.Denormalize(eventNumber, async context =>
+            {
+                var contrato = await context.Contratos.SingleAsync(x => x.Id == e.IdContrato);
+                contrato.Eliminado = true;
+            });
+        }
+
+        public async Task Handle(long eventNumber, ContratoRestaurado e)
+        {
+            await this.Denormalize(eventNumber, async context =>
+            {
+                var contrato = await context.Contratos.SingleAsync(x => x.Id == e.IdContrato);
+                contrato.Eliminado = false;
+            });
+        }
+
         public async Task Handle(long eventNumber, NuevaAdenda e)
         {
             await this.Denormalize(eventNumber, context =>
@@ -73,6 +95,24 @@ namespace Agrobook.Domain.Ap.Denormalizers
                 var adenda = await context.Contratos.SingleAsync(x => x.Id == e.IdAdenda);
                 adenda.Display = e.NombreDeLaAdenda;
                 adenda.Fecha = e.Fecha;
+            });
+        }
+
+        public async Task Handle(long eventNumber, AdendaEliminada e)
+        {
+            await this.Denormalize(eventNumber, async context =>
+            {
+                var adenda = await context.Contratos.SingleAsync(x => x.Id == e.IdAdenda);
+                adenda.Eliminado = true;
+            });
+        }
+
+        public async Task Handle(long eventNumber, AdendaRestaurada e)
+        {
+            await this.Denormalize(eventNumber, async context =>
+            {
+                var adenda = await context.Contratos.SingleAsync(x => x.Id == e.IdAdenda);
+                adenda.Eliminado = false;
             });
         }
     }

@@ -99,16 +99,11 @@ var apArea;
         apService.prototype.eliminarAdenda = function (idContrato, idAdenda, callback) {
             _super.prototype.postWithCallback.call(this, 'eliminar-adenda?idContrato=' + idContrato + '&idAdenda=' + idAdenda, {}, callback);
         };
+        apService.prototype.restaurarAdenda = function (idContrato, idAdenda, callback) {
+            _super.prototype.postWithCallback.call(this, 'restaurar-adenda?idContrato=' + idContrato + '&idAdenda=' + idAdenda, {}, callback);
+        };
         apService.prototype.restaurarContrato = function (idContrato, callback) {
-            for (var i = 0; i < this.fakeDb.contratos.length; i++) {
-                if (this.fakeDb.contratos[i].id === idContrato) {
-                    this.fakeDb.contratos[i].eliminado = false;
-                    break;
-                }
-            }
-            callback.onSuccess({
-                data: {}
-            });
+            _super.prototype.postWithCallback.call(this, 'restaurar-contrato/' + idContrato, {}, callback);
         };
         apService.prototype.registrarNuevoServicio = function (servicio, callback) {
             var serviciosDelProductor = this.fakeDb.servicios.filter(function (x) { return x.idProd === servicio.idProd; });
