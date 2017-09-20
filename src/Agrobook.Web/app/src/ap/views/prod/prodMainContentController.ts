@@ -9,9 +9,9 @@ module apArea {
             private $scope: ng.IScope,
             private apQueryService: apQueryService,
         ) {
-            let idProd = this.$routeParams['idProd'];
+            this.idProd = this.$routeParams['idProd'];
 
-            this.recuperarProd(idProd);
+            this.recuperarProd(this.idProd);
 
             this.abrirTabCorrespondiente();
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
@@ -23,6 +23,7 @@ module apArea {
         tabIndex: number;
 
         // Objetos seleccionados
+        idProd: string;
         prod: prodDto;
 
         // API
@@ -42,7 +43,7 @@ module apArea {
                 default: tabId = "servicios"; break;
             }
 
-            window.location.replace(`#!/prod/${this.prod.id}?tab=${tabId}`);
+            window.location.replace(`#!/prod/${this.idProd}?tab=${tabId}`);
         }
 
         private abrirTabCorrespondiente() {

@@ -6,7 +6,7 @@ using System.Web.Http;
 namespace Agrobook.Web.Controllers.Ap
 {
     [RoutePrefix("app/ap/query")]
-    public class ApQueryController : ApiControllerBase
+    public partial class ApQueryController : ApiControllerBase
     {
         private readonly ApQueryClient client;
 

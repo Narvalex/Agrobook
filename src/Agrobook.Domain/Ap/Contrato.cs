@@ -10,11 +10,11 @@ namespace Agrobook.Domain.Ap
     /// Un contrato de servicios profesionales de Agricultura de Precisión con una organización.
     /// Al contrato se le puede aplicar varias adendas, que extienden los términos del contrato.
     /// </summary>
-    [StreamCategory("agrobook.contratos")]
+    [StreamCategory("agrobook.ap.contratos")]
     public class Contrato : EventSourced
     {
         private readonly IDictionary<string, bool> adendasById = new Dictionary<string, bool>(); // if true = adenda eliminada
-            
+
         public Contrato()
         {
             this.EstaEliminado = false;
@@ -50,21 +50,5 @@ namespace Agrobook.Domain.Ap
         public bool TieneAdenda(string idAdenda) => this.adendasById.ContainsKey(idAdenda);
         public bool LaAdendaEstaEliminada(string idAdenda) => this.adendasById.ContainsKey(idAdenda) && this.adendasById[idAdenda];
         public bool EstaEliminado { get; private set; }
-    }
-
-    public class ContratoSnapshot : Snapshot
-    {
-        public ContratoSnapshot(string streamName, int version, string idOrganizacion, KeyValuePair<string, bool>[] adendas,
-            bool estaEliminado)
-            : base(streamName, version)
-        {
-            this.IdOrganizacion = idOrganizacion;
-            this.Adendas = adendas;
-            this.EstaEliminado = estaEliminado;
-        }
-
-        public string IdOrganizacion { get; }
-        public KeyValuePair<string, bool>[] Adendas { get; }
-        public bool EstaEliminado { get; }
     }
 }

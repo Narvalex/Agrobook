@@ -7,8 +7,8 @@ var apArea;
             this.$routeParams = $routeParams;
             this.$scope = $scope;
             this.apQueryService = apQueryService;
-            var idProd = this.$routeParams['idProd'];
-            this.recuperarProd(idProd);
+            this.idProd = this.$routeParams['idProd'];
+            this.recuperarProd(this.idProd);
             this.abrirTabCorrespondiente();
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
                 _this.abrirTabCorrespondiente();
@@ -34,7 +34,7 @@ var apArea;
                     tabId = "servicios";
                     break;
             }
-            window.location.replace("#!/prod/" + this.prod.id + "?tab=" + tabId);
+            window.location.replace("#!/prod/" + this.idProd + "?tab=" + tabId);
         };
         prodMainContentController.prototype.abrirTabCorrespondiente = function () {
             var tabId = this.$routeParams['tab'];

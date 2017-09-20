@@ -93,7 +93,7 @@ namespace Eventing.GetEventStore
                                if (reason == SubscriptionDropReason.ConnectionClosed)
                                    this.log.Info(message);
                                else
-                                   this.log.Error(message);
+                                   this.log.Error(ex, message);
 
                                Thread.Sleep(TimeSpan.FromSeconds(seconds));
                                this.log.Info($"Restarting subscription of {this.streamName} on checkpoint {this.lastCheckpoint}");

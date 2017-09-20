@@ -63,9 +63,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ap\Contrato.cs" />
+    <Compile Include="Ap\ContratoSnapshot.cs" />
     <Compile Include="Ap\Denormalizers\ContratosDenormalizer.cs" />
     <Compile Include="Ap\Messages\ContratosCommands.cs" />
     <Compile Include="Ap\Messages\ContratosEvents.cs" />
+    <Compile Include="Ap\Productor.cs" />
     <Compile Include="Ap\Services\ApDTOs.cs" />
     <Compile Include="Ap\Services\ApQueryService.cs" />
     <Compile Include="Ap\Services\ApService.Contratos.cs" />

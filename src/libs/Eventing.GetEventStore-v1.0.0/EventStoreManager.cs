@@ -91,6 +91,7 @@ namespace Eventing.GetEventStore
 
         public async Task<IEventStoreConnection> GetFailFastConnection()
         {
+            // This code is only for initialization. The connection will always be restablished automatically.
             if (!this.failFastConnectionWasEstablished)
             {
                 await this.EstablishFailFastConnectionAsync();
@@ -104,13 +105,14 @@ namespace Eventing.GetEventStore
         {
             get
             {
+                // This code is only for initialization. The connection will always be restablished automatically.
                 if (!this.resilientConnectionWasEstablished)
                 {
                     lock (this.resilientConnectionLock)
                     {
                         if (!this.resilientConnectionWasEstablished)
                         {
-                            this.EstablishResilientConnectionAsync().Wait();
+                            this.EstablishResilientConnection();
                             this.resilientConnectionWasEstablished = true;
                         }
                     }
@@ -140,7 +142,7 @@ namespace Eventing.GetEventStore
             return $"{prefix}-{Interlocked.Increment(ref failFastNumber)}-{DateTime.UtcNow.ToString("dd/MM/yyy-hh:mm:ss")}";
         }
 
-        private async Task EstablishResilientConnectionAsync()
+        private void EstablishResilientConnection()
         {
             var settings =
                 ConnectionSettings
@@ -152,7 +154,7 @@ namespace Eventing.GetEventStore
                 .Build();
 
             this.resilientConnection = EventStoreConnection.Create(settings, this.ipEndPoint, this.FormatConnectionName(this.resilientConnectionNamePrefix));
-            await this.resilientConnection.ConnectAsync();
+            this.resilientConnection.ConnectAsync().Wait();
         }
 
         public void TearDown(bool dropDb = false)
