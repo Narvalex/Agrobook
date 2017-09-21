@@ -23,5 +23,15 @@ namespace Agrobook.Server.Ap
         [Route("contratos/{idOrg}")]
         public async Task<IHttpActionResult> ObtenerContratos(string idOrg)
             => this.Ok(await this.service.ObtenerContratos(idOrg));
+
+        [HttpGet]
+        [Route("parcelas/{idProd}")]
+        public async Task<IHttpActionResult> GetParcelas([FromUri] string idProd)
+            => this.Ok(await this.service.ObtenerParcelas(idProd));
+
+        [HttpGet]
+        [Route("parcela/{idParcela}")]
+        public async Task<IHttpActionResult> GetParcela([FromUri] string idParcela)
+            => this.Ok(await this.service.ObtenerParcela(idParcela));
     }
 }

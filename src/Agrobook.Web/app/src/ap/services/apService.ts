@@ -14,70 +14,55 @@ module apArea {
 
         registrarNuevaParcela(
             dto: edicionParcelaDto,
-            callback: common.callbackLite<parcelaDto>
+            callback: common.callbackLite<string>
         ) {
-            var data = new parcelaDto(dto.idProd + '_' + dto.display.trim(), dto.idProd, dto.display, dto.hectareas);
+            let cmd = {
+                idProductor: dto.idProd,
+                nombreDeLaParcela: dto.display,
+                hectareas: dto.hectareas
+            };
 
-            // Set validation check
-            for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
-                if (this.fakeDb.parcelas[i].id === data.id) {
-                    callback.onError(null);
-                    return;
-                }
-            }
-
-            this.fakeDb.parcelas.push(data);
-
-            callback.onSuccess({
-                data: data
-            });
+            super.postWithCallback('registrar-parcela', cmd, callback);
         }
 
         editarParcela(
             dto: edicionParcelaDto,
             callback: common.callbackLite<{}>
         ) {
-            for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
-                if (this.fakeDb.parcelas[i].id === dto.idParcela) {
-                    this.fakeDb.parcelas[i].display = dto.display;
-                    this.fakeDb.parcelas[i].hectareas = dto.hectareas;
-                    break;
-                }
-            }
+            var cmd = {
+                idProductor: dto.idProd,
+                idParcela: dto.idParcela,
+                nombre: dto.display,
+                hectareas: dto.hectareas
+            };
 
-            callback.onSuccess({});
+            super.postWithCallback('editar-parcela', cmd, callback);
         }
 
         eliminarParcela(
+            idProductor: string,
             idParcela: string,
             callback: common.callbackLite<{}>
         ) {
-            for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
-                if (this.fakeDb.parcelas[i].id === idParcela) {
-                    this.fakeDb.parcelas[i].eliminado = true;
-                    break;
-                }
-            }
+            var cmd = {
+                idProductor: idProductor,
+                idParcela: idParcela
+            };
 
-            callback.onSuccess({
-                data: {}
-            });
+            super.postWithCallback('eliminar-parcela', cmd, callback);
         }
 
         restaurarParcela(
+            idProductor: string,
             idParcela: string,
             callback: common.callbackLite<{}>
         ) {
-            for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
-                if (this.fakeDb.parcelas[i].id === idParcela) {
-                    this.fakeDb.parcelas[i].eliminado = false;
-                    break;
-                }
-            }
+            var cmd = {
+                idProductor: idProductor,
+                idParcela: idParcela
+            };
 
-            callback.onSuccess({
-                data: {}
-            });
+            super.postWithCallback('restaurar-parcela', cmd, callback);
         }
 
         registrarNuevoContrato(contrato: contratoDto, callback: common.callbackLite<string>) {

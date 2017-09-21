@@ -30,7 +30,7 @@ module apArea {
         parcelaObject: edicionParcelaDto;
 
         // Listas
-        parcelas: parcelaDto[];
+        parcelas: parcelaDto[] = [];
 
         // Api
         toggleMostrarEliminados() {
@@ -66,7 +66,7 @@ module apArea {
                 controller: panelMenuController,
                 controllerAs: 'vm',
                 hasBackdrop: true,
-                templateUrl: './dist/ap/views/prod/menu-panel-tab-parcelas.html',
+                templateUrl: './src/ap/views/prod/menu-panel-tab-parcelas.html',
                 position: position,
                 trapFocus: true,
                 locals: {
@@ -112,7 +112,7 @@ module apArea {
         }
 
         eliminar(parcela: parcelaDto) {
-            this.apService.eliminarParcela(parcela.id,
+            this.apService.eliminarParcela(parcela.idProd, parcela.id,
                 new common.callbackLite(
                     value => {
                         for (var i = 0; i < this.parcelas.length; i++) {
@@ -129,7 +129,7 @@ module apArea {
         }
 
         restaurar(parcela: parcelaDto) {
-            this.apService.restaurarParcela(parcela.id,
+            this.apService.restaurarParcela(parcela.idProd, parcela.id,
                 new common.callbackLite<{}>(
                     value => {
                         for (var i = 0; i < this.parcelas.length; i++) {
@@ -149,9 +149,10 @@ module apArea {
         registrarNuevaParcela() {
             this.parcelaObject.idProd = this.idProd;
             this.apService.registrarNuevaParcela(this.parcelaObject,
-                new common.callbackLite<parcelaDto>(
+                new common.callbackLite<string>(
                     value => {
-                        this.parcelas.push(value.data);
+                        var parcela = new parcelaDto(value.data, this.parcelaObject.idProd, this.parcelaObject.display, this.parcelaObject.hectareas, false);
+                        this.parcelas.push(parcela);
                         this.toasterLite.success('Parcela creada')
                         this.resetForm();
                     },

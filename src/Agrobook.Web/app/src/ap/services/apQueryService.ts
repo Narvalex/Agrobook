@@ -74,23 +74,14 @@ module apArea {
             idProd: string,
             callback: common.callbackLite<parcelaDto[]>
         ) {
-            var list = this.fakeDb.parcelas.filter(x => x.idProd === idProd);
-
-            callback.onSuccess({
-                data: list
-            });
+            super.getWithCallback('parcelas/' + idProd, callback);
         }
 
         getParcela(
             idParcela: string,
             callback: common.callbackLite<parcelaDto>
         ) {
-            var dto = this.fakeDb.parcelas.filter(x => x.id === idParcela);
-
-            this.$timeout(() =>
-            callback.onSuccess({
-                data: dto[0]
-            }), 500);
+            super.getWithCallback('parcela/' + idParcela, callback);
         }
 
         getContratos(

@@ -110,11 +110,13 @@ namespace Agrobook.Server
             var organizacionesDenormalizer = ServiceLocator.ResolveSingleton<OrganizacionesDenormalizer>();
             var fileIndexer = ServiceLocator.ResolveSingleton<ArchivosIndexerService>();
             var contratosDenormalizer = ServiceLocator.ResolveSingleton<ContratosDenormalizer>();
+            var productoresDenormalizer = ServiceLocator.ResolveSingleton<ProductoresDenormalizer>();
 
             usuariosDenormalizer.Start();
             organizacionesDenormalizer.Start();
             fileIndexer.Start();
             contratosDenormalizer.Start();
+            productoresDenormalizer.Start();
 
             // Crear usuario admin si hace falta
             var userService = ServiceLocator.ResolveSingleton<UsuariosService>();

@@ -47,7 +47,7 @@ namespace Eventing.GetEventStore
                 if (this.lastCheckpoint == null)
                     this.lastCheckpoint = this.lazyLastCheckpoint.Value;
             }
-            this.log.Info($"Starting subscription of {this.streamName} from checkpoint {this.lastCheckpoint}");
+            this.log.Info($"Starting subscription of {this.streamName} from" + (!this.lastCheckpoint.HasValue ? " the beginning" : $" checkpoint {this.lastCheckpoint}"));
             this.DoStart();
         }
 
@@ -83,20 +83,22 @@ namespace Eventing.GetEventStore
                                }
                            }
                        },
-                       sub => { this.log.Verbose($"The subscription of {this.streamName} has caught-up on checkpoint {this.lastCheckpoint}!"); },
+                       sub => this.log.Verbose(
+                           $"The subscription of {this.streamName} has caught-up on" + (this.lastCheckpoint.HasValue ? $" checkpoint {this.lastCheckpoint}!" : " the very beginning!")),
                        (sub, reason, ex) =>
                        {
                            if (reason == SubscriptionDropReason.ConnectionClosed || reason == SubscriptionDropReason.CatchUpError)
                            {
                                var seconds = 30;
-                               var message = $"The subscription of {this.streamName} stopped because of {reason} on checkpoint {this.lastCheckpoint}. Restarting in {seconds} seconds.";
+                               var chkp = this.lastCheckpoint.HasValue ? this.lastCheckpoint : -1;
+                               var message = $"The subscription of {this.streamName} stopped because of {reason} on checkpoint {chkp}. Restarting in {seconds} seconds.";
                                if (reason == SubscriptionDropReason.ConnectionClosed)
                                    this.log.Info(message);
                                else
                                    this.log.Error(ex, message);
 
                                Thread.Sleep(TimeSpan.FromSeconds(seconds));
-                               this.log.Info($"Restarting subscription of {this.streamName} on checkpoint {this.lastCheckpoint}");
+                               this.log.Info($"Restarting subscription of {this.streamName} on checkpoint {chkp}");
                                this.DoStart();
                                return;
                            }

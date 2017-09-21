@@ -57,18 +57,10 @@ var apArea;
             this.$timeout(function () { return callback.onSuccess({ data: servicio }); }, 500);
         };
         apQueryService.prototype.getParcelasDelProd = function (idProd, callback) {
-            var list = this.fakeDb.parcelas.filter(function (x) { return x.idProd === idProd; });
-            callback.onSuccess({
-                data: list
-            });
+            _super.prototype.getWithCallback.call(this, 'parcelas/' + idProd, callback);
         };
         apQueryService.prototype.getParcela = function (idParcela, callback) {
-            var dto = this.fakeDb.parcelas.filter(function (x) { return x.id === idParcela; });
-            this.$timeout(function () {
-                return callback.onSuccess({
-                    data: dto[0]
-                });
-            }, 500);
+            _super.prototype.getWithCallback.call(this, 'parcela/' + idParcela, callback);
         };
         apQueryService.prototype.getContratos = function (idOrg, callback) {
             _super.prototype.getWithCallback.call(this, 'contratos/' + idOrg, callback);

@@ -79,5 +79,13 @@ namespace Agrobook.Domain.Ap.Services
         public async Task<IList<ContratoEntity>> ObtenerContratos(string idOrg)
             => await this.QueryAsync(async context =>
                 await context.Contratos.Where(x => x.IdOrg == idOrg).ToListAsync());
+
+        public async Task<IList<ParcelaEntity>> ObtenerParcelas(string idProd)
+            => await this.QueryAsync(async context =>
+            await context.Parcelas.Where(x => x.IdProd == idProd).ToListAsync());
+
+        public async Task<ParcelaEntity> ObtenerParcela(string idParcela)
+            => await this.QueryAsync(async context =>
+            await context.Parcelas.SingleAsync(x => x.Id == idParcela));
     }
 }

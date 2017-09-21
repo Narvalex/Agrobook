@@ -11,6 +11,8 @@ var apArea;
             this.$mdPanel = $mdPanel;
             // Estados
             this.ocultarEliminados = true;
+            // Listas
+            this.parcelas = [];
             this.mostrarForm = false;
             this.idProd = this.$routeParams['idProd'];
             this.obtenerParcelasDelProd();
@@ -41,7 +43,7 @@ var apArea;
                 controller: panelMenuController,
                 controllerAs: 'vm',
                 hasBackdrop: true,
-                templateUrl: './dist/ap/views/prod/menu-panel-tab-parcelas.html',
+                templateUrl: './src/ap/views/prod/menu-panel-tab-parcelas.html',
                 position: position,
                 trapFocus: true,
                 locals: {
@@ -82,7 +84,7 @@ var apArea;
         };
         prodTabParcelasController.prototype.eliminar = function (parcela) {
             var _this = this;
-            this.apService.eliminarParcela(parcela.id, new common.callbackLite(function (value) {
+            this.apService.eliminarParcela(parcela.idProd, parcela.id, new common.callbackLite(function (value) {
                 for (var i = 0; i < _this.parcelas.length; i++) {
                     if (_this.parcelas[i].id === parcela.id) {
                         _this.parcelas[i].eliminado = true;
@@ -94,7 +96,7 @@ var apArea;
         };
         prodTabParcelasController.prototype.restaurar = function (parcela) {
             var _this = this;
-            this.apService.restaurarParcela(parcela.id, new common.callbackLite(function (value) {
+            this.apService.restaurarParcela(parcela.idProd, parcela.id, new common.callbackLite(function (value) {
                 for (var i = 0; i < _this.parcelas.length; i++) {
                     if (_this.parcelas[i].id === parcela.id) {
                         _this.parcelas[i].eliminado = false;
@@ -109,7 +111,8 @@ var apArea;
             var _this = this;
             this.parcelaObject.idProd = this.idProd;
             this.apService.registrarNuevaParcela(this.parcelaObject, new common.callbackLite(function (value) {
-                _this.parcelas.push(value.data);
+                var parcela = new apArea.parcelaDto(value.data, _this.parcelaObject.idProd, _this.parcelaObject.display, _this.parcelaObject.hectareas, false);
+                _this.parcelas.push(parcela);
                 _this.toasterLite.success('Parcela creada');
                 _this.resetForm();
             }, function (reason) {

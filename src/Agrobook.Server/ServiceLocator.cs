@@ -101,6 +101,9 @@ namespace Agrobook.Server
 
             var contratoDenormalizer = new ContratosDenormalizer(eventStreamSubscriber, dbContextFactory);
             container.Register<ContratosDenormalizer>(contratoDenormalizer);
+
+            var productoresDenormalizer = new ProductoresDenormalizer(eventStreamSubscriber, dbContextFactory);
+            container.Register<ProductoresDenormalizer>(productoresDenormalizer);
         }
     }
 }

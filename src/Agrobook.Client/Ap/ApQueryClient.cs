@@ -22,5 +22,11 @@ namespace Agrobook.Client.Ap
 
         public async Task<IList<ContratoEntity>> ObtenerContratos(string idOrg)
             => await base.Get<IList<ContratoEntity>>("contratos/" + idOrg);
+
+        public async Task<IList<ParcelaEntity>> ObtenerParcelas(string idProd)
+            => await base.Get<IList<ParcelaEntity>>("parcelas/" + idProd);
+
+        public async Task<ParcelaEntity> ObtenerParcela(string idParcela)
+            => await base.Get<ParcelaEntity>("parcela/" + idParcela);
     }
 }

@@ -21,50 +21,35 @@ var apArea;
             return _this;
         }
         apService.prototype.registrarNuevaParcela = function (dto, callback) {
-            var data = new apArea.parcelaDto(dto.idProd + '_' + dto.display.trim(), dto.idProd, dto.display, dto.hectareas);
-            // Set validation check
-            for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
-                if (this.fakeDb.parcelas[i].id === data.id) {
-                    callback.onError(null);
-                    return;
-                }
-            }
-            this.fakeDb.parcelas.push(data);
-            callback.onSuccess({
-                data: data
-            });
+            var cmd = {
+                idProductor: dto.idProd,
+                nombreDeLaParcela: dto.display,
+                hectareas: dto.hectareas
+            };
+            _super.prototype.postWithCallback.call(this, 'registrar-parcela', cmd, callback);
         };
         apService.prototype.editarParcela = function (dto, callback) {
-            for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
-                if (this.fakeDb.parcelas[i].id === dto.idParcela) {
-                    this.fakeDb.parcelas[i].display = dto.display;
-                    this.fakeDb.parcelas[i].hectareas = dto.hectareas;
-                    break;
-                }
-            }
-            callback.onSuccess({});
+            var cmd = {
+                idProductor: dto.idProd,
+                idParcela: dto.idParcela,
+                nombre: dto.display,
+                hectareas: dto.hectareas
+            };
+            _super.prototype.postWithCallback.call(this, 'editar-parcela', cmd, callback);
         };
-        apService.prototype.eliminarParcela = function (idParcela, callback) {
-            for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
-                if (this.fakeDb.parcelas[i].id === idParcela) {
-                    this.fakeDb.parcelas[i].eliminado = true;
-                    break;
-                }
-            }
-            callback.onSuccess({
-                data: {}
-            });
+        apService.prototype.eliminarParcela = function (idProductor, idParcela, callback) {
+            var cmd = {
+                idProductor: idProductor,
+                idParcela: idParcela
+            };
+            _super.prototype.postWithCallback.call(this, 'eliminar-parcela', cmd, callback);
         };
-        apService.prototype.restaurarParcela = function (idParcela, callback) {
-            for (var i = 0; i < this.fakeDb.parcelas.length; i++) {
-                if (this.fakeDb.parcelas[i].id === idParcela) {
-                    this.fakeDb.parcelas[i].eliminado = false;
-                    break;
-                }
-            }
-            callback.onSuccess({
-                data: {}
-            });
+        apService.prototype.restaurarParcela = function (idProductor, idParcela, callback) {
+            var cmd = {
+                idProductor: idProductor,
+                idParcela: idParcela
+            };
+            _super.prototype.postWithCallback.call(this, 'restaurar-parcela', cmd, callback);
         };
         apService.prototype.registrarNuevoContrato = function (contrato, callback) {
             if (contrato.esAdenda) {

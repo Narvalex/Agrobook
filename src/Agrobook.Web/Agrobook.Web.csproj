@@ -1299,8 +1299,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Ap\ApController.Contratos.cs" />
     <Compile Include="Controllers\Ap\ApController.cs" />
     <Compile Include="Controllers\ApiControllerBase.cs" />
+    <Compile Include="Controllers\Ap\ApController.Productores.cs" />
     <Compile Include="Controllers\Ap\ApQueryController.cs" />
     <Compile Include="Controllers\Archivos\ArchivosController.cs" />
     <Compile Include="Controllers\Archivos\ArchivosQueryController.cs" />

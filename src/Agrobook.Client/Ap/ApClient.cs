@@ -38,7 +38,6 @@ namespace Agrobook.Client.Ap
         public async Task<string> Send(RegistrarNuevaAdenda cmd)
             => await base.Post<RegistrarNuevaAdenda, string>("registrar-adenda", cmd);
 
-
         public async Task Send(EditarAdenda cmd)
             => await base.Post("editar-adenda", cmd);
 
@@ -49,5 +48,20 @@ namespace Agrobook.Client.Ap
         {
             await base.Post("restaurar-adenda?idContrato=" + idContrato + "&idAdenda=" + idAdenda, "");
         }
+
+        public async Task<string> Send(RegistrarParcela cmd)
+        {
+            var idParcela = await base.Post<RegistrarParcela, string>("registrar-parcela", cmd);
+            return idParcela;
+        }
+
+        public async Task Send(EditarParcela cmd)
+            => await base.Post("editar-parcela", cmd);
+
+        public async Task Send(EliminarParcela cmd)
+            => await base.Post("eliminar-parcela", cmd);
+
+        public async Task Send(RestaurarParcela cmd)
+            => await base.Post("restaurar-parcela", cmd);
     }
 }
