@@ -54,5 +54,21 @@ namespace Agrobook.Web.Controllers.Ap
             var parcela = await this.client.ObtenerParcela(idParcela);
             return this.Ok(parcela);
         }
+
+        [HttpGet]
+        [Route("orgs-con-contratos-del-productor/{idProd}")]
+        public async Task<IHttpActionResult> GetOrgConContratosDelProductor([FromUri]string idProd)
+        {
+            var orgs = await this.client.ObtenerOrgsConContratosDelProductor(idProd);
+            return this.Ok(orgs);
+        }
+
+        [HttpGet]
+        [Route("prod/{idProd}")]
+        public async Task<IHttpActionResult> GetProd([FromUri]string idProd)
+        {
+            var prod = await this.client.GetProd(idProd);
+            return this.Ok(prod);
+        }
     }
 }

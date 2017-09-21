@@ -27,17 +27,7 @@ var apArea;
             _super.prototype.getWithCallback.call(this, 'org/' + id, callback);
         };
         apQueryService.prototype.getProd = function (id, callback) {
-            var dto;
-            for (var i = 0; i < this.fakeDb.prods.length; i++) {
-                if (this.fakeDb.prods[i].id === id) {
-                    var x = this.fakeDb.prods[i];
-                    dto = new apArea.prodDto(x.id, x.display, x.avatarUrl, x.orgs);
-                    break;
-                }
-            }
-            callback.onSuccess({
-                data: dto
-            });
+            _super.prototype.getWithCallback.call(this, 'prod/' + id, callback);
         };
         apQueryService.prototype.getServiciosPorOrg = function (idOrg, callback) {
             var list = this.fakeDb.servicios.filter(function (x) { return x.idOrg === idOrg; });
@@ -65,18 +55,8 @@ var apArea;
         apQueryService.prototype.getContratos = function (idOrg, callback) {
             _super.prototype.getWithCallback.call(this, 'contratos/' + idOrg, callback);
         };
-        apQueryService.prototype.getOrgsConContratos = function (idProd, callback) {
-            var _this = this;
-            var orgs;
-            for (var i = 0; i < this.fakeDb.prods.length; i++) {
-                var prod = this.fakeDb.prods[i];
-                if (prod.id === idProd) {
-                    orgs = prod.orgs;
-                    break;
-                }
-            }
-            var list = orgs.map(function (o) { return new apArea.orgConContratos(o, _this.fakeDb.contratos.filter(function (c) { return c.idOrg === o.id; })); });
-            this.$timeout(function () { return callback.onSuccess({ data: list }); }, 500);
+        apQueryService.prototype.getOrgsConContratosDelProductor = function (idProd, callback) {
+            _super.prototype.getWithCallback.call(this, 'orgs-con-contratos-del-productor/' + idProd, callback);
         };
         return apQueryService;
     }(common.httpLite));

@@ -13,8 +13,8 @@ namespace Agrobook.Client.Ap
             : base(http, tokenProvider, "ap/query")
         { }
 
-        public async Task<IList<ClienteDeAp>> ObtenerClientes(string filtro)
-            => await base.Get<IList<ClienteDeAp>>("clientes?filtro=" + filtro);
+        public async Task<IList<ClienteDeApDto>> ObtenerClientes(string filtro)
+            => await base.Get<IList<ClienteDeApDto>>("clientes?filtro=" + filtro);
 
 
         public async Task<OrgDto> ObtenerOrg(string idOrg)
@@ -28,5 +28,11 @@ namespace Agrobook.Client.Ap
 
         public async Task<ParcelaEntity> ObtenerParcela(string idParcela)
             => await base.Get<ParcelaEntity>("parcela/" + idParcela);
+
+        public async Task<IList<OrgConContratosDto>> ObtenerOrgsConContratosDelProductor(string idProd)
+            => await base.Get<IList<OrgConContratosDto>>("orgs-con-contratos-del-productor/" + idProd);
+
+        public async Task<ProdDto> GetProd(string idProd)
+            => await base.Get<ProdDto>("prod/" + idProd);
     }
 }

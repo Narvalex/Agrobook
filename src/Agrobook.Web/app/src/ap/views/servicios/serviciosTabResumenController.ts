@@ -144,7 +144,7 @@ module apArea {
 
         private recuperarYEstablecerContratos() {
             this.loading = true;
-            this.apQueryService.getOrgsConContratos(this.idProd,
+            this.apQueryService.getOrgsConContratosDelProductor(this.idProd,
                 new common.callbackLite<orgConContratos[]>(
                     value => {
                         this.orgsConContratos = value.data;

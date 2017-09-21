@@ -30,18 +30,7 @@ module apArea {
             id: string,
             callback: common.callbackLite<prodDto>
         ) {
-            var dto: prodDto;
-            for (var i = 0; i < this.fakeDb.prods.length; i++) {
-                if (this.fakeDb.prods[i].id === id) {
-                    var x = this.fakeDb.prods[i];
-                    dto = new prodDto(x.id, x.display,x.avatarUrl, x.orgs);
-                    break;
-                }
-            }
-
-            callback.onSuccess({
-                data: dto
-            });
+            super.getWithCallback('prod/' + id, callback);
         }
 
         getServiciosPorOrg(
@@ -91,19 +80,8 @@ module apArea {
             super.getWithCallback('contratos/' + idOrg, callback);
         }
 
-        getOrgsConContratos(idProd: string, callback: common.callbackLite<orgConContratos[]>) {
-            let orgs: orgDto[];
-            for (var i = 0; i < this.fakeDb.prods.length; i++) {
-                var prod = this.fakeDb.prods[i];
-                if (prod.id === idProd) {
-                    orgs = prod.orgs;
-                    break;
-                }
-            }
-
-            var list = orgs.map(o => new orgConContratos(o, this.fakeDb.contratos.filter(c => c.idOrg === o.id)));
-
-            this.$timeout(() => callback.onSuccess({ data: list }), 500);
+        getOrgsConContratosDelProductor(idProd: string, callback: common.callbackLite<orgConContratos[]>) {
+            super.getWithCallback('orgs-con-contratos-del-productor/' + idProd, callback);
         }
     }
 }

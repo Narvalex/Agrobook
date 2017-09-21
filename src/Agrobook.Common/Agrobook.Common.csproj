@@ -54,6 +54,7 @@
     <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="EventStreamHandler.cs" />
     <Compile Include="IEvent.cs" />
+    <Compile Include="ObjectExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Cryptography.cs" />
     <Compile Include="ISimpleContainer.cs" />

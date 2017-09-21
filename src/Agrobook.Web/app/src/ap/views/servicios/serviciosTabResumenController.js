@@ -101,7 +101,7 @@ var apArea;
         serviciosTabResumenController.prototype.recuperarYEstablecerContratos = function () {
             var _this = this;
             this.loading = true;
-            this.apQueryService.getOrgsConContratos(this.idProd, new common.callbackLite(function (value) {
+            this.apQueryService.getOrgsConContratosDelProductor(this.idProd, new common.callbackLite(function (value) {
                 _this.orgsConContratos = value.data;
                 if (_this.action == 'edit') {
                     // Setear en el combo la org actual;

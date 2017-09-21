@@ -15,7 +15,7 @@ namespace Agrobook.Domain.Ap.Services
         public ApQueryService(Func<AgrobookDbContext> contextFactory, IEventSourcedReader esReader) : base(contextFactory, esReader)
         { }
 
-        public async Task<IList<ClienteDeAp>> ObtenerClientes(string filtro)
+        public async Task<IList<ClienteDeApDto>> ObtenerClientes(string filtro)
         {
             return await this.QueryAsync(async context =>
             {
@@ -24,7 +24,7 @@ namespace Agrobook.Domain.Ap.Services
                 var orgDeUsuarios = await context.OrganizacionesDeUsuarios.ToArrayAsync();
 
                 var clientesQuery =
-                    organizaciones.Select(o => new ClienteDeAp
+                    organizaciones.Select(o => new ClienteDeApDto
                     {
                         Id = o.OrganizacionId,
                         Nombre = o.NombreParaMostrar,
@@ -32,7 +32,7 @@ namespace Agrobook.Domain.Ap.Services
                         Tipo = "org",
                         AvatarUrl = this.orgAvatarUrl
                     })
-                    .Concat(productores.Select(p => new ClienteDeAp
+                    .Concat(productores.Select(p => new ClienteDeApDto
                     {
                         Id = p.Id,
                         Nombre = p.Display,
@@ -87,5 +87,41 @@ namespace Agrobook.Domain.Ap.Services
         public async Task<ParcelaEntity> ObtenerParcela(string idParcela)
             => await this.QueryAsync(async context =>
             await context.Parcelas.SingleAsync(x => x.Id == idParcela));
+
+
+        public async Task<OrgConContratosDto[]> ObtenerOrgsConContratosDelProductor(string idProd)
+            => await this.QueryAsync(async context =>
+            (await context
+                   .OrganizacionesDeUsuarios
+                   .Where(x => x.UsuarioId == idProd)
+                   .ToArrayAsync())
+            .Select(x => new OrgConContratosDto
+            {
+                Org = new OrgDto { Id = x.OrganizacionId, Display = x.OrganizacionDisplay },
+                Contratos = context
+                            .Contratos
+                            .Where(c => c.IdOrg == x.OrganizacionId)
+                            .ToArray()
+            })
+            .ToArray());
+
+        public async Task<ProdDto> GetProd(string idProd)
+            => await this.QueryAsync(async context =>
+                (await context.Usuarios.SingleAsync(x => x.Id == idProd))
+                .Transform(u => new ProdDto
+                {
+                    Id = idProd,
+                    Display = u.Display,
+                    AvatarUrl = u.AvatarUrl,
+                    Orgs = context.OrganizacionesDeUsuarios
+                            .Where(x => x.UsuarioId == idProd)
+                            .ToArray()
+                            .Select(x => new OrgDto
+                            {
+                                Id = x.OrganizacionId,
+                                Display = x.OrganizacionDisplay
+                            })
+                            .ToArray()
+                }));
     }
 }
