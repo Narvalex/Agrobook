@@ -27,10 +27,10 @@ module apArea {
         }
 
         getProd(
-            id: string,
+            idProd: string,
             callback: common.callbackLite<prodDto>
         ) {
-            super.getWithCallback('prod/' + id, callback);
+            super.getWithCallback('prod/' + idProd, callback);
         }
 
         getServiciosPorOrg(

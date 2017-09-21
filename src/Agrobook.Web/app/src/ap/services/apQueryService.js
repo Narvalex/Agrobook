@@ -26,8 +26,8 @@ var apArea;
         apQueryService.prototype.getOrg = function (id, callback) {
             _super.prototype.getWithCallback.call(this, 'org/' + id, callback);
         };
-        apQueryService.prototype.getProd = function (id, callback) {
-            _super.prototype.getWithCallback.call(this, 'prod/' + id, callback);
+        apQueryService.prototype.getProd = function (idProd, callback) {
+            _super.prototype.getWithCallback.call(this, 'prod/' + idProd, callback);
         };
         apQueryService.prototype.getServiciosPorOrg = function (idOrg, callback) {
             var list = this.fakeDb.servicios.filter(function (x) { return x.idOrg === idOrg; });
