@@ -91,13 +91,15 @@ var apArea;
             _super.prototype.postWithCallback.call(this, 'restaurar-contrato/' + idContrato, {}, callback);
         };
         apService.prototype.registrarNuevoServicio = function (servicio, callback) {
-            var serviciosDelProductor = this.fakeDb.servicios.filter(function (x) { return x.idProd === servicio.idProd; });
-            var idQueLeSigue = serviciosDelProductor.length + 1;
-            servicio.id = servicio.idProd + "_servicio" + idQueLeSigue;
-            this.fakeDb.servicios.push(servicio);
-            setTimeout(function () {
-                callback.onSuccess({ data: servicio.id });
-            }, 2000);
+            var cmd = {
+                idProd: servicio.idProd,
+                idOrg: servicio.idOrg,
+                idContrato: servicio.idContrato,
+                fecha: servicio.fecha,
+                orgDisplay: servicio.orgDisplay,
+                contratoDisplay: servicio.contratoDisplay
+            };
+            _super.prototype.postWithCallback.call(this, 'nuevo-servicio', cmd, callback);
         };
         apService.prototype.actualizarServicio = function (servicio, callback) {
             for (var i = 0; i < this.fakeDb.servicios.length; i++) {

@@ -16,6 +16,8 @@ namespace Eventing.GetEventStore
         private readonly IJsonSerializer serializer;
         private readonly string streamName;
         private readonly Action<long, object> handler;
+        private readonly bool shouldPersistCheckpoint;
+        private readonly Action<long> persistCheckpoint;
 
         private Lazy<long?> lazyLastCheckpoint;
         private EventStoreCatchUpSubscription subscription;
@@ -25,7 +27,7 @@ namespace Eventing.GetEventStore
 
         private readonly object lockObject = new object();
 
-        public EventStoreSubscription(IEventStoreConnection resilientConnection, IJsonSerializer serializer, string streamName, Lazy<long?> lazyLastCheckpoint, Action<long, object> handler)
+        public EventStoreSubscription(IEventStoreConnection resilientConnection, IJsonSerializer serializer, string streamName, Lazy<long?> lazyLastCheckpoint, Action<long, object> handler, Action<long> persistCheckpoint = null)
         {
             Ensure.NotNull(resilientConnection, nameof(resilientConnection));
             Ensure.NotNullOrWhiteSpace(streamName, nameof(streamName));
@@ -37,6 +39,14 @@ namespace Eventing.GetEventStore
             this.handler = handler;
             this.lazyLastCheckpoint = lazyLastCheckpoint;
             this.serializer = serializer;
+
+            if (persistCheckpoint is null)
+                this.shouldPersistCheckpoint = false;
+            else
+            {
+                this.shouldPersistCheckpoint = true;
+                this.persistCheckpoint = persistCheckpoint;
+            }
         }
 
         public void Start()
@@ -80,6 +90,8 @@ namespace Eventing.GetEventStore
                                    var deserialized = this.serializer.Deserialize(serialized);
                                    this.handler.Invoke(eventAppeared.OriginalEventNumber, deserialized);
                                    this.lastCheckpoint = eventAppeared.OriginalEventNumber;
+                                   if (this.shouldPersistCheckpoint)
+                                       this.persistCheckpoint(eventAppeared.OriginalEventNumber);
                                }
                            }
                        },

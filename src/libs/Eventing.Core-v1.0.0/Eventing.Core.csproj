@@ -58,6 +58,7 @@
     <Compile Include="Domain\EventSourced.cs" />
     <Compile Include="Domain\EventSourcedService.cs" />
     <Compile Include="Domain\IEventSourced.cs" />
+    <Compile Include="Persistence\ICheckpointRepository.cs" />
     <Compile Include="Persistence\IEventSourcedReader.cs" />
     <Compile Include="Persistence\IEventSourcedRepository.cs" />
     <Compile Include="Persistence\IEventSubscriber.cs" />

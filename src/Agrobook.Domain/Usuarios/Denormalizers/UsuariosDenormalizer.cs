@@ -29,7 +29,7 @@ namespace Agrobook.Domain.Usuarios.Services
             this.queryService = queryService;
         }
 
-        public async Task Handle(long eventNumber, NuevoUsuarioCreado e)
+        public async Task HandleOnce(long eventNumber, NuevoUsuarioCreado e)
         {
             var claims = this.queryService.ObtenerClaims(e.LoginInfoEncriptado);
 
@@ -50,7 +50,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public async Task Handle(long eventNumber, AvatarUrlActualizado e)
+        public async Task HandleOnce(long eventNumber, AvatarUrlActualizado e)
         {
             await this.Denormalize(eventNumber, context =>
             {
@@ -59,7 +59,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public async Task Handle(long eventNumber, NombreParaMostrarActualizado e)
+        public async Task HandleOnce(long eventNumber, NombreParaMostrarActualizado e)
         {
             await this.Denormalize(eventNumber, context =>
             {
@@ -68,7 +68,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public async Task Handle(long eventNumber, PermisoOtorgadoAlUsuario e)
+        public async Task HandleOnce(long eventNumber, PermisoOtorgadoAlUsuario e)
         {
             await this.Denormalize(eventNumber, context =>
             {
@@ -77,7 +77,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public async Task Handle(long eventNumber, PermisoRetiradoDelUsuario e)
+        public async Task HandleOnce(long eventNumber, PermisoRetiradoDelUsuario e)
         {
             await this.Denormalize(eventNumber, context =>
             {

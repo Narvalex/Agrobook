@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Common
 {
-    public abstract class AgrobookDenormalizer : EventStreamHandler
+    public abstract class AgrobookDenormalizer : EventStreamDenormalizer
     {
         private readonly IEventSubscription subscription;
         private readonly Func<AgrobookDbContext> contextFactory;
@@ -48,7 +48,7 @@ namespace Agrobook.Domain.Common
             this.subscription.Stop();
         }
 
-        protected override async Task Handle(long eventNumber, object @event)
+        protected override async Task HandleOnce(long eventNumber, object @event)
         {
             await this.Denormalize(eventNumber, c => { });
         }

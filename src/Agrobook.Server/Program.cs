@@ -1,5 +1,6 @@
 ﻿using Agrobook.Domain;
 using Agrobook.Domain.Ap.Denormalizers;
+using Agrobook.Domain.Ap.Services;
 using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Services;
@@ -96,13 +97,6 @@ namespace Agrobook.Server
             OnExit();
         }
 
-        private static void OnExit()
-        {
-            ServiceLocator
-                .ResolveSingleton<EventStoreManager>()
-                .TearDown();
-        }
-
         private static void Prelude()
         {
             // Denormalizers
@@ -111,12 +105,17 @@ namespace Agrobook.Server
             var fileIndexer = ServiceLocator.ResolveSingleton<ArchivosIndexerService>();
             var contratosDenormalizer = ServiceLocator.ResolveSingleton<ContratosDenormalizer>();
             var productoresDenormalizer = ServiceLocator.ResolveSingleton<ProductoresDenormalizer>();
+            var serviciosDenormalizer = ServiceLocator.ResolveSingleton<ServiciosDenormalizer>();
+            var apService = ServiceLocator.ResolveSingleton<ApService>();
 
             usuariosDenormalizer.Start();
             organizacionesDenormalizer.Start();
             fileIndexer.Start();
             contratosDenormalizer.Start();
             productoresDenormalizer.Start();
+            serviciosDenormalizer.Start();
+            apService.Start();
+
 
             // Crear usuario admin si hace falta
             var userService = ServiceLocator.ResolveSingleton<UsuariosService>();
@@ -138,6 +137,30 @@ namespace Agrobook.Server
                 Thread.Sleep(1500);
                 CrearUsuarioAdminSiHaceFalta(userQueryService, userService);
             }
+        }
+
+        private static void OnExit()
+        {
+            // Denormalizers
+            var usuariosDenormalizer = ServiceLocator.ResolveSingleton<UsuariosDenormalizer>();
+            var organizacionesDenormalizer = ServiceLocator.ResolveSingleton<OrganizacionesDenormalizer>();
+            var fileIndexer = ServiceLocator.ResolveSingleton<ArchivosIndexerService>();
+            var contratosDenormalizer = ServiceLocator.ResolveSingleton<ContratosDenormalizer>();
+            var productoresDenormalizer = ServiceLocator.ResolveSingleton<ProductoresDenormalizer>();
+            var serviciosDenormalizer = ServiceLocator.ResolveSingleton<ServiciosDenormalizer>();
+            var apService = ServiceLocator.ResolveSingleton<ApService>();
+
+            usuariosDenormalizer.Stop();
+            organizacionesDenormalizer.Stop();
+            fileIndexer.Stop();
+            contratosDenormalizer.Stop();
+            productoresDenormalizer.Stop();
+            serviciosDenormalizer.Stop();
+            apService.Stop();
+
+            ServiceLocator
+                .ResolveSingleton<EventStoreManager>()
+                .TearDown();
         }
 
         private static void CrearUsuarioAdminSiHaceFalta(UsuariosQueryService query, UsuariosService userService)

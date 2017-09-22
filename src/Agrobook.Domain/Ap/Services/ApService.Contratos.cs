@@ -5,7 +5,6 @@ using System;
 using System.Threading.Tasks;
 namespace Agrobook.Domain.Ap.Services
 {
-    // Contratos
     public partial class ApService
     {
         public async Task<string> HandleAsync(RegistrarNuevoContrato cmd)

@@ -24,7 +24,7 @@ namespace Agrobook.Domain.Archivos.Services
             this.fileManager = fileManager;
         }
 
-        public async Task Handle(long eventNumber, NuevoArchivoAgregadoALaColeccion e)
+        public async Task HandleOnce(long eventNumber, NuevoArchivoAgregadoALaColeccion e)
         {
             var renombrado = this.fileManager.SetFileAsIndexedIfNeeded(e.IdColeccion, e.Descriptor);
 

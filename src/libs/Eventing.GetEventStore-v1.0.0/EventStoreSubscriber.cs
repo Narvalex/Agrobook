@@ -28,6 +28,17 @@ namespace Eventing.GetEventStore
                 lastCheckpoint,
                 handler);
         }
+
+        public IEventSubscription CreateSubscription(string streamName, Lazy<long?> lastCheckpoint, Action<long> persistCheckpoint, Action<long, object> handler)
+        {
+            return new EventStoreSubscription(
+               this.resilientConnection,
+               this.serializer,
+               streamName,
+               lastCheckpoint,
+               handler,
+               persistCheckpoint);
+        }
     }
 }
 

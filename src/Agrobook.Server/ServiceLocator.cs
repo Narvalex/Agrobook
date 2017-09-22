@@ -93,10 +93,12 @@ namespace Agrobook.Server
             container.Register<ArchivosIndexerService>(fileIndexer);
 
             // Ordenado a partir de aqui
+            var checkpointRepository = new CheckpointRepository(dbContextFactory, readOnlyDbContextFactory);
+
             var apQueryService = new ApQueryService(readOnlyDbContextFactory, eventSourcedRepository);
             container.Register<ApQueryService>(apQueryService);
 
-            var apService = new ApService(eventSourcedRepository, dateTimeProvider);
+            var apService = new ApService(eventSourcedRepository, eventStreamSubscriber, checkpointRepository, dateTimeProvider);
             container.Register<ApService>(apService);
 
             var contratoDenormalizer = new ContratosDenormalizer(eventStreamSubscriber, dbContextFactory);
@@ -104,6 +106,9 @@ namespace Agrobook.Server
 
             var productoresDenormalizer = new ProductoresDenormalizer(eventStreamSubscriber, dbContextFactory);
             container.Register<ProductoresDenormalizer>(productoresDenormalizer);
+
+            var serviciosDenormalizer = new ServiciosDenormalizer(eventStreamSubscriber, dbContextFactory);
+            container.Register<ServiciosDenormalizer>(serviciosDenormalizer);
         }
     }
 }

@@ -111,15 +111,16 @@ module apArea {
         }
 
         registrarNuevoServicio(servicio: servicioDto, callback: common.callbackLite<string>) {
-            var serviciosDelProductor = this.fakeDb.servicios.filter(x => x.idProd === servicio.idProd);
-            var idQueLeSigue = serviciosDelProductor.length + 1;
-            servicio.id = `${servicio.idProd}_servicio${idQueLeSigue}`;
+            let cmd = {
+                idProd: servicio.idProd,
+                idOrg: servicio.idOrg,
+                idContrato: servicio.idContrato,
+                fecha: servicio.fecha,
 
-            this.fakeDb.servicios.push(servicio);
-
-            setTimeout(() => {
-                callback.onSuccess({ data: servicio.id });
-            }, 2000);
+                orgDisplay: servicio.orgDisplay,
+                contratoDisplay: servicio.contratoDisplay
+            };
+            super.postWithCallback('nuevo-servicio', cmd, callback);
         }
 
         actualizarServicio(servicio: servicioDto, callback: common.callbackLite<any>) {

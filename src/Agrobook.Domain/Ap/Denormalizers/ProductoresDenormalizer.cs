@@ -22,7 +22,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
         {
         }
 
-        public async Task Handle(long eventNumber, NuevaParcelaRegistrada e)
+        public async Task HandleOnce(long eventNumber, NuevaParcelaRegistrada e)
         {
             await this.Denormalize(eventNumber, context =>
             {
@@ -37,7 +37,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public async Task Handle(long eventNumber, ParcelaEditada e)
+        public async Task HandleOnce(long eventNumber, ParcelaEditada e)
         {
             await this.Denormalize(eventNumber, async context =>
             {
@@ -47,7 +47,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public async Task Handle(long eventNumber, ParcelaEliminada e)
+        public async Task HandleOnce(long eventNumber, ParcelaEliminada e)
         {
             await this.Denormalize(eventNumber, async context =>
             {
@@ -56,7 +56,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public async Task Handle(long eventNumber, ParcelaRestaurada e)
+        public async Task HandleOnce(long eventNumber, ParcelaRestaurada e)
         {
             await this.Denormalize(eventNumber, async context =>
             {

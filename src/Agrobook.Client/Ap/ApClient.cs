@@ -63,5 +63,13 @@ namespace Agrobook.Client.Ap
 
         public async Task Send(RestaurarParcela cmd)
             => await base.Post("restaurar-parcela", cmd);
+
+        /// <summary>
+        /// Registra nuevo servicio de agricultura de precisión.
+        /// </summary>
+        /// <param name="cmd">El comando que para ordenar el registro.</param>
+        /// <returns>El id del nuevo servicio registrado</returns>
+        public async Task<string> Send(RegistrarNuevoServicio cmd)
+            => await base.Post<RegistrarNuevoServicio, string>("nuevo-servicio", cmd);
     }
 }

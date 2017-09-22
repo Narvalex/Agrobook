@@ -24,6 +24,7 @@ namespace Agrobook.Domain
             this.AddArchivosModel(builder);
             this.AddContratosModel(builder);
             this.AddProductoresDeApModel(builder);
+            this.AddServiciosModel(builder);
         }
 
         public async Task<int> SaveChangesAsync(string subscriptionName, long? lastCheckpoint)

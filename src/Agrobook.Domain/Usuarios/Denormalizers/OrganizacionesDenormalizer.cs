@@ -21,7 +21,7 @@ namespace Agrobook.Domain.Usuarios.Services
                   StreamCategoryAttribute.GetCategoryProjectionStream<Organizacion>())
         { }
 
-        public async Task Handle(long eventNumber, NuevaOrganizacionCreada e)
+        public async Task HandleOnce(long eventNumber, NuevaOrganizacionCreada e)
         {
             await this.Denormalize(eventNumber, context =>
             {
@@ -33,7 +33,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public async Task Handle(long eventNumber, NuevoGrupoCreado e)
+        public async Task HandleOnce(long eventNumber, NuevoGrupoCreado e)
         {
             await this.Denormalize(eventNumber, context =>
             {
@@ -46,7 +46,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public async Task Handle(long eventNumber, UsuarioAgregadoALaOrganizacion e)
+        public async Task HandleOnce(long eventNumber, UsuarioAgregadoALaOrganizacion e)
         {
             await this.Denormalize(eventNumber, async context =>
             {
@@ -60,7 +60,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public async Task Handle(long eventNumber, UsuarioAgregadoAUnGrupo e)
+        public async Task HandleOnce(long eventNumber, UsuarioAgregadoAUnGrupo e)
         {
             await this.Denormalize(eventNumber, async context =>
             {
@@ -75,7 +75,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public async Task Handle(long eventNumber, UsuarioRemovidoDeUnGrupo e)
+        public async Task HandleOnce(long eventNumber, UsuarioRemovidoDeUnGrupo e)
         {
             await this.Denormalize(eventNumber, context =>
             {
