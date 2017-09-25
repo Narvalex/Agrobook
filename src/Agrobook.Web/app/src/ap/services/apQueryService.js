@@ -30,13 +30,10 @@ var apArea;
             _super.prototype.getWithCallback.call(this, 'prod/' + idProd, callback);
         };
         apQueryService.prototype.getServiciosPorOrg = function (idOrg, callback) {
-            //var list = this.fakeDb.servicios.filter(x => x.idOrg === idOrg);
-            //this.$timeout(() => callback.onSuccess({ data: list }), 750);
             _super.prototype.getWithCallback.call(this, 'servicios-por-org/' + idOrg, callback);
         };
         apQueryService.prototype.getServiciosPorProd = function (idProd, callback) {
-            var lista = this.fakeDb.servicios.filter(function (x) { return x.idProd === idProd; });
-            this.$timeout(function () { return callback.onSuccess({ data: lista }); }, 750);
+            _super.prototype.getWithCallback.call(this, 'servicios-por-prod/' + idProd, callback);
         };
         apQueryService.prototype.getServicio = function (idServicio, callback) {
             var servicio;

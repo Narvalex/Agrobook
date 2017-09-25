@@ -128,5 +128,11 @@ namespace Agrobook.Domain.Ap.Services
             await context.Servicios
             .Where(s => s.IdOrg == idOrg)
             .ToListAsync());
+
+        public async Task<IList<ServicioEntity>> GetServiciosPorProd(string idProd)
+            => await this.QueryAsync(async context =>
+            await context.Servicios
+            .Where(s => s.IdProd == idProd)
+            .ToListAsync());
     }
 }
