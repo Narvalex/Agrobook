@@ -61,7 +61,7 @@ namespace Agrobook.Domain.Ap.Services
         public void Stop()
         {
             //this.servicioStreamSubscription.Start();
-            this.servicioSecLogSubscription.Start();
+            this.servicioSecLogSubscription.Stop();
         }
     }
 }

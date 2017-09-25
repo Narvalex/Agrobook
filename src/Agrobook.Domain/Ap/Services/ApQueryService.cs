@@ -88,7 +88,6 @@ namespace Agrobook.Domain.Ap.Services
             => await this.QueryAsync(async context =>
             await context.Parcelas.SingleAsync(x => x.Id == idParcela));
 
-
         public async Task<OrgConContratosDto[]> ObtenerOrgsConContratosDelProductor(string idProd)
             => await this.QueryAsync(async context =>
             (await context
@@ -123,5 +122,11 @@ namespace Agrobook.Domain.Ap.Services
                             })
                             .ToArray()
                 }));
+
+        public async Task<IList<ServicioEntity>> GetServiciosPorOrg(string idOrg)
+            => await this.QueryAsync(async context =>
+            await context.Servicios
+            .Where(s => s.IdOrg == idOrg)
+            .ToListAsync());
     }
 }

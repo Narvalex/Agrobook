@@ -37,9 +37,11 @@ module apArea {
             idOrg: string,
             callback: common.callbackLite<servicioDto[]>
         ) {
-            var list = this.fakeDb.servicios.filter(x => x.idOrg === idOrg);
+            //var list = this.fakeDb.servicios.filter(x => x.idOrg === idOrg);
 
-            this.$timeout(() => callback.onSuccess({ data: list }), 750);
+            //this.$timeout(() => callback.onSuccess({ data: list }), 750);
+
+            super.getWithCallback('servicios-por-org/' + idOrg, callback);
         }
 
         getServiciosPorProd(idProd: string, callback: common.callbackLite<servicioDto[]>) {

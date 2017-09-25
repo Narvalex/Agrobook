@@ -67,7 +67,7 @@ namespace Eventing.GetEventStore
             {
                 this.shouldStopNow = true;
                 if (this.subscription != null)
-                    this.DoStop();
+                    this.subscription.Stop();
             }
         }
 
@@ -76,7 +76,7 @@ namespace Eventing.GetEventStore
             lock (this.lockObject)
             {
                 if (this.subscription != null)
-                    this.DoStop();
+                    this.subscription.Stop();
 
 
                 this.subscription = this.resilientConnection.SubscribeToStreamFrom(this.streamName, this.lastCheckpoint, CatchUpSubscriptionSettings.Default,
@@ -99,7 +99,9 @@ namespace Eventing.GetEventStore
                            $"The subscription of {this.streamName} has caught-up on" + (this.lastCheckpoint.HasValue ? $" checkpoint {this.lastCheckpoint}!" : " the very beginning!")),
                        (sub, reason, ex) =>
                        {
-                           if (reason == SubscriptionDropReason.ConnectionClosed || reason == SubscriptionDropReason.CatchUpError)
+                           if (this.shouldStopNow || reason == SubscriptionDropReason.UserInitiated)
+                               return;
+                           else if (reason == SubscriptionDropReason.ConnectionClosed || reason == SubscriptionDropReason.CatchUpError)
                            {
                                var seconds = 30;
                                var chkp = this.lastCheckpoint.HasValue ? this.lastCheckpoint : -1;
@@ -114,20 +116,12 @@ namespace Eventing.GetEventStore
                                this.DoStart();
                                return;
                            }
-                           else if (reason == SubscriptionDropReason.UserInitiated)
-                               return;
 
                            // This should be handled better
                            sub.Stop();
                            throw ex;
                        });
             }
-        }
-
-        private void DoStop()
-        {
-            this.subscription.Stop();
-            this.subscription = null;
         }
     }
 }
