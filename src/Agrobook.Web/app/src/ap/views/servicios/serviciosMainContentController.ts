@@ -84,6 +84,10 @@ module apArea {
                 new common.callbackLite<prodDto>(
                     value => {
                         this.productor = value.data;
+                        if (this.esNuevo) {
+                            this.loading = false;
+                            return; // no hay servicio que recuperar
+                        }
                         this.apQueryService.getServicio(this.servicio.id,
                             new common.callbackLite<servicioDto>(
                                 value => {

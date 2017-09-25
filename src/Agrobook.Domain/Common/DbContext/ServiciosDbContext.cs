@@ -18,9 +18,7 @@ namespace Agrobook.Domain
     {
         public string Id { get; set; }
         public string IdContrato { get; set; }
-        public string ContratoDisplay { get; set; }
         public string IdOrg { get; set; }
-        public string OrgDisplay { get; set; }
         public string IdProd { get; set; }
         public DateTime Fecha { get; set; }
 

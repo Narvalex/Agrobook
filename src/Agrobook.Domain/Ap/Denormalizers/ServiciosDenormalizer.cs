@@ -5,6 +5,7 @@ using Agrobook.Domain.Common;
 using Eventing.Core.Domain;
 using Eventing.Core.Persistence;
 using System;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Ap.Denormalizers
@@ -20,15 +21,23 @@ namespace Agrobook.Domain.Ap.Denormalizers
 
         public async Task HandleOnce(long eventNumber, NuevoServicioRegistrado e)
         {
-            await this.Denormalize(eventNumber, context =>
+            await this.Denormalize(eventNumber, async context =>
             {
+                var orgDisplay = (await context
+                                .Organizaciones
+                                .SingleOrDefaultAsync(x => x.OrganizacionId == e.IdOrg))
+                                ?.NombreParaMostrar;
+
+                var contratoDisplay = (await context
+                                        .Contratos
+                                        .SingleOrDefaultAsync(x => x.Id == e.IdContrato))
+                                        ?.Display;
+
                 context.Servicios.Add(new ServicioEntity
                 {
                     Id = e.IdServicio,
                     IdContrato = e.IdContrato,
-                    ContratoDisplay = e.ContratoDisplay,
                     IdOrg = e.IdOrg,
-                    OrgDisplay = e.OrgDisplay,
                     IdProd = e.IdProd,
                     Fecha = e.Fecha,
                     // Defautls

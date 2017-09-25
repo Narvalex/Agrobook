@@ -11,7 +11,7 @@ namespace Agrobook.Domain.Ap.Services
         public async Task HandleOnce(long eventNumber, NuevoRegistroDeServicioPendiente e)
         {
             var servicio = new Servicio();
-            servicio.Emit(new NuevoServicioRegistrado(e.Firma, e.IdServicio, e.IdProd, e.IdOrg, e.IdContrato, e.Fecha, e.OrgDisplay, e.ContratoDisplay));
+            servicio.Emit(new NuevoServicioRegistrado(e.Firma, e.IdServicio, e.IdProd, e.IdOrg, e.IdContrato, e.Fecha));
 
             await this.repository.SaveAsync(servicio);
         }

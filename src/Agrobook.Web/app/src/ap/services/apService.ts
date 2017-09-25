@@ -115,25 +115,19 @@ module apArea {
                 idProd: servicio.idProd,
                 idOrg: servicio.idOrg,
                 idContrato: servicio.idContrato,
-                fecha: servicio.fecha,
-
-                orgDisplay: servicio.orgDisplay,
-                contratoDisplay: servicio.contratoDisplay
+                fecha: servicio.fecha
             };
             super.postWithCallback('nuevo-servicio', cmd, callback);
         }
 
         actualizarServicio(servicio: servicioDto, callback: common.callbackLite<any>) {
-            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-                let recuperado = this.fakeDb.servicios[i];
-                if (recuperado.id === servicio.id) {
-                    this.fakeDb.servicios.splice(i, 1);
-                    this.fakeDb.servicios.push(servicio);
-                    break;
-                }
-            }
-
-            this.timer(() => callback.onSuccess({}), 500);
+            let cmd = {
+                idServicio: servicio.id,
+                idOrg: servicio.idOrg,
+                idContrato: servicio.idContrato,
+                fecha: servicio.fecha,
+            };
+            super.postWithCallback('editar-servicio', cmd, callback);
         }
 
         eliminarServicio(idServicio: string, callback: common.callbackLite<any>) {

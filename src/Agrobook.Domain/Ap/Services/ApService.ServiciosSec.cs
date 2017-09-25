@@ -25,9 +25,7 @@ namespace Agrobook.Domain.Ap.Services
                 idServicio,
                 cmd.IdOrg,
                 cmd.IdContrato,
-                cmd.Fecha,
-                cmd.OrgDisplay,
-                cmd.ContratoDisplay));
+                cmd.Fecha));
 
             await this.repository.SaveAsync(servicioSec);
 

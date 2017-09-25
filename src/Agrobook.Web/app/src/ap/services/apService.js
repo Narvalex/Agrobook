@@ -95,22 +95,18 @@ var apArea;
                 idProd: servicio.idProd,
                 idOrg: servicio.idOrg,
                 idContrato: servicio.idContrato,
-                fecha: servicio.fecha,
-                orgDisplay: servicio.orgDisplay,
-                contratoDisplay: servicio.contratoDisplay
+                fecha: servicio.fecha
             };
             _super.prototype.postWithCallback.call(this, 'nuevo-servicio', cmd, callback);
         };
         apService.prototype.actualizarServicio = function (servicio, callback) {
-            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-                var recuperado = this.fakeDb.servicios[i];
-                if (recuperado.id === servicio.id) {
-                    this.fakeDb.servicios.splice(i, 1);
-                    this.fakeDb.servicios.push(servicio);
-                    break;
-                }
-            }
-            this.timer(function () { return callback.onSuccess({}); }, 500);
+            var cmd = {
+                idServicio: servicio.id,
+                idOrg: servicio.idOrg,
+                idContrato: servicio.idContrato,
+                fecha: servicio.fecha,
+            };
+            _super.prototype.postWithCallback.call(this, 'editar-servicio', cmd, callback);
         };
         apService.prototype.eliminarServicio = function (idServicio, callback) {
             for (var i = 0; i < this.fakeDb.servicios.length; i++) {

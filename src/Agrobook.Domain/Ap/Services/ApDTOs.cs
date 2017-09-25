@@ -1,4 +1,6 @@
-﻿namespace Agrobook.Domain.Ap.Services
+﻿using System;
+
+namespace Agrobook.Domain.Ap.Services
 {
     public class ClienteDeApDto
     {
@@ -28,5 +30,21 @@
         public string Display { get; set; }
         public string AvatarUrl { get; set; }
         public OrgDto[] Orgs { get; set; }
+    }
+
+    public class ServicioDto
+    {
+        public string Id { get; set; }
+        public string IdContrato { get; set; }
+        public string ContratoDisplay { get; set; }
+        public string IdOrg { get; set; }
+        public string OrgDisplay { get; set; }
+        public string IdProd { get; set; }
+        public DateTime Fecha { get; set; }
+
+        // Defaults
+        public bool Eliminado { get; set; }
+        public string ParcelaId { get; set; }
+        public string ParcelaDisplay { get; set; }
     }
 }

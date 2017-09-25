@@ -80,6 +80,10 @@ var apArea;
             this.loading = true;
             this.apQueryService.getProd(this.idProd, new common.callbackLite(function (value) {
                 _this.productor = value.data;
+                if (_this.esNuevo) {
+                    _this.loading = false;
+                    return; // no hay servicio que recuperar
+                }
                 _this.apQueryService.getServicio(_this.servicio.id, new common.callbackLite(function (value) {
                     _this.servicio = value.data;
                     _this.loading = false;

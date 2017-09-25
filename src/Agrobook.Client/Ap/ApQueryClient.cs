@@ -35,13 +35,13 @@ namespace Agrobook.Client.Ap
         public async Task<ProdDto> GetProd(string idProd)
             => await base.Get<ProdDto>("prod/" + idProd);
 
-        public async Task<IList<ServicioEntity>> GetServiciosPorOrg(string idOrg)
-            => await base.Get<IList<ServicioEntity>>("servicios-por-org/" + idOrg);
+        public async Task<IList<ServicioDto>> GetServiciosPorOrg(string idOrg)
+            => await base.Get<IList<ServicioDto>>("servicios-por-org/" + idOrg);
 
-        public async Task<IList<ServicioEntity>> GetServiciosPorProd(string idProd)
-           => await base.Get<IList<ServicioEntity>>("servicios-por-prod/" + idProd);
+        public async Task<IList<ServicioDto>> GetServiciosPorProd(string idProd)
+           => await base.Get<IList<ServicioDto>>("servicios-por-prod/" + idProd);
 
-        public async Task<ServicioEntity> GetServicio(string idServicio)
-            => await base.Get<ServicioEntity>("servicio/" + idServicio);
+        public async Task<ServicioDto> GetServicio(string idServicio)
+            => await base.Get<ServicioDto>("servicio/" + idServicio);
     }
 }

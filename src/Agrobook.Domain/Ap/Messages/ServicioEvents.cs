@@ -6,8 +6,7 @@ namespace Agrobook.Domain.Ap.Messages
 {
     public class NuevoServicioRegistrado : MensajeAuditable, IEvent
     {
-        public NuevoServicioRegistrado(Firma firma, string idServicio, string idProd, string idOrg, string idContrato, DateTime fecha,
-            string orgDisplay, string contratoDisplay)
+        public NuevoServicioRegistrado(Firma firma, string idServicio, string idProd, string idOrg, string idContrato, DateTime fecha)
             : base(firma)
         {
             this.IdServicio = idServicio;
@@ -15,8 +14,6 @@ namespace Agrobook.Domain.Ap.Messages
             this.IdOrg = idOrg;
             this.IdContrato = idContrato;
             this.Fecha = fecha;
-            this.OrgDisplay = orgDisplay;
-            this.ContratoDisplay = contratoDisplay;
         }
 
         /// <summary>
@@ -27,10 +24,6 @@ namespace Agrobook.Domain.Ap.Messages
         public string IdOrg { get; }
         public string IdContrato { get; }
         public DateTime Fecha { get; }
-
-        // Extra info
-        public string OrgDisplay { get; }
-        public string ContratoDisplay { get; }
 
         public string StreamId => this.IdServicio;
     }

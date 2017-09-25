@@ -123,20 +123,71 @@ namespace Agrobook.Domain.Ap.Services
                             .ToArray()
                 }));
 
-        public async Task<IList<ServicioEntity>> GetServiciosPorOrg(string idOrg)
+        public async Task<IList<ServicioDto>> GetServiciosPorOrg(string idOrg)
             => await this.QueryAsync(async context =>
-            await context.Servicios
-            .Where(s => s.IdOrg == idOrg)
-            .ToListAsync());
+                 await context.Servicios
+                    .Where(x => x.IdOrg == idOrg)
+                    .Join(context.Organizaciones,
+                    s => s.IdOrg, o => o.OrganizacionId, (s, o) => new { serv = s, org = o })
+                    .Join(context.Contratos, servOrg => servOrg.serv.IdContrato, c => c.Id,
+                     (so, c) => new ServicioDto
+                     {
+                         ContratoDisplay = c.Display,
+                         Eliminado = so.serv.Eliminado,
+                         Fecha = so.serv.Fecha,
+                         Id = so.serv.Id,
+                         IdContrato = so.serv.IdContrato,
+                         IdOrg = so.serv.IdOrg,
+                         IdProd = so.serv.IdProd,
+                         OrgDisplay = so.org.NombreParaMostrar,
+                         ParcelaDisplay = so.serv.ParcelaDisplay,
+                         ParcelaId = so.serv.ParcelaId
+                     })
+                    .ToListAsync());
 
-        public async Task<IList<ServicioEntity>> GetServiciosPorProd(string idProd)
-            => await this.QueryAsync(async context =>
-            await context.Servicios
-            .Where(s => s.IdProd == idProd)
-            .ToListAsync());
 
-        public async Task<ServicioEntity> GetServicio(string idServicio)
+        public async Task<IList<ServicioDto>> GetServiciosPorProd(string idProd)
             => await this.QueryAsync(async context =>
-            await context.Servicios.SingleAsync(x => x.Id == idServicio));
+                 await context.Servicios
+                    .Where(x => x.IdProd == idProd)
+                    .Join(context.Organizaciones,
+                    s => s.IdOrg, o => o.OrganizacionId, (s, o) => new { serv = s, org = o })
+                    .Join(context.Contratos, servOrg => servOrg.serv.IdContrato, c => c.Id,
+                     (so, c) => new ServicioDto
+                     {
+                         ContratoDisplay = c.Display,
+                         Eliminado = so.serv.Eliminado,
+                         Fecha = so.serv.Fecha,
+                         Id = so.serv.Id,
+                         IdContrato = so.serv.IdContrato,
+                         IdOrg = so.serv.IdOrg,
+                         IdProd = so.serv.IdProd,
+                         OrgDisplay = so.org.NombreParaMostrar,
+                         ParcelaDisplay = so.serv.ParcelaDisplay,
+                         ParcelaId = so.serv.ParcelaId
+                     })
+                    .ToListAsync());
+
+        public async Task<ServicioDto> GetServicio(string idServicio)
+           => await this.QueryAsync(async context =>
+                 await context.Servicios
+                    .Where(x => x.Id == idServicio)
+                    .Join(context.Organizaciones,
+                    s => s.IdOrg, o => o.OrganizacionId, (s, o) => new { serv = s, org = o })
+                    .Join(context.Contratos, servOrg => servOrg.serv.IdContrato, c => c.Id,
+                     (so, c) => new ServicioDto
+                     {
+                         ContratoDisplay = c.Display,
+                         Eliminado = so.serv.Eliminado,
+                         Fecha = so.serv.Fecha,
+                         Id = so.serv.Id,
+                         IdContrato = so.serv.IdContrato,
+                         IdOrg = so.serv.IdOrg,
+                         IdProd = so.serv.IdProd,
+                         OrgDisplay = so.org.NombreParaMostrar,
+                         ParcelaDisplay = so.serv.ParcelaDisplay,
+                         ParcelaId = so.serv.ParcelaId
+                     })
+                    .SingleAsync());
     }
 }
