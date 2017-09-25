@@ -45,14 +45,7 @@ module apArea {
         }
 
         getServicio(idServicio: string, callback: common.callbackLite<servicioDto>) {
-            let servicio: servicioDto;
-            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-                servicio = this.fakeDb.servicios[i];
-                if (servicio.id === idServicio)
-                    break;
-            }
-
-            this.$timeout(() => callback.onSuccess({ data: servicio }), 500);
+            super.getWithCallback('servicio/' + idServicio, callback);
         }
 
         getParcelasDelProd(

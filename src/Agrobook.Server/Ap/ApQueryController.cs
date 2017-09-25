@@ -62,5 +62,13 @@ namespace Agrobook.Server.Ap
             var servicios = await this.service.GetServiciosPorProd(idProd);
             return this.Ok(servicios);
         }
+
+        [HttpGet]
+        [Route("servicio/{idServicio}")]
+        public async Task<IHttpActionResult> GetServicio([FromUri]string idServicio)
+        {
+            var servicio = await this.service.GetServicio(idServicio);
+            return this.Ok(servicio);
+        }
     }
 }

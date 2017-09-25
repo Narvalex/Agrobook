@@ -40,5 +40,8 @@ namespace Agrobook.Client.Ap
 
         public async Task<IList<ServicioEntity>> GetServiciosPorProd(string idProd)
            => await base.Get<IList<ServicioEntity>>("servicios-por-prod/" + idProd);
+
+        public async Task<ServicioEntity> GetServicio(string idServicio)
+            => await base.Get<ServicioEntity>("servicio/" + idServicio);
     }
 }

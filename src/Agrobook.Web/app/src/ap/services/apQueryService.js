@@ -36,13 +36,7 @@ var apArea;
             _super.prototype.getWithCallback.call(this, 'servicios-por-prod/' + idProd, callback);
         };
         apQueryService.prototype.getServicio = function (idServicio, callback) {
-            var servicio;
-            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-                servicio = this.fakeDb.servicios[i];
-                if (servicio.id === idServicio)
-                    break;
-            }
-            this.$timeout(function () { return callback.onSuccess({ data: servicio }); }, 500);
+            _super.prototype.getWithCallback.call(this, 'servicio/' + idServicio, callback);
         };
         apQueryService.prototype.getParcelasDelProd = function (idProd, callback) {
             _super.prototype.getWithCallback.call(this, 'parcelas/' + idProd, callback);
