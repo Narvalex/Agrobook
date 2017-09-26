@@ -84,6 +84,16 @@ namespace Eventing.GetEventStore
             return eventSourced;
         }
 
+        public async Task<bool> Exists(string streamName)
+        {
+            if (this.snapshotCache.TryGet(streamName, out var snapshot))
+                return true;
+
+            var connection = await this.connectionFactory.Invoke();
+            var readResult = await connection.ReadEventAsync(streamName, StreamPosition.Start, false);
+            return readResult.Status == EventReadStatus.Success;
+        }
+
         public async Task SaveAsync(IEventSourced eventSourced)
         {
 

@@ -54,7 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\EventSourcedReaderExtensions.cs" />
+    <Compile Include="Persistence\EventSourcedReaderExtensions.cs" />
     <Compile Include="Domain\EventSourced.cs" />
     <Compile Include="Domain\EventSourcedService.cs" />
     <Compile Include="Domain\IEventSourced.cs" />

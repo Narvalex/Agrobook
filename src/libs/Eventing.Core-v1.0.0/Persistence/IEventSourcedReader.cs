@@ -7,5 +7,7 @@ namespace Eventing.Core.Persistence
     {
         // StreamName = StreamCagegory + StreamId
         Task<T> GetAsync<T>(string streamName) where T : class, IEventSourced, new();
+
+        Task<bool> Exists(string streamName);
     }
 }

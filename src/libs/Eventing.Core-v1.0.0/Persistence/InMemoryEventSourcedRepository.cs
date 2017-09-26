@@ -48,5 +48,10 @@ namespace Eventing.Core.Persistence
 
             return await Task.FromResult(state);
         }
+
+        public Task<bool> Exists(string streamName)
+        {
+            return Task.FromResult(this.streams.ContainsKey(streamName));
+        }
     }
 }

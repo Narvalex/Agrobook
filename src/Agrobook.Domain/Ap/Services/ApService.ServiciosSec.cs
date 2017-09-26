@@ -1,5 +1,7 @@
 ﻿using Agrobook.Domain.Ap.Messages;
 using Agrobook.Domain.Ap.ServicioSaga;
+using Agrobook.Domain.Usuarios;
+using Eventing.Core.Persistence;
 using System;
 using System.Threading.Tasks;
 
@@ -9,7 +11,14 @@ namespace Agrobook.Domain.Ap.Services
     {
         public async Task<string> HandleAsync(RegistrarNuevoServicio cmd)
         {
-            var servicioSec = await this.repository.GetAsync<ServicioSec>(cmd.IdProd);
+            await this.repository
+                .EnsureExistenceOf<Organizacion>(cmd.IdOrg)
+                // .And<Productor>(cmd.IdProd) --- Esto comentamos porque recien es un productor cuando tiene parcela
+                .And<Usuario>(cmd.IdProd)
+                .And<Contrato>(cmd.IdContrato)
+                .AndNothingMore();
+
+            var servicioSec = await this.repository.GetByIdAsync<ServicioSec>(cmd.IdProd);
             if (servicioSec is null)
             {
                 servicioSec = new ServicioSec();
