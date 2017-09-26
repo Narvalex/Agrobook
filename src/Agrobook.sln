@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Server", "Agrobook.Server\Agrobook.Server.csproj", "{6B68ACFE-67B3-4AE4-9C2E-B723FCDC4DE5}"
 EndProject
@@ -26,6 +26,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{E3353730-C86E-4373-A842-0CBD906F8CBC}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\ArchivosDeAgricultura.docx = ..\docs\ArchivosDeAgricultura.docx
+		CategoriesProjection.js = CategoriesProjection.js
 		..\docs\queries.js = ..\docs\queries.js
 		..\docs\UsuariosYGrupos.docx = ..\docs\UsuariosYGrupos.docx
 	EndProjectSection
@@ -151,5 +152,8 @@ Global
 		{7C1FC9BB-A213-4E09-8FD2-F13ADFA758B4} = {DEA078D5-15B3-426E-9FCB-482145F788DA}
 		{FD80989B-08E7-446A-B967-670BAEB4BD5F} = {DEA078D5-15B3-426E-9FCB-482145F788DA}
 		{31913791-9E19-4F54-BC07-EF281988C0CD} = {DEA078D5-15B3-426E-9FCB-482145F788DA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {72930BDE-DB43-4017-929E-E333597E1718}
 	EndGlobalSection
 EndGlobal
