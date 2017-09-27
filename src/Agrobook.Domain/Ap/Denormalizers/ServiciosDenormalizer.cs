@@ -11,7 +11,10 @@ using System.Threading.Tasks;
 namespace Agrobook.Domain.Ap.Denormalizers
 {
     public class ServiciosDenormalizer : AgrobookDenormalizer,
-        IEventHandler<NuevoServicioRegistrado>
+        IEventHandler<NuevoServicioRegistrado>,
+        IEventHandler<DatosBasicosDelSevicioEditados>,
+        IEventHandler<ServicioEliminado>,
+        IEventHandler<ServicioRestaurado>
     {
         public ServiciosDenormalizer(IEventSubscriber subscriber, Func<AgrobookDbContext> contextFactory)
             : base(subscriber, contextFactory, typeof(ServiciosDenormalizer).Name,
@@ -21,18 +24,8 @@ namespace Agrobook.Domain.Ap.Denormalizers
 
         public async Task HandleOnce(long eventNumber, NuevoServicioRegistrado e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            await this.Denormalize(eventNumber, context =>
             {
-                var orgDisplay = (await context
-                                .Organizaciones
-                                .SingleOrDefaultAsync(x => x.OrganizacionId == e.IdOrg))
-                                ?.NombreParaMostrar;
-
-                var contratoDisplay = (await context
-                                        .Contratos
-                                        .SingleOrDefaultAsync(x => x.Id == e.IdContrato))
-                                        ?.Display;
-
                 context.Servicios.Add(new ServicioEntity
                 {
                     Id = e.IdServicio,
@@ -45,6 +38,35 @@ namespace Agrobook.Domain.Ap.Denormalizers
                     ParcelaId = null,
                     ParcelaDisplay = null
                 });
+            });
+        }
+
+        public async Task HandleOnce(long eventNumber, DatosBasicosDelSevicioEditados e)
+        {
+            await this.Denormalize(eventNumber, async context =>
+            {
+                var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
+                servicio.IdContrato = e.IdContrato;
+                servicio.IdOrg = e.IdOrg;
+                servicio.Fecha = e.Fecha;
+            });
+        }
+
+        public async Task HandleOnce(long eventNumber, ServicioEliminado e)
+        {
+            await this.Denormalize(eventNumber, async context =>
+            {
+                var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
+                servicio.Eliminado = true;
+            });
+        }
+
+        public async Task HandleOnce(long eventNumber, ServicioRestaurado e)
+        {
+            await this.Denormalize(eventNumber, async context =>
+            {
+                var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
+                servicio.Eliminado = false;
             });
         }
     }

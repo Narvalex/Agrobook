@@ -46,16 +46,18 @@ var apArea;
                 _this.eliminando = false;
             }, function (reason) {
                 _this.eliminando = false;
+                _this.toasterLite.error("No se pudo eliminar. Lo sentimos");
             }));
         };
         serviciosTabResumenController.prototype.restaurar = function () {
             var _this = this;
             this.restaurando = true;
-            this.apService.eliminarServicio(this.idServicio, new common.callbackLite(function (value) {
+            this.apService.restaurarServicio(this.idServicio, new common.callbackLite(function (value) {
                 _this.servicio.eliminado = false;
                 _this.restaurando = false;
             }, function (reason) {
                 _this.restaurando = false;
+                _this.toasterLite.error("No se pudo restaurar. Lo sentimos!");
             }));
         };
         serviciosTabResumenController.prototype.submit = function () {
@@ -72,7 +74,7 @@ var apArea;
                 return;
             }
             this.submitting = true;
-            var servicio = new apArea.servicioDto(null, this.contratoSeleccionado.id, this.contratoSeleccionado.display, this.orgConContratosSeleccionada.org.id, this.orgConContratosSeleccionada.org.display, this.idProd, this.fechaSeleccionada);
+            var servicio = new apArea.servicioDto(this.idServicio, this.contratoSeleccionado.id, this.contratoSeleccionado.display, this.orgConContratosSeleccionada.org.id, this.orgConContratosSeleccionada.org.display, this.idProd, this.fechaSeleccionada);
             switch (this.action) {
                 case 'new':
                     this.registrarNuevoServicio(servicio);
@@ -156,13 +158,14 @@ var apArea;
         };
         serviciosTabResumenController.prototype.actualizarDatosBasicos = function (servicio) {
             var _this = this;
-            this.apService.actualizarServicio(servicio, new common.callbackLite(function (value) {
+            this.apService.editarDatosBasicosDelServicio(servicio, new common.callbackLite(function (value) {
                 _this.toasterLite.success('Los datos básicos del servicio han sido actualizados');
                 _this.action = 'view';
                 _this.servicio = servicio;
                 _this.submitting = false;
                 window.location.replace("#!/servicios/" + _this.idProd + "/" + _this.idServicio + "?tab=resumen&action=view");
             }, function (reason) {
+                _this.toasterLite.error('Hubo un error al intentar editar el servicio. Verifique los datos por favor.');
                 _this.submitting = false;
             }));
         };

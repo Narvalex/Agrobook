@@ -13,7 +13,7 @@ fromStream('$streams')
     }
 })
 
-//fromStream('$streams')
+
 fromAll()
     .when({
         $init: function () {

@@ -71,5 +71,14 @@ namespace Agrobook.Client.Ap
         /// <returns>El id del nuevo servicio registrado</returns>
         public async Task<string> Send(RegistrarNuevoServicio cmd)
             => await base.Post<RegistrarNuevoServicio, string>("nuevo-servicio", cmd);
+
+        public async Task Send(EditarDatosBasicosDelSevicio cmd)
+            => await base.Post("editar-datos-basicos-del-servicio", cmd);
+
+        public async Task Send(EliminarServicio cmd)
+            => await base.Post("eliminar-servicio", cmd);
+
+        public async Task Send(RestaurarServicio cmd)
+            => await base.Post("restaurar-servicio", cmd);
     }
 }

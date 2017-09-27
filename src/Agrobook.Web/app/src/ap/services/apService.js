@@ -99,32 +99,22 @@ var apArea;
             };
             _super.prototype.postWithCallback.call(this, 'nuevo-servicio', cmd, callback);
         };
-        apService.prototype.actualizarServicio = function (servicio, callback) {
+        apService.prototype.editarDatosBasicosDelServicio = function (servicio, callback) {
             var cmd = {
                 idServicio: servicio.id,
                 idOrg: servicio.idOrg,
                 idContrato: servicio.idContrato,
                 fecha: servicio.fecha,
             };
-            _super.prototype.postWithCallback.call(this, 'editar-servicio', cmd, callback);
+            _super.prototype.postWithCallback.call(this, 'editar-datos-basicos-del-servicio', cmd, callback);
         };
         apService.prototype.eliminarServicio = function (idServicio, callback) {
-            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-                if (this.fakeDb.servicios[i].id === idServicio) {
-                    this.fakeDb.servicios[i].eliminado = true;
-                    break;
-                }
-            }
-            this.timer(function () { return callback.onSuccess({ data: {} }); }, 500);
+            var cmd = { idServicio: idServicio };
+            _super.prototype.postWithCallback.call(this, 'eliminar-servicio', cmd, callback);
         };
         apService.prototype.restaurarServicio = function (idServicio, callback) {
-            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-                if (this.fakeDb.servicios[i].id === idServicio) {
-                    this.fakeDb.servicios[i].eliminado = false;
-                    break;
-                }
-            }
-            this.timer(function () { return callback.onSuccess({ data: {} }); }, 500);
+            var cmd = { idServicio: idServicio };
+            _super.prototype.postWithCallback.call(this, 'restaurar-servicio', cmd, callback);
         };
         apService.prototype.especificarParcelaDelServicio = function (idServicio, parcela, callback) {
             for (var i = 0; i < this.fakeDb.servicios.length; i++) {

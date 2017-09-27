@@ -87,6 +87,7 @@
     <Compile Include="Ap\ServicioSaga\Servicio.cs" />
     <Compile Include="Ap\ServicioSaga\ServicioSec.cs" />
     <Compile Include="Ap\ServicioSaga\ServicioSecSnapshot.cs" />
+    <Compile Include="Ap\ServicioSaga\ServicioSnapshot.cs" />
     <Compile Include="Archivos\Messages\ArchivosCommands.cs" />
     <Compile Include="Archivos\Messages\ArchivosEvents.cs" />
     <Compile Include="Archivos\ColeccionDeArchivos.cs" />

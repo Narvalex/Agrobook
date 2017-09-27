@@ -71,13 +71,14 @@ module apArea {
                     },
                     reason => {
                         this.eliminando = false;
+                        this.toasterLite.error("No se pudo eliminar. Lo sentimos");
                     })
             );
         }
 
         restaurar() {
             this.restaurando = true;
-            this.apService.eliminarServicio(this.idServicio,
+            this.apService.restaurarServicio(this.idServicio,
                 new common.callbackLite<any>(
                     value => {
                         this.servicio.eliminado = false;
@@ -85,6 +86,7 @@ module apArea {
                     },
                     reason => {
                         this.restaurando = false;
+                        this.toasterLite.error("No se pudo restaurar. Lo sentimos!");
                     })
             );
         }
@@ -106,7 +108,7 @@ module apArea {
 
             this.submitting = true;
             let servicio = new servicioDto(
-                null,
+                this.idServicio,
                 this.contratoSeleccionado.id,
                 this.contratoSeleccionado.display,
                 this.orgConContratosSeleccionada.org.id,
@@ -212,7 +214,7 @@ module apArea {
         }
 
         private actualizarDatosBasicos(servicio: servicioDto) {
-            this.apService.actualizarServicio(servicio,
+            this.apService.editarDatosBasicosDelServicio(servicio,
                 new common.callbackLite<any>(
                     value => {
                         this.toasterLite.success('Los datos básicos del servicio han sido actualizados');
@@ -222,6 +224,7 @@ module apArea {
                         window.location.replace(`#!/servicios/${this.idProd}/${this.idServicio}?tab=resumen&action=view`);
                     },
                     reason => {
+                        this.toasterLite.error('Hubo un error al intentar editar el servicio. Verifique los datos por favor.');
                         this.submitting = false;
                     })
             );

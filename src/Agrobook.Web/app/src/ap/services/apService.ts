@@ -120,36 +120,24 @@ module apArea {
             super.postWithCallback('nuevo-servicio', cmd, callback);
         }
 
-        actualizarServicio(servicio: servicioDto, callback: common.callbackLite<any>) {
+        editarDatosBasicosDelServicio(servicio: servicioDto, callback: common.callbackLite<any>) {
             let cmd = {
                 idServicio: servicio.id,
                 idOrg: servicio.idOrg,
                 idContrato: servicio.idContrato,
                 fecha: servicio.fecha,
             };
-            super.postWithCallback('editar-servicio', cmd, callback);
+            super.postWithCallback('editar-datos-basicos-del-servicio', cmd, callback);
         }
 
         eliminarServicio(idServicio: string, callback: common.callbackLite<any>) {
-            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-                if (this.fakeDb.servicios[i].id === idServicio) {
-                    this.fakeDb.servicios[i].eliminado = true;
-                    break;
-                }
-            }
-
-            this.timer(() => callback.onSuccess({ data: {} }), 500);
+            let cmd = { idServicio: idServicio };
+            super.postWithCallback('eliminar-servicio', cmd, callback);
         }
 
         restaurarServicio(idServicio: string, callback: common.callbackLite<any>) {
-            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-                if (this.fakeDb.servicios[i].id === idServicio) {
-                    this.fakeDb.servicios[i].eliminado = false;
-                    break;
-                }
-            }
-
-            this.timer(() => callback.onSuccess({ data: {} }), 500);
+            let cmd = { idServicio: idServicio };
+            super.postWithCallback('restaurar-servicio', cmd, callback);
         }
 
         especificarParcelaDelServicio(idServicio: string, parcela: parcelaDto, callback: common.callbackLite<any>) {
