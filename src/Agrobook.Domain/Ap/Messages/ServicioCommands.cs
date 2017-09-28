@@ -41,4 +41,30 @@ namespace Agrobook.Domain.Ap.Messages
 
         public string IdServicio { get; }
     }
+
+    public class EspecificarParcelaDelServicio : MensajeAuditable
+    {
+        public EspecificarParcelaDelServicio(Firma firma, string idServicio, string idParcela)
+            : base(firma)
+        {
+            this.IdServicio = idServicio;
+            this.IdParcela = idParcela;
+        }
+
+        public string IdServicio { get; }
+        public string IdParcela { get; }
+    }
+
+    public class CambiarParcelaDelServicio : MensajeAuditable
+    {
+        public CambiarParcelaDelServicio(Firma firma, string idServicio, string idParcela)
+            : base(firma)
+        {
+            this.IdServicio = idServicio;
+            this.IdParcela = idParcela;
+        }
+
+        public string IdServicio { get; }
+        public string IdParcela { get; }
+    }
 }

@@ -21,6 +21,8 @@ namespace Agrobook.CLI.Controllers
 
         public override string CommandDescription => "login: this will log you in";
 
+        public string Token { get; private set; } = null;
+
         public void StartLoginCommandLoop()
         {
             this.view.ShowWellcomeScreen();
@@ -54,7 +56,10 @@ namespace Agrobook.CLI.Controllers
             {
                 result = this.loginClient.TryLoginAsync(userName, password).Result;
                 if (result.LoginExitoso)
+                {
                     this.view.PrintLoginSuccessfully();
+                    this.Token = result.Token;
+                }
                 else
                     this.view.PrintLoginError("Credenciales inválidas");
             }

@@ -17,6 +17,8 @@ namespace Eventing.Client.Http
                 // if token provider is null, then this class will be used as thread-safe
                 // which implies that for every request the client will be a new instance
                 this.tokenProvider = () => null;
+            else
+                this.tokenProvider = tokenProvider;
 
             this.http = http;
             this.prefix = prefix + "/";

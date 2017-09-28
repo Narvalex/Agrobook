@@ -37,5 +37,21 @@ namespace Agrobook.Web.Controllers.Ap
             await this.client.Send(cmd);
             return this.Ok();
         }
+
+        [HttpPost]
+        [Route("especificar-parcela-del-servicio")]
+        public async Task<IHttpActionResult> EspecificarParcelaDelServicio([FromBody]EspecificarParcelaDelServicio cmd)
+        {
+            await this.client.Send(cmd);
+            return this.Ok();
+        }
+
+        [HttpPost]
+        [Route("cambiar-parcela-del-servicio")]
+        public async Task<IHttpActionResult> CambiarParcelaDelServicio([FromBody]CambiarParcelaDelServicio cmd)
+        {
+            await this.client.Send(cmd);
+            return this.Ok();
+        }
     }
 }

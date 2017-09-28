@@ -8,12 +8,15 @@ namespace Agrobook.CLI
         private readonly MainConsoleView view;
         private readonly LoginController loginController;
         private readonly HelpController helpController;
+        private readonly SeedController seedController;
 
-        public MainController(MainConsoleView view, LoginController loginController, HelpController helpController)
+        public MainController(MainConsoleView view, LoginController loginController, HelpController helpController,
+            SeedController seedController)
         {
             this.view = view;
             this.loginController = loginController;
             this.helpController = helpController;
+            this.seedController = seedController;
         }
 
         public void StartCommandLoop()
@@ -22,6 +25,7 @@ namespace Agrobook.CLI
             {
                 this.view.Readraw();
                 var cmd = Console.ReadLine();
+                if (cmd.EqualsIgnoringCase("exit")) return;
                 if (string.IsNullOrWhiteSpace(cmd))
                 {
                     this.view.Readraw();
@@ -36,6 +40,11 @@ namespace Agrobook.CLI
                 if (this.loginController.WasInvoked(cmd))
                 {
                     this.loginController.StartLoginCommandLoop();
+                    continue;
+                }
+                if (this.seedController.WasInvoked(cmd))
+                {
+                    this.seedController.StartSeedCommandLoop();
                     continue;
                 }
             } while (true);

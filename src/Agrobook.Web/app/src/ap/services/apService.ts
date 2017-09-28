@@ -141,29 +141,39 @@ module apArea {
         }
 
         especificarParcelaDelServicio(idServicio: string, parcela: parcelaDto, callback: common.callbackLite<any>) {
-            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-                let servicio = this.fakeDb.servicios[i];
-                if (servicio.id === idServicio) {
-                    this.fakeDb.servicios[i].parcelaId = parcela.id;
-                    this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
-                    break;
-                }
-            }
+            //for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+            //    let servicio = this.fakeDb.servicios[i];
+            //    if (servicio.id === idServicio) {
+            //        this.fakeDb.servicios[i].parcelaId = parcela.id;
+            //        this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
+            //        break;
+            //    }
+            //}
 
-            this.timer(() => callback.onSuccess({}), 500);
+            //this.timer(() => callback.onSuccess({}), 500);
+            let cmd = {
+                idServicio: idServicio,
+                idParcela: parcela.id
+            };
+            super.postWithCallback('especificar-parcela-del-servicio', cmd, callback); 
         }
 
         cambiarParcelaDelServicio(idServicio: string, parcela: parcelaDto, callback: common.callbackLite<any>) {
-            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-                let servicio = this.fakeDb.servicios[i];
-                if (servicio.id === idServicio) {
-                    this.fakeDb.servicios[i].parcelaId = parcela.id;
-                    this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
-                    break;
-                }
-            }
+            //for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+            //    let servicio = this.fakeDb.servicios[i];
+            //    if (servicio.id === idServicio) {
+            //        this.fakeDb.servicios[i].parcelaId = parcela.id;
+            //        this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
+            //        break;
+            //    }
+            //}
 
-            this.timer(() => callback.onSuccess({}), 500);
+            //this.timer(() => callback.onSuccess({}), 500);
+            let cmd = {
+                idServicio: idServicio,
+                idParcela: parcela.id
+            };
+            super.postWithCallback('cambiar-parcela-del-servicio', cmd, callback);
         }
     }
 }

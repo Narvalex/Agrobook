@@ -24,8 +24,7 @@ namespace Agrobook.Domain
 
         // Defaults
         public bool Eliminado { get; set; }
-        public string ParcelaId { get; set; }
-        public string ParcelaDisplay { get; set; }
+        public string IdParcela { get; set; }
     }
 
     public class ServicioEntityMap : EntityTypeConfiguration<ServicioEntity>

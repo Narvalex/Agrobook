@@ -80,5 +80,11 @@ namespace Agrobook.Client.Ap
 
         public async Task Send(RestaurarServicio cmd)
             => await base.Post("restaurar-servicio", cmd);
+
+        public async Task Send(EspecificarParcelaDelServicio cmd)
+            => await base.Post("especificar-parcela-del-servicio", cmd);
+
+        public async Task Send(CambiarParcelaDelServicio cmd)
+            => await base.Post("cambiar-parcela-del-servicio", cmd);
     }
 }

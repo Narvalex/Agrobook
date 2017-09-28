@@ -54,7 +54,7 @@ var apArea;
         // Privados
         serviciosTabParcelaController.prototype.cargarDatosSegunEstado = function () {
             this.action = this.$routeParams['action'] === undefined ? 'view' : this.$routeParams['action'];
-            if (this.servicio === undefined)
+            if (this.servicio === undefined && this.idServicio.toLowerCase() !== 'new')
                 this.recuperarServicioYLaParcelaSiTiene();
             switch (this.action) {
                 case 'edit':

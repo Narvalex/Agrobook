@@ -14,7 +14,9 @@ namespace Agrobook.Domain.Ap.Denormalizers
         IEventHandler<NuevoServicioRegistrado>,
         IEventHandler<DatosBasicosDelSevicioEditados>,
         IEventHandler<ServicioEliminado>,
-        IEventHandler<ServicioRestaurado>
+        IEventHandler<ServicioRestaurado>,
+        IEventHandler<ParcelaDeServicioEspecificada>,
+        IEventHandler<ParcelaDeServicioCambiada>
     {
         public ServiciosDenormalizer(IEventSubscriber subscriber, Func<AgrobookDbContext> contextFactory)
             : base(subscriber, contextFactory, typeof(ServiciosDenormalizer).Name,
@@ -35,8 +37,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
                     Fecha = e.Fecha,
                     // Defautls
                     Eliminado = false,
-                    ParcelaId = null,
-                    ParcelaDisplay = null
+                    IdParcela = null
                 });
             });
         }
@@ -67,6 +68,26 @@ namespace Agrobook.Domain.Ap.Denormalizers
             {
                 var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
                 servicio.Eliminado = false;
+            });
+        }
+
+        public async Task HandleOnce(long eventNumber, ParcelaDeServicioEspecificada e)
+        {
+            await this.Denormalize(eventNumber, async context =>
+            {
+                var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
+
+                servicio.IdParcela = e.IdParcela;
+            });
+        }
+
+        public async Task HandleOnce(long eventNumber, ParcelaDeServicioCambiada e)
+        {
+            await this.Denormalize(eventNumber, async context =>
+            {
+                var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
+
+                servicio.IdParcela = e.IdParcela;
             });
         }
     }

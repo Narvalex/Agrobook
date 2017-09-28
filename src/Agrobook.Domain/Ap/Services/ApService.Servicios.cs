@@ -13,8 +13,14 @@ namespace Agrobook.Domain.Ap.Services
     {
         // explicity implemented to guard a missusing of the api by a client. 
         // This should only has to be called by the event subscription stuff
-        async Task IEventHandler<NuevoRegistroDeServicioPendiente>.HandleOnce(long eventNumber, NuevoRegistroDeServicioPendiente e)
+        public async Task HandleOnce(long eventNumber, NuevoRegistroDeServicioPendiente e)
         {
+            if (await this.repository.Exists<Servicio>(e.IdProd))
+            {
+                this.logger.Warning("Ignorando mensaje ya manejado del tipo " + typeof(NuevoRegistroDeServicioPendiente).Name);
+                return;
+            }
+
             var servicio = new Servicio();
             servicio.Emit(new NuevoServicioRegistrado(e.Firma, e.IdServicio, e.IdProd, e.IdOrg, e.IdContrato, e.Fecha));
 
@@ -30,6 +36,9 @@ namespace Agrobook.Domain.Ap.Services
             cmd.Fecha.EnsureIsNotDefault(nameof(cmd.Fecha));
 
             var servicio = await this.repository.GetOrFailByIdAsync<Servicio>(cmd.IdServicio);
+
+            if (!servicio.HayDiferenciaEnDatosBasicos(cmd.IdOrg, cmd.IdContrato, cmd.Fecha))
+                throw new InvalidOperationException("No hay diferencias que registrar en datos basicos del servicio!");
 
             servicio.Emit(new DatosBasicosDelSevicioEditados(cmd.Firma, cmd.IdServicio, cmd.IdOrg, cmd.IdContrato, cmd.Fecha));
 
@@ -56,6 +65,30 @@ namespace Agrobook.Domain.Ap.Services
                 throw new InvalidOperationException("El servicio no esta eliminado. No necesita restaurarse");
 
             servicio.Emit(new ServicioRestaurado(cmd.Firma, cmd.IdServicio));
+
+            await this.repository.SaveAsync(servicio);
+        }
+
+        public async Task HandleAsync(EspecificarParcelaDelServicio cmd)
+        {
+            var servicio = await this.repository.GetOrFailByIdAsync<Servicio>(cmd.IdServicio);
+
+            if (servicio.IdParcela != null)
+                throw new InvalidOperationException("El servicio ya tiene una parcela especificada.");
+
+            servicio.Emit(new ParcelaDeServicioEspecificada(cmd.Firma, cmd.IdServicio, cmd.IdParcela));
+
+            await this.repository.SaveAsync(servicio);
+        }
+
+        public async Task HandleAsync(CambiarParcelaDelServicio cmd)
+        {
+            var servicio = await this.repository.GetOrFailByIdAsync<Servicio>(cmd.IdServicio);
+
+            if (servicio.IdParcela == cmd.IdParcela)
+                throw new InvalidOperationException("La parcela que se quiere cambiar es igual a la actual");
+
+            servicio.Emit(new ParcelaDeServicioCambiada(cmd.Firma, cmd.IdServicio, cmd.IdParcela));
 
             await this.repository.SaveAsync(servicio);
         }

@@ -117,26 +117,36 @@ var apArea;
             _super.prototype.postWithCallback.call(this, 'restaurar-servicio', cmd, callback);
         };
         apService.prototype.especificarParcelaDelServicio = function (idServicio, parcela, callback) {
-            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-                var servicio = this.fakeDb.servicios[i];
-                if (servicio.id === idServicio) {
-                    this.fakeDb.servicios[i].parcelaId = parcela.id;
-                    this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
-                    break;
-                }
-            }
-            this.timer(function () { return callback.onSuccess({}); }, 500);
+            //for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+            //    let servicio = this.fakeDb.servicios[i];
+            //    if (servicio.id === idServicio) {
+            //        this.fakeDb.servicios[i].parcelaId = parcela.id;
+            //        this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
+            //        break;
+            //    }
+            //}
+            //this.timer(() => callback.onSuccess({}), 500);
+            var cmd = {
+                idServicio: idServicio,
+                idParcela: parcela.id
+            };
+            _super.prototype.postWithCallback.call(this, 'especificar-parcela-del-servicio', cmd, callback);
         };
         apService.prototype.cambiarParcelaDelServicio = function (idServicio, parcela, callback) {
-            for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-                var servicio = this.fakeDb.servicios[i];
-                if (servicio.id === idServicio) {
-                    this.fakeDb.servicios[i].parcelaId = parcela.id;
-                    this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
-                    break;
-                }
-            }
-            this.timer(function () { return callback.onSuccess({}); }, 500);
+            //for (var i = 0; i < this.fakeDb.servicios.length; i++) {
+            //    let servicio = this.fakeDb.servicios[i];
+            //    if (servicio.id === idServicio) {
+            //        this.fakeDb.servicios[i].parcelaId = parcela.id;
+            //        this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
+            //        break;
+            //    }
+            //}
+            //this.timer(() => callback.onSuccess({}), 500);
+            var cmd = {
+                idServicio: idServicio,
+                idParcela: parcela.id
+            };
+            _super.prototype.postWithCallback.call(this, 'cambiar-parcela-del-servicio', cmd, callback);
         };
         return apService;
     }(common.httpLite));

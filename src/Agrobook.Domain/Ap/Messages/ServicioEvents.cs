@@ -72,4 +72,34 @@ namespace Agrobook.Domain.Ap.Messages
 
         public string StreamId => this.IdServicio;
     }
+
+    public class ParcelaDeServicioEspecificada : MensajeAuditable, IEvent
+    {
+        public ParcelaDeServicioEspecificada(Firma firma, string idServicio, string idParcela)
+            : base(firma)
+        {
+            this.IdServicio = idServicio;
+            this.IdParcela = idParcela;
+        }
+
+        public string IdServicio { get; }
+        public string IdParcela { get; }
+
+        public string StreamId => this.IdServicio;
+    }
+
+    public class ParcelaDeServicioCambiada : MensajeAuditable, IEvent
+    {
+        public ParcelaDeServicioCambiada(Firma firma, string idServicio, string idParcela)
+            : base(firma)
+        {
+            this.IdServicio = idServicio;
+            this.IdParcela = idParcela;
+        }
+
+        public string IdServicio { get; }
+        public string IdParcela { get; }
+
+        public string StreamId => this.IdServicio;
+    }
 }

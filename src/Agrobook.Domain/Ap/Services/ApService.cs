@@ -3,6 +3,7 @@ using Agrobook.Domain.Ap.ServicioSaga;
 using Eventing;
 using Eventing.Core.Domain;
 using Eventing.Core.Persistence;
+using Eventing.Log;
 using System;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace Agrobook.Domain.Ap.Services
 {
     public partial class ApService : EventSourcedService
     {
+        private readonly ILogLite logger = LogManager.GetLoggerFor<ApService>();
         //private readonly IEventSubscription servicioStreamSubscription;
         private readonly IEventSubscription servicioSecLogSubscription; // Is the saga execution coordinator log(sec)
 
