@@ -22,12 +22,10 @@ namespace Agrobook.Domain.Archivos.Services
 
         public async Task<ResultadoDelUpload> HandleAsync(AgregarArchivoAColeccion cmd)
         {
-            // ToDo: improve
             var @lock = this.locks.GetOrAdd(cmd.idColeccion, new SemaphoreSlim(1, 1));
             await @lock.WaitAsync();
             try
             {
-                // This could be so much optimized
                 var resultado = await HandleAsyncWithPesimisticConcurrencyLock(cmd);
                 return resultado;
             }
@@ -37,6 +35,8 @@ namespace Agrobook.Domain.Archivos.Services
             }
             finally
             {
+                // This is the optimization of the locking mechanism. 
+                // Requires more testing
                 if (@lock.CurrentCount < 1)
                     this.locks.TryRemove(cmd.idColeccion, out @lock);
                 @lock.Release();

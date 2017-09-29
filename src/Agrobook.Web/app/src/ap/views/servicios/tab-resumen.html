@@ -61,7 +61,7 @@
     </md-content>
 
     <!-- Archivos -->
-    <div class="width-md">
+    <div class="width-md" ng-if="vm.action != 'new'">
         <file-widget ng-hide="vm.loading" id-coleccion="vm.idColeccion" header="'Informe final'"></file-widget>
     </div>
 </div>

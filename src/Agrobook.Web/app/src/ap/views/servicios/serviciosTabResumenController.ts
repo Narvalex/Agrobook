@@ -14,8 +14,8 @@ module apArea {
             private $scope: angular.IScope,
         ) {
             this.idProd = this.$routeParams['idProd'];
-            this.idColeccion = `${this.config.categoriaDeArchivos.servicioDatosBasicos}-${this.idProd}`;
             this.idServicio = this.$routeParams['idServicio'];
+            this.idColeccion = `${this.config.categoriaDeArchivos.servicioDatosBasicos}-${this.idServicio}`;
 
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
                 this.cargarDatosSegunEstado();

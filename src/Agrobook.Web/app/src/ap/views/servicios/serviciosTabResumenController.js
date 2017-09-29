@@ -18,8 +18,8 @@ var apArea;
             // Objetos---------------------------------------
             this.momentInstance = moment;
             this.idProd = this.$routeParams['idProd'];
-            this.idColeccion = this.config.categoriaDeArchivos.servicioDatosBasicos + "-" + this.idProd;
             this.idServicio = this.$routeParams['idServicio'];
+            this.idColeccion = this.config.categoriaDeArchivos.servicioDatosBasicos + "-" + this.idServicio;
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
                 _this.cargarDatosSegunEstado();
             });
