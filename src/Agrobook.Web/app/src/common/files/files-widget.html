@@ -70,7 +70,7 @@
                 <md-button ng-show="unit.state === 'uploaded'"
                            class="md-secondary md-icon-button launch"
                            aria-label="action"
-                           ng-click="doSecondaryAction($event)">
+                           ng-click="showOptions($event, unit)">
                     <ng-md-icon icon="more_vert"></ng-md-icon>
                 </md-button>
                 <md-button ng-show="unit.state === 'uploading'"

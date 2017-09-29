@@ -34,6 +34,8 @@ namespace Agrobook.Server.Archivos
             //    result = Request.CreateResponse(HttpStatusCode.Gone);
             //}
 
+            // Validar aqui el usuario
+
             var response = this.PrepareFileResponse(idColeccion, nombreArchivo);
 
             await this.service.HandleAsync(new RegistrarDescargaExitosa(new Firma(usuario, DateTime.Now), idColeccion, nombreArchivo));
@@ -42,28 +44,42 @@ namespace Agrobook.Server.Archivos
         }
 
         [HttpGet]
-        [Route("preview/{idProductor}/{nombreArchivo}")]
-        public HttpResponseMessage Preview([FromUri]string idProductor, [FromUri] string nombreArchivo)
+        [Route("preview/{idColeccion}/{nombreArchivo}/{usuario}")]
+        public HttpResponseMessage Preview([FromUri]string idColeccion, [FromUri] string nombreArchivo, [FromUri] string usuario)
         {
-            // VALIDAR AQUI QUE NO SEA UN ARCHIVO GRANDE
-            // TODO: validar que no sea imagen. Si es imagen, hay que rechazar...
-            if (true)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
+            // Validar aqui el usuario
+            // Validar que sea imagen
+            var response = this.PrepareFileResponse(idColeccion, nombreArchivo);
 
-            //var response = this.PrepareFileResponse(idProductor, nombreArchivo);
-            //return response;
+            return response;
         }
 
-        private HttpResponseMessage PrepareFileResponse(string idProductor, string nombreArchivo)
+        private HttpResponseMessage PrepareFileResponse(string idColeccion, string nombreArchivo)
         {
             var result = this.Request.CreateResponse(HttpStatusCode.OK);
-            var fileStream = this.fileManager.GetFile(idProductor, nombreArchivo);
+            var fileStream = this.fileManager.GetFile(idColeccion, nombreArchivo);
             result.Content = new StreamContent(fileStream);
             result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
             result.Content.Headers.ContentDisposition.FileName = $"{nombreArchivo}";
             return result;
         }
+
+        /******************************************************************
+         * This is interesting to show a picture in the browser
+         ******************************************************************/
+        //[HttpGet]
+        //[Route("preview/{idProductor}/{nombreArchivo}")]
+        //public HttpResponseMessage Preview([FromUri]string idProductor, [FromUri] string nombreArchivo)
+        //{
+        // VALIDAR AQUI QUE NO SEA UN ARCHIVO GRANDE
+        // TODO: validar que no sea imagen. Si es imagen, hay que rechazar...
+        //if (true)
+        //{
+        //    return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+        //}
+
+        //var response = this.PrepareFileResponse(idProductor, nombreArchivo);
+        //return response;
+        //}
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Agrobook.Client.Archivos;
+using Agrobook.Domain.Archivos;
 using Eventing.Client.Http;
 using System.Linq;
 using System.Net.Http;
@@ -43,6 +44,22 @@ namespace Agrobook.Web.Controllers.Archivos
                 var resultado = await this.client.Upload(stream, fileName, metadatos);
                 return this.Ok(resultado);
             }
+        }
+
+        [HttpPost]
+        [Route("eliminar-archivo")]
+        public async Task<IHttpActionResult> EliminarArchivo([FromBody]EliminarArchivo cmd)
+        {
+            await this.client.EliminarArchivo(cmd);
+            return this.Ok();
+        }
+
+        [HttpPost]
+        [Route("restaurar-archivo")]
+        public async Task<IHttpActionResult> RestaurarArchivo([FromBody]RestaurarArchivo cmd)
+        {
+            await this.client.RestaurarArchivo(cmd);
+            return this.Ok();
         }
     }
 }

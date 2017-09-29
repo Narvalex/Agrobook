@@ -1,11 +1,9 @@
 ﻿using Agrobook.Client.Archivos;
 using Eventing.Client.Http;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 
 namespace Agrobook.Web.Controllers.Archivos
@@ -19,22 +17,6 @@ namespace Agrobook.Web.Controllers.Archivos
         {
             this.client = ServiceLocator.ResolveNewOf<ArchivosQueryClient>().WithTokenProvider(this.TokenProvider);
         }
-
-        //[HttpGet]
-        //[Route("productores")]
-        //public async Task<IHttpActionResult> ObtenerProductores()
-        //{
-        //    var dto = await this.client.ObtenerProductores();
-        //    return this.Ok(dto);
-        //}
-
-        //[HttpGet]
-        //[Route("archivos-del-productor/{idProductor}")]
-        //public async Task<IHttpActionResult> ObtenerArchivosDelProductor([FromUri]string idProductor)
-        //{
-        //    var dto = await this.client.ObtenerArchivosDelProductor(idProductor);
-        //    return this.Ok(dto);
-        //}
 
         [HttpGet]
         [Route("coleccion/{idColeccion}")]
@@ -50,6 +32,20 @@ namespace Agrobook.Web.Controllers.Archivos
         {
             var stream = await this.client.Download(idColeccion, nombreArchivo, usuario);
 
+            return PrepareResponse(nombreArchivo, stream);
+        }
+
+        [HttpGet]
+        [Route("preview/{idColeccion}/{nombreArchivo}/{usuario}")]
+        public async Task<HttpResponseMessage> Preview([FromUri]string idColeccion, [FromUri] string nombreArchivo, [FromUri]string usuario) // security bug here
+        {
+            var stream = await this.client.Preview(idColeccion, nombreArchivo, usuario);
+
+            return PrepareResponse(nombreArchivo, stream);
+        }
+
+        private HttpResponseMessage PrepareResponse(string nombreArchivo, System.IO.Stream stream)
+        {
             var response = this.Request.CreateResponse(HttpStatusCode.OK);
             response.Content = new StreamContent(stream);
             response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
@@ -58,42 +54,46 @@ namespace Agrobook.Web.Controllers.Archivos
             return response;
         }
 
-        [HttpGet]
-        [Route("file-icon/{idProductor}/{archivo}")]
-        public async Task<HttpResponseMessage> GetFileIcon([FromUri]string idProductor, [FromUri]string archivo)
-        {
-            // TODO: extract extension
-            var extension = default(string);
 
-            byte[] byteArray;
-            extension = extension.ToLowerInvariant();
-            if (extension != "jpg"
-                && extension != "png"
-                && extension != "jpeg")
-            {
-                var path = HttpContext.Current.Server.MapPath("~/app/assets/img/fileIcons/file.png");
-                byteArray = File.ReadAllBytes(path);
-            }
-            else
-            {
-                var stream = await this.client.Download(idProductor, archivo, extension);
-                byteArray = await ReadToByte(stream);
-            }
+        /******************************************************************
+         * This is interesting to show a picture in the browser
+         ******************************************************************/
+        //[HttpGet]
+        //[Route("file-icon/{idProductor}/{archivo}")]
+        //public async Task<HttpResponseMessage> GetFileIcon([FromUri]string idProductor, [FromUri]string archivo)
+        //{
+        //    // TODO: extract extension
+        //    var extension = default(string);
 
-            var response = this.Request.CreateResponse(HttpStatusCode.OK);
-            response.Content = new ByteArrayContent(byteArray);
-            await response.Content.LoadIntoBufferAsync(byteArray.Length);
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
-            return response;
-        }
+        //    byte[] byteArray;
+        //    extension = extension.ToLowerInvariant();
+        //    if (extension != "jpg"
+        //        && extension != "png"
+        //        && extension != "jpeg")
+        //    {
+        //        var path = HttpContext.Current.Server.MapPath("~/app/assets/img/fileIcons/file.png");
+        //        byteArray = File.ReadAllBytes(path);
+        //    }
+        //    else
+        //    {
+        //        var stream = await this.client.Download(idProductor, archivo, extension);
+        //        byteArray = await ReadToByte(stream);
+        //    }
 
-        private static async Task<byte[]> ReadToByte(Stream input)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                await input.CopyToAsync(memoryStream);
-                return memoryStream.ToArray();
-            }
-        }
+        //    var response = this.Request.CreateResponse(HttpStatusCode.OK);
+        //    response.Content = new ByteArrayContent(byteArray);
+        //    await response.Content.LoadIntoBufferAsync(byteArray.Length);
+        //    response.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+        //    return response;
+        //}
+
+        //private static async Task<byte[]> ReadToByte(Stream input)
+        //{
+        //    using (var memoryStream = new MemoryStream())
+        //    {
+        //        await input.CopyToAsync(memoryStream);
+        //        return memoryStream.ToArray();
+        //    }
+        //}
     }
 }

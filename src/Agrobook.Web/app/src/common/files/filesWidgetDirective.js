@@ -16,14 +16,17 @@ var common;
     }
     common.filesWidgetDirectiveFactory = filesWidgetDirectiveFactory;
     var filesWidgetController = (function () {
-        function filesWidgetController($scope, toasterLite, localStorageLite, config, $http) {
+        function filesWidgetController($scope, toasterLite, localStorageLite, config, $http, $mdPanel) {
             this.$scope = $scope;
             this.toasterLite = toasterLite;
             this.localStorageLite = localStorageLite;
             this.config = config;
             this.$http = $http;
+            this.$mdPanel = $mdPanel;
             var vm = this.$scope;
             vm.toasterLite = this.toasterLite;
+            vm.$mdPanel = this.$mdPanel;
+            vm.$http = this.$http;
             vm.loginInfo = this.localStorageLite.get(this.config.repoIndex.login.usuarioActual);
             vm.states = { pending: 'pending', uploading: 'uploading', uploaded: 'uploaded', uploadFailed: 'uploadFailed' };
             vm.fileInputId = vm.idColeccion + 'fileInputId';
@@ -33,6 +36,9 @@ var common;
             vm.uploadFile = this.uploadFile;
             vm.downloadFile = this.downloadFile;
             vm.setIconUrlAndSvgs = this.setIconUrlAndSvgs;
+            vm.showOptions = this.showOptions;
+            vm.deleteFile = this.deleteFile;
+            vm.restore = this.restore;
             vm.units = [];
             this.$http.get('archivos/query/coleccion/' + vm.idColeccion).then(function (value) {
                 for (var i = 0; i < value.data.length; i++) {
@@ -67,7 +73,8 @@ var common;
                     for (var j = 0; j < vm.units.length; j++) {
                         var existing = vm.units[j];
                         if (existing.name === newName) {
-                            console.log('File "' + newName + '" was not added because already exists!');
+                            //console.log('File "' + newName + '" was not added because already exists!');
+                            vm.toasterLite.error('¡El archivo ' + newName + ' ya está en la colección!');
                             alreadyExists = true;
                             break;
                         }
@@ -112,7 +119,7 @@ var common;
                     reader.readAsDataURL(unit.file);
                 }
                 else if (unit.state === this.states.uploaded) {
-                    unit.iconUrl = "./archivos/query/download/" + this.idColeccion + "/" + unit.name + "/" + this.loginInfo.usuario;
+                    unit.iconUrl = "./archivos/query/preview/" + this.idColeccion + "/" + unit.name + "/" + this.loginInfo.usuario;
                 }
                 else {
                     throw 'El estado de la imagen no es valido para ver su preview: ' + unit.state;
@@ -156,7 +163,7 @@ var common;
             var form = document.forms.namedItem('uploadForm');
             var formData = new FormData(form);
             formData.append('uploadedFile', unit.file);
-            var metadatos = new metadatosDeArchivo(unit.name, unit.extension, unit.file.type, unit.file.lastModifiedDate, unit.size, vm.idColeccion);
+            var metadatos = new metadatosDeArchivo(unit.name, unit.extension, unit.file.type, unit.file.lastModifiedDate, unit.size, vm.idColeccion, false);
             formData.append('metadatos', JSON.stringify(metadatos));
             // More info to try on edge: http://jsfiddle.net/pthoty2e/
             // Issue on edge: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/12224510/
@@ -281,14 +288,72 @@ var common;
                 unit.errorMessage = message;
             }
         };
+        filesWidgetController.prototype.deleteFile = function (unit) {
+            var _this = this;
+            this.$http.post("archivos/eliminar-archivo", { idColeccion: this.idColeccion, nombreArchivo: unit.name })
+                .then(function (value) {
+                for (var i = 0; i < _this.units.length; i++) {
+                    var u = _this.units[i];
+                    if (u.name == unit.name) {
+                        u.deleted = true;
+                        _this.toasterLite.info('Se eliminó el archivo ' + u.name);
+                        break;
+                    }
+                }
+            }, function (response) {
+                _this.toasterLite.error('No se pudo eliminar el archivo ' + unit.name);
+            });
+        };
+        filesWidgetController.prototype.restore = function (unit) {
+            var _this = this;
+            this.$http.post("archivos/restaurar-archivo", { idColeccion: this.idColeccion, nombreArchivo: unit.name })
+                .then(function (value) {
+                for (var i = 0; i < _this.units.length; i++) {
+                    var u = _this.units[i];
+                    if (u.name == unit.name) {
+                        u.deleted = false;
+                        _this.toasterLite.success('Se restauró el archivo ' + u.name);
+                        break;
+                    }
+                }
+            }, function (response) {
+                _this.toasterLite.error('No se pudo restaurar el archivo ' + unit.name);
+            });
+        };
+        filesWidgetController.prototype.showOptions = function ($event, unit) {
+            var position = this.$mdPanel.newPanelPosition()
+                .relativeTo($event.srcElement)
+                .addPanelPosition(this.$mdPanel.xPosition.ALIGN_START, this.$mdPanel.yPosition.BELOW);
+            var config = {
+                attachTo: angular.element(document.body),
+                controller: filesWidgetPanelMenuController,
+                controllerAs: 'vm',
+                hasBackdrop: true,
+                templateUrl: './src/common/files/files-widget-panel-menu.html',
+                position: position,
+                trapFocus: true,
+                locals: {
+                    'unit': unit,
+                    'parent': this
+                },
+                panelClass: 'menu-panel-container',
+                openFrom: $event,
+                focusOnOpen: true,
+                zIndex: 150,
+                disableParentScroll: true,
+                clickOutsideToClose: true,
+                escapeToClose: true,
+            };
+            this.$mdPanel.open(config);
+        };
         return filesWidgetController;
     }());
-    filesWidgetController.$inject = ['$scope', 'toasterLite', 'localStorageLite', 'config', '$http'];
+    filesWidgetController.$inject = ['$scope', 'toasterLite', 'localStorageLite', 'config', '$http', '$mdPanel'];
     var fileUnit = (function () {
         function fileUnit(name, extension, state, file, size, // in bytes
             formattedSize, 
             // Presets
-            iconUrl, iconSvg, isAPicture, progress, waitingServer, justUploaded, errorMessage, 
+            iconUrl, iconSvg, isAPicture, progress, waitingServer, justUploaded, errorMessage, deleted, 
             // Methods
             stopUpload) {
             if (iconUrl === void 0) { iconUrl = ''; }
@@ -298,6 +363,7 @@ var common;
             if (waitingServer === void 0) { waitingServer = false; }
             if (justUploaded === void 0) { justUploaded = false; }
             if (errorMessage === void 0) { errorMessage = ''; }
+            if (deleted === void 0) { deleted = false; }
             if (stopUpload === void 0) { stopUpload = null; }
             this.name = name;
             this.extension = extension;
@@ -312,22 +378,49 @@ var common;
             this.waitingServer = waitingServer;
             this.justUploaded = justUploaded;
             this.errorMessage = errorMessage;
+            this.deleted = deleted;
             this.stopUpload = stopUpload;
         }
         return fileUnit;
     }());
     common.fileUnit = fileUnit;
     var metadatosDeArchivo = (function () {
-        function metadatosDeArchivo(nombre, extension, tipo, fecha, size, idColeccion) {
+        function metadatosDeArchivo(nombre, extension, tipo, fecha, size, idColeccion, eliminado) {
             this.nombre = nombre;
             this.extension = extension;
             this.tipo = tipo;
             this.fecha = fecha;
             this.size = size;
             this.idColeccion = idColeccion;
+            this.eliminado = eliminado;
         }
         return metadatosDeArchivo;
     }());
     common.metadatosDeArchivo = metadatosDeArchivo;
+    var filesWidgetPanelMenuController = (function () {
+        function filesWidgetPanelMenuController(mdPanelRef) {
+            this.mdPanelRef = mdPanelRef;
+        }
+        filesWidgetPanelMenuController.prototype.eliminar = function () {
+            var _this = this;
+            this.mdPanelRef.close().then(function (value) {
+                _this.parent.deleteFile(_this.unit);
+            })
+                .finally(function () { return _this.mdPanelRef.destroy(); });
+        };
+        filesWidgetPanelMenuController.prototype.restaurar = function () {
+            var _this = this;
+            this.mdPanelRef.close().then(function (value) {
+                _this.parent.restore(_this.unit);
+            })
+                .finally(function () { return _this.mdPanelRef.destroy(); });
+        };
+        filesWidgetPanelMenuController.prototype.cancelar = function () {
+            var _this = this;
+            this.mdPanelRef.close().finally(function () { return _this.mdPanelRef.destroy(); });
+        };
+        return filesWidgetPanelMenuController;
+    }());
+    filesWidgetPanelMenuController.$inject = ['mdPanelRef'];
 })(common || (common = {}));
 //# sourceMappingURL=filesWidgetDirective.js.map

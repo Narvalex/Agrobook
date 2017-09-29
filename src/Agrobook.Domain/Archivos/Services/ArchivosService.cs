@@ -75,5 +75,35 @@ namespace Agrobook.Domain.Archivos.Services
             else
                 return ResultadoDelUpload.ResponderQueYaExiste();
         }
+
+        public async Task HandleAsync(EliminarArchivo cmd)
+        {
+            var coleccion = await this.repository.GetOrFailByIdAsync<ColeccionDeArchivos>(cmd.IdColeccion);
+
+            if (!coleccion.YaTieneArchivo(cmd.NombreArchivo))
+                throw new InvalidOperationException("El archivo ni siquiera existe");
+
+            if (coleccion.EstaEliminado(cmd.NombreArchivo))
+                throw new InvalidOperationException("El archivo ya esta eliminado");
+
+            coleccion.Emit(new ArchivoEliminado(cmd.Firma, cmd.IdColeccion, cmd.NombreArchivo));
+
+            await this.repository.SaveAsync(coleccion);
+        }
+
+        public async Task HandleAsync(RestaurarArchivo cmd)
+        {
+            var coleccion = await this.repository.GetOrFailByIdAsync<ColeccionDeArchivos>(cmd.IdColeccion);
+
+            if (!coleccion.YaTieneArchivo(cmd.NombreArchivo))
+                throw new InvalidOperationException("El archivo ni siquiera existe");
+
+            if (!coleccion.EstaEliminado(cmd.NombreArchivo))
+                throw new InvalidOperationException("El archivo no está eliminado, no necesita restaurarse");
+
+            coleccion.Emit(new ArchivoRestaurado(cmd.Firma, cmd.IdColeccion, cmd.NombreArchivo));
+
+            await this.repository.SaveAsync(coleccion);
+        }
     }
 }

@@ -8,7 +8,8 @@ namespace Agrobook.Domain.Archivos
     [StreamCategory("agrobook.coleccionesDeArchivos")]
     public class ColeccionDeArchivos : EventSourced
     {
-        private IDictionary<string, int> filesWithSize = new Dictionary<string, int>();
+        // int: size, bool: EstaEliminado
+        private IDictionary<string, Tuple<int, bool>> filesWithSize = new Dictionary<string, Tuple<int, bool>>();
 
         public ColeccionDeArchivos()
         {
@@ -18,13 +19,24 @@ namespace Agrobook.Domain.Archivos
             });
             this.On<NuevoArchivoAgregadoALaColeccion>(e =>
             {
-                this.filesWithSize.Add(e.Descriptor.Nombre, e.Descriptor.Size);
+                this.filesWithSize.Add(e.Descriptor.Nombre, new Tuple<int, bool>(e.Descriptor.Size, false));
+            });
+            this.On<ArchivoEliminado>(e =>
+            {
+                var size = this.filesWithSize[e.NombreArchivo].Item1;
+                this.filesWithSize[e.NombreArchivo] = new Tuple<int, bool>(size, true);
+            });
+            this.On<ArchivoRestaurado>(e =>
+            {
+                var size = this.filesWithSize[e.NombreArchivo].Item1;
+                this.filesWithSize[e.NombreArchivo] = new Tuple<int, bool>(size, false);
             });
         }
 
         public bool YaTieneArchivo(string nombreDelArchivo) => this.filesWithSize.ContainsKey(nombreDelArchivo);
 
-        public int GetSize(string nombreArchivo) => this.filesWithSize[nombreArchivo];
+        public int GetSize(string nombreArchivo) => this.filesWithSize[nombreArchivo].Item1;
+        public bool EstaEliminado(string nombreArchivo) => this.filesWithSize[nombreArchivo].Item2;
 
         protected override void Rehydrate(ISnapshot snapshot)
         {
@@ -43,30 +55,11 @@ namespace Agrobook.Domain.Archivos
 
     public class ColeccionDeArchivosDelProductorSnapshot : Snapshot
     {
-        public ColeccionDeArchivosDelProductorSnapshot(string streamName, int version, KeyValuePair<string, int>[] archivos) : base(streamName, version)
+        public ColeccionDeArchivosDelProductorSnapshot(string streamName, int version, KeyValuePair<string, Tuple<int, bool>>[] archivos) : base(streamName, version)
         {
             this.Archivos = archivos;
         }
 
-        public KeyValuePair<string, int>[] Archivos { get; }
-    }
-
-    public class ArchivoDescriptor
-    {
-        public ArchivoDescriptor(string nombre, string extension, DateTime fecha, string tipo, int size)
-        {
-            this.Nombre = nombre;
-            this.Extension = extension;
-            this.Fecha = fecha;
-            this.Tipo = tipo;
-            this.Size = size;
-        }
-
-        public string Nombre { get; }
-        public string Extension { get; }
-        public string Tipo { get; }
-        public DateTime Fecha { get; }
-        // En Byte
-        public int Size { get; }
+        public KeyValuePair<string, Tuple<int, bool>>[] Archivos { get; }
     }
 }

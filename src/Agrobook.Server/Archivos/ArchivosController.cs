@@ -17,7 +17,7 @@ namespace Agrobook.Server.Archivos
 
         [HttpPost]
         [Route("upload")]
-        public async Task<IHttpActionResult> UploadV2()
+        public async Task<IHttpActionResult> Upload()
         {
             var content = this.Request.Content;
 
@@ -39,6 +39,22 @@ namespace Agrobook.Server.Archivos
             var result = await this.service.HandleAsync(command);
 
             return this.Ok(result);
+        }
+
+        [HttpPost]
+        [Route("eliminar-archivo")]
+        public async Task<IHttpActionResult> EliminarArchivo([FromBody]EliminarArchivo cmd)
+        {
+            await this.service.HandleAsync(cmd.ConFirma(this.ActionContext));
+            return this.Ok();
+        }
+
+        [HttpPost]
+        [Route("restaurar-archivo")]
+        public async Task<IHttpActionResult> RestaurarArchivo([FromBody]RestaurarArchivo cmd)
+        {
+            await this.service.HandleAsync(cmd.ConFirma(this.ActionContext));
+            return this.Ok();
         }
     }
 }

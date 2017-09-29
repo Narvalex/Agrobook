@@ -1,0 +1,26 @@
+﻿<div class="menu-panel" md-whiteframe="4">
+    <div class="menu-content">
+        <md-subheader class="md-no-sticky">
+            <span>Archivo {{vm.unit.name}}</span>
+        </md-subheader>
+
+        <div class="menu-item" ng-hide="vm.unit.eliminado">
+            <button class="md-button red-text" ng-click="vm.eliminar()">
+                <ng-md-icon icon="clear"></ng-md-icon>
+                <span>&nbsp;&nbsp;Eliminar</span>
+            </button>
+        </div>
+        <div class="menu-item" ng-show="vm.unit.eliminado">
+            <button class="md-button" ng-click="vm.restaurar()">
+                <ng-md-icon icon="reply"></ng-md-icon>
+                <span>&nbsp;&nbsp;Restaurar</span>
+            </button>
+        </div>
+        <md-divider></md-divider>
+        <div class="menu-item">
+            <button class="md-button" ng-click="vm.cancelar()">
+                <span>Cancelar</span>
+            </button>
+        </div>
+    </div>
+</div>

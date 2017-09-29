@@ -91,6 +91,7 @@
     <Compile Include="Archivos\Messages\ArchivosCommands.cs" />
     <Compile Include="Archivos\Messages\ArchivosEvents.cs" />
     <Compile Include="Archivos\ColeccionDeArchivos.cs" />
+    <Compile Include="Archivos\Messages\ArchivoDescriptor.cs" />
     <Compile Include="Common\CheckpointRepository.cs" />
     <Compile Include="Common\DbContext\ArchivosDbContext.cs" />
     <Compile Include="Archivos\Subscribers\ArchivosIndexerService.cs" />

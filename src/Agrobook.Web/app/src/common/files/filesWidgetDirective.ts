@@ -17,7 +17,7 @@ module common {
     }
 
     class filesWidgetController {
-        static $inject = ['$scope', 'toasterLite', 'localStorageLite', 'config', '$http'];
+        static $inject = ['$scope', 'toasterLite', 'localStorageLite', 'config', '$http', '$mdPanel'];
         private states: { pending: string, uploading: string, uploaded: string, uploadFailed: string }
 
         constructor(
@@ -25,10 +25,13 @@ module common {
             private toasterLite: common.toasterLite,
             private localStorageLite: common.localStorageLite,
             private config: common.config,
-            private $http: ng.IHttpService
+            private $http: ng.IHttpService,
+            private $mdPanel: ng.material.IPanelService
         ) {
             var vm = this.$scope;
             vm.toasterLite = this.toasterLite;
+            vm.$mdPanel = this.$mdPanel;
+            vm.$http = this.$http;
             vm.loginInfo = this.localStorageLite.get<login.loginResult>(this.config.repoIndex.login.usuarioActual);
             vm.states = { pending: 'pending', uploading: 'uploading', uploaded: 'uploaded', uploadFailed: 'uploadFailed' };
             vm.fileInputId = vm.idColeccion + 'fileInputId';
@@ -38,6 +41,9 @@ module common {
             vm.uploadFile = this.uploadFile;
             vm.downloadFile = this.downloadFile;
             vm.setIconUrlAndSvgs = this.setIconUrlAndSvgs;
+            vm.showOptions = this.showOptions;
+            vm.deleteFile = this.deleteFile;
+            vm.restore = this.restore;
             vm.units = [];
 
             this.$http.get<metadatosDeArchivo[]>('archivos/query/coleccion/' + vm.idColeccion).then(
@@ -93,7 +99,8 @@ module common {
                     for (var j = 0; j < vm.units.length; j++) {
                         let existing = vm.units[j];
                         if (existing.name === newName) {
-                            console.log('File "' + newName + '" was not added because already exists!');
+                            //console.log('File "' + newName + '" was not added because already exists!');
+                            vm.toasterLite.error('¡El archivo ' + newName + ' ya está en la colección!');
                             alreadyExists = true;
                             break;
                         }
@@ -147,7 +154,7 @@ module common {
                     reader.readAsDataURL(unit.file);
                 }
                 else if (unit.state === this.states.uploaded) {
-                    unit.iconUrl = `./archivos/query/download/${this.idColeccion}/${unit.name}/${this.loginInfo.usuario}`;
+                    unit.iconUrl = `./archivos/query/preview/${this.idColeccion}/${unit.name}/${this.loginInfo.usuario}`;
                 }
                 else {
                     throw 'El estado de la imagen no es valido para ver su preview: ' + unit.state;
@@ -194,7 +201,7 @@ module common {
             var form = document.forms.namedItem('uploadForm');
             var formData = new FormData(form);
             formData.append('uploadedFile', unit.file);
-            let metadatos = new metadatosDeArchivo(unit.name, unit.extension, unit.file.type, unit.file.lastModifiedDate, unit.size, vm.idColeccion);
+            let metadatos = new metadatosDeArchivo(unit.name, unit.extension, unit.file.type, unit.file.lastModifiedDate, unit.size, vm.idColeccion, false);
             formData.append('metadatos', JSON.stringify(metadatos));
 
             // More info to try on edge: http://jsfiddle.net/pthoty2e/
@@ -337,6 +344,71 @@ module common {
                 unit.errorMessage = message;
             }
         }
+
+        deleteFile(unit: fileUnit) {
+            this.$http.post(`archivos/eliminar-archivo`, { idColeccion: this.idColeccion, nombreArchivo: unit.name })
+                .then(value => {
+                    for (var i = 0; i < this.units.length; i++) {
+                        let u = this.units[i];
+                        if (u.name == unit.name) {
+                            u.deleted = true;
+                            this.toasterLite.info('Se eliminó el archivo ' + u.name);
+                            break;
+                        }
+                    }
+                },
+                response => {
+                    this.toasterLite.error('No se pudo eliminar el archivo ' + unit.name);
+                });
+        }
+
+        restore(unit: fileUnit) {
+            this.$http.post(`archivos/restaurar-archivo`, { idColeccion: this.idColeccion, nombreArchivo: unit.name })
+                .then(value => {
+                    for (var i = 0; i < this.units.length; i++) {
+                        let u = this.units[i];
+                        if (u.name == unit.name) {
+                            u.deleted = false;
+                            this.toasterLite.success('Se restauró el archivo ' + u.name);
+                            break;
+                        }
+                    }
+                },
+                response => {
+                    this.toasterLite.error('No se pudo restaurar el archivo ' + unit.name);
+                });
+        }
+
+        showOptions($event: Event, unit: fileUnit) {
+            let position = this.$mdPanel.newPanelPosition()
+                .relativeTo($event.srcElement)
+                .addPanelPosition(
+                this.$mdPanel.xPosition.ALIGN_START,
+                this.$mdPanel.yPosition.BELOW);
+
+            let config: angular.material.IPanelConfig = {
+                attachTo: angular.element(document.body),
+                controller: filesWidgetPanelMenuController,
+                controllerAs: 'vm',
+                hasBackdrop: true,
+                templateUrl: './src/common/files/files-widget-panel-menu.html',
+                position: position,
+                trapFocus: true,
+                locals: {
+                    'unit': unit,
+                    'parent': this
+                },
+                panelClass: 'menu-panel-container',
+                openFrom: $event,
+                focusOnOpen: true,
+                zIndex: 150,
+                disableParentScroll: true,
+                clickOutsideToClose: true,
+                escapeToClose: true,
+            }
+
+            this.$mdPanel.open(config);
+        }
     }
 
     export class fileUnit {
@@ -356,6 +428,7 @@ module common {
             public waitingServer: boolean = false,
             public justUploaded: boolean = false,
             public errorMessage: string = '',
+            public deleted: boolean = false,
             // Methods
             public stopUpload: () => any = null,
         ) {
@@ -369,8 +442,41 @@ module common {
             public tipo: string,
             public fecha: Date,
             public size: number,
-            public idColeccion: string
+            public idColeccion: string,
+            public eliminado: boolean
         ) {
+        }
+    }
+
+    class filesWidgetPanelMenuController {
+        static $inject = ['mdPanelRef'];
+
+        constructor(
+            private mdPanelRef: angular.material.IPanelRef
+        ) {
+        }
+
+        unit: fileUnit;
+        parent: filesWidgetController;
+
+        eliminar() {
+            this.mdPanelRef.close().then(
+                value => {
+                    this.parent.deleteFile(this.unit);
+                })
+                .finally(() => this.mdPanelRef.destroy());
+        }
+
+        restaurar() {
+            this.mdPanelRef.close().then(
+                value => {
+                    this.parent.restore(this.unit);
+                })
+                .finally(() => this.mdPanelRef.destroy());
+        }
+
+        cancelar() {
+            this.mdPanelRef.close().finally(() => this.mdPanelRef.destroy());
         }
     }
 }

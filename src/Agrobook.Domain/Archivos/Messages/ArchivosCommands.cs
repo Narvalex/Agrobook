@@ -30,4 +30,32 @@ namespace Agrobook.Domain.Archivos
         public string IdColeccion { get; }
         public string NombreArchivo { get; }
     }
+
+    public class EliminarArchivo : MensajeAuditable
+    {
+        public EliminarArchivo(Firma metadatos, string idColeccion, string nombreArchivo)
+            : base(metadatos)
+        {
+            this.IdColeccion = idColeccion;
+            this.NombreArchivo = nombreArchivo;
+        }
+
+        // Este es al que pertenece el archivo
+        public string IdColeccion { get; }
+        public string NombreArchivo { get; }
+    }
+
+    public class RestaurarArchivo : MensajeAuditable
+    {
+        public RestaurarArchivo(Firma metadatos, string idColeccion, string nombreArchivo)
+            : base(metadatos)
+        {
+            this.IdColeccion = idColeccion;
+            this.NombreArchivo = nombreArchivo;
+        }
+
+        // Este es al que pertenece el archivo
+        public string IdColeccion { get; }
+        public string NombreArchivo { get; }
+    }
 }

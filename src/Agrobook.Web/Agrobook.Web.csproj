@@ -1093,6 +1093,7 @@
     <Content Include="app\src\ap\views\servicios\tab-diagnostico.html" />
     <Content Include="app\src\ap\views\servicios\tab-parcela.html" />
     <Content Include="app\src\ap\views\servicios\tab-resumen.html" />
+    <Content Include="app\src\common\files\files-widget-panel-menu.html" />
     <Content Include="app\src\common\files\files-widget.html" />
     <Content Include="app\src\common\toasts\toast-cerrable.html" />
     <Content Include="app\src\common\userMenu\menu-items-template.html" />

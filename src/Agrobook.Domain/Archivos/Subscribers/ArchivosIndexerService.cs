@@ -4,12 +4,15 @@ using Eventing;
 using Eventing.Core.Domain;
 using Eventing.Core.Persistence;
 using System;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Archivos.Services
 {
     public class ArchivosIndexerService : AgrobookDenormalizer,
-        IEventHandler<NuevoArchivoAgregadoALaColeccion>
+        IEventHandler<NuevoArchivoAgregadoALaColeccion>,
+        IEventHandler<ArchivoEliminado>,
+        IEventHandler<ArchivoRestaurado>
     {
         private readonly IFileWriter fileManager;
 
@@ -37,8 +40,27 @@ namespace Agrobook.Domain.Archivos.Services
                     Fecha = e.Descriptor.Fecha,
                     Extension = e.Descriptor.Extension,
                     Tipo = e.Descriptor.Tipo,
-                    Size = e.Descriptor.Size
+                    Size = e.Descriptor.Size,
+                    Eliminado = false
                 });
+            });
+        }
+
+        public async Task HandleOnce(long eventNumber, ArchivoEliminado e)
+        {
+            await this.Denormalize(eventNumber, async context =>
+            {
+                var archivo = await context.Archivos.SingleAsync(x => x.IdColeccion == e.IdColeccion && x.Nombre == e.NombreArchivo);
+                archivo.Eliminado = true;
+            });
+        }
+
+        public async Task HandleOnce(long eventNumber, ArchivoRestaurado e)
+        {
+            await this.Denormalize(eventNumber, async context =>
+            {
+                var archivo = await context.Archivos.SingleAsync(x => x.IdColeccion == e.IdColeccion && x.Nombre == e.NombreArchivo);
+                archivo.Eliminado = false;
             });
         }
     }

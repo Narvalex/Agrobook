@@ -1,4 +1,5 @@
-﻿using Agrobook.Domain.Archivos.Services;
+﻿using Agrobook.Domain.Archivos;
+using Agrobook.Domain.Archivos.Services;
 using Eventing.Client.Http;
 using System;
 using System.IO;
@@ -16,6 +17,16 @@ namespace Agrobook.Client.Archivos
         {
             var dto = await base.Upload<ResultadoDelUpload>("upload", fileStream, fileName, metadatosSerializados);
             return dto;
+        }
+
+        public async Task EliminarArchivo(EliminarArchivo cmd)
+        {
+            await base.Post("eliminar-archivo", cmd);
+        }
+
+        public async Task RestaurarArchivo(RestaurarArchivo cmd)
+        {
+            await base.Post("restaurar-archivo", cmd);
         }
     }
 }

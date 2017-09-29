@@ -22,6 +22,7 @@ namespace Agrobook.Domain
         public DateTime Fecha { get; set; }
         public string Tipo { get; set; }
         public int Size { get; set; }
+        public bool Eliminado { get; set; }
     }
 
     public class ArchivosEntityMap : EntityTypeConfiguration<ArchivosEntity>

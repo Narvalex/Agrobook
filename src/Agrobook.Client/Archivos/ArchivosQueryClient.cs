@@ -13,19 +13,20 @@ namespace Agrobook.Client.Archivos
             : base(http, tokenProvider, "archivos/query")
         { }
 
-        public async Task<Stream> Download(string idColeccion, string nombreArchivo, string usuario = null)
+        public async Task<Stream> Download(string idColeccion, string nombreArchivo, string usuario)
         {
             string prefix, sufix;
-            if (usuario is null)
-            {
-                prefix = "preview";
-                sufix = string.Empty;
-            }
-            else
-            {
-                prefix = "download";
-                sufix = $"/{usuario}";
-            }
+            prefix = "download";
+            sufix = $"/{usuario}";
+            var stream = await base.Get($"{prefix}/{idColeccion}/{nombreArchivo}" + sufix);
+            return stream;
+        }
+
+        public async Task<Stream> Preview(string idColeccion, string nombreArchivo, string usuario)
+        {
+            string prefix, sufix;
+            prefix = "preview";
+            sufix = $"/{usuario}";
             var stream = await base.Get($"{prefix}/{idColeccion}/{nombreArchivo}" + sufix);
             return stream;
         }
