@@ -12,6 +12,7 @@ var homeArea;
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$injector', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $injector) {
             // iconarchive, flaticon
             // Sistem Icon http://www.flaticon.com/free-icon/tree-leaf_3923#term=leaf&page=1&position=11
+            // Agrobook icon https://www.flaticon.com/free-icon/tree-leaf_3923
             $mdIconProvider
                 .defaultIconSet('./assets/svg/avatars.svg', 128)
                 .icon('agrobook-white', './assets/svg/agrobook-white.svg')

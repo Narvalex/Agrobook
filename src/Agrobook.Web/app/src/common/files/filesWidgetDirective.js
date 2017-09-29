@@ -34,7 +34,7 @@ var common;
             vm.downloadFile = this.downloadFile;
             vm.setIconUrlAndSvgs = this.setIconUrlAndSvgs;
             vm.units = [];
-            $http.get('archivos/query/coleccion/' + vm.idColeccion).then(function (value) {
+            this.$http.get('archivos/query/coleccion/' + vm.idColeccion).then(function (value) {
                 for (var i = 0; i < value.data.length; i++) {
                     var meta = value.data[i];
                     var unit = new fileUnit(meta.nombre, meta.extension, vm.states.uploaded, null, meta.size, meta.size > 1024 * 1024 ? (meta.size / 1024 / 1024).toFixed(1) + " MB" : (meta.size / 1024).toFixed(1) + " KB");
@@ -101,14 +101,22 @@ var common;
             if (ext === 'jpg' || ext === 'jpeg' || ext === 'png') {
                 unit.isAPicture = true;
                 unit.iconSvg = 'picture';
-                var vm = this;
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    vm.$apply(function () {
-                        unit.iconUrl = e.target.result;
-                    });
-                };
-                reader.readAsDataURL(unit.file);
+                if (unit.state === this.states.pending) {
+                    var vm = this;
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        vm.$apply(function () {
+                            unit.iconUrl = e.target.result;
+                        });
+                    };
+                    reader.readAsDataURL(unit.file);
+                }
+                else if (unit.state === this.states.uploaded) {
+                    unit.iconUrl = "./archivos/query/download/" + this.idColeccion + "/" + unit.name + "/" + this.loginInfo.usuario;
+                }
+                else {
+                    throw 'El estado de la imagen no es valido para ver su preview: ' + unit.state;
+                }
             }
             else {
                 unit.isAPicture = false;

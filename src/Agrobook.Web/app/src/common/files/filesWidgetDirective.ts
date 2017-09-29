@@ -40,7 +40,7 @@ module common {
             vm.setIconUrlAndSvgs = this.setIconUrlAndSvgs;
             vm.units = [];
 
-            $http.get<metadatosDeArchivo[]>('archivos/query/coleccion/' + vm.idColeccion).then(
+            this.$http.get<metadatosDeArchivo[]>('archivos/query/coleccion/' + vm.idColeccion).then(
                 value => {
                     for (var i = 0; i < value.data.length; i++) {
                         var meta = value.data[i];
@@ -135,15 +135,23 @@ module common {
                 unit.isAPicture = true;
                 unit.iconSvg = 'picture';
 
-                var vm = this;
-                let reader = new FileReader();
-                reader.onload = (e: any) => {
-                    vm.$apply(() => {
-                        unit.iconUrl = e.target.result;
-                    });
-                };
+                if (unit.state === this.states.pending) {
+                    var vm = this;
+                    let reader = new FileReader();
+                    reader.onload = (e: any) => {
+                        vm.$apply(() => {
+                            unit.iconUrl = e.target.result;
+                        });
+                    };
 
-                reader.readAsDataURL(unit.file);
+                    reader.readAsDataURL(unit.file);
+                }
+                else if (unit.state === this.states.uploaded) {
+                    unit.iconUrl = `./archivos/query/download/${this.idColeccion}/${unit.name}/${this.loginInfo.usuario}`;
+                }
+                else {
+                    throw 'El estado de la imagen no es valido para ver su preview: ' + unit.state;
+                }
             }
             else {
                 unit.isAPicture = false;

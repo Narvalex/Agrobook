@@ -11,12 +11,15 @@ namespace Agrobook.Domain.Ap.Services
     public partial class ApService :
         IEventHandler<NuevoRegistroDeServicioPendiente>
     {
-        // explicity implemented to guard a missusing of the api by a client. 
-        // This should only has to be called by the event subscription stuff
+        /// <summary>
+        /// This should only be called by the subscription of the Servicios Saga Execution Coordinator, 
+        /// and the unit test code
+        /// </summary>
         public async Task HandleOnce(long eventNumber, NuevoRegistroDeServicioPendiente e)
         {
             if (await this.repository.Exists<Servicio>(e.IdProd))
             {
+                // This is the idemptency stuff
                 this.logger.Warning("Ignorando mensaje ya manejado del tipo " + typeof(NuevoRegistroDeServicioPendiente).Name);
                 return;
             }
