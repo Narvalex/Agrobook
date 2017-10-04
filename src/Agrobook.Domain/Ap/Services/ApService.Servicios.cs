@@ -24,17 +24,21 @@ namespace Agrobook.Domain.Ap.Services
                 return;
             }
 
+            await AsegurarQueElContratoOLaAdendaSeanValidos(e.EsAdenda, e.IdContrato, e.IdContratoDeLaAdenda);
+
             var servicio = new Servicio();
-            servicio.Emit(new NuevoServicioRegistrado(e.Firma, e.IdServicio, e.IdProd, e.IdOrg, e.IdContrato, e.Fecha));
+
+            servicio.Emit(new NuevoServicioRegistrado(
+                e.Firma, e.IdServicio, e.IdProd, e.IdOrg, e.IdContrato, e.EsAdenda, e.IdContratoDeLaAdenda, e.Fecha));
 
             await this.repository.SaveAsync(servicio);
         }
 
         public async Task HandleAsync(EditarDatosBasicosDelSevicio cmd)
         {
-            await this.repository.EnsureExistenceOf<Organizacion>(cmd.IdOrg)
-                .And<Contrato>(cmd.IdContrato)
-                .AndNothingMore();
+            await this.repository.EnsureExistence<Organizacion>(cmd.IdOrg);
+
+            await this.AsegurarQueElContratoOLaAdendaSeanValidos(cmd.EsAdenda, cmd.IdContrato, cmd.IdContratoDeLaAdenda);
 
             cmd.Fecha.EnsureIsNotDefault(nameof(cmd.Fecha));
 
@@ -43,7 +47,8 @@ namespace Agrobook.Domain.Ap.Services
             if (!servicio.HayDiferenciaEnDatosBasicos(cmd.IdOrg, cmd.IdContrato, cmd.Fecha))
                 throw new InvalidOperationException("No hay diferencias que registrar en datos basicos del servicio!");
 
-            servicio.Emit(new DatosBasicosDelSevicioEditados(cmd.Firma, cmd.IdServicio, cmd.IdOrg, cmd.IdContrato, cmd.Fecha));
+            servicio.Emit(new DatosBasicosDelSevicioEditados(cmd.Firma, cmd.IdServicio, cmd.IdOrg,
+                cmd.IdContrato, cmd.EsAdenda, cmd.IdContratoDeLaAdenda, cmd.Fecha));
 
             await this.repository.SaveAsync(servicio);
         }
@@ -94,6 +99,16 @@ namespace Agrobook.Domain.Ap.Services
             servicio.Emit(new ParcelaDeServicioCambiada(cmd.Firma, cmd.IdServicio, cmd.IdParcela));
 
             await this.repository.SaveAsync(servicio);
+        }
+
+        private async Task AsegurarQueElContratoOLaAdendaSeanValidos(bool esAdenda, string idContrato, string idContratoDeLaAdenda)
+        {
+            // Verificamos que exista el contrato
+            var contrato = await this.repository.GetOrFailByIdAsync<Contrato>(esAdenda ? idContratoDeLaAdenda : idContrato);
+
+            // Si es una adenda, verifacmos que exista esa adenda en ese contrato
+            if (esAdenda && !contrato.TieneAdenda(idContrato))
+                throw new InvalidOperationException("No es válido esta adenda, por que no existe en este contrato");
         }
     }
 }

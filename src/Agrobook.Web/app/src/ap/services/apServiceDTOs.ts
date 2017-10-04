@@ -28,6 +28,8 @@ module apArea {
         constructor(
             public id: string,
             public idContrato: string,
+            public esAdenda: boolean,
+            public idContratoDeLaAdenda: string,
             public contratoDisplay: string,
             public idOrg: string,
             public orgDisplay: string,
@@ -133,10 +135,10 @@ module apArea {
                     new contratoDto('coopchorti_Contrato Chorti_Adenda I', 'coopchorti', 'Adenda I', true, false, 'Contrato_Chorti', new Date(2017, 2, 20))
                 ];
 
-                this.servicios = [
-                    new servicioDto('adair_servicio1', 'coopchorti_Contrato Chorti', 'Contrato Chorti', 'coopchorti', 'Cooperativa Chortizer', 'adair', new Date(2017, 12, 1)),
-                    new servicioDto('adair_servicio2', 'coopchorti_Contrato Chorti_Adenda I', 'Adenda I', 'coopchorti', 'Cooperativa Chortizer', 'adair', new Date(2017, 12, 30))
-                ];
+                //this.servicios = [
+                //    new servicioDto('adair_servicio1', 'coopchorti_Contrato Chorti', 'Contrato Chorti', 'coopchorti', 'Cooperativa Chortizer', 'adair', new Date(2017, 12, 1)),
+                //    new servicioDto('adair_servicio2', 'coopchorti_Contrato Chorti_Adenda I', 'Adenda I', 'coopchorti', 'Cooperativa Chortizer', 'adair', new Date(2017, 12, 30))
+                //];
             }
         }
         

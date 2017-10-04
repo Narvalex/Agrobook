@@ -11,7 +11,7 @@ module apArea {
             private config: common.config
         ) {
             this.idProd = this.$routeParams['idProd'];
-            this.servicio = new servicioDto(this.$routeParams['idServicio'], null, null, null, null, null, null);
+            this.servicio = new servicioDto(this.$routeParams['idServicio'], null, null, null, null, null, null, null, null);
             
             this.resolveAction();
 

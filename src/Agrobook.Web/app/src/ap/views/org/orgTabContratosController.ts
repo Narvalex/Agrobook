@@ -166,8 +166,14 @@ module apArea {
 
             // Rellenar datos faltantes
             this.dirty.esAdenda = this.tipoContrato === 'adenda';
-            if (this.dirty.esAdenda)
+            if (this.dirty.esAdenda) {
+                if (this.contratoAdendado === undefined) {
+                    this.toasterLite.error('Debe seleccionar un contrato para continuar');
+                    this.submitting = false;
+                    return;
+                }
                 this.dirty.idContratoDeLaAdenda = this.contratoAdendado.id;
+            }
 
             if (this.editMode) {
                 // Edit

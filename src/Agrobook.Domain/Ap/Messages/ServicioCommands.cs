@@ -5,18 +5,22 @@ namespace Agrobook.Domain.Ap.Messages
 {
     public class EditarDatosBasicosDelSevicio : MensajeAuditable
     {
-        public EditarDatosBasicosDelSevicio(Firma firma, string idServicio, string idOrg, string idContrato, DateTime fecha)
+        public EditarDatosBasicosDelSevicio(Firma firma, string idServicio, string idOrg, string idContrato, bool esAdenda, string idContratoDeLaAdenda, DateTime fecha)
             : base(firma)
         {
             this.IdServicio = idServicio;
             this.IdOrg = idOrg;
             this.IdContrato = idContrato;
+            this.EsAdenda = esAdenda;
+            this.IdContratoDeLaAdenda = idContratoDeLaAdenda;
             this.Fecha = fecha;
         }
 
         public string IdServicio { get; }
         public string IdOrg { get; }
         public string IdContrato { get; }
+        public bool EsAdenda { get; }
+        public string IdContratoDeLaAdenda { get; }
         public DateTime Fecha { get; }
     }
 

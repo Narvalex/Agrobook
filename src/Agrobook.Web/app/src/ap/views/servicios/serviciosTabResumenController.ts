@@ -110,6 +110,8 @@ module apArea {
             let servicio = new servicioDto(
                 this.idServicio,
                 this.contratoSeleccionado.id,
+                this.contratoSeleccionado.esAdenda,
+                this.contratoSeleccionado.idContratoDeLaAdenda,
                 this.contratoSeleccionado.display,
                 this.orgConContratosSeleccionada.org.id,
                 this.orgConContratosSeleccionada.org.display,

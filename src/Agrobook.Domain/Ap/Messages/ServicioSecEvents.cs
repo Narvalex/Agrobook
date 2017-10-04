@@ -17,13 +17,16 @@ namespace Agrobook.Domain.Ap.Messages
 
     public class NuevoRegistroDeServicioPendiente : MensajeAuditable, IEvent
     {
-        public NuevoRegistroDeServicioPendiente(Firma firma, string idProd, int nroDeServicioDelProd, string idServicio, string idOrg, string idContrato, DateTime fecha) : base(firma)
+        public NuevoRegistroDeServicioPendiente(Firma firma, string idProd, int nroDeServicioDelProd, string idServicio, string idOrg,
+            string idContrato, bool esAdenda, string idContratoDeLaAdenda, DateTime fecha) : base(firma)
         {
             this.IdProd = idProd;
             this.NroDeServicioDelProd = nroDeServicioDelProd;
             this.IdServicio = idServicio;
             this.IdOrg = idOrg;
             this.IdContrato = idContrato;
+            this.EsAdenda = esAdenda;
+            this.IdContratoDeLaAdenda = idContratoDeLaAdenda;
             this.Fecha = fecha;
         }
 
@@ -32,6 +35,8 @@ namespace Agrobook.Domain.Ap.Messages
         public string IdServicio { get; }
         public string IdOrg { get; }
         public string IdContrato { get; }
+        public bool EsAdenda { get; }
+        public string IdContratoDeLaAdenda { get; }
         public DateTime Fecha { get; }
 
         public string StreamId => this.IdProd;

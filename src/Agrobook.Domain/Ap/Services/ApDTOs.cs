@@ -36,6 +36,8 @@ namespace Agrobook.Domain.Ap.Services
     {
         public string Id { get; set; }
         public string IdContrato { get; set; }
+        public bool EsAdenda { get; set; }
+        public string IdContratoDeLaAdenda { get; set; }
         public string ContratoDisplay { get; set; }
         public string IdOrg { get; set; }
         public string OrgDisplay { get; set; }

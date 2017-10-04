@@ -74,7 +74,7 @@ var apArea;
                 return;
             }
             this.submitting = true;
-            var servicio = new apArea.servicioDto(this.idServicio, this.contratoSeleccionado.id, this.contratoSeleccionado.display, this.orgConContratosSeleccionada.org.id, this.orgConContratosSeleccionada.org.display, this.idProd, this.fechaSeleccionada);
+            var servicio = new apArea.servicioDto(this.idServicio, this.contratoSeleccionado.id, this.contratoSeleccionado.esAdenda, this.contratoSeleccionado.idContratoDeLaAdenda, this.contratoSeleccionado.display, this.orgConContratosSeleccionada.org.id, this.orgConContratosSeleccionada.org.display, this.idProd, this.fechaSeleccionada);
             switch (this.action) {
                 case 'new':
                     this.registrarNuevoServicio(servicio);

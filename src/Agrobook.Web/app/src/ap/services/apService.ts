@@ -115,6 +115,8 @@ module apArea {
                 idProd: servicio.idProd,
                 idOrg: servicio.idOrg,
                 idContrato: servicio.idContrato,
+                esAdenda: servicio.esAdenda,
+                idContratoDeLaAdenda: servicio.idContratoDeLaAdenda,
                 fecha: servicio.fecha
             };
             super.postWithCallback('nuevo-servicio', cmd, callback);
@@ -125,6 +127,8 @@ module apArea {
                 idServicio: servicio.id,
                 idOrg: servicio.idOrg,
                 idContrato: servicio.idContrato,
+                esAdenda: servicio.esAdenda,
+                idContratoDeLaAdenda: servicio.idContratoDeLaAdenda,
                 fecha: servicio.fecha,
             };
             super.postWithCallback('editar-datos-basicos-del-servicio', cmd, callback);

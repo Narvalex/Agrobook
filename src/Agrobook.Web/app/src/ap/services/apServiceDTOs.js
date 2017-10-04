@@ -29,7 +29,7 @@ var apArea;
     }());
     apArea.orgDto = orgDto;
     var servicioDto = (function () {
-        function servicioDto(id, idContrato, contratoDisplay, idOrg, orgDisplay, idProd, fecha, 
+        function servicioDto(id, idContrato, esAdenda, idContratoDeLaAdenda, contratoDisplay, idOrg, orgDisplay, idProd, fecha, 
             // With Defaults
             eliminado, parcelaId, parcelaDisplay) {
             if (eliminado === void 0) { eliminado = false; }
@@ -37,6 +37,8 @@ var apArea;
             if (parcelaDisplay === void 0) { parcelaDisplay = null; }
             this.id = id;
             this.idContrato = idContrato;
+            this.esAdenda = esAdenda;
+            this.idContratoDeLaAdenda = idContratoDeLaAdenda;
             this.contratoDisplay = contratoDisplay;
             this.idOrg = idOrg;
             this.orgDisplay = orgDisplay;
@@ -161,10 +163,10 @@ var apArea;
                     new contratoDto('coopchorti_Contrato Chorti', 'coopchorti', 'Contrato Chorti', false, false, null, new Date(2017, 1, 17)),
                     new contratoDto('coopchorti_Contrato Chorti_Adenda I', 'coopchorti', 'Adenda I', true, false, 'Contrato_Chorti', new Date(2017, 2, 20))
                 ];
-                this.servicios = [
-                    new servicioDto('adair_servicio1', 'coopchorti_Contrato Chorti', 'Contrato Chorti', 'coopchorti', 'Cooperativa Chortizer', 'adair', new Date(2017, 12, 1)),
-                    new servicioDto('adair_servicio2', 'coopchorti_Contrato Chorti_Adenda I', 'Adenda I', 'coopchorti', 'Cooperativa Chortizer', 'adair', new Date(2017, 12, 30))
-                ];
+                //this.servicios = [
+                //    new servicioDto('adair_servicio1', 'coopchorti_Contrato Chorti', 'Contrato Chorti', 'coopchorti', 'Cooperativa Chortizer', 'adair', new Date(2017, 12, 1)),
+                //    new servicioDto('adair_servicio2', 'coopchorti_Contrato Chorti_Adenda I', 'Adenda I', 'coopchorti', 'Cooperativa Chortizer', 'adair', new Date(2017, 12, 30))
+                //];
             }
         }
         return fakeDb;

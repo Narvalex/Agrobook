@@ -6,13 +6,16 @@ namespace Agrobook.Domain.Ap.Messages
 {
     public class NuevoServicioRegistrado : MensajeAuditable, IEvent
     {
-        public NuevoServicioRegistrado(Firma firma, string idServicio, string idProd, string idOrg, string idContrato, DateTime fecha)
+        public NuevoServicioRegistrado(Firma firma, string idServicio, string idProd, string idOrg,
+            string idContrato, bool esAdenda, string idContratoDeLaAdenda, DateTime fecha)
             : base(firma)
         {
             this.IdServicio = idServicio;
             this.IdProd = idProd;
             this.IdOrg = idOrg;
             this.IdContrato = idContrato;
+            this.EsAdenda = esAdenda;
+            this.IdContratoDeLaAdenda = idContratoDeLaAdenda;
             this.Fecha = fecha;
         }
 
@@ -23,6 +26,8 @@ namespace Agrobook.Domain.Ap.Messages
         public string IdProd { get; }
         public string IdOrg { get; }
         public string IdContrato { get; }
+        public bool EsAdenda { get; }
+        public string IdContratoDeLaAdenda { get; }
         public DateTime Fecha { get; }
 
         public string StreamId => this.IdServicio;
@@ -30,18 +35,23 @@ namespace Agrobook.Domain.Ap.Messages
 
     public class DatosBasicosDelSevicioEditados : MensajeAuditable, IEvent
     {
-        public DatosBasicosDelSevicioEditados(Firma firma, string idServicio, string idOrg, string idContrato, DateTime fecha)
+        public DatosBasicosDelSevicioEditados(Firma firma, string idServicio, string idOrg,
+            string idContrato, bool esAdenda, string idContratoDeLaAdenda, DateTime fecha)
             : base(firma)
         {
             this.IdServicio = idServicio;
             this.IdOrg = idOrg;
             this.IdContrato = idContrato;
+            this.EsAdenda = esAdenda;
+            this.IdContratoDeLaAdenda = idContratoDeLaAdenda;
             this.Fecha = fecha;
         }
 
         public string IdServicio { get; }
         public string IdOrg { get; }
         public string IdContrato { get; }
+        public bool EsAdenda { get; }
+        public string IdContratoDeLaAdenda { get; }
         public DateTime Fecha { get; }
 
         public string StreamId => this.IdServicio;

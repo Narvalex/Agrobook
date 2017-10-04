@@ -15,7 +15,7 @@ namespace Agrobook.Domain.Ap.Services
                 .EnsureExistenceOf<Organizacion>(cmd.IdOrg)
                 // .And<Productor>(cmd.IdProd) --- Esto comentamos porque recien es un productor cuando tiene parcela
                 .And<Usuario>(cmd.IdProd)
-                .And<Contrato>(cmd.IdContrato)
+                .And<Contrato>(cmd.EsAdenda ? cmd.IdContratoDeLaAdenda : cmd.IdContrato)
                 .AndNothingMore();
 
             var servicioSec = await this.repository.GetByIdAsync<ServicioSec>(cmd.IdProd);
@@ -34,6 +34,8 @@ namespace Agrobook.Domain.Ap.Services
                 idServicio,
                 cmd.IdOrg,
                 cmd.IdContrato,
+                cmd.EsAdenda,
+                cmd.IdContratoDeLaAdenda,
                 cmd.Fecha));
 
             await this.repository.SaveAsync(servicioSec);
