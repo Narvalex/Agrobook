@@ -2,6 +2,7 @@
 using Eventing.Core.Serialization;
 using Eventing.Log;
 using EventStore.ClientAPI;
+using EventStore.ClientAPI.Exceptions;
 using System;
 using System.Text;
 using System.Threading;
@@ -78,7 +79,6 @@ namespace Eventing.GetEventStore
                 if (this.subscription != null)
                     this.subscription.Stop();
 
-
                 this.subscription = this.resilientConnection.SubscribeToStreamFrom(this.streamName, this.lastCheckpoint, CatchUpSubscriptionSettings.Default,
                        (sub, eventAppeared) =>
                        {
@@ -108,6 +108,12 @@ namespace Eventing.GetEventStore
                                var message = $"The subscription of {this.streamName} stopped because of {reason} on checkpoint {chkp}. Restarting in {seconds} seconds.";
                                if (reason == SubscriptionDropReason.ConnectionClosed)
                                    this.log.Info(message);
+                               else if (reason == SubscriptionDropReason.CatchUpError && ex is NotAuthenticatedException)
+                               {
+                                   seconds = 10;
+                                   message = $"The connection was not authenticated yet. If this persist you should check the credentianls. The subscription of {this.streamName} stopped on checkpoint {chkp}. Retrying in {seconds} seconds.";
+                                   this.log.Warning(message);
+                               }
                                else
                                    this.log.Error(ex, message);
 
