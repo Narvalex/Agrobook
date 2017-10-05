@@ -2,6 +2,7 @@
 using Eventing.Core.Serialization;
 using Eventing.Log;
 using EventStore.ClientAPI;
+using EventStore.ClientAPI.Exceptions;
 using System;
 using System.Text;
 using System.Threading;
@@ -23,22 +24,27 @@ namespace Eventing.GetEventStore
         private EventStoreCatchUpSubscription subscription;
 
         private bool shouldStopNow = false;
+        private bool running = false;
         private long? lastCheckpoint;
+        private readonly int stopTimeoutSecs;
 
         private readonly object lockObject = new object();
 
-        public EventStoreSubscription(IEventStoreConnection resilientConnection, IJsonSerializer serializer, string streamName, Lazy<long?> lazyLastCheckpoint, Action<long, object> handler, Action<long> persistCheckpoint = null)
+        public EventStoreSubscription(IEventStoreConnection resilientConnection, IJsonSerializer serializer, string streamName, Lazy<long?> lazyLastCheckpoint, Action<long, object> handler, Action<long> persistCheckpoint = null,
+            int stopTimeoutSecs = 60)
         {
             Ensure.NotNull(resilientConnection, nameof(resilientConnection));
             Ensure.NotNullOrWhiteSpace(streamName, nameof(streamName));
             Ensure.NotNull(handler, nameof(handler));
             Ensure.NotNull(serializer, nameof(serializer));
+            Ensure.Positive(stopTimeoutSecs, nameof(stopTimeoutSecs));
 
             this.resilientConnection = resilientConnection;
             this.streamName = streamName;
             this.handler = handler;
             this.lazyLastCheckpoint = lazyLastCheckpoint;
             this.serializer = serializer;
+            this.stopTimeoutSecs = stopTimeoutSecs;
 
             if (persistCheckpoint is null)
                 this.shouldPersistCheckpoint = false;
@@ -56,72 +62,78 @@ namespace Eventing.GetEventStore
                 this.shouldStopNow = false;
                 if (this.lastCheckpoint == null)
                     this.lastCheckpoint = this.lazyLastCheckpoint.Value;
+                this.log.Info($"Starting subscription of {this.streamName} from" + (!this.lastCheckpoint.HasValue ? " the beginning" : $" checkpoint {this.lastCheckpoint}"));
+                this.DoStart();
+                this.running = true;
             }
-            this.log.Info($"Starting subscription of {this.streamName} from" + (!this.lastCheckpoint.HasValue ? " the beginning" : $" checkpoint {this.lastCheckpoint}"));
-            this.DoStart();
         }
 
         public void Stop()
         {
             lock (this.lockObject)
             {
-                this.shouldStopNow = true;
-                if (this.subscription != null)
-                    this.subscription.Stop();
+                if (this.running)
+                {
+                    this.shouldStopNow = true;
+                    if (this.subscription != null)
+                        this.subscription.Stop(TimeSpan.FromSeconds(this.stopTimeoutSecs));
+                    this.running = false;
+                }
             }
         }
 
         private void DoStart()
         {
-            lock (this.lockObject)
-            {
-                if (this.subscription != null)
-                    this.subscription.Stop();
-
-
-                this.subscription = this.resilientConnection.SubscribeToStreamFrom(this.streamName, this.lastCheckpoint, CatchUpSubscriptionSettings.Default,
-                       (sub, eventAppeared) =>
+            if (this.shouldStopNow) return;
+            this.subscription = this.resilientConnection.SubscribeToStreamFrom(this.streamName, this.lastCheckpoint, CatchUpSubscriptionSettings.Default,
+                   (sub, eventAppeared) =>
+                   {
+                       if (!this.shouldStopNow)
                        {
-                           lock (this.lockObject)
-                           {
-                               if (!this.shouldStopNow)
-                               {
-                                   var serialized = Encoding.UTF8.GetString(eventAppeared.Event.Data);
-                                   var deserialized = this.serializer.Deserialize(serialized);
-                                   this.handler.Invoke(eventAppeared.OriginalEventNumber, deserialized);
-                                   this.lastCheckpoint = eventAppeared.OriginalEventNumber;
-                                   if (this.shouldPersistCheckpoint)
-                                       this.persistCheckpoint(eventAppeared.OriginalEventNumber);
-                               }
-                           }
-                       },
-                       sub => this.log.Verbose(
-                           $"The subscription of {this.streamName} has caught-up on" + (this.lastCheckpoint.HasValue ? $" checkpoint {this.lastCheckpoint}!" : " the very beginning!")),
-                       (sub, reason, ex) =>
+                           var serialized = Encoding.UTF8.GetString(eventAppeared.Event.Data);
+                           var deserialized = this.serializer.Deserialize(serialized);
+                           this.handler.Invoke(eventAppeared.OriginalEventNumber, deserialized);
+                           this.lastCheckpoint = eventAppeared.OriginalEventNumber;
+                           if (this.shouldPersistCheckpoint)
+                               this.persistCheckpoint(eventAppeared.OriginalEventNumber);
+                       }
+
+                   },
+                   sub => this.log.Verbose(
+                       $"The subscription of {this.streamName} has caught-up on" + (this.lastCheckpoint.HasValue ? $" checkpoint {this.lastCheckpoint}!" : " the very beginning!")),
+                   (sub, reason, ex) =>
+                   {
+                       // See here: https://groups.google.com/forum/#!searchin/event-store/subscription/event-store/AdKzv8TxabM/6RzudeuAAgAJ
+
+                       if (this.shouldStopNow || reason == SubscriptionDropReason.UserInitiated)
+                           return;
+                       else if (reason == SubscriptionDropReason.ConnectionClosed || reason == SubscriptionDropReason.CatchUpError)
                        {
-                           if (this.shouldStopNow || reason == SubscriptionDropReason.UserInitiated)
-                               return;
-                           else if (reason == SubscriptionDropReason.ConnectionClosed || reason == SubscriptionDropReason.CatchUpError)
+                           var seconds = 30;
+                           var chkp = this.lastCheckpoint.HasValue ? this.lastCheckpoint : -1;
+                           var message = $"The subscription of {this.streamName} stopped because of {reason} on checkpoint {chkp}. Restarting in {seconds} seconds.";
+                           if (reason == SubscriptionDropReason.ConnectionClosed)
+                               this.log.Info(message);
+                           else if (reason == SubscriptionDropReason.CatchUpError && ex is NotAuthenticatedException)
                            {
-                               var seconds = 30;
-                               var chkp = this.lastCheckpoint.HasValue ? this.lastCheckpoint : -1;
-                               var message = $"The subscription of {this.streamName} stopped because of {reason} on checkpoint {chkp}. Restarting in {seconds} seconds.";
-                               if (reason == SubscriptionDropReason.ConnectionClosed)
-                                   this.log.Info(message);
-                               else
-                                   this.log.Error(ex, message);
-
-                               Thread.Sleep(TimeSpan.FromSeconds(seconds));
-                               this.log.Info($"Restarting subscription of {this.streamName} on checkpoint {chkp}");
-                               this.DoStart();
-                               return;
+                               seconds = 10;
+                               message = $"The connection was not authenticated yet. If this persist you should check the credentianls. The subscription of {this.streamName} stopped on checkpoint {chkp}. Retrying in {seconds} seconds.";
+                               this.log.Warning(message);
                            }
+                           else
+                               this.log.Error(ex, message);
 
-                           // This should be handled better
-                           sub.Stop();
-                           throw ex;
-                       });
-            }
+                           this.subscription.Stop(TimeSpan.FromSeconds(this.stopTimeoutSecs));
+                           Thread.Sleep(TimeSpan.FromSeconds(seconds));
+                           this.log.Info($"Restarting subscription of {this.streamName} on checkpoint {chkp}");
+                           this.DoStart();
+                           return;
+                       }
+
+                       // This should be handled better
+                       this.Stop();
+                       throw ex;
+                   });
         }
     }
 }

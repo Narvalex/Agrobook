@@ -19,7 +19,7 @@ namespace Eventing.GetEventStore
             this.serializer = serializer;
         }
 
-        public IEventSubscription CreateSubscription(string streamName, Lazy<long?> lastCheckpoint, Action<long, object> handler)
+        public IEventSubscription CreateSubscription(string streamName, Lazy<long?> lastCheckpoint, Action<long, object> handler, int stopTimeoutSecs = 60)
         {
             return new EventStoreSubscription(
                 this.resilientConnection,
@@ -29,7 +29,7 @@ namespace Eventing.GetEventStore
                 handler);
         }
 
-        public IEventSubscription CreateSubscription(string streamName, Lazy<long?> lastCheckpoint, Action<long> persistCheckpoint, Action<long, object> handler)
+        public IEventSubscription CreateSubscription(string streamName, Lazy<long?> lastCheckpoint, Action<long> persistCheckpoint, Action<long, object> handler, int stopTimeoutSecs = 60)
         {
             return new EventStoreSubscription(
                this.resilientConnection,
