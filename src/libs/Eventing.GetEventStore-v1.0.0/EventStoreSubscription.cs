@@ -26,25 +26,21 @@ namespace Eventing.GetEventStore
         private bool shouldStopNow = false;
         private bool running = false;
         private long? lastCheckpoint;
-        private readonly int stopTimeoutSecs;
 
         private readonly object lockObject = new object();
 
-        public EventStoreSubscription(IEventStoreConnection resilientConnection, IJsonSerializer serializer, string streamName, Lazy<long?> lazyLastCheckpoint, Action<long, object> handler, Action<long> persistCheckpoint = null,
-            int stopTimeoutSecs = 60)
+        public EventStoreSubscription(IEventStoreConnection resilientConnection, IJsonSerializer serializer, string streamName, Lazy<long?> lazyLastCheckpoint, Action<long, object> handler, Action<long> persistCheckpoint = null)
         {
             Ensure.NotNull(resilientConnection, nameof(resilientConnection));
             Ensure.NotNullOrWhiteSpace(streamName, nameof(streamName));
             Ensure.NotNull(handler, nameof(handler));
             Ensure.NotNull(serializer, nameof(serializer));
-            Ensure.Positive(stopTimeoutSecs, nameof(stopTimeoutSecs));
 
             this.resilientConnection = resilientConnection;
             this.streamName = streamName;
             this.handler = handler;
             this.lazyLastCheckpoint = lazyLastCheckpoint;
             this.serializer = serializer;
-            this.stopTimeoutSecs = stopTimeoutSecs;
 
             if (persistCheckpoint is null)
                 this.shouldPersistCheckpoint = false;
@@ -76,7 +72,7 @@ namespace Eventing.GetEventStore
                 {
                     this.shouldStopNow = true;
                     if (this.subscription != null)
-                        this.subscription.Stop(TimeSpan.FromSeconds(this.stopTimeoutSecs));
+                        this.subscription.Stop();
                     this.running = false;
                 }
             }
@@ -109,21 +105,21 @@ namespace Eventing.GetEventStore
                            return;
                        else if (reason == SubscriptionDropReason.ConnectionClosed || reason == SubscriptionDropReason.CatchUpError)
                        {
-                           var seconds = 30;
+                           var seconds = 3;
                            var chkp = this.lastCheckpoint.HasValue ? this.lastCheckpoint : -1;
                            var message = $"The subscription of {this.streamName} stopped because of {reason} on checkpoint {chkp}. Restarting in {seconds} seconds.";
                            if (reason == SubscriptionDropReason.ConnectionClosed)
                                this.log.Info(message);
                            else if (reason == SubscriptionDropReason.CatchUpError && ex is NotAuthenticatedException)
                            {
-                               seconds = 10;
+                               seconds = 2;
                                message = $"The connection was not authenticated yet. If this persist you should check the credentianls. The subscription of {this.streamName} stopped on checkpoint {chkp}. Retrying in {seconds} seconds.";
                                this.log.Warning(message);
                            }
                            else
                                this.log.Error(ex, message);
 
-                           this.subscription.Stop(TimeSpan.FromSeconds(this.stopTimeoutSecs));
+                           this.subscription.Stop();
                            Thread.Sleep(TimeSpan.FromSeconds(seconds));
                            this.log.Info($"Restarting subscription of {this.streamName} on checkpoint {chkp}");
                            this.DoStart();

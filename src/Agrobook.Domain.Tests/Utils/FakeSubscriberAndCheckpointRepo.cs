@@ -14,10 +14,10 @@ namespace Agrobook.Domain.Tests
     public class FakeSubscriber : IEventSubscriber
     {
         public IEventSubscription CreateSubscription(string streamName, Lazy<long?> lastCheckpoint, Action<long, object> handler)
-            => new FakeEventSubscription();
+        => new FakeEventSubscription();
 
         public IEventSubscription CreateSubscription(string streamName, Lazy<long?> lastCheckpoint, Action<long> persistCheckpoint, Action<long, object> handler)
-            => new FakeEventSubscription();
+        => new FakeEventSubscription();
     }
 
     public class FakeCheckpointRepository : ICheckpointRepository

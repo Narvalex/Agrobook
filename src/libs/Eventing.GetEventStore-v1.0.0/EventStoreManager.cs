@@ -16,7 +16,7 @@ namespace Eventing.GetEventStore
 
         private Process process;
         private readonly string path = @".\EventStore\EventStore.ClusterNode.exe";
-        private readonly string args = "--db=./ESData --start-standard-projections=true --run-projections=all --stats-period-sec=3600";
+        private readonly string args = "--db=./ESData --start-standard-projections=true --run-projections=all --stats-period-sec=86400";
 
         private readonly UserCredentials userCredentials;
         private readonly IPEndPoint ipEndPoint;
@@ -69,6 +69,7 @@ namespace Eventing.GetEventStore
                 Directory.Delete(path, true);
                 this.log.Info("EventStore database deleted");
             }
+            this.log.Info("Starting EventStore from scratch...");
             this.InitializeDb();
         }
 
@@ -165,16 +166,21 @@ namespace Eventing.GetEventStore
             if (this.resilientConnectionWasEstablished)
                 this.resilientConnection.Close();
 
-            if (this.process != null && !this.process.HasExited)
-            {
-                this.process.Kill();
-                this.process.WaitForExit();
-            }
+            this.KillEventStoreProcess();
 
             var path = @".\ESData";
             if (dropDb && Directory.Exists(path))
             {
                 Directory.Delete(path, true);
+            }
+        }
+
+        private void KillEventStoreProcess()
+        {
+            if (this.process != null && !this.process.HasExited)
+            {
+                this.process.Kill();
+                this.process.WaitForExit();
             }
         }
     }
