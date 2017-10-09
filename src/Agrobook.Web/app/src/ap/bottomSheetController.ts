@@ -33,7 +33,7 @@ module apArea {
 
         mostrarBottomSheet() {
             this.$mdBottomSheet.show({
-                templateUrl: './dist/ap/bottom-sheet.html',
+                templateUrl: './src/ap/bottom-sheet.html',
                 controller: 'bottomSheetController',
                 controllerAs: 'vm'
             }).then(clickedItem => {

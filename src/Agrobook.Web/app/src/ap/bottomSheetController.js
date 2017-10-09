@@ -24,7 +24,7 @@ var apArea;
         }
         bottomSheetButtonController.prototype.mostrarBottomSheet = function () {
             this.$mdBottomSheet.show({
-                templateUrl: './dist/ap/bottom-sheet.html',
+                templateUrl: './src/ap/bottom-sheet.html',
                 controller: 'bottomSheetController',
                 controllerAs: 'vm'
             }).then(function (clickedItem) {

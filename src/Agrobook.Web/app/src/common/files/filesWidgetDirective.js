@@ -41,7 +41,10 @@ var common;
             vm.restore = this.restore;
             vm.showDeleted = this.showDeleted;
             vm.toggleShowDeleted = this.toggleShowDeleted;
+            vm.loadingFiles = this.loadingFiles;
+            vm.prepFiles = this.prepFiles;
             vm.units = [];
+            vm.loadingFiles = true;
             this.$http.get('archivos/query/coleccion/' + vm.idColeccion).then(function (value) {
                 for (var i = 0; i < value.data.length; i++) {
                     var meta = value.data[i];
@@ -50,8 +53,10 @@ var common;
                     unit.deleted = meta.deleted;
                     vm.units.push(unit);
                 }
+                vm.loadingFiles = false;
             }, function (response) {
                 vm.toasterLite.error('Hubo un error al recuperar los archivos cargados');
+                vm.loadingFiles = false;
             });
         }
         // angular typing
@@ -68,9 +73,10 @@ var common;
             var container = element.parentElement;
             var content = container.innerHTML;
             container.innerHTML = content;
-            // try load to current list;
             var vm = this;
+            // try load to current list;
             this.$apply(function () {
+                vm.prepFiles = true;
                 var files = element.files;
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
@@ -94,6 +100,7 @@ var common;
                     vm.units.push(unit);
                     console.log('File "' + newName + '" was added');
                 }
+                vm.prepFiles = false;
             });
         };
         filesWidgetController.prototype.removeFile = function (unit) {

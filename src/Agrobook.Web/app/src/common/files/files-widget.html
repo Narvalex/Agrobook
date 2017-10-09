@@ -1,5 +1,11 @@
 ﻿<md-content>
-    <form enctype="multipart/form-data" name="uploadForm">
+
+    <div ng-show="loadingFiles" layout="row" layout-align="center center">
+        <md-progress-circular md-mode="indeterminate"
+                              ng-disabled="!loadingFiles"></md-progress-circular>
+    </div>
+
+    <form enctype="multipart/form-data" name="uploadForm" ng-if="!loadingFiles">
         <!-- Add hidden attr to the input -->
         <div>
             <input id="{{fileInputId}}"
@@ -10,13 +16,14 @@
         </div>
 
         <p style="margin-bottom: 0px;">
-            <md-button class="md-fab md-mini md-primary"
+            <md-button ng-disabled="prepFiles"
+                       class="md-fab md-mini md-primary"
                        aria-label="Agregar archivos"
                        ng-click="addFiles()">
                 <md-tooltip md-direction="top">Agregar archivos</md-tooltip>
                 <ng-md-icon icon="add"></ng-md-icon>
             </md-button>
-            {{header}} <span ng-show="units.length < 1">(sin archivo)</span>
+            {{prepFiles ? 'Espere por favor...' : header}} <span ng-show="units.length < 1">(sin archivo)</span>
             <md-button class="md-icon-button launch"
                        aria-label="Agregar archivos"
                        ng-click="toggleShowDeleted()">
@@ -25,7 +32,7 @@
             </md-button>
         </p>
 
-        <md-list>
+        <md-list ng-hide="loadingFiles">
             <md-list-item ng-repeat="unit in units" class="md-2-line"
                           ng-hide="unit.deleted && !showDeleted">
                 <img ng-if="unit.isAPicture" ng-src="{{unit.iconUrl}}" class="md-avatar" alt="..." />
@@ -56,7 +63,7 @@
                 </div>
 
                 <md-button ng-show="unit.state === 'pending' || unit.state === 'uploadFailed'"
-                           class="md-secondary md-icon-button launch md-primary"
+                           class="md-secondary md-icon-button launch"
                            aria-label="action"
                            ng-click="uploadFile(unit)">
                     <ng-md-icon icon="file_upload"></ng-md-icon>

@@ -46,8 +46,11 @@ module common {
             vm.restore = this.restore;
             vm.showDeleted = this.showDeleted;
             vm.toggleShowDeleted = this.toggleShowDeleted;
+            vm.loadingFiles = this.loadingFiles;
+            vm.prepFiles = this.prepFiles;
             vm.units = [];
 
+            vm.loadingFiles = true;
             this.$http.get<metadatosDeArchivo[]>('archivos/query/coleccion/' + vm.idColeccion).then(
                 value => {
                     for (var i = 0; i < value.data.length; i++) {
@@ -58,17 +61,23 @@ module common {
                         unit.deleted = meta.deleted;
                         vm.units.push(unit);
                     }
+                    vm.loadingFiles = false;
                 },
                 response => {
                     vm.toasterLite.error('Hubo un error al recuperar los archivos cargados');
+                    vm.loadingFiles = false;
                 });
         }
+
+        // states
+        showDeleted: boolean;
+        loadingFiles: boolean;
+        prepFiles: boolean;
 
         // two-way binding
         scope: ng.IScope;
         title: string
         idColeccion: string;
-        showDeleted: boolean;
 
         // object 
         loginInfo: login.loginResult;
@@ -95,9 +104,10 @@ module common {
             let content = container.innerHTML;
             container.innerHTML = content;
 
-            // try load to current list;
             var vm = this;
+            // try load to current list;
             this.$apply(() => {
+                vm.prepFiles = true;
                 let files = element.files;
                 for (var i = 0; i < files.length; i++) {
                     let file = files[i];
@@ -125,6 +135,8 @@ module common {
 
                     console.log('File "' + newName + '" was added');
                 }
+
+                vm.prepFiles = false;
             });
         }
 
