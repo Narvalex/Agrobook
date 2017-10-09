@@ -132,35 +132,42 @@ namespace Agrobook.Domain.Ap.Services
                     .Join(context.Contratos, servOrg => servOrg.serv.IdContrato, c => c.Id,
                      (so, c) => new { so = so, c = c })
                     .Join(context.Parcelas, soc => soc.so.serv.IdParcela, p => p.Id,
-                     (soc, p) => new ServicioDto
+                     (soc, p) => new { soc = soc, p = p })
+                    .Join(context.Usuarios, socp => socp.soc.so.serv.IdProd, u => u.Id,
+                     (socp, u) =>
+                     new ServicioDto
                      {
-                         ContratoDisplay = soc.c.Display,
-                         Eliminado = soc.so.serv.Eliminado,
-                         Fecha = soc.so.serv.Fecha,
-                         Id = soc.so.serv.Id,
-                         IdContrato = soc.so.serv.IdContrato,
-                         IdOrg = soc.so.serv.IdOrg,
-                         IdProd = soc.so.serv.IdProd,
-                         OrgDisplay = soc.so.org.NombreParaMostrar,
-                         ParcelaId = soc.so.serv.IdParcela,
-                         ParcelaDisplay = p.Display
+                         ContratoDisplay = socp.soc.c.Display,
+                         Eliminado = socp.soc.so.serv.Eliminado,
+                         Fecha = socp.soc.so.serv.Fecha,
+                         Id = socp.soc.so.serv.Id,
+                         IdContrato = socp.soc.so.serv.IdContrato,
+                         IdOrg = socp.soc.so.serv.IdOrg,
+                         IdProd = socp.soc.so.serv.IdProd,
+                         ProdDisplay = u.Display,
+                         OrgDisplay = socp.soc.so.org.NombreParaMostrar,
+                         ParcelaId = socp.soc.so.serv.IdParcela,
+                         ParcelaDisplay = socp.p.Display
                      })
                     .Union(
                      context.Servicios
                     .Where(x => x.IdOrg == idOrg && x.IdParcela == null)
                     .Join(context.Organizaciones, s => s.IdOrg, o => o.OrganizacionId,
                      (s, o) => new { serv = s, org = o })
-                    .Join(context.Contratos, servOrg => servOrg.serv.IdContrato, c => c.Id,
-                     (so, c) => new ServicioDto
+                     .Join(context.Usuarios, orgServ => orgServ.serv.IdProd, usuarios => usuarios.Id,
+                     (so, u) => new { servOrg = so, usuarios = u })
+                    .Join(context.Contratos, sou => sou.servOrg.serv.IdContrato, c => c.Id,
+                     (sou, c) => new ServicioDto
                      {
                          ContratoDisplay = c.Display,
-                         Eliminado = so.serv.Eliminado,
-                         Fecha = so.serv.Fecha,
-                         Id = so.serv.Id,
-                         IdContrato = so.serv.IdContrato,
-                         IdOrg = so.serv.IdOrg,
-                         IdProd = so.serv.IdProd,
-                         OrgDisplay = so.org.NombreParaMostrar,
+                         Eliminado = sou.servOrg.serv.Eliminado,
+                         Fecha = sou.servOrg.serv.Fecha,
+                         Id = sou.servOrg.serv.Id,
+                         IdContrato = sou.servOrg.serv.IdContrato,
+                         IdOrg = sou.servOrg.serv.IdOrg,
+                         IdProd = sou.servOrg.serv.IdProd,
+                         ProdDisplay = sou.usuarios.Display,
+                         OrgDisplay = sou.servOrg.org.NombreParaMostrar,
                          ParcelaId = null,
                          ParcelaDisplay = null
                      }))

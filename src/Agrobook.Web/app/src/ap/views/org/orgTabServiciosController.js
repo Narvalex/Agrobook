@@ -8,6 +8,8 @@ var apArea;
             this.$mdSidenav = $mdSidenav;
             this.toasterLite = toasterLite;
             this.ocultarEliminados = true;
+            // objetos
+            this.momentInstance = moment;
             var idOrg = this.$routeParams['idOrg'];
             this.recuperarServiciosPorOrg(idOrg);
         }

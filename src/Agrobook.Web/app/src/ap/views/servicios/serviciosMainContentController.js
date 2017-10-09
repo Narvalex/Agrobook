@@ -9,7 +9,7 @@ var apArea;
             this.apQueryService = apQueryService;
             this.config = config;
             this.idProd = this.$routeParams['idProd'];
-            this.servicio = new apArea.servicioDto(this.$routeParams['idServicio'], null, null, null, null, null, null, null, null);
+            this.servicio = new apArea.servicioDto(this.$routeParams['idServicio'], null, null, null, null, null, null, null, null, null);
             this.resolveAction();
             this.recuperarProductorYResolverTitulo();
             this.abrirTabCorrespondiente();

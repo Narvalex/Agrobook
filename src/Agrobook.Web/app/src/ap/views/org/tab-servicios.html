@@ -8,7 +8,7 @@
         <md-list-item ng-repeat="s in vm.servicios"
                       ng-hide="s.eliminado && vm.ocultarEliminados"
                       ng-click="vm.irAServicio(s)">
-            <p ng-class="{ 'red-text': s.eliminado }"> {{s.parcelaId === null ? 'Servicio sin parcela especificada' : 'Servicio en parcela ' + s.parcelaDisplay}} </p>
+            <p ng-class="{ 'red-text': s.eliminado }"> {{s.parcelaId === null ? s.prodDisplay + ', parcela no especificada' : s.prodDisplay + ', parcela ' + s.parcelaDisplay}} </p>
             <span class="md-secondary">{{vm.momentInstance(s.fecha).format('DD/MM/YYYY')}}</span>
         </md-list-item>
     </md-list>

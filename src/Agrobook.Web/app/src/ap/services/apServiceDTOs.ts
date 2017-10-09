@@ -34,6 +34,7 @@ module apArea {
             public idOrg: string,
             public orgDisplay: string,
             public idProd: string,
+            public prodDislplay: string,
             public fecha: Date,
             // With Defaults
             public eliminado: boolean = false,

@@ -22,6 +22,9 @@ module apArea {
         // Listas
         servicios: servicioDto[];
 
+        // objetos
+        momentInstance: moment.MomentStatic = moment;
+
 
         //--------------------------
         // Api

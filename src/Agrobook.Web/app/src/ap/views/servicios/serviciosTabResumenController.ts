@@ -116,6 +116,7 @@ module apArea {
                 this.orgConContratosSeleccionada.org.id,
                 this.orgConContratosSeleccionada.org.display,
                 this.idProd,
+                null,
                 this.fechaSeleccionada);
 
             switch (this.action) {

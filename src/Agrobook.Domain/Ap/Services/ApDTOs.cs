@@ -42,6 +42,7 @@ namespace Agrobook.Domain.Ap.Services
         public string IdOrg { get; set; }
         public string OrgDisplay { get; set; }
         public string IdProd { get; set; }
+        public string ProdDisplay { get; set; }
         public DateTime Fecha { get; set; }
 
         // Defaults
