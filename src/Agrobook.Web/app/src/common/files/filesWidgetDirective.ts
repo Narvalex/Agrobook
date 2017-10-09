@@ -44,6 +44,8 @@ module common {
             vm.showOptions = this.showOptions;
             vm.deleteFile = this.deleteFile;
             vm.restore = this.restore;
+            vm.showDeleted = this.showDeleted;
+            vm.toggleShowDeleted = this.toggleShowDeleted;
             vm.units = [];
 
             this.$http.get<metadatosDeArchivo[]>('archivos/query/coleccion/' + vm.idColeccion).then(
@@ -53,6 +55,7 @@ module common {
                         var unit = new fileUnit(meta.nombre, meta.extension, vm.states.uploaded, null, meta.size,
                             meta.size > 1024 * 1024 ? `${(meta.size / 1024 / 1024).toFixed(1)} MB` : `${(meta.size / 1024).toFixed(1)} KB`);
                         vm.setIconUrlAndSvgs(unit);
+                        unit.deleted = meta.deleted;
                         vm.units.push(unit);
                     }
                 },
@@ -65,6 +68,7 @@ module common {
         scope: ng.IScope;
         title: string
         idColeccion: string;
+        showDeleted: boolean;
 
         // object 
         loginInfo: login.loginResult;
@@ -75,6 +79,10 @@ module common {
 
         // angular typing
         $apply(action: () => any) {
+        }
+
+        toggleShowDeleted() {
+            this.showDeleted = !this.showDeleted;
         }
 
         addFiles() {
@@ -443,7 +451,7 @@ module common {
             public fecha: Date,
             public size: number,
             public idColeccion: string,
-            public eliminado: boolean
+            public deleted: boolean
         ) {
         }
     }

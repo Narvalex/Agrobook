@@ -10,21 +10,28 @@
         </div>
 
         <p style="margin-bottom: 0px;">
-            {{header}} <span ng-show="units.length < 1">(sin archivo)</span>
-            <md-button class="md-icon-button launch"
+            <md-button class="md-fab md-mini md-primary"
                        aria-label="Agregar archivos"
                        ng-click="addFiles()">
                 <md-tooltip md-direction="top">Agregar archivos</md-tooltip>
                 <ng-md-icon icon="add"></ng-md-icon>
             </md-button>
+            {{header}} <span ng-show="units.length < 1">(sin archivo)</span>
+            <md-button class="md-icon-button launch"
+                       aria-label="Agregar archivos"
+                       ng-click="toggleShowDeleted()">
+                <md-tooltip md-direction="top">{{showDeleted ? 'Ocultar archivos eliminados' : 'Mostrar archivos eliminados'}}</md-tooltip>
+                <ng-md-icon icon="{{showDeleted ? 'visibility_off' : 'visibility'}}"></ng-md-icon>
+            </md-button>
         </p>
 
         <md-list>
-            <md-list-item ng-repeat="unit in units" class="md-2-line">
+            <md-list-item ng-repeat="unit in units" class="md-2-line"
+                          ng-hide="unit.deleted && !showDeleted">
                 <img ng-if="unit.isAPicture" ng-src="{{unit.iconUrl}}" class="md-avatar" alt="..." />
                 <md-icon ng-if="!unit.isAPicture" md-svg-icon="{{unit.iconSvg}}"></md-icon>
                 <div class="md-list-item-text">
-                    <h3>
+                    <h3 ng-class="{ 'red-text': unit.deleted }">
                         <ng-md-icon ng-show="unit.state === 'uploadFailed'" title="{{unit.errorMessage}}" style="color:red" icon="warning"></ng-md-icon>
                         <ng-md-icon ng-show="unit.state === 'uploaded' && unit.justUploaded" title="Carga completada" style="color:#4caf50" icon="check_circle"></ng-md-icon>
                         {{unit.name}}

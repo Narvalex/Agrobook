@@ -39,12 +39,15 @@ var common;
             vm.showOptions = this.showOptions;
             vm.deleteFile = this.deleteFile;
             vm.restore = this.restore;
+            vm.showDeleted = this.showDeleted;
+            vm.toggleShowDeleted = this.toggleShowDeleted;
             vm.units = [];
             this.$http.get('archivos/query/coleccion/' + vm.idColeccion).then(function (value) {
                 for (var i = 0; i < value.data.length; i++) {
                     var meta = value.data[i];
                     var unit = new fileUnit(meta.nombre, meta.extension, vm.states.uploaded, null, meta.size, meta.size > 1024 * 1024 ? (meta.size / 1024 / 1024).toFixed(1) + " MB" : (meta.size / 1024).toFixed(1) + " KB");
                     vm.setIconUrlAndSvgs(unit);
+                    unit.deleted = meta.deleted;
                     vm.units.push(unit);
                 }
             }, function (response) {
@@ -53,6 +56,9 @@ var common;
         }
         // angular typing
         filesWidgetController.prototype.$apply = function (action) {
+        };
+        filesWidgetController.prototype.toggleShowDeleted = function () {
+            this.showDeleted = !this.showDeleted;
         };
         filesWidgetController.prototype.addFiles = function () {
             document.getElementById(this.fileInputId).click();
@@ -385,14 +391,14 @@ var common;
     }());
     common.fileUnit = fileUnit;
     var metadatosDeArchivo = (function () {
-        function metadatosDeArchivo(nombre, extension, tipo, fecha, size, idColeccion, eliminado) {
+        function metadatosDeArchivo(nombre, extension, tipo, fecha, size, idColeccion, deleted) {
             this.nombre = nombre;
             this.extension = extension;
             this.tipo = tipo;
             this.fecha = fecha;
             this.size = size;
             this.idColeccion = idColeccion;
-            this.eliminado = eliminado;
+            this.deleted = deleted;
         }
         return metadatosDeArchivo;
     }());

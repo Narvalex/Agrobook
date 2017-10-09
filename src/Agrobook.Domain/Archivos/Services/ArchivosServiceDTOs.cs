@@ -11,6 +11,7 @@ namespace Agrobook.Domain.Archivos.Services
         // En Bytes
         public int Size { get; set; }
         public string IdColeccion { get; set; }
+        public bool Deleted { get; set; }
     }
 
     public class ResultadoDelUpload

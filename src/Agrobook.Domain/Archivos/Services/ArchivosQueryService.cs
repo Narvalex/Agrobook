@@ -29,7 +29,8 @@ namespace Agrobook.Domain.Archivos.Services
                     Size = x.Size,
                     Tipo = x.Tipo,
                     Fecha = x.Fecha,
-                    IdColeccion = x.IdColeccion
+                    IdColeccion = x.IdColeccion,
+                    Deleted = x.Eliminado
                 })
                 .ToList();
 

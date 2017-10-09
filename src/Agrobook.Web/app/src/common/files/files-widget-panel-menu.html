@@ -4,13 +4,13 @@
             <span>Archivo {{vm.unit.name}}</span>
         </md-subheader>
 
-        <div class="menu-item" ng-hide="vm.unit.eliminado">
+        <div class="menu-item" ng-hide="vm.unit.deleted">
             <button class="md-button red-text" ng-click="vm.eliminar()">
                 <ng-md-icon icon="clear"></ng-md-icon>
                 <span>&nbsp;&nbsp;Eliminar</span>
             </button>
         </div>
-        <div class="menu-item" ng-show="vm.unit.eliminado">
+        <div class="menu-item" ng-show="vm.unit.deleted">
             <button class="md-button" ng-click="vm.restaurar()">
                 <ng-md-icon icon="reply"></ng-md-icon>
                 <span>&nbsp;&nbsp;Restaurar</span>

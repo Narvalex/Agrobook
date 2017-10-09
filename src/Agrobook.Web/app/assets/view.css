@@ -48,7 +48,7 @@ md-autocomplete input:not(.md-input) {
 }
 
 .red-text {
-    color: red;
+    color: red !important;
 }
 
 .h2-subtitle {
