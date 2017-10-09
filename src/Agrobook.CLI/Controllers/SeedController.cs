@@ -34,24 +34,42 @@ namespace Agrobook.CLI.Controllers
             this.view.MostrarQueElProcesoSeedFinalizo();
         }
 
+        /* TODO: asignar al prod 2 a una org
+         * crear otra org
+         * crear contratos
+         * crear parcelas a los prods
+         */
         private async Task Seed()
         {
-            var usuarioDto = new UsuarioDto
+            // Usuarios
+            var usuarioDto1 = new UsuarioDto
             {
                 NombreDeUsuario = "prod",
-                NombreParaMostrar = "ProductorUno",
+                NombreParaMostrar = "Productor Uno",
                 AvatarUrl = "./assets/img/avatar/10.png",
                 Claims = new string[] { ClaimDef.Roles.Productor },
                 Password = "123"
             };
-            await this.usuariosClient.CrearNuevoUsuario(usuarioDto);
-            this.view.NotificarUsuarioCreado(usuarioDto);
+            await this.usuariosClient.CrearNuevoUsuario(usuarioDto1);
+            this.view.NotificarUsuarioCreado(usuarioDto1);
 
+            var usuarioDto2 = new UsuarioDto
+            {
+                NombreDeUsuario = "prod2",
+                NombreParaMostrar = "Productor Dos",
+                AvatarUrl = "./assets/img/avatar/9.png",
+                Claims = new string[] { ClaimDef.Roles.Productor },
+                Password = "123"
+            };
+            await this.usuariosClient.CrearNuevoUsuario(usuarioDto2);
+            this.view.NotificarUsuarioCreado(usuarioDto2);
+
+            // Orgs
             var nombreDeLaOrg = "Cooperativa Chortitzer";
             var orgDto = await this.usuariosClient.CrearNuevaOrganización(nombreDeLaOrg);
             this.view.NotificarOrgCreada(nombreDeLaOrg);
 
-            await this.usuariosClient.AgregarUsuarioALaOrganizacion(usuarioDto.NombreDeUsuario, orgDto.Id);
+            await this.usuariosClient.AgregarUsuarioALaOrganizacion(usuarioDto1.NombreDeUsuario, orgDto.Id);
             this.view.NotificarUsuarioAgregadoAOrg();
         }
     }

@@ -92,7 +92,9 @@ module common {
 
         private _categoriaDeArchivos = {
             servicioDatosBasicos: 'servicioDatosBasicos',
-            servicioParcelas: 'servicioParcelas'
+            servicioParcelas: 'servicioParcelas',
+            servicioDiagnostico: 'servicioDiagnostico',
+            servicioPrescripciones: 'servicioPrescripciones'
         }
 
         get keyCodes() { return this._keyCodes; }

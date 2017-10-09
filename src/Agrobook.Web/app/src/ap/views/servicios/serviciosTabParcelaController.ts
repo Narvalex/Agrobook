@@ -182,26 +182,5 @@ module apArea {
                     }
                 ));
         }
-
-        //-----------------------------
-        // Archivos implementation
-        //-----------------------------
-        //awTitle: string;
-        //awUploadLink: string;
-        //awFileUnits: common.fileUnit[] = [];
-        //awAllowUpload: boolean;
-        //awInit() {
-        //    this.awTitle = 'Mapas de límites y puntos georeferenciados.';
-        //    this.awAllowUpload = true;
-        //    this.awUploadLink = 'Agregar archivo/s...';
-        //}
-        //awPrepareFiles(element: HTMLInputElement) {
-        //    this.awService.resetFileInput();
-
-        //    var vm = (angular.element(this)[0] as any) as serviciosTabParcelaController;
-        //    vm.$scope.$apply(scope => {
-        //        vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
-        //    });
-        //}
     }
 }

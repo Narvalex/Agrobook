@@ -32,6 +32,8 @@ module apArea {
         .controller('serviciosMainContentController', serviciosMainContentController)
         .controller('serviciosTabResumenController', serviciosTabResumenController)
         .controller('serviciosTabParcelaController', serviciosTabParcelaController)
+        .controller('serviciosTabDiagnosticoController', serviciosTabDiagnosticoController)
+        .controller('serviciosTabPrescripcionesController', serviciosTabPrescripcionesController)
         // config
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider',
             '$mdDateLocaleProvider', (

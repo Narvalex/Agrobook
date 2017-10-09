@@ -82,7 +82,9 @@ var common;
             this._conventions = {};
             this._categoriaDeArchivos = {
                 servicioDatosBasicos: 'servicioDatosBasicos',
-                servicioParcelas: 'servicioParcelas'
+                servicioParcelas: 'servicioParcelas',
+                servicioDiagnostico: 'servicioDiagnostico',
+                servicioPrescripciones: 'servicioPrescripciones'
             };
         }
         Object.defineProperty(config.prototype, "keyCodes", {
