@@ -52,6 +52,13 @@ module usuariosArea {
 
         crearNuevoUsuario(): void {
             var nombre = this.usuario.nombreDeUsuario;
+
+            // Validacion
+            if (nombre.indexOf(' ') !== -1) {
+                this.toasterLite.error('El nombre de usuario no debe contener espacios en blanco');
+                return;
+            }
+
             this.setWorkingText();
             this.bloquearSubmit = true;
 
