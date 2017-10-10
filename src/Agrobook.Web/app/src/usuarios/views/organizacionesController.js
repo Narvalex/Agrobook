@@ -51,6 +51,23 @@ var usuariosArea;
                 _this.agregandoUsuario = false;
             });
         };
+        organizacionesController.prototype.removerDeLaOrganizacion = function ($event, org) {
+            var _this = this;
+            this.removiendoUsuario = true;
+            this.usuariosService.removerUsuarioDeOrganizacion(this.idUsuario, org.id, new common.callbackLite(function (value) {
+                // Actualizar la interfaz
+                for (var i = 0; i < _this.organizaciones.length; i++) {
+                    if (_this.organizaciones[i].id === org.id) {
+                        _this.organizaciones[i].usuarioEsMiembro = false;
+                        break;
+                    }
+                }
+                _this.removiendoUsuario = false;
+            }, function (reason) {
+                _this.toasterLite.error('Hubo un error al intentar remover usuario de la organización');
+                _this.removiendoUsuario = false;
+            }));
+        };
         //-------------------
         // INTERNAL
         //-------------------

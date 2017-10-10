@@ -38,19 +38,27 @@
             </md-not-found>
         </md-autocomplete>
         <md-list>
-            <md-list-item class="secondary-button-padding" ng-repeat="org in vm.organizaciones | filter:vm.searchText | orderBy:'display'">
-                <p>{{org.display}}</p>
-                <md-chips>
-                    <md-chip title="{{vm.idUsuario}} es miembro de la organización {{org.display}}"
-                             ng-show="org.usuarioEsMiembro">Miembro</md-chip>
-                </md-chips>
+            <md-list-item class="secondary-button-padding" ng-repeat="org in vm.organizaciones | filter:vm.searchText | orderBy:'!usuarioEsMiembro'">
                 <md-button title="Agregar a {{vm.idUsuario}} a la organización {{org.display}}"
                            ng-hide="org.usuarioEsMiembro"
-                           class="md-secondary"
                            ng-disabled="vm.agregandoUsuario"
                            ng-click="vm.agregarAOrganizacion($event, org)"
                            aria-label="Agregar a la organizacion">
                     <ng-md-icon icon="add"></ng-md-icon>
+                </md-button>
+                <p ng-hide="org.usuarioEsMiembro">{{org.display}}</p>
+                <p ng-show="org.usuarioEsMiembro"><b>{{org.display}}</b></p>
+                <md-chips>
+                    <md-chip title="{{vm.idUsuario}} es miembro de la organización {{org.display}}"
+                             ng-show="org.usuarioEsMiembro">Miembro</md-chip>
+                </md-chips>
+                <md-button title="Remover a {{vm.idUsuario}} de la organización {{org.display}}"
+                           ng-show="org.usuarioEsMiembro"
+                           class="md-secondary"
+                           ng-disabled="vm.removiendoUsuario"
+                           ng-click="vm.removerDeLaOrganizacion($event, org)"
+                           aria-label="Remover de la organizacion">
+                    <ng-md-icon icon="close"></ng-md-icon>
                 </md-button>
             </md-list-item>
         </md-list>

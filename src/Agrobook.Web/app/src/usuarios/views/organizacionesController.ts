@@ -24,6 +24,7 @@ module usuariosArea {
         loaded: boolean;
         creandoOrg: boolean;
         agregandoUsuario: boolean;
+        removiendoUsuario: boolean;
 
         idUsuario: string;
 
@@ -73,6 +74,28 @@ module usuariosArea {
                     this.toasterLite.error('Hubo un error al incorporar el usuario a la organizacion', this.toasterLite.delayForever);
                     this.agregandoUsuario = false;
                 }
+            );
+        }
+
+        removerDeLaOrganizacion($event, org: organizacionDto) {
+            this.removiendoUsuario = true;
+            this.usuariosService.removerUsuarioDeOrganizacion(this.idUsuario, org.id,
+                new common.callbackLite<any>(
+                    value => {
+                        // Actualizar la interfaz
+                        for (var i = 0; i < this.organizaciones.length; i++) {
+                            if (this.organizaciones[i].id === org.id) {
+                                this.organizaciones[i].usuarioEsMiembro = false;
+                                break;
+                            }
+                        }
+
+                        this.removiendoUsuario = false;
+                    },
+                    reason => {
+                        this.toasterLite.error('Hubo un error al intentar remover usuario de la organización');
+                        this.removiendoUsuario = false;
+                    })
             );
         }
 

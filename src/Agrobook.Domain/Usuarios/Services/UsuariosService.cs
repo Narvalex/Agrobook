@@ -189,6 +189,11 @@ namespace Agrobook.Domain.Usuarios
             await this.repository.SaveAsync(org);
         }
 
+        public async Task HandleAsync(RemoverUsuarioDeOrganizacion removerUsuarioDeOrganizacion)
+        {
+
+        }
+
         public async Task HandleAsync(ResetearPassword cmd)
         {
             var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(cmd.Usuario);

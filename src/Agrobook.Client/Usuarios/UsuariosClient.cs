@@ -72,5 +72,10 @@ namespace Agrobook.Client.Usuarios
             var command = new RetirarPermiso(null, usuario, permiso);
             await base.Post("retirar-permiso", command);
         }
+
+        public async Task RemoverUsuarioDeOrganizacion(RemoverUsuarioDeOrganizacion cmd)
+        {
+            await base.Post("remover-usuario-de-organizacion", cmd);
+        }
     }
 }

@@ -60,6 +60,14 @@ module usuariosArea {
             this.post(`agregar-usuario-a-la-organizacion/${idUsuario}/${idOrganizacion}`, {}, onSuccess, onError);
         }
 
+        removerUsuarioDeOrganizacion(idUsuario: string, idOrganizacion: string, callback: common.callbackLite<any>) {
+            let cmd = {
+                idUsuario: idUsuario,
+                idOrganizacion: idOrganizacion
+            };
+            this.postWithCallback('remover-usuario-de-organizacion', cmd, callback);
+        }
+
         agregarUsuarioAGrupo(
             idUsuario: string,
             idOrganizacion: string,

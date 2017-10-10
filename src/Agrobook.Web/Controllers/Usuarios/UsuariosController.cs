@@ -1,5 +1,5 @@
-﻿using Agrobook.Client;
-using Agrobook.Client.Usuarios;
+﻿using Agrobook.Client.Usuarios;
+using Agrobook.Domain.Usuarios;
 using Eventing.Client.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -79,6 +79,14 @@ namespace Agrobook.Web.Controllers.Usuarios
         public async Task<IHttpActionResult> RemoverUsuarioDeUnGrupo([FromUri]string idUsuario, [FromUri]string idOrganizacion, [FromUri]string idGrupo)
         {
             await this.client.RemoverUsuarioDeUnGrupo(idUsuario, idOrganizacion, idGrupo);
+            return this.Ok();
+        }
+
+        [HttpPost]
+        [Route()]
+        public async Task<IHttpActionResult> RemoverUsuarioDeOrganizacion([FromBody]RemoverUsuarioDeOrganizacion cmd)
+        {
+            await this.client.RemoverUsuarioDeOrganizacion(cmd);
             return this.Ok();
         }
 

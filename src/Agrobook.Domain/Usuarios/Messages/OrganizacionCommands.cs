@@ -4,7 +4,7 @@ namespace Agrobook.Domain.Usuarios
 {
     public class CrearNuevaOrganizacion : MensajeAuditable
     {
-        public CrearNuevaOrganizacion(Firma metadatos, string nombreCrudo) : base(metadatos)
+        public CrearNuevaOrganizacion(Firma firma, string nombreCrudo) : base(firma)
         {
             this.NombreCrudo = nombreCrudo;
         }
@@ -14,7 +14,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class CrearNuevoGrupo : MensajeAuditable
     {
-        public CrearNuevoGrupo(Firma metadatos, string idOrganizacion, string grupoDisplayName) : base(metadatos)
+        public CrearNuevoGrupo(Firma firma, string idOrganizacion, string grupoDisplayName) : base(firma)
         {
             this.IdOrganizacion = idOrganizacion;
             this.GrupoDisplayName = grupoDisplayName;
@@ -26,7 +26,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class AgregarUsuarioALaOrganizacion : MensajeAuditable
     {
-        public AgregarUsuarioALaOrganizacion(Firma metadatos, string organizacionId, string usuarioId) : base(metadatos)
+        public AgregarUsuarioALaOrganizacion(Firma firma, string organizacionId, string usuarioId) : base(firma)
         {
             this.OrganizacionId = organizacionId;
             this.UsuarioId = usuarioId;
@@ -38,7 +38,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class AgregarUsuarioAUnGrupo : MensajeAuditable
     {
-        public AgregarUsuarioAUnGrupo(Firma metadatos, string organizacionId, string usuarioId, string grupoId) : base(metadatos)
+        public AgregarUsuarioAUnGrupo(Firma firma, string organizacionId, string usuarioId, string grupoId) : base(firma)
         {
             this.OrganizacionId = organizacionId;
             this.UsuarioId = usuarioId;
@@ -52,7 +52,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class RemoverUsuarioDeUnGrupo : MensajeAuditable
     {
-        public RemoverUsuarioDeUnGrupo(Firma metadatos, string organizacionId, string usuarioId, string grupoId) : base(metadatos)
+        public RemoverUsuarioDeUnGrupo(Firma firma, string organizacionId, string usuarioId, string grupoId) : base(firma)
         {
             this.OrganizacionId = organizacionId;
             this.UsuarioId = usuarioId;
@@ -62,5 +62,17 @@ namespace Agrobook.Domain.Usuarios
         public string OrganizacionId { get; }
         public string UsuarioId { get; }
         public string GrupoId { get; }
+    }
+
+    public class RemoverUsuarioDeOrganizacion : MensajeAuditable
+    {
+        public RemoverUsuarioDeOrganizacion(Firma firma, string idUsuario, string idOrganizacion) : base(firma)
+        {
+            this.IdUsuario = idUsuario;
+            this.IdOrganizacion = idOrganizacion;
+        }
+
+        public string IdUsuario { get; }
+        public string IdOrganizacion { get; }
     }
 }

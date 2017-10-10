@@ -36,6 +36,13 @@ var usuariosArea;
         usuariosService.prototype.agregarUsuarioALaOrganizacion = function (idUsuario, idOrganizacion, onSuccess, onError) {
             this.post("agregar-usuario-a-la-organizacion/" + idUsuario + "/" + idOrganizacion, {}, onSuccess, onError);
         };
+        usuariosService.prototype.removerUsuarioDeOrganizacion = function (idUsuario, idOrganizacion, callback) {
+            var cmd = {
+                idUsuario: idUsuario,
+                idOrganizacion: idOrganizacion
+            };
+            this.postWithCallback('remover-usuario-de-organizacion', cmd, callback);
+        };
         usuariosService.prototype.agregarUsuarioAGrupo = function (idUsuario, idOrganizacion, idGrupo, onSuccess, onError) {
             this.post("agregar-usuario-a-grupo/" + idUsuario + "/" + idOrganizacion + "/" + idGrupo, {}, onSuccess, onError);
         };
