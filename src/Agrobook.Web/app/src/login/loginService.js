@@ -9,6 +9,9 @@ var login;
             this.$rootScope = $rootScope;
             this.prefix = 'login/';
             this.user = null;
+            var localVersion = this.ls.get(this.config.repoIndex.login.localVersion);
+            if (localVersion === undefined || localVersion === null || localVersion !== this.config.repoIndex.login.lastestVersion)
+                this.ls.delete(this.config.repoIndex.login.localVersion);
         }
         loginService.prototype.post = function (url, dto) {
             return this.$http.post(this.prefix + url, dto);

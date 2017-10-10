@@ -12,6 +12,9 @@ module login {
             private ls: common.localStorageLite,
             private $rootScope: angular.IRootScopeService
         ) {
+            let localVersion = this.ls.get(this.config.repoIndex.login.localVersion);
+            if (localVersion === undefined || localVersion === null || localVersion !== this.config.repoIndex.login.lastestVersion)
+                this.ls.delete(this.config.repoIndex.login.localVersion);
         }
 
         private user: loginResult = null;

@@ -49,6 +49,8 @@ module common {
 
         private _repoIndex = {
             login: {
+                lastestVersion: '1.0',
+                localVersion: 'ap-login-localVersion',
                 usuarioActual: 'ag-login-usuarioActual'
             }
         }
