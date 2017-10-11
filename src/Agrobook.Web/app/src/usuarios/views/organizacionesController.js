@@ -63,9 +63,10 @@ var usuariosArea;
                     }
                 }
                 _this.removiendoUsuario = false;
+                _this.toasterLite.default('Usuario removido de la organización');
             }, function (reason) {
-                _this.toasterLite.error('Hubo un error al intentar remover usuario de la organización');
                 _this.removiendoUsuario = false;
+                _this.toasterLite.error('Hubo un error al intentar remover usuario de la organización');
             }));
         };
         //-------------------

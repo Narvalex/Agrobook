@@ -9,7 +9,7 @@ module apArea {
             private fakeDb: fakeDb,
             private $timeout: angular.ITimeoutService
         ) {
-            super($http, 'ap/query');
+            super($http, '../../ap/query');
         }
 
         getClientes(

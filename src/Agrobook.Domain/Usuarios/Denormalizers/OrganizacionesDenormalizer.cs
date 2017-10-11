@@ -10,10 +10,8 @@ namespace Agrobook.Domain.Usuarios.Services
 {
     public class OrganizacionesDenormalizer : AgrobookDenormalizer,
         IEventHandler<NuevaOrganizacionCreada>,
-        IEventHandler<NuevoGrupoCreado>,
         IEventHandler<UsuarioAgregadoALaOrganizacion>,
-        IEventHandler<UsuarioAgregadoAUnGrupo>,
-        IEventHandler<UsuarioRemovidoDeUnGrupo>
+        IEventHandler<UsuarioRemovidoDeLaOrganizacion>
     {
         public OrganizacionesDenormalizer(IEventSubscriber subscriber, Func<AgrobookDbContext> contextFactory)
             : base(subscriber, contextFactory,
@@ -33,19 +31,6 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public async Task HandleOnce(long eventNumber, NuevoGrupoCreado e)
-        {
-            await this.Denormalize(eventNumber, context =>
-            {
-                context.Grupos.Add(new GrupoEntity
-                {
-                    Id = e.GrupoId,
-                    Display = e.GrupoDisplayName,
-                    OrganizacionId = e.OrganizacionId
-                });
-            });
-        }
-
         public async Task HandleOnce(long eventNumber, UsuarioAgregadoALaOrganizacion e)
         {
             await this.Denormalize(eventNumber, async context =>
@@ -60,33 +45,12 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public async Task HandleOnce(long eventNumber, UsuarioAgregadoAUnGrupo e)
+        public async Task HandleOnce(long eventNumber, UsuarioRemovidoDeLaOrganizacion e)
         {
             await this.Denormalize(eventNumber, async context =>
             {
-                var grupo = await context.Grupos.SingleAsync(x => x.Id == e.GrupoId && x.OrganizacionId == e.OrganizacionId);
-                context.GruposDeUsuarios.Add(new GrupoDeUsuarioEntity
-                {
-                    UsuarioId = e.UsuarioId,
-                    OrganizacionId = e.OrganizacionId,
-                    GrupoId = e.GrupoId,
-                    GrupoDisplay = grupo.Display
-                });
-            });
-        }
-
-        public async Task HandleOnce(long eventNumber, UsuarioRemovidoDeUnGrupo e)
-        {
-            await this.Denormalize(eventNumber, context =>
-            {
-                var grupo = new GrupoDeUsuarioEntity
-                {
-                    UsuarioId = e.UsuarioId,
-                    OrganizacionId = e.OrganizacionId,
-                    GrupoId = e.GrupoId
-                };
-
-                context.Entry(grupo).State = EntityState.Deleted;
+                var entity = await context.OrganizacionesDeUsuarios.SingleAsync(x => x.UsuarioId == e.IdUsuario && x.OrganizacionId == e.IdOrganizacion);
+                context.OrganizacionesDeUsuarios.Remove(entity);
             });
         }
     }

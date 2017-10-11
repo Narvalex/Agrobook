@@ -14,7 +14,7 @@ var usuariosArea;
     var usuariosQueryService = (function (_super) {
         __extends(usuariosQueryService, _super);
         function usuariosQueryService($http) {
-            var _this = _super.call(this, $http, 'usuarios/query') || this;
+            var _this = _super.call(this, $http, '../../usuarios/query') || this;
             _this.$http = $http;
             return _this;
         }

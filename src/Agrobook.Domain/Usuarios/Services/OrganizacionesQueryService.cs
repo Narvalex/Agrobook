@@ -1,5 +1,4 @@
-﻿using Agrobook.Common;
-using Agrobook.Domain.Common;
+﻿using Agrobook.Domain.Common;
 using Eventing.Core.Persistence;
 using System;
 using System.Collections.Generic;
@@ -77,34 +76,6 @@ namespace Agrobook.Domain.Usuarios.Services
                 orgsDelUsuario.AddRange(orgRestantesFiltrado);
 
                 return orgsDelUsuario;
-            });
-        }
-
-
-        public async Task<IList<GrupoDto>> ObtenerGrupos(string idOrganizacion, string idUsuario)
-        {
-            return await this.QueryAsync(async context =>
-            {
-                var todosLosGruposDeLaOrg = await context
-                                .Grupos
-                                .Where(g => g.OrganizacionId == idOrganizacion)
-                                .ToListAsync();
-
-                var gruposDelUsuario = await context
-                                                .GruposDeUsuarios
-                                                .Where(x => x.OrganizacionId == idOrganizacion && x.UsuarioId == idUsuario)
-                                                .ToListAsync();
-
-                var lista = todosLosGruposDeLaOrg.Select(x =>
-                            new GrupoDto
-                            {
-                                Id = x.Id,
-                                Display = x.Display,
-                                UsuarioEsMiembro = gruposDelUsuario.Any(g => g.GrupoId == x.Id)
-                            })
-                            .ToList();
-
-                return lista;
             });
         }
     }

@@ -7,7 +7,7 @@ module usuariosArea {
         constructor(
             private $http: ng.IHttpService
         ) {
-            super($http, 'usuarios/query');
+            super($http, '../../usuarios/query');
         }
 
         obtenerListaDeTodosLosUsuarios(

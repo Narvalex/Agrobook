@@ -87,20 +87,20 @@ var apArea;
         // most from flaticon.com
         // https://icons8.com/icon/11591/microsoft-word#filled
         $mdIconProvider
-            .defaultIconSet('./assets/svg/avatars.svg', 128)
-            .icon('menu', './assets/svg/menu.svg', 24)
-            .icon('close', './assets/svg/close.svg')
-            .icon('agrobook-white', './assets/svg/agrobook-white.svg')
-            .icon('agrobook-green', './assets/svg/agrobook-green.svg')
-            .icon('pdf', './assets/svg/pdf.svg')
-            .icon('list', './assets/svg/list.svg')
-            .icon('instagram', './assets/svg/instagram.svg')
-            .icon('picture', './assets/svg/picture.svg')
-            .icon('google-earth', './assets/svg/google-earth.svg')
-            .icon('generic-file', './assets/svg/generic-file.svg')
-            .icon('excel', './assets/svg/excel.svg')
-            .icon('word', './assets/svg/word.svg')
-            .icon('powerPoint', './assets/svg/power-point.svg');
+            .defaultIconSet('../../assets/svg/avatars.svg', 128)
+            .icon('menu', '../../assets/svg/menu.svg', 24)
+            .icon('close', '../../assets/svg/close.svg')
+            .icon('agrobook-white', '../../assets/svg/agrobook-white.svg')
+            .icon('agrobook-green', '../../assets/svg/agrobook-green.svg')
+            .icon('pdf', '../../assets/svg/pdf.svg')
+            .icon('list', '../../assets/svg/list.svg')
+            .icon('instagram', '../../assets/svg/instagram.svg')
+            .icon('picture', '../../assets/svg/picture.svg')
+            .icon('google-earth', '../../assets/svg/google-earth.svg')
+            .icon('generic-file', '../../assets/svg/generic-file.svg')
+            .icon('excel', '../../assets/svg/excel.svg')
+            .icon('word', '../../assets/svg/word.svg')
+            .icon('powerPoint', '../../assets/svg/power-point.svg');
     }
 })(apArea || (apArea = {}));
 //# sourceMappingURL=apArea.js.map

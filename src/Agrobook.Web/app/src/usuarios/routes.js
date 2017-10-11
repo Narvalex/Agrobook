@@ -6,14 +6,14 @@ var usuariosArea;
             {
                 path: '/',
                 route: {
-                    templateUrl: './src/usuarios/views/main-content.html',
+                    templateUrl: './views/main-content.html',
                     reloadOnSearch: false
                 }
             },
             {
                 path: '/usuario/:idUsuario',
                 route: {
-                    templateUrl: './src/usuarios/views/main-content.html',
+                    templateUrl: './views/main-content.html',
                     reloadOnSearch: false
                 }
             }

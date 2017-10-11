@@ -81,7 +81,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\ap.html" />
+    <Content Include="app\src\ap\index.html" />
     <Content Include="app\assets\angular-locale_es-py.js" />
     <Content Include="app\assets\animate.css" />
     <Content Include="app\assets\area-archivos.css" />
@@ -1101,18 +1101,16 @@
     <Content Include="app\src\common\userMenu\widget.html" />
     <Content Include="app\src\home\main-content.html" />
     <Content Include="app\src\home\toolbar-header.html" />
-    <Content Include="app\src\usuarios\dialogs\nuevo-grupo-dialog.html" />
     <Content Include="app\src\usuarios\dialogs\nuevo-usuario-dialog.html" />
     <Content Include="app\src\usuarios\sidenav.html" />
     <Content Include="app\assets\sidenav.css" />
     <Content Include="app\src\usuarios\toolbar-header.html" />
-    <Content Include="app\src\usuarios\views\grupos.html" />
     <Content Include="app\src\usuarios\views\main-content.html" />
     <Content Include="app\src\usuarios\views\organizaciones.html" />
     <Content Include="app\src\usuarios\views\perfil.html" />
-    <Content Include="app\home.html" />
+    <Content Include="app\src\home\index.html" />
     <TypeScriptCompile Include="app\bower_components\moment\moment.d.ts" />
-    <Content Include="app\usuarios.html" />
+    <Content Include="app\src\usuarios\index.html" />
     <Content Include="Global.asax" />
     <Content Include="favicon.ico" />
     <Content Include="index.html" />
@@ -1278,7 +1276,6 @@
     <TypeScriptCompile Include="app\src\login\loginDTOs.ts" />
     <TypeScriptCompile Include="app\src\login\loginQueryService.ts" />
     <TypeScriptCompile Include="app\src\login\loginService.ts" />
-    <TypeScriptCompile Include="app\src\usuarios\dialogs\nuevoGrupoDialogController.ts" />
     <TypeScriptCompile Include="app\src\usuarios\dialogs\nuevoUsuarioDialogController.ts" />
     <TypeScriptCompile Include="app\src\usuarios\routes.ts" />
     <TypeScriptCompile Include="app\src\usuarios\sidenavController.ts" />
@@ -1287,7 +1284,6 @@
     <TypeScriptCompile Include="app\src\usuarios\usuariosDTOs.ts" />
     <TypeScriptCompile Include="app\src\usuarios\usuariosQueryService.ts" />
     <TypeScriptCompile Include="app\src\usuarios\usuariosService.ts" />
-    <TypeScriptCompile Include="app\src\usuarios\views\gruposController.ts" />
     <TypeScriptCompile Include="app\src\usuarios\views\mainContentController.ts" />
     <TypeScriptCompile Include="app\src\usuarios\views\organizacionesController.ts" />
     <TypeScriptCompile Include="app\src\usuarios\views\perfilController.ts" />

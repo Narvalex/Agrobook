@@ -14,7 +14,7 @@ var apArea;
     var apQueryService = (function (_super) {
         __extends(apQueryService, _super);
         function apQueryService($http, fakeDb, $timeout) {
-            var _this = _super.call(this, $http, 'ap/query') || this;
+            var _this = _super.call(this, $http, '../../ap/query') || this;
             _this.$http = $http;
             _this.fakeDb = fakeDb;
             _this.$timeout = $timeout;

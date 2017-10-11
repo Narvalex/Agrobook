@@ -16,11 +16,4 @@
         /// </summary>
         public bool UsuarioEsMiembro { get; set; }
     }
-
-    public class GrupoDto
-    {
-        public string Id { get; set; }
-        public string Display { get; set; }
-        public bool UsuarioEsMiembro { get; set; }
-    }
 }

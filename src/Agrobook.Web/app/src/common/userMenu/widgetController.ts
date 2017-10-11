@@ -48,7 +48,7 @@ module common {
                 attachTo: angular.element(document.body),
                 controller: panelMenuController,
                 controllerAs: 'vm',
-                templateUrl: './src/common/userMenu/menu-items-template.html',
+                templateUrl: '../common/userMenu/menu-items-template.html',
                 panelClass: 'menu-panel-container',
                 openFrom: $event,
                 clickOutsideToClose: true,
@@ -87,16 +87,16 @@ module common {
             private loginService: login.loginService,
             private config: common.config
         ) {
-            this.estaEnHome = window.location.pathname == '/app/home.html';
+            this.estaEnHome = window.location.pathname == '/app/src/home/index.html';
 
             var claims = this.config.claims;
             var esTecnicoOSuperior = this.loginService.autorizar([claims.roles.Tecnico, claims.roles.Gerente]);
 
             this.menuItemList = [
-                new menuItem('Inicio', 'home.html', 'home'),
-                new menuItem('Ag. de Precisión', 'ap.html', 'my_location'),
+                new menuItem('Inicio', '../home/index.html', 'home'),
+                new menuItem('Ag. de Precisión', '../ap/index.html', 'my_location'),
                 new menuItem(esTecnicoOSuperior
-                    ? 'Usuarios' : 'Mi Perfil', 'usuarios.html#!/', 'people')
+                    ? 'Usuarios' : 'Mi Perfil', '../usuarios/index.html#!/', 'people')
             ];
         }
 
@@ -106,7 +106,7 @@ module common {
             this.loginService.logOut();
             this.closeMenu();
             if (!this.estaEnHome)
-                window.location.href = 'home.html';
+                window.location.href = '../home/index.html';
         }
 
         closeMenu(): void {

@@ -46,7 +46,7 @@ namespace Agrobook.CLI.Controllers
             {
                 NombreDeUsuario = "prod",
                 NombreParaMostrar = "Productor Uno",
-                AvatarUrl = "./assets/img/avatar/10.png",
+                AvatarUrl = "../../assets/img/avatar/10.png",
                 Claims = new string[] { ClaimDef.Roles.Productor },
                 Password = "123"
             };
@@ -57,7 +57,7 @@ namespace Agrobook.CLI.Controllers
             {
                 NombreDeUsuario = "prod2",
                 NombreParaMostrar = "Productor Dos",
-                AvatarUrl = "./assets/img/avatar/9.png",
+                AvatarUrl = "../../assets/img/avatar/9.png",
                 Claims = new string[] { ClaimDef.Roles.Productor },
                 Password = "123"
             };

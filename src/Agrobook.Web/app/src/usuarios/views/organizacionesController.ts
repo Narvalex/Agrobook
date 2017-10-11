@@ -91,10 +91,11 @@ module usuariosArea {
                         }
 
                         this.removiendoUsuario = false;
+                        this.toasterLite.default('Usuario removido de la organización');
                     },
                     reason => {
-                        this.toasterLite.error('Hubo un error al intentar remover usuario de la organización');
                         this.removiendoUsuario = false;
+                        this.toasterLite.error('Hubo un error al intentar remover usuario de la organización');
                     })
             );
         }

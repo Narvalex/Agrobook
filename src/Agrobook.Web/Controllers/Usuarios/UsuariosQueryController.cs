@@ -1,5 +1,4 @@
-﻿using Agrobook.Client;
-using Agrobook.Client.Usuarios;
+﻿using Agrobook.Client.Usuarios;
 using Eventing.Client.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -71,14 +70,6 @@ namespace Agrobook.Web.Controllers.Usuarios
         public async Task<IHttpActionResult> ObtenerOrganizacionesMarcadasDelUsuario([FromUri]string usuarioId)
         {
             var dto = await this.client.ObtenerOrganizacionesMarcadasDelUsuario(usuarioId);
-            return this.Ok(dto);
-        }
-
-        [HttpGet]
-        [Route("grupos/{idOrganizacion}/{idUsuario}")]
-        public async Task<IHttpActionResult> ObtenerGrupos([FromUri] string idOrganizacion, [FromUri] string idUsuario)
-        {
-            var dto = await this.client.ObtenerGrupos(idOrganizacion, idUsuario);
             return this.Ok(dto);
         }
     }

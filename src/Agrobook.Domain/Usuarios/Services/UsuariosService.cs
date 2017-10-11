@@ -18,9 +18,6 @@ namespace Agrobook.Domain.Usuarios
     {
         public const string UsuarioAdmin = "admin";
         public const string DefaultPassword = "123";
-
-        public const string DefaultGrupoId = "todos";
-        public const string DefaultGrupoDisplayName = "Todos";
     }
 
     // TODO: se podria implementar el sistema de clases parciales con esta super clase
@@ -35,7 +32,7 @@ namespace Agrobook.Domain.Usuarios
             IEventSourcedRepository repository,
             IDateTimeProvider dateTime,
             IJsonSerializer cryptoSerializer,
-            string adminAvatarUrl = "./assets/img/avatar/1.png")
+            string adminAvatarUrl = "../../assets/img/avatar/1.png")
             : base(repository)
         {
             Ensure.NotNull(dateTime, nameof(dateTime));
@@ -174,24 +171,28 @@ namespace Agrobook.Domain.Usuarios
             if (org.LaOrganizacionNoTieneTodaviaUsuarios)
             {
                 org.Emit(new UsuarioAgregadoALaOrganizacion(cmd.Firma, cmd.OrganizacionId, cmd.UsuarioId));
-                org.Emit(new NuevoGrupoCreado(cmd.Firma, DefaultGrupoId, DefaultGrupoDisplayName, cmd.OrganizacionId));
-                org.Emit(new UsuarioAgregadoAUnGrupo(cmd.Firma, cmd.OrganizacionId, cmd.UsuarioId, DefaultGrupoId));
             }
             else
             {
-                if (org.YaTieneAlUsuarioComoMiembro(cmd.UsuarioId))
+                if (org.TieneAlUsuarioComoMiembro(cmd.UsuarioId))
                     throw new InvalidOperationException("El usuario ya pertenece a la organización");
 
                 org.Emit(new UsuarioAgregadoALaOrganizacion(cmd.Firma, cmd.OrganizacionId, cmd.UsuarioId));
-                org.Emit(new UsuarioAgregadoAUnGrupo(cmd.Firma, cmd.OrganizacionId, cmd.UsuarioId, UsuariosConstants.DefaultGrupoId));
             }
 
             await this.repository.SaveAsync(org);
         }
 
-        public async Task HandleAsync(RemoverUsuarioDeOrganizacion removerUsuarioDeOrganizacion)
+        public async Task HandleAsync(RemoverUsuarioDeOrganizacion cmd)
         {
+            var org = await this.repository.GetOrFailByIdAsync<Organizacion>(cmd.IdOrganizacion);
 
+            if (!org.TieneAlUsuarioComoMiembro(cmd.IdUsuario))
+                throw new InvalidOperationException("El usuario ni siquiera pertenece a la organización como para ser removido.");
+
+            org.Emit(new UsuarioRemovidoDeLaOrganizacion(cmd.Firma, cmd.IdUsuario, cmd.IdOrganizacion));
+
+            await this.repository.SaveAsync(org);
         }
 
         public async Task HandleAsync(ResetearPassword cmd)
@@ -217,59 +218,6 @@ namespace Agrobook.Domain.Usuarios
             await this.repository.SaveAsync(organizacion);
 
             return new OrganizacionDto { Id = nombreFormateadoParaId, Display = nombreFormateadoParaDisplay };
-        }
-
-        public async Task<GrupoDto> HandleAsync(CrearNuevoGrupo cmd)
-        {
-            if (cmd.GrupoDisplayName.ToTrimmedAndWhiteSpaceless().ToLowerInvariant() == UsuariosConstants.DefaultGrupoId)
-                throw new InvalidOperationException($"El nombre del grupo no puede ser {cmd.GrupoDisplayName}");
-
-            var org = await this.repository.GetOrFailByIdAsync<Organizacion>(cmd.IdOrganizacion);
-            var idGrupo = cmd.GrupoDisplayName.ToTrimmedAndWhiteSpaceless().ToLowerInvariant();
-            if (org.YaTieneGrupoConId(idGrupo))
-                throw new InvalidOperationException($"Ya existe el grupo con id {idGrupo} en la organización {org.NombreParaMostrar}");
-            org.Emit(new NuevoGrupoCreado(cmd.Firma, idGrupo, cmd.GrupoDisplayName, cmd.IdOrganizacion));
-            await this.repository.SaveAsync(org);
-            return new GrupoDto { Id = idGrupo, Display = cmd.GrupoDisplayName };
-        }
-
-        public async Task HandleAsync(AgregarUsuarioAUnGrupo cmd)
-        {
-            var org = await this.repository.GetOrFailByIdAsync<Organizacion>(cmd.OrganizacionId);
-
-            if (!org.YaTieneAlUsuarioComoMiembro(cmd.UsuarioId))
-                throw new InvalidOperationException("El usuario todavia no es miembro de la organizacion");
-
-            if (!org.YaTieneGrupoConId(cmd.GrupoId))
-                throw new InvalidOperationException("No existe el grupo al que se quiere agregar el usuario");
-
-            if (org.YaTieneUsuarioDentroDelGrupo(cmd.GrupoId, cmd.UsuarioId))
-                throw new InvalidOperationException("El usuario ya esta dentro del grupo");
-
-            org.Emit(new UsuarioAgregadoAUnGrupo(cmd.Firma, cmd.OrganizacionId, cmd.UsuarioId, cmd.GrupoId));
-
-            await this.repository.SaveAsync(org);
-        }
-
-        public async Task HandleAsync(RemoverUsuarioDeUnGrupo cmd)
-        {
-            if (cmd.GrupoId.EqualsIgnoringCase(UsuariosConstants.DefaultGrupoId))
-                throw new InvalidOperationException("No se puede remover a alguien del grupo por defecto");
-
-            var org = await this.repository.GetOrFailByIdAsync<Organizacion>(cmd.OrganizacionId);
-
-            if (!org.YaTieneAlUsuarioComoMiembro(cmd.UsuarioId))
-                throw new InvalidOperationException("El usuario ni siquiera es miembro de la organizacion");
-
-            if (!org.YaTieneGrupoConId(cmd.GrupoId))
-                throw new InvalidOperationException("No existe el grupo al que se quiere remover el usuario");
-
-            if (!org.YaTieneUsuarioDentroDelGrupo(cmd.GrupoId, cmd.UsuarioId))
-                throw new InvalidOperationException("El usuario no esta siquiera dentro del grupo");
-
-            org.Emit(new UsuarioRemovidoDeUnGrupo(cmd.Firma, cmd.OrganizacionId, cmd.UsuarioId, cmd.GrupoId));
-
-            await this.repository.SaveAsync(org);
         }
 
         public async Task HandleAsync(RetirarPermiso cmd)

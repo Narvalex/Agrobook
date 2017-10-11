@@ -20,13 +20,10 @@
         <md-tabs md-dynamic-height=""
                  md-selected="vm.tabIndex">
             <md-tab label="Perfil" md-on-select="vm.onTabSelect(0)">
-                <div ng-include="'./src/usuarios/views/perfil.html'"></div>
-            </md-tab>
-            <md-tab ng-if="vm.mostrarOrganizacionesYGrupos" label="Grupos" md-on-select="vm.onTabSelect(1)">
-                <div ng-include="'./src/usuarios/views/grupos.html'"></div>
+                <div ng-include="'./views/perfil.html'"></div>
             </md-tab>
             <md-tab ng-if="vm.mostrarOrganizacionesYGrupos" label="Organizaciones" md-on-select="vm.onTabSelect(2)">
-                <div ng-include="'./src/usuarios/views/organizaciones.html'"></div>
+                <div ng-include="'./views/organizaciones.html'"></div>
             </md-tab>
         </md-tabs>
     </div>

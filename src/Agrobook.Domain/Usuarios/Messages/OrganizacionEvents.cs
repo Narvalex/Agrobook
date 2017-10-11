@@ -1,8 +1,9 @@
-﻿using Agrobook.Domain.Common;
+﻿using Agrobook.Core;
+using Agrobook.Domain.Common;
 
 namespace Agrobook.Domain.Usuarios
 {
-    public class NuevaOrganizacionCreada : MensajeAuditable
+    public class NuevaOrganizacionCreada : MensajeAuditable, IEvent
     {
         public NuevaOrganizacionCreada(Firma metadatos, string identificador, string nombreParaMostrar) : base(metadatos)
         {
@@ -12,23 +13,11 @@ namespace Agrobook.Domain.Usuarios
 
         public string Identificador { get; }
         public string NombreParaMostrar { get; }
+
+        public string StreamId => this.Identificador;
     }
 
-    public class NuevoGrupoCreado : MensajeAuditable
-    {
-        public NuevoGrupoCreado(Firma metadatos, string grupoId, string grupoDisplayName, string organizacionId) : base(metadatos)
-        {
-            this.GrupoId = grupoId;
-            this.GrupoDisplayName = grupoDisplayName;
-            this.OrganizacionId = organizacionId;
-        }
-
-        public string GrupoId { get; }
-        public string GrupoDisplayName { get; }
-        public string OrganizacionId { get; }
-    }
-
-    public class UsuarioAgregadoALaOrganizacion : MensajeAuditable
+    public class UsuarioAgregadoALaOrganizacion : MensajeAuditable, IEvent
     {
         public UsuarioAgregadoALaOrganizacion(Firma metadatos, string organizacionId, string usuarioId) : base(metadatos)
         {
@@ -38,33 +27,21 @@ namespace Agrobook.Domain.Usuarios
 
         public string OrganizacionId { get; }
         public string UsuarioId { get; }
+
+        public string StreamId => this.OrganizacionId;
     }
 
-    public class UsuarioAgregadoAUnGrupo : MensajeAuditable
+    public class UsuarioRemovidoDeLaOrganizacion : MensajeAuditable, IEvent
     {
-        public UsuarioAgregadoAUnGrupo(Firma metadatos, string organizacionId, string usuarioId, string grupoId) : base(metadatos)
+        public UsuarioRemovidoDeLaOrganizacion(Firma firma, string idUsuario, string idOrganizacion) : base(firma)
         {
-            this.OrganizacionId = organizacionId;
-            this.UsuarioId = usuarioId;
-            this.GrupoId = grupoId;
+            this.IdUsuario = idUsuario;
+            this.IdOrganizacion = idOrganizacion;
         }
 
-        public string OrganizacionId { get; }
-        public string UsuarioId { get; }
-        public string GrupoId { get; }
-    }
+        public string IdUsuario { get; }
+        public string IdOrganizacion { get; }
 
-    public class UsuarioRemovidoDeUnGrupo : MensajeAuditable
-    {
-        public UsuarioRemovidoDeUnGrupo(Firma metadatos, string organizacionId, string usuarioId, string grupoId) : base(metadatos)
-        {
-            this.OrganizacionId = organizacionId;
-            this.UsuarioId = usuarioId;
-            this.GrupoId = grupoId;
-        }
-
-        public string OrganizacionId { get; }
-        public string UsuarioId { get; }
-        public string GrupoId { get; }
+        public string StreamId => this.IdOrganizacion;
     }
 }

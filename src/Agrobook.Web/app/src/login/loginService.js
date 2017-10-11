@@ -7,7 +7,7 @@ var login;
             this.config = config;
             this.ls = ls;
             this.$rootScope = $rootScope;
-            this.prefix = 'login/';
+            this.prefix = '../../login/';
             this.user = null;
             var localVersion = this.ls.get(this.config.repoIndex.login.localVersion);
             if (localVersion === undefined || localVersion === null || localVersion !== this.config.repoIndex.login.lastestVersion)

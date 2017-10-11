@@ -22,16 +22,16 @@ module common {
         };
 
         private _avatarUrls = [
-            './assets/img/avatar/1.png',
-            './assets/img/avatar/2.png',
-            './assets/img/avatar/3.png',
-            './assets/img/avatar/4.png',
-            './assets/img/avatar/5.png',
-            './assets/img/avatar/6.png',
-            './assets/img/avatar/7.png',
-            './assets/img/avatar/8.png',
-            './assets/img/avatar/9.png',
-            './assets/img/avatar/10.png'
+            '../../assets/img/avatar/1.png',
+            '../../assets/img/avatar/2.png',
+            '../../assets/img/avatar/3.png',
+            '../../assets/img/avatar/4.png',
+            '../../assets/img/avatar/5.png',
+            '../../assets/img/avatar/6.png',
+            '../../assets/img/avatar/7.png',
+            '../../assets/img/avatar/8.png',
+            '../../assets/img/avatar/9.png',
+            '../../assets/img/avatar/10.png'
         ];
 
         private _claims = {

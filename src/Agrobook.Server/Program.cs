@@ -9,12 +9,14 @@ using Eventing.GetEventStore;
 using Eventing.Log;
 using Microsoft.Owin.Hosting;
 using System;
+using System.Linq;
 using System.Threading;
 
 namespace Agrobook.Server
 {
     partial class Program
     {
+        private static string dropDbParam = "dropdb";
         private static ILogLite _log = LogManager.GlobalLogger;
 
         static void Main(string[] args)
@@ -45,9 +47,22 @@ namespace Agrobook.Server
             _log.Verbose("Initializing EventStore...");
             var es = ServiceLocator.ResolveSingleton<EventStoreManager>();
 #if DROP_DB
-            _log.Info("The database initializer configuration is DROP AND CREATE");
+            _log.Info("The database initializer configuration is DROP DB");
             es.DropAndCreateDb();
-#else
+#endif
+#if DEBUG
+            if (args.Any(x => x == dropDbParam))
+            {
+                _log.Warning("The databse initializer configuration is DROP DB");
+                es.DropAndCreateDb();
+            }
+            else
+            {
+                _log.Info("The database initializer configuration is CREATE IF NOT EXISTS");
+                es.CreateDbIfNotExists();
+            }
+#endif
+#if !DEBUG
             _log.Info("The database initializer configuration is CREATE IF NOT EXISTS");
             es.CreateDbIfNotExists();
 #endif
@@ -58,7 +73,13 @@ namespace Agrobook.Server
 #if DROP_DB
             sqlInit.DropAndCreateDb();
 #endif
-#if !DROP_DB
+#if DEBUG
+            if (args.Any(x => x == dropDbParam))
+                sqlInit.DropAndCreateDb();
+            else
+                sqlInit.CreateDatabaseIfNoExists();
+#endif
+#if !DEBUG
             sqlInit.CreateDatabaseIfNoExists();
 #endif
             _log.Verbose("SQL Compact is ready");
@@ -68,7 +89,13 @@ namespace Agrobook.Server
 #if DROP_DB
             fileManager.DeleteAllAndStartAgain();
 #endif
-#if !DROP_DB
+#if DEBUG
+            if (args.Any(x => x == dropDbParam))
+                fileManager.DeleteAllAndStartAgain();
+            else
+                fileManager.CreateDirectoryIfNeeded();
+#endif
+#if !DEBUG
             fileManager.CreateDirectoryIfNeeded();
 #endif
 

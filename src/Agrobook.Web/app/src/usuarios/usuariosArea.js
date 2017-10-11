@@ -16,15 +16,14 @@ var usuariosArea;
         .controller('mainContentController', usuariosArea.mainContentController)
         .controller('perfilController', usuariosArea.perfilController)
         .controller('organizacionesController', usuariosArea.organizacionesController)
-        .controller('gruposController', usuariosArea.gruposController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $routeProvider) {
             // most from flat icon dot com
             $mdIconProvider
-                .defaultIconSet('./assets/svg/avatars.svg', 128)
-                .icon('menu', './assets/svg/menu.svg', 24)
-                .icon('close', './assets/svg/close.svg')
-                .icon('agrobook-white', './assets/svg/agrobook-white.svg')
-                .icon('agrobook-green', './assets/svg/agrobook-green.svg');
+                .defaultIconSet('../../assets/svg/avatars.svg', 128)
+                .icon('menu', '../../assets/svg/menu.svg', 24)
+                .icon('close', '../../assets/svg/close.svg')
+                .icon('agrobook-white', '../../assets/svg/agrobook-white.svg')
+                .icon('agrobook-green', '../../assets/svg/agrobook-green.svg');
             $mdThemingProvider.theme('default')
                 .primaryPalette('green')
                 .accentPalette('blue');

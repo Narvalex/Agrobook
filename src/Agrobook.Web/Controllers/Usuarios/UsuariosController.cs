@@ -51,14 +51,6 @@ namespace Agrobook.Web.Controllers.Usuarios
         }
 
         [HttpPost]
-        [Route("crear-nuevo-grupo/{idOrg}/{displayGrupoName}")]
-        public async Task<IHttpActionResult> CrearNuevoGrupo([FromUri]string idOrg, [FromUri]string displayGrupoName)
-        {
-            var grupo = await this.client.CrearNuevoGrupo(idOrg, displayGrupoName);
-            return this.Ok(grupo);
-        }
-
-        [HttpPost]
         [Route("agregar-usuario-a-la-organizacion/{idUsuario}/{idOrganizacion}")]
         public async Task<IHttpActionResult> AgregarUsuarioALaOrganizacion([FromUri]string idUsuario, [FromUri]string idOrganizacion)
         {
@@ -67,23 +59,7 @@ namespace Agrobook.Web.Controllers.Usuarios
         }
 
         [HttpPost]
-        [Route("agregar-usuario-a-grupo/{idUsuario}/{idOrganizacion}/{idGrupo}")]
-        public async Task<IHttpActionResult> AgregarUsuarioAGrupo([FromUri]string idUsuario, [FromUri]string idOrganizacion, [FromUri]string idGrupo)
-        {
-            await this.client.AgregarUsuarioAGrupo(idUsuario, idOrganizacion, idGrupo);
-            return this.Ok();
-        }
-
-        [HttpPost]
-        [Route("remover-usuario-de-un-grupo/{idUsuario}/{idOrganizacion}/{idGrupo}")]
-        public async Task<IHttpActionResult> RemoverUsuarioDeUnGrupo([FromUri]string idUsuario, [FromUri]string idOrganizacion, [FromUri]string idGrupo)
-        {
-            await this.client.RemoverUsuarioDeUnGrupo(idUsuario, idOrganizacion, idGrupo);
-            return this.Ok();
-        }
-
-        [HttpPost]
-        [Route()]
+        [Route("remover-usuario-de-organizacion")]
         public async Task<IHttpActionResult> RemoverUsuarioDeOrganizacion([FromBody]RemoverUsuarioDeOrganizacion cmd)
         {
             await this.client.RemoverUsuarioDeOrganizacion(cmd);

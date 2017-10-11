@@ -16,7 +16,6 @@ module usuariosArea {
         .controller('mainContentController', mainContentController) 
         .controller('perfilController', perfilController)
         .controller('organizacionesController', organizacionesController)  
-        .controller('gruposController', gruposController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider', (
             $mdIconProvider: angular.material.IIconProvider,
             $mdThemingProvider: angular.material.IThemingProvider,
@@ -26,11 +25,11 @@ module usuariosArea {
 
             // most from flat icon dot com
             $mdIconProvider
-                .defaultIconSet('./assets/svg/avatars.svg', 128)
-                .icon('menu', './assets/svg/menu.svg', 24)
-                .icon('close', './assets/svg/close.svg')
-                .icon('agrobook-white', './assets/svg/agrobook-white.svg')
-                .icon('agrobook-green', './assets/svg/agrobook-green.svg');
+                .defaultIconSet('../../assets/svg/avatars.svg', 128)
+                .icon('menu', '../../assets/svg/menu.svg', 24)
+                .icon('close', '../../assets/svg/close.svg')
+                .icon('agrobook-white', '../../assets/svg/agrobook-white.svg')
+                .icon('agrobook-green', '../../assets/svg/agrobook-green.svg');
 
             $mdThemingProvider.theme('default')
                 .primaryPalette('green')

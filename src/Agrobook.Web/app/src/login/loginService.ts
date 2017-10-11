@@ -2,7 +2,7 @@
 
 module login {
     export class loginService {
-        private prefix = 'login/';
+        private prefix = '../../login/';
 
         static $inject = ['$http', 'config', 'localStorageLite', '$rootScope'];
 

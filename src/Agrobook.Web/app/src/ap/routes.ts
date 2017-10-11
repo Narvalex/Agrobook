@@ -12,28 +12,28 @@ module apArea {
             {
                 path: '/',
                 route: {
-                    templateUrl: './src/ap/views/main-content.html',
+                    templateUrl: './views/main-content.html',
                     reloadOnSearch: false
                 }
             },
             {
                 path: '/prod/:idProd',
                 route: {
-                    templateUrl: './src/ap/views/prod/prod-main-content.html',
+                    templateUrl: './views/prod/prod-main-content.html',
                     reloadOnSearch: false
                 }
             },
             {
                 path: '/org/:idOrg',
                 route: {
-                    templateUrl: './src/ap/views/org/org-main-content.html',
+                    templateUrl: './views/org/org-main-content.html',
                     reloadOnSearch: false
                 }
             },
             {
                 path: '/servicios/:idProd/:idServicio',
                 route: {
-                    templateUrl: './src/ap/views/servicios/servicio-main-content.html',
+                    templateUrl: './views/servicios/servicio-main-content.html',
                     reloadOnSearch: false
                 }
             }

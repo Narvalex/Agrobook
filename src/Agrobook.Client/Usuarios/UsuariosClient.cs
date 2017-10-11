@@ -36,29 +36,10 @@ namespace Agrobook.Client.Usuarios
             return dto;
         }
 
-        public async Task<GrupoDto> CrearNuevoGrupo(string idOrg, string displayGrupoName)
-        {
-            var command = new CrearNuevoGrupo(null, idOrg, displayGrupoName);
-            var grupo = await base.Post<CrearNuevoGrupo, GrupoDto>("crear-nuevo-grupo", command);
-            return grupo;
-        }
-
         public async Task AgregarUsuarioALaOrganizacion(string idUsuario, string idOrganizacion)
         {
             var command = new AgregarUsuarioALaOrganizacion(null, idOrganizacion, idUsuario);
             await base.Post("agregar-usuario-a-la-organizacion", command);
-        }
-
-        public async Task AgregarUsuarioAGrupo(string idUsuario, string idOrganizacion, string idGrupo)
-        {
-            var command = new AgregarUsuarioAUnGrupo(null, idOrganizacion, idUsuario, idGrupo);
-            await base.Post("agregar-usuario-a-grupo", command);
-        }
-
-        public async Task RemoverUsuarioDeUnGrupo(string idUsuario, string idOrganizacion, string idGrupo)
-        {
-            var command = new RemoverUsuarioDeUnGrupo(null, idOrganizacion, idUsuario, idGrupo);
-            await base.Post("remover-usuario-de-un-grupo", command);
         }
 
         public async Task OtorgarPermisoAUsuario(string idUsuario, string permiso)
