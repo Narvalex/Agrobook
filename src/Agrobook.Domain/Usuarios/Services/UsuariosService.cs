@@ -32,7 +32,7 @@ namespace Agrobook.Domain.Usuarios
             IEventSourcedRepository repository,
             IDateTimeProvider dateTime,
             IJsonSerializer cryptoSerializer,
-            string adminAvatarUrl = "../../assets/img/avatar/1.png")
+            string adminAvatarUrl = "../assets/img/avatar/1.png")
             : base(repository)
         {
             Ensure.NotNull(dateTime, nameof(dateTime));
