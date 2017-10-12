@@ -14,7 +14,7 @@ var apArea;
     var apService = (function (_super) {
         __extends(apService, _super);
         function apService($http, fakeDb, timer) {
-            var _this = _super.call(this, $http, 'ap') || this;
+            var _this = _super.call(this, $http, '../ap') || this;
             _this.$http = $http;
             _this.fakeDb = fakeDb;
             _this.timer = timer;

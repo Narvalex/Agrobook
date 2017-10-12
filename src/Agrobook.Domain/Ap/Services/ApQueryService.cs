@@ -10,7 +10,7 @@ namespace Agrobook.Domain.Ap.Services
 {
     public class ApQueryService : AgrobookQueryService
     {
-        private readonly string orgAvatarUrl = "../../assets/img/avatar/org-icon.png";
+        private readonly string orgAvatarUrl = "../assets/img/avatar/org-icon.png";
 
         public ApQueryService(Func<AgrobookDbContext> contextFactory, IEventSourcedReader esReader) : base(contextFactory, esReader)
         { }

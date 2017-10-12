@@ -9,7 +9,7 @@ module apArea {
             private fakeDb: fakeDb,
             private timer: angular.ITimeoutService
         ) {
-            super($http, 'ap');
+            super($http, '../ap');
         }
 
         registrarNuevaParcela(
