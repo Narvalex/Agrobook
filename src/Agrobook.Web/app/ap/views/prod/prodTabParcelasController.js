@@ -43,7 +43,7 @@ var apArea;
                 controller: panelMenuController,
                 controllerAs: 'vm',
                 hasBackdrop: true,
-                templateUrl: './src/ap/views/prod/menu-panel-tab-parcelas.html',
+                templateUrl: './views/prod/menu-panel-tab-parcelas.html',
                 position: position,
                 trapFocus: true,
                 locals: {

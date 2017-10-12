@@ -10,7 +10,7 @@ var common;
                 idColeccion: '=',
                 header: '='
             },
-            templateUrl: './src/common/files/files-widget.html',
+            templateUrl: '../common/files/files-widget.html',
             controller: filesWidgetController //Embed a custom controller in the directive,
         };
     }
@@ -45,7 +45,7 @@ var common;
             vm.prepFiles = this.prepFiles;
             vm.units = [];
             vm.loadingFiles = true;
-            this.$http.get('archivos/query/coleccion/' + vm.idColeccion).then(function (value) {
+            this.$http.get('../archivos/query/coleccion/' + vm.idColeccion).then(function (value) {
                 for (var i = 0; i < value.data.length; i++) {
                     var meta = value.data[i];
                     var unit = new fileUnit(meta.nombre, meta.extension, vm.states.uploaded, null, meta.size, meta.size > 1024 * 1024 ? (meta.size / 1024 / 1024).toFixed(1) + " MB" : (meta.size / 1024).toFixed(1) + " KB");
@@ -168,7 +168,7 @@ var common;
         };
         filesWidgetController.prototype.downloadFile = function (unit) {
             // Could be improved here: https://stackoverflow.com/questions/24080018/download-file-from-an-asp-net-web-api-method-using-angularjs
-            window.open("./archivos/query/download/" + this.idColeccion + "/" + unit.name + "/" + this.loginInfo.usuario, '_blank', '');
+            window.open("../archivos/query/download/" + this.idColeccion + "/" + unit.name + "/" + this.loginInfo.usuario, '_blank', '');
         };
         filesWidgetController.prototype.uploadFile = function (unit) {
             var vm = this;
@@ -191,7 +191,7 @@ var common;
             xhr.addEventListener("readystatechange", readyStateChange, false);
             xhr.addEventListener("loadstart", loadStart, false);
             xhr.addEventListener("loadend", loadEnd, false);
-            xhr.open("POST", "./archivos/upload", true);
+            xhr.open("POST", "../archivos/upload", true);
             xhr.setRequestHeader("Authorization", vm.loginInfo.token);
             try {
                 xhr.send(formData);
@@ -303,7 +303,7 @@ var common;
         };
         filesWidgetController.prototype.deleteFile = function (unit) {
             var _this = this;
-            this.$http.post("archivos/eliminar-archivo", { idColeccion: this.idColeccion, nombreArchivo: unit.name })
+            this.$http.post("../archivos/eliminar-archivo", { idColeccion: this.idColeccion, nombreArchivo: unit.name })
                 .then(function (value) {
                 for (var i = 0; i < _this.units.length; i++) {
                     var u = _this.units[i];
@@ -319,7 +319,7 @@ var common;
         };
         filesWidgetController.prototype.restore = function (unit) {
             var _this = this;
-            this.$http.post("archivos/restaurar-archivo", { idColeccion: this.idColeccion, nombreArchivo: unit.name })
+            this.$http.post("../archivos/restaurar-archivo", { idColeccion: this.idColeccion, nombreArchivo: unit.name })
                 .then(function (value) {
                 for (var i = 0; i < _this.units.length; i++) {
                     var u = _this.units[i];
@@ -342,7 +342,7 @@ var common;
                 controller: filesWidgetPanelMenuController,
                 controllerAs: 'vm',
                 hasBackdrop: true,
-                templateUrl: './src/common/files/files-widget-panel-menu.html',
+                templateUrl: '../common/files/files-widget-panel-menu.html',
                 position: position,
                 trapFocus: true,
                 locals: {

@@ -65,7 +65,7 @@ module apArea {
                 controller: panelMenuController,
                 controllerAs: 'vm',
                 hasBackdrop: true,
-                templateUrl: './src/ap/views/org/menu-panel-tab-contratos.html',
+                templateUrl: './views/org/menu-panel-tab-contratos.html',
                 position: position,
                 trapFocus: true,
                 locals: {

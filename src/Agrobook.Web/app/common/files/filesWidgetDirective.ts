@@ -11,7 +11,7 @@ module common {
                 idColeccion: '=', // a que coleccion pertenece el archivo. {archivos}-{prodId}
                 header: '='
             },
-            templateUrl: './src/common/files/files-widget.html',
+            templateUrl: '../common/files/files-widget.html',
             controller: filesWidgetController //Embed a custom controller in the directive,
         };
     }
@@ -51,7 +51,7 @@ module common {
             vm.units = [];
 
             vm.loadingFiles = true;
-            this.$http.get<metadatosDeArchivo[]>('archivos/query/coleccion/' + vm.idColeccion).then(
+            this.$http.get<metadatosDeArchivo[]>('../archivos/query/coleccion/' + vm.idColeccion).then(
                 value => {
                     for (var i = 0; i < value.data.length; i++) {
                         var meta = value.data[i];
@@ -211,7 +211,7 @@ module common {
 
         downloadFile(unit: fileUnit) {
             // Could be improved here: https://stackoverflow.com/questions/24080018/download-file-from-an-asp-net-web-api-method-using-angularjs
-            window.open(`./archivos/query/download/${this.idColeccion}/${unit.name}/${this.loginInfo.usuario}`, '_blank', '');
+            window.open(`../archivos/query/download/${this.idColeccion}/${unit.name}/${this.loginInfo.usuario}`, '_blank', '');
         }
 
         uploadFile(unit: fileUnit) {
@@ -238,7 +238,7 @@ module common {
             xhr.addEventListener("loadstart", loadStart, false);
             xhr.addEventListener("loadend", loadEnd, false);
 
-            xhr.open("POST", "./archivos/upload", true);
+            xhr.open("POST", "../archivos/upload", true);
             xhr.setRequestHeader("Authorization", vm.loginInfo.token);
             try {
                 xhr.send(formData);
@@ -366,7 +366,7 @@ module common {
         }
 
         deleteFile(unit: fileUnit) {
-            this.$http.post(`archivos/eliminar-archivo`, { idColeccion: this.idColeccion, nombreArchivo: unit.name })
+            this.$http.post(`../archivos/eliminar-archivo`, { idColeccion: this.idColeccion, nombreArchivo: unit.name })
                 .then(value => {
                     for (var i = 0; i < this.units.length; i++) {
                         let u = this.units[i];
@@ -383,7 +383,7 @@ module common {
         }
 
         restore(unit: fileUnit) {
-            this.$http.post(`archivos/restaurar-archivo`, { idColeccion: this.idColeccion, nombreArchivo: unit.name })
+            this.$http.post(`../archivos/restaurar-archivo`, { idColeccion: this.idColeccion, nombreArchivo: unit.name })
                 .then(value => {
                     for (var i = 0; i < this.units.length; i++) {
                         let u = this.units[i];
@@ -411,7 +411,7 @@ module common {
                 controller: filesWidgetPanelMenuController,
                 controllerAs: 'vm',
                 hasBackdrop: true,
-                templateUrl: './src/common/files/files-widget-panel-menu.html',
+                templateUrl: '../common/files/files-widget-panel-menu.html',
                 position: position,
                 trapFocus: true,
                 locals: {
