@@ -44,7 +44,8 @@ module usuariosArea {
         constructor(
             public id: string,
             public display: string,
-            public usuarioEsMiembro: boolean
+            public usuarioEsMiembro: boolean,
+            public deleted: boolean = false
         ) {
         }
     }

@@ -19,6 +19,7 @@ namespace Agrobook.Domain
     {
         public string OrganizacionId { get; set; }
         public string NombreParaMostrar { get; set; }
+        public bool EstaEliminada { get; set; }
     }
 
     public class OrganizacionEntityMap : EntityTypeConfiguration<OrganizacionEntity>
@@ -28,8 +29,6 @@ namespace Agrobook.Domain
             this.HasKey(e => e.OrganizacionId);
 
             this.ToTable("Organizaciones");
-            this.Property(e => e.OrganizacionId).HasColumnName("OrganizacionId");
-            this.Property(e => e.NombreParaMostrar).HasColumnName("NombreParaMostrar");
         }
     }
 

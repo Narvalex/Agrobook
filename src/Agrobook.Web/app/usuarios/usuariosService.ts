@@ -42,13 +42,12 @@ module usuariosArea {
             this.post('crear-nueva-organizacion/' + nombreOrg, {}, onSuccess, onError);
         }
 
-        crearNuevoGrupo(
-            orgId: string,
-            displayGrupoName: string,
-            onSuccess: (value: ng.IHttpPromiseCallbackArg<grupoDto>) => void,
-            onError: (reason: any) => void
-        ) {
-            this.post('crear-nuevo-grupo/' + orgId + '/' + displayGrupoName, {}, onSuccess, onError);
+        eliminarOrganizacion(org: organizacionDto, callback: common.callbackLite<{}>) {
+            this.postWithCallback('eliminar-organizacion', { idOrg: org.id }, callback);
+        }
+
+        restaurarOrganizacion(org: organizacionDto, callback: common.callbackLite<{}>) {
+            this.postWithCallback('restaurar-organizacion', { idOrg: org.id }, callback);
         }
 
         agregarUsuarioALaOrganizacion(
@@ -66,26 +65,6 @@ module usuariosArea {
                 idOrganizacion: idOrganizacion
             };
             this.postWithCallback('remover-usuario-de-organizacion', cmd, callback);
-        }
-
-        agregarUsuarioAGrupo(
-            idUsuario: string,
-            idOrganizacion: string,
-            idGrupo: string,
-            onSuccess: (value: ng.IHttpPromiseCallback<{}>) => void,
-            onError: (reason: any) => void
-        ) {
-            this.post(`agregar-usuario-a-grupo/${idUsuario}/${idOrganizacion}/${idGrupo}`, {}, onSuccess, onError);
-        }
-
-        removerUsuarioDeUnGrupo(
-            idUsuario: string,
-            idOrganizacion: string,
-            idGrupo: string,
-            onSuccess: (value: ng.IHttpPromiseCallback<{}>) => void,
-            onError: (reason: any) => void
-        ) {
-            this.post(`remover-usuario-de-un-grupo/${idUsuario}/${idOrganizacion}/${idGrupo}`, {}, onSuccess, onError);
         }
 
         otorgarPermiso(

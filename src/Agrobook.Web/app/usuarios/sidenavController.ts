@@ -53,7 +53,7 @@ module usuariosArea {
         crearNuevoUsuario($event): void {
 
             this.$mdDialog.show({
-                templateUrl: '../app/src/usuarios/dialogs/nuevo-usuario-dialog.html',
+                templateUrl: './dialogs/nuevo-usuario-dialog.html',
                 parent: angular.element(document.body),
                 targetEvent: $event,
                 controller: nuevoUsuarioDialogController,

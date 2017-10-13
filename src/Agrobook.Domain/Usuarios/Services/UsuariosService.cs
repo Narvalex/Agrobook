@@ -77,6 +77,7 @@ namespace Agrobook.Domain.Usuarios
             return claimsPermitidos;
         }
 
+
         public async Task<IList<Claim>> ObtenerClaimsDelUsuario(string idUsuario)
         {
             var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(idUsuario);
@@ -218,6 +219,28 @@ namespace Agrobook.Domain.Usuarios
             await this.repository.SaveAsync(organizacion);
 
             return new OrganizacionDto { Id = nombreFormateadoParaId, Display = nombreFormateadoParaDisplay };
+        }
+
+        public async Task HandleAsync(EliminarOrganizacion cmd)
+        {
+            var org = await this.repository.GetOrFailByIdAsync<Organizacion>(cmd.IdOrg);
+
+            if (org.EstaEliminada)
+                throw new InvalidOperationException("La organización está luego eliminada como para intentar eliminarla de nuevo");
+
+            org.Emit(new OrganizacionEliminada(cmd.Firma, cmd.IdOrg));
+            await this.repository.SaveAsync(org);
+        }
+
+        public async Task HandleAsync(RestaurarOrganizacion cmd)
+        {
+            var org = await this.repository.GetOrFailByIdAsync<Organizacion>(cmd.IdOrg);
+
+            if (!org.EstaEliminada)
+                throw new InvalidOperationException("La organización no está luego eliminada como para intentar restaurarla");
+
+            org.Emit(new OrganizacionRestaurada(cmd.Firma, cmd.IdOrg));
+            await this.repository.SaveAsync(org);
         }
 
         public async Task HandleAsync(RetirarPermiso cmd)

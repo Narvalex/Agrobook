@@ -15,5 +15,6 @@
         /// Sirve para indicar si el usuario seleccionado es miembro
         /// </summary>
         public bool UsuarioEsMiembro { get; set; }
+        public bool Deleted { get; set; }
     }
 }

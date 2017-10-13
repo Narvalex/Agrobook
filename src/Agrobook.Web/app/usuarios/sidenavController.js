@@ -43,7 +43,7 @@ var usuariosArea;
         sidenavController.prototype.crearNuevoUsuario = function ($event) {
             var _this = this;
             this.$mdDialog.show({
-                templateUrl: '../app/src/usuarios/dialogs/nuevo-usuario-dialog.html',
+                templateUrl: './dialogs/nuevo-usuario-dialog.html',
                 parent: angular.element(document.body),
                 targetEvent: $event,
                 controller: usuariosArea.nuevoUsuarioDialogController,

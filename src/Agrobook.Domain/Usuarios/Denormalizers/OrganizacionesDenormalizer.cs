@@ -10,6 +10,8 @@ namespace Agrobook.Domain.Usuarios.Services
 {
     public class OrganizacionesDenormalizer : AgrobookDenormalizer,
         IEventHandler<NuevaOrganizacionCreada>,
+        IEventHandler<OrganizacionEliminada>,
+        IEventHandler<OrganizacionRestaurada>,
         IEventHandler<UsuarioAgregadoALaOrganizacion>,
         IEventHandler<UsuarioRemovidoDeLaOrganizacion>
     {
@@ -26,8 +28,27 @@ namespace Agrobook.Domain.Usuarios.Services
                 context.Organizaciones.Add(new OrganizacionEntity
                 {
                     OrganizacionId = e.Identificador,
-                    NombreParaMostrar = e.NombreParaMostrar
+                    NombreParaMostrar = e.NombreParaMostrar,
+                    EstaEliminada = false
                 });
+            });
+        }
+
+        public async Task HandleOnce(long eventNumber, OrganizacionEliminada e)
+        {
+            await this.Denormalize(eventNumber, async context =>
+            {
+                var entity = await context.Organizaciones.SingleAsync(x => x.OrganizacionId == e.Id);
+                entity.EstaEliminada = true;
+            });
+        }
+
+        public async Task HandleOnce(long eventNumber, OrganizacionRestaurada e)
+        {
+            await this.Denormalize(eventNumber, async context =>
+            {
+                var entity = await context.Organizaciones.SingleAsync(x => x.OrganizacionId == e.Id);
+                entity.EstaEliminada = false;
             });
         }
 

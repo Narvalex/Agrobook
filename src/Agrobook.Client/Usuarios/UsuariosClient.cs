@@ -36,6 +36,16 @@ namespace Agrobook.Client.Usuarios
             return dto;
         }
 
+        public async Task Send(EliminarOrganizacion cmd)
+        {
+            await base.Post("eliminar-organizacion", cmd);
+        }
+
+        public async Task Send(RestaurarOrganizacion cmd)
+        {
+            await base.Post("restaurar-organizacion", cmd);
+        }
+
         public async Task AgregarUsuarioALaOrganizacion(string idUsuario, string idOrganizacion)
         {
             var command = new AgregarUsuarioALaOrganizacion(null, idOrganizacion, idUsuario);
@@ -54,7 +64,7 @@ namespace Agrobook.Client.Usuarios
             await base.Post("retirar-permiso", command);
         }
 
-        public async Task RemoverUsuarioDeOrganizacion(RemoverUsuarioDeOrganizacion cmd)
+        public async Task Send(RemoverUsuarioDeOrganizacion cmd)
         {
             await base.Post("remover-usuario-de-organizacion", cmd);
         }

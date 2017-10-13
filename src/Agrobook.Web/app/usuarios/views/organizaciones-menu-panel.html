@@ -1,0 +1,38 @@
+﻿<div class="menu-panel" md-whiteframe="4">
+    <div class="menu-content">
+        <md-subheader class="md-no-sticky">
+            <span>{{vm.org.display}}</span>
+        </md-subheader>
+
+        <div class="menu-item" ng-show="vm.org.usuarioEsMiembro">
+            <button class="md-button" ng-click="vm.removerUsuario()">
+                <ng-md-icon icon="clear"></ng-md-icon>
+                <span>&nbsp;&nbsp;Remover a {{vm.parent.idUsuario}}</span>
+            </button>
+        </div>
+        <div class="menu-item" ng-hide="vm.org.usuarioEsMiembro">
+            <button class="md-button" ng-click="vm.agregarUsuario()">
+                <ng-md-icon icon="add"></ng-md-icon>
+                <span>&nbsp;&nbsp;Agregar a {{vm.parent.idUsuario}}</span>
+            </button>
+        </div>
+        <div class="menu-item" ng-show="vm.org.deleted">
+            <button class="md-button" ng-click="vm.restaurarOrg()">
+                <ng-md-icon icon="restore"></ng-md-icon>
+                <span>&nbsp;&nbsp;Restaurar esta org.</span>
+            </button>
+        </div>
+        <div class="menu-item" ng-hide="vm.org.deleted">
+            <button class="md-button red-text" ng-click="vm.eliminarOrg()">
+                <ng-md-icon icon="delete"></ng-md-icon>
+                <span>&nbsp;&nbsp;Eliminar esta org.</span>
+            </button>
+        </div>
+        <md-divider></md-divider>
+        <div class="menu-item">
+            <button class="md-button" ng-click="vm.cancelar()">
+                <span>Cancelar</span>
+            </button>
+        </div>
+    </div>
+</div>

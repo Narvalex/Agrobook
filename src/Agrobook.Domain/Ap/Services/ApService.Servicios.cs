@@ -17,7 +17,7 @@ namespace Agrobook.Domain.Ap.Services
         /// </summary>
         public async Task HandleOnce(long eventNumber, NuevoRegistroDeServicioPendiente e)
         {
-            if (await this.repository.Exists<Servicio>(e.IdProd))
+            if (await this.repository.Exists<Servicio>(e.IdServicio))
             {
                 // This is the idemptency stuff
                 this.logger.Warning("Ignorando mensaje ya manejado del tipo " + typeof(NuevoRegistroDeServicioPendiente).Name);

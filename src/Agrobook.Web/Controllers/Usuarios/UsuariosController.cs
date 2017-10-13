@@ -51,6 +51,22 @@ namespace Agrobook.Web.Controllers.Usuarios
         }
 
         [HttpPost]
+        [Route("eliminar-organizacion")]
+        public async Task<IHttpActionResult> EliminarOrganizacion([FromBody]EliminarOrganizacion cmd)
+        {
+            await this.client.Send(cmd);
+            return this.Ok();
+        }
+
+        [HttpPost]
+        [Route("restaurar-organizacion")]
+        public async Task<IHttpActionResult> RestaurarOrganizacion([FromBody]RestaurarOrganizacion cmd)
+        {
+            await this.client.Send(cmd);
+            return this.Ok();
+        }
+
+        [HttpPost]
         [Route("agregar-usuario-a-la-organizacion/{idUsuario}/{idOrganizacion}")]
         public async Task<IHttpActionResult> AgregarUsuarioALaOrganizacion([FromUri]string idUsuario, [FromUri]string idOrganizacion)
         {
@@ -62,7 +78,7 @@ namespace Agrobook.Web.Controllers.Usuarios
         [Route("remover-usuario-de-organizacion")]
         public async Task<IHttpActionResult> RemoverUsuarioDeOrganizacion([FromBody]RemoverUsuarioDeOrganizacion cmd)
         {
-            await this.client.RemoverUsuarioDeOrganizacion(cmd);
+            await this.client.Send(cmd);
             return this.Ok();
         }
 

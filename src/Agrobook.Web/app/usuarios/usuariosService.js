@@ -30,8 +30,11 @@ var usuariosArea;
         usuariosService.prototype.crearNuevaOrganizacion = function (nombreOrg, onSuccess, onError) {
             this.post('crear-nueva-organizacion/' + nombreOrg, {}, onSuccess, onError);
         };
-        usuariosService.prototype.crearNuevoGrupo = function (orgId, displayGrupoName, onSuccess, onError) {
-            this.post('crear-nuevo-grupo/' + orgId + '/' + displayGrupoName, {}, onSuccess, onError);
+        usuariosService.prototype.eliminarOrganizacion = function (org, callback) {
+            this.postWithCallback('eliminar-organizacion', { idOrg: org.id }, callback);
+        };
+        usuariosService.prototype.restaurarOrganizacion = function (org, callback) {
+            this.postWithCallback('restaurar-organizacion', { idOrg: org.id }, callback);
         };
         usuariosService.prototype.agregarUsuarioALaOrganizacion = function (idUsuario, idOrganizacion, onSuccess, onError) {
             this.post("agregar-usuario-a-la-organizacion/" + idUsuario + "/" + idOrganizacion, {}, onSuccess, onError);
@@ -42,12 +45,6 @@ var usuariosArea;
                 idOrganizacion: idOrganizacion
             };
             this.postWithCallback('remover-usuario-de-organizacion', cmd, callback);
-        };
-        usuariosService.prototype.agregarUsuarioAGrupo = function (idUsuario, idOrganizacion, idGrupo, onSuccess, onError) {
-            this.post("agregar-usuario-a-grupo/" + idUsuario + "/" + idOrganizacion + "/" + idGrupo, {}, onSuccess, onError);
-        };
-        usuariosService.prototype.removerUsuarioDeUnGrupo = function (idUsuario, idOrganizacion, idGrupo, onSuccess, onError) {
-            this.post("remover-usuario-de-un-grupo/" + idUsuario + "/" + idOrganizacion + "/" + idGrupo, {}, onSuccess, onError);
         };
         usuariosService.prototype.otorgarPermiso = function (idUsuario, permiso, callback) {
             _super.prototype.postWithCallback.call(this, "otorgar-permiso?usuario=" + idUsuario + "&permiso=" + permiso, {}, callback);

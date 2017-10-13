@@ -1106,6 +1106,7 @@
     <Content Include="app\assets\sidenav.css" />
     <Content Include="app\usuarios\toolbar-header.html" />
     <Content Include="app\usuarios\views\main-content.html" />
+    <Content Include="app\usuarios\views\organizaciones-menu-panel.html" />
     <Content Include="app\usuarios\views\organizaciones.html" />
     <Content Include="app\usuarios\views\perfil.html" />
     <Content Include="app\home\index.html" />
@@ -1307,7 +1308,6 @@
     <Compile Include="Controllers\Archivos\ArchivosController.cs" />
     <Compile Include="Controllers\Archivos\ArchivosQueryController.cs" />
     <Compile Include="Controllers\Login\LoginController.cs" />
-    <Compile Include="Controllers\Maps\KmlController.cs" />
     <Compile Include="Controllers\Usuarios\UsuariosController.cs" />
     <Compile Include="Controllers\Usuarios\UsuariosQueryController.cs" />
     <Compile Include="Filters\RemoteUnauthrorizedExceptionHandlerAttribute.cs" />

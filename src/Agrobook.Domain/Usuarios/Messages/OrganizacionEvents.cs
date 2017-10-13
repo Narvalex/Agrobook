@@ -17,6 +17,30 @@ namespace Agrobook.Domain.Usuarios
         public string StreamId => this.Identificador;
     }
 
+    public class OrganizacionEliminada : MensajeAuditable, IEvent
+    {
+        public OrganizacionEliminada(Firma metadatos, string id) : base(metadatos)
+        {
+            this.Id = id;
+        }
+
+        public string Id { get; }
+
+        public string StreamId => this.Id;
+    }
+
+    public class OrganizacionRestaurada : MensajeAuditable, IEvent
+    {
+        public OrganizacionRestaurada(Firma metadatos, string id) : base(metadatos)
+        {
+            this.Id = id;
+        }
+
+        public string Id { get; }
+
+        public string StreamId => this.Id;
+    }
+
     public class UsuarioAgregadoALaOrganizacion : MensajeAuditable, IEvent
     {
         public UsuarioAgregadoALaOrganizacion(Firma metadatos, string organizacionId, string usuarioId) : base(metadatos)

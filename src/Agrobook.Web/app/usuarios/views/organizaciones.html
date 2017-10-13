@@ -28,17 +28,25 @@
         </div>
     </md-content>
     <md-content ng-show="vm.loaded">
-        <md-autocomplete md-search-text="vm.searchText"
-                         md-items="item in vm.organizaciones | filter: vm.searchText"
-                         md-item-text="item.id"
-                         md-min-length="100"
-                         placeholder="Buscar organización">
-            <md-not-found>
-                Ninguno coincide con "{{vm.searchText}}".
-            </md-not-found>
-        </md-autocomplete>
+        <div layout="row">
+            <md-autocomplete md-search-text="vm.searchText"
+                             md-items="item in vm.organizaciones | filter: vm.searchText"
+                             md-item-text="item.id"
+                             md-min-length="100"
+                             placeholder="Buscar organización">
+                <md-not-found>
+                    Ninguno coincide con "{{vm.searchText}}".
+                </md-not-found>
+            </md-autocomplete>
+            <md-button class="md-icon-button" aria-label="Eat cake" ng-click="vm.toggleShowDeleted()">
+                <ng-md-icon ng-if="!vm.showDeleted" icon="visibility"></ng-md-icon>
+                <ng-md-icon ng-if="vm.showDeleted" icon="visibility_off"></ng-md-icon>
+            <md-tooltip>{{vm.showDeleted ? 'Ocultar orgs. eliminadas' : 'Mostrar orgs. eliminadas'}}</md-tooltip>
+            </md-button>
+        </div>
         <md-list>
-            <md-list-item class="secondary-button-padding" ng-repeat="org in vm.organizaciones | filter:vm.searchText | orderBy:'!usuarioEsMiembro'">
+            <md-list-item class="secondary-button-padding" ng-repeat="org in vm.organizaciones | filter:vm.searchText | orderBy:'!usuarioEsMiembro'"
+                          ng-hide="org.deleted && !vm.showDeleted">
                 <md-button title="Agregar a {{vm.idUsuario}} a la organización {{org.display}}"
                            ng-hide="org.usuarioEsMiembro"
                            ng-disabled="vm.agregandoUsuario"
@@ -46,19 +54,16 @@
                            aria-label="Agregar a la organizacion">
                     <ng-md-icon icon="add"></ng-md-icon>
                 </md-button>
-                <p ng-hide="org.usuarioEsMiembro">{{org.display}}</p>
-                <p ng-show="org.usuarioEsMiembro"><b>{{org.display}}</b></p>
+                <p ng-class="{ 'red-text': org.deleted }" ng-hide="org.usuarioEsMiembro">{{org.display}}</p>
+                <p ng-class="{ 'red-text': org.deleted }" ng-show="org.usuarioEsMiembro"><b>{{org.display}}</b></p>
                 <md-chips>
                     <md-chip title="{{vm.idUsuario}} es miembro de la organización {{org.display}}"
                              ng-show="org.usuarioEsMiembro">Miembro</md-chip>
                 </md-chips>
-                <md-button title="Remover a {{vm.idUsuario}} de la organización {{org.display}}"
-                           ng-show="org.usuarioEsMiembro"
-                           class="md-secondary"
-                           ng-disabled="vm.removiendoUsuario"
-                           ng-click="vm.removerDeLaOrganizacion($event, org)"
-                           aria-label="Remover de la organizacion">
-                    <ng-md-icon icon="close"></ng-md-icon>
+                <md-button class="md-icon-button md-secondary" aria-label="edit"
+                           ng-disabled="vm.creandoOrg"
+                           ng-click="vm.mostrarOpciones($event, org)">
+                    <ng-md-icon icon="more_vert"></ng-md-icon>
                 </md-button>
             </md-list-item>
         </md-list>

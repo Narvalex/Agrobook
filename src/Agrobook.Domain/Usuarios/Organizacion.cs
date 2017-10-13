@@ -25,10 +25,20 @@ namespace Agrobook.Domain.Usuarios
             {
                 this.usuarios.Remove(e.IdUsuario);
             });
+            this.On<OrganizacionEliminada>(e =>
+            {
+                this.EstaEliminada = true;
+            });
+            this.On<OrganizacionRestaurada>(e =>
+            {
+                this.EstaEliminada = false;
+            });
         }
 
         public string Nombre { get; private set; }
         public string NombreParaMostrar { get; private set; }
+
+        public bool EstaEliminada { get; private set; } = false;
 
         public bool LaOrganizacionNoTieneTodaviaUsuarios => this.usuarios.Count == 0;
 
@@ -42,12 +52,13 @@ namespace Agrobook.Domain.Usuarios
             this.Nombre = state.Nombre;
             this.NombreParaMostrar = state.NombreParaMostrar;
             this.usuarios.AddRange(state.Usuarios);
+            this.EstaEliminada = state.EstaEliminada;
         }
 
         protected override ISnapshot TakeSnapshot()
         {
             return new OrganizacionSnapshot(this.StreamName, this.Version, this.Nombre, this.NombreParaMostrar,
-                this.usuarios.ToArray());
+                this.usuarios.ToArray(), this.EstaEliminada);
         }
     }
 }

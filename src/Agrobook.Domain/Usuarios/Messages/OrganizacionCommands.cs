@@ -12,6 +12,26 @@ namespace Agrobook.Domain.Usuarios
         public string NombreCrudo { get; }
     }
 
+    public class EliminarOrganizacion : MensajeAuditable
+    {
+        public EliminarOrganizacion(Firma firma, string idOrg) : base(firma)
+        {
+            this.IdOrg = idOrg;
+        }
+
+        public string IdOrg { get; }
+    }
+
+    public class RestaurarOrganizacion : MensajeAuditable
+    {
+        public RestaurarOrganizacion(Firma firma, string idOrg) : base(firma)
+        {
+            this.IdOrg = idOrg;
+        }
+
+        public string IdOrg { get; }
+    }
+
     public class AgregarUsuarioALaOrganizacion : MensajeAuditable
     {
         public AgregarUsuarioALaOrganizacion(Firma firma, string organizacionId, string usuarioId) : base(firma)
