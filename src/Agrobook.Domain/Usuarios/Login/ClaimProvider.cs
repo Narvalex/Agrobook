@@ -10,33 +10,22 @@ namespace Agrobook.Domain.Usuarios.Login
             new Dictionary<string, Claim>
             {
                 // Roles
-                { Roles.Admin, new Claim(Roles.Admin, "Admin", "Los administradores tienen el control total del sistema.") },
-                { Roles.Gerente, new Claim(Roles.Gerente, "Gerente", "Los gerentes administran casi todo el sistema.") },
-                { Roles.Tecnico, new Claim(Roles.Tecnico, "Técnico", "Los técnicos realizan trabajos para los productores.") },
-                { Roles.Productor, new Claim(Roles.Productor, "Productor", "Los productores son los clientes.") },
-                { Roles.Invitado, new Claim(Roles.Invitado, "Invitado", "Los invitados pueden ver los trabajos realizados a productores de su organización.") },
+                { Roles.Admin, new Claim(Roles.Admin, TipoDeClaim.Rol, "Admin", "Los administradores tienen el control total del sistema.") },
+                { Roles.Gerente, new Claim(Roles.Gerente, TipoDeClaim.Rol, "Gerente", "Los gerentes administran casi todo el sistema.") },
+                { Roles.Tecnico, new Claim(Roles.Tecnico, TipoDeClaim.Rol, "Técnico", "Los técnicos realizan trabajos para los productores.") },
+                { Roles.Productor, new Claim(Roles.Productor, TipoDeClaim.Rol, "Productor", "Los productores son los clientes.") },
+                { Roles.Invitado, new Claim(Roles.Invitado, TipoDeClaim.Rol, "Invitado", "Los invitados pueden ver los trabajos realizados a productores de su organización.") },
                 // Permisos
-                { Permisos.AdministrarOrganizaciones, new Claim(Permisos.AdministrarOrganizaciones, "Permiso para administrar organizaciones", "Los que tengan este permiso pueden administrar las organizaciones del sistema") }
+                { Permisos.AdministrarOrganizaciones, new Claim(Permisos.AdministrarOrganizaciones, TipoDeClaim.Permiso, "Permiso para administrar organizaciones", "Los que tengan este permiso pueden administrar las organizaciones del sistema") }
             };
 
         public static int ClaimCount => _claims.Count();
 
         public static IDictionary<string, Claim> Todos => _claims;
 
-        public static IEnumerable<Claim> Transformar(string[] claims)
+        public static IEnumerable<Claim> ObtenerClaimsValidos(string[] claims)
         {
             return claims.Select(x => _claims[x]);
-        }
-
-        public static IEnumerable<Claim> ObtenerRoles(string[] claims)
-        {
-            var claimDtos = Transformar(claims);
-            return claimDtos
-                .Where(x => x.Id == Roles.Admin
-                       || x.Id == Roles.Gerente
-                       || x.Id == Roles.Tecnico
-                       || x.Id == Roles.Productor
-                       || x.Id == Roles.Invitado);
         }
 
         public static Claim[] ObtenerClaimsPermitidosParaCrearNuevoUsuario(string claim)

@@ -6,7 +6,7 @@ var apArea;
             this.$mdBottomSheet = $mdBottomSheet;
             this.$mdSidenav = $mdSidenav;
             this.items = [
-                new bottomSheetItem("Ir al inicio de Agricultura de Precisión", "home", 'ap.html#!/')
+                new bottomSheetItem("Ir al inicio de Agricultura de Precisión", "home", './index.html#!/')
             ];
         }
         bottomSheetController.prototype.goTo = function (item) {
@@ -24,7 +24,7 @@ var apArea;
         }
         bottomSheetButtonController.prototype.mostrarBottomSheet = function () {
             this.$mdBottomSheet.show({
-                templateUrl: './src/ap/bottom-sheet.html',
+                templateUrl: './bottom-sheet.html',
                 controller: 'bottomSheetController',
                 controllerAs: 'vm'
             }).then(function (clickedItem) {

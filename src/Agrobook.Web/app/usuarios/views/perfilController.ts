@@ -18,7 +18,7 @@ module usuariosArea {
         ) {
             // auth
             var roles = this.config.claims.roles;
-            this.mostrarEdicionDeClaims = this.loginService.autorizar([roles.Admin]);
+            this.mostrarEdicionDeClaims = this.loginService.autorizar([roles.Gerente]);
 
 
             this.avatarUrls = config.avatarUrls;

@@ -29,13 +29,6 @@ namespace Agrobook.Domain.Ap.Services
             this.dateTimeProvider = dateTimeProvider;
             this.checkpointRepository = checkpointRepository;
 
-            //var servicioStreamSubId = typeof(Servicio).Name;
-            //this.servicioStreamSubscription = subscriber.CreateSubscription(
-            //    StreamCategoryAttribute.GetCategoryProjectionStream<Servicio>(),
-            //    new Lazy<long?>(() => this.checkpointRepository.GetCheckpoint(servicioStreamSubId)),
-            //    (eventNumber) => this.checkpointRepository.SaveCheckpoint(servicioStreamSubId, eventNumber),
-            //    this.Dispatch);
-
             var servicioSecLogSubId = typeof(ServicioSec).Name;
             this.servicioSecLogSubscription = subscriber.CreateSubscription(
                 StreamCategoryAttribute.GetCategoryProjectionStream<ServicioSec>(),

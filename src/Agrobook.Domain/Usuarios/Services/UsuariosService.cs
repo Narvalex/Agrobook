@@ -83,7 +83,7 @@ namespace Agrobook.Domain.Usuarios
             var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(idUsuario);
 
             var loginInfo = this.ExtraerElLoginInfo(usuario);
-            var claims = ClaimProvider.Transformar(loginInfo.Claims).ToList();
+            var claims = ClaimProvider.ObtenerClaimsValidos(loginInfo.Claims).ToList();
             return claims;
         }
 
@@ -111,6 +111,12 @@ namespace Agrobook.Domain.Usuarios
         {
             var tokenInfo = this.cryptoSerializer.Deserialize<LoginInfo>(token);
             return tokenInfo.Claims;
+        }
+
+        public LoginInfo GetCurrentUser(string token)
+        {
+            var currentUser = this.cryptoSerializer.Deserialize<LoginInfo>(token);
+            return currentUser;
         }
 
         public async Task HandleAsync(CrearNuevoUsuario cmd)
@@ -254,7 +260,7 @@ namespace Agrobook.Domain.Usuarios
             var loginInfo = this.ExtraerElLoginInfo(usuario);
 
             // obtengo los roles y permisos actuales del usuario
-            var rolesYPermisos = ClaimProvider.Transformar(loginInfo.Claims);
+            var rolesYPermisos = ClaimProvider.ObtenerClaimsValidos(loginInfo.Claims);
 
             // verificamos que el usuario tenga ese rol o permiso
             if (!rolesYPermisos.Any(x => x.Id == cmd.Permiso))
@@ -266,7 +272,7 @@ namespace Agrobook.Domain.Usuarios
             usuario.Emit(new PermisoRetiradoDelUsuario(cmd.Firma, cmd.IdUsuario, cmd.Permiso, loginInfoActualizado));
 
             // verificamos si tiene algun rol todavia
-            var solamenteRoles = ClaimProvider.ObtenerRoles(loginInfo.Claims);
+            var solamenteRoles = ClaimProvider.ObtenerClaimsValidos(loginInfo.Claims).Where(x => x.Tipo == TipoDeClaim.Rol);
             if (!solamenteRoles.Any())
             {
                 // si se quedo sin rol entonces verificamos que lo que se quiso quitar no fue por si acaso el rol por defecto

@@ -1,5 +1,4 @@
-﻿using Agrobook.Domain.Usuarios;
-using Agrobook.Domain.Usuarios.Services;
+﻿using Agrobook.Domain.Usuarios.Services;
 using Agrobook.Server.Filters;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,13 +8,12 @@ using static Agrobook.Domain.Usuarios.Login.ClaimDef;
 namespace Agrobook.Server.Usuarios
 {
     [RoutePrefix("usuarios/query")]
-    public class UsuariosQueryController : ApiController
+    public class UsuariosQueryController : BaseApiController
     {
         private readonly UsuariosQueryService usuarioQueryService = ServiceLocator.ResolveSingleton<UsuariosQueryService>();
-        private readonly UsuariosService usuariosService = ServiceLocator.ResolveSingleton<UsuariosService>();
         private readonly OrganizacionesQueryService organizacionesQueryService = ServiceLocator.ResolveSingleton<OrganizacionesQueryService>();
 
-        [Autorizar(Roles.Admin, Roles.Gerente, Roles.Tecnico)]
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
         [HttpGet]
         [Route("todos")]
         public async Task<IHttpActionResult> ObtenerTodosLosUsuarios()
@@ -34,14 +32,19 @@ namespace Agrobook.Server.Usuarios
             return this.BadRequest();
         }
 
+        [Autorizar(Roles.Gerente, Roles.Tecnico, Roles.Productor, Roles.Invitado)]
         [HttpGet]
         [Route("info-basica/{usuario}")]
         public async Task<IHttpActionResult> ObtenerInfoBasica([FromUri] string usuario)
         {
+            if (!this.SolicitaSoloSusPropiosDatos(usuario)) return this.Unauthorized();
+
             var dto = await this.usuarioQueryService.ObtenerUsuarioInfoBasica(usuario);
             return this.Ok(dto);
         }
 
+
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
         [HttpGet]
         [Route("claims")]
         public async Task<IHttpActionResult> ObtenerClaims()
@@ -50,15 +53,18 @@ namespace Agrobook.Server.Usuarios
             return this.Ok(claims);
         }
 
+        [Autorizar(Roles.Gerente, Roles.Tecnico, Roles.Productor, Roles.Invitado)]
         [HttpGet]
         [Route("claims/{idUsuario}")]
         public async Task<IHttpActionResult> ObtenerClaims([FromUri] string idUsuario)
         {
+            if (!this.SolicitaSoloSusPropiosDatos(idUsuario)) return this.Unauthorized();
+
             var claims = await this.usuariosService.ObtenerClaimsDelUsuario(idUsuario);
             return this.Ok(claims);
         }
 
-        [Autorizar(Roles.Gerente, Permisos.AdministrarOrganizaciones)]
+        [Autorizar(Roles.Gerente, Roles.Tecnico, Permisos.AdministrarOrganizaciones)]
         [HttpGet]
         [Route("organizaciones")]
         public async Task<IHttpActionResult> ObtenerOrganizaciones()
@@ -67,18 +73,24 @@ namespace Agrobook.Server.Usuarios
             return this.Ok(dto);
         }
 
+        [Autorizar(Roles.Gerente, Roles.Tecnico, Roles.Productor, Roles.Invitado)]
         [HttpGet]
         [Route("organizaciones/{usuarioId}")]
         public async Task<IHttpActionResult> ObtenerOrganizaciones([FromUri]string usuarioId)
         {
+            if (!this.SolicitaSoloSusPropiosDatos(usuarioId)) return this.Unauthorized();
+
             var dto = await this.organizacionesQueryService.ObtenerOrganizaciones(usuarioId);
             return this.Ok(dto);
         }
 
+        [Autorizar(Roles.Gerente, Roles.Tecnico, Roles.Productor, Roles.Invitado)]
         [HttpGet]
         [Route("organizaciones-marcadas-del-usuario/{usuarioId}")]
         public async Task<IHttpActionResult> ObtenerOrganizacionesMarcadasDelUsuario([FromUri]string usuarioId)
         {
+            if (!this.SolicitaSoloSusPropiosDatos(usuarioId)) return this.Unauthorized();
+
             var dto = await this.organizacionesQueryService.ObtenerOrganizacionesMarcadasDelUsuario(usuarioId);
             return this.Ok(dto);
         }
