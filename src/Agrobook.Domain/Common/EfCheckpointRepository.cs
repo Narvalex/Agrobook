@@ -8,12 +8,12 @@ using static Agrobook.Domain.AgrobookDbContext;
 
 namespace Agrobook.Domain.Common
 {
-    public class CheckpointRepository : ICheckpointRepository
+    public class EfCheckpointRepository : ICheckpointRepository
     {
         private readonly Func<AgrobookDbContext> dbContext;
         private readonly Func<AgrobookDbContext> readOnlyDbContext;
 
-        public CheckpointRepository(Func<AgrobookDbContext> dbContext, Func<AgrobookDbContext> readOnlyDbContext)
+        public EfCheckpointRepository(Func<AgrobookDbContext> dbContext, Func<AgrobookDbContext> readOnlyDbContext)
         {
             Ensure.NotNull(dbContext, nameof(dbContext));
             Ensure.NotNull(readOnlyDbContext, nameof(readOnlyDbContext));

@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventStoreCheckpointRepository.cs" />
     <Compile Include="EventStoreEventSourcedRepository.cs" />
     <Compile Include="EventStoreManager.cs" />
     <Compile Include="EventStoreSubscriber.cs" />
