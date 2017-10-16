@@ -43,5 +43,8 @@ namespace Agrobook.Client.Ap
 
         public async Task<ServicioDto> GetServicio(string idServicio)
             => await base.Get<ServicioDto>("servicio/" + idServicio);
+
+        public async Task<IList<ServicioParaDashboardDto>> GetUltimosServicios(int cantidad)
+            => await base.Get<IList<ServicioParaDashboardDto>>("ultimos-servicios?cantidad=" + cantidad);
     }
 }

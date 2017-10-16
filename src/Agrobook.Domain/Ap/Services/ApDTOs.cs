@@ -50,4 +50,15 @@ namespace Agrobook.Domain.Ap.Services
         public string ParcelaId { get; set; }
         public string ParcelaDisplay { get; set; }
     }
+
+    public class ServicioParaDashboardDto
+    {
+        public string Id { get; set; }
+        public string IdProd { get; set; }
+        public string ProdDisplay { get; set; }
+        public string ProdAvatarUrl { get; set; }
+        public string OrgDisplay { get; set; }
+        public string ParcelaDisplay { get; set; }
+        public DateTime Fecha { get; set; }
+    }
 }

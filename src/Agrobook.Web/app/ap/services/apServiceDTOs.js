@@ -70,6 +70,19 @@ var apArea;
         return orgConContratos;
     }());
     apArea.orgConContratos = orgConContratos;
+    var servicioParaDashboardDto = (function () {
+        function servicioParaDashboardDto(id, idProd, prodDisplay, prodAvatarUrl, orgDisplay, parcelaDisplay, fecha) {
+            this.id = id;
+            this.idProd = idProd;
+            this.prodDisplay = prodDisplay;
+            this.prodAvatarUrl = prodAvatarUrl;
+            this.orgDisplay = orgDisplay;
+            this.parcelaDisplay = parcelaDisplay;
+            this.fecha = fecha;
+        }
+        return servicioParaDashboardDto;
+    }());
+    apArea.servicioParaDashboardDto = servicioParaDashboardDto;
     /************************
      * Parcela
      ************************/

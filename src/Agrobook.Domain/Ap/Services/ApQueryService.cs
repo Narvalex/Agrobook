@@ -173,7 +173,6 @@ namespace Agrobook.Domain.Ap.Services
                      }))
                     .ToListAsync());
 
-
         public async Task<IList<ServicioDto>> GetServiciosPorProd(string idProd)
             => await this.QueryAsync(async context =>
                  await context.Servicios
@@ -250,6 +249,30 @@ namespace Agrobook.Domain.Ap.Services
                         x.ParcelaDisplay = (await context.Parcelas.SingleAsync(p => p.Id == x.ParcelaId)).Display;
                         return x;
                     })));
+
+        public async Task<IList<ServicioParaDashboardDto>> GetUltimosServicios(int cantidad)
+            => await this.QueryAsync(async context =>
+                await context
+                    .Servicios
+                    .OrderByDescending(s => s.Fecha)
+                    .Take(cantidad)
+                    .Join(context.Parcelas, outer => outer.IdParcela, inner => inner.Id,
+                        (outer, inner) => new { servicio = outer, parcela = inner })
+                    .Join(context.Organizaciones, outer => outer.servicio.IdOrg, inner => inner.OrganizacionId,
+                        (outer, inner) => new { servParc = outer, org = inner })
+                    .Join(context.Usuarios, outer => outer.servParc.servicio.IdProd, inner => inner.Id,
+                        (outer, inner) => new { servParcOrg = outer, prod = inner })
+                    .Select(x => new ServicioParaDashboardDto
+                    {
+                        Id = x.servParcOrg.servParc.servicio.Id,
+                        Fecha = x.servParcOrg.servParc.servicio.Fecha,
+                        OrgDisplay = x.servParcOrg.org.NombreParaMostrar,
+                        IdProd = x.prod.Id,
+                        ProdDisplay = x.prod.Display,
+                        ProdAvatarUrl = x.prod.AvatarUrl,
+                        ParcelaDisplay = x.servParcOrg.servParc.parcela.Display
+                    })
+                    .ToListAsync());
 
     }
 }

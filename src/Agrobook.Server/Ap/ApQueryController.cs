@@ -70,5 +70,13 @@ namespace Agrobook.Server.Ap
             var servicio = await this.service.GetServicio(idServicio);
             return this.Ok(servicio);
         }
+
+        [HttpGet]
+        [Route("ultimos-servicios")]
+        public async Task<IHttpActionResult> GetUltimosServicios([FromUri]int cantidad)
+        {
+            var list = await this.service.GetUltimosServicios(cantidad);
+            return this.Ok(list);
+        }
     }
 }

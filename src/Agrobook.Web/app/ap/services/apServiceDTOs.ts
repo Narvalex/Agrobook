@@ -62,6 +62,19 @@ module apArea {
         }
     }
 
+    export class servicioParaDashboardDto {
+        constructor(
+            public id: string,
+            public idProd: string,
+            public prodDisplay: string,
+            public prodAvatarUrl: string,
+            public orgDisplay: string,
+            public parcelaDisplay: string,
+            public fecha: string
+        ) {
+        }
+    }
+
     /************************
      * Parcela
      ************************/

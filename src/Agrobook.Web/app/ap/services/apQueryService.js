@@ -35,6 +35,9 @@ var apArea;
         apQueryService.prototype.getServiciosPorProd = function (idProd, callback) {
             _super.prototype.getWithCallback.call(this, 'servicios-por-prod/' + idProd, callback);
         };
+        apQueryService.prototype.getUltimosServicios = function (cantidad, callback) {
+            _super.prototype.getWithCallback.call(this, 'ultimos-servicios?cantidad=' + cantidad, callback);
+        };
         apQueryService.prototype.getServicio = function (idServicio, callback) {
             _super.prototype.getWithCallback.call(this, 'servicio/' + idServicio, callback);
         };

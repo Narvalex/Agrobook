@@ -44,6 +44,10 @@ module apArea {
             super.getWithCallback('servicios-por-prod/' + idProd, callback);
         }
 
+        getUltimosServicios(cantidad: number, callback: common.callbackLite<servicioParaDashboardDto[]>) {
+            super.getWithCallback('ultimos-servicios?cantidad=' + cantidad, callback);
+        }
+
         getServicio(idServicio: string, callback: common.callbackLite<servicioDto>) {
             super.getWithCallback('servicio/' + idServicio, callback);
         }

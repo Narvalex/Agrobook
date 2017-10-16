@@ -1,1 +1,23 @@
-﻿<h1>Dashboard</h1>
+﻿<div class="padding-all" ng-controller="mainContentController as vm"> 
+    <h2 class="md-title">
+        Últimos servicios
+    </h2>
+
+    <div ng-show="vm.loading" layout="row" layout-align="center center">
+        <md-progress-circular md-mode="indeterminate"
+                              ng-disabled="!vm.loading"></md-progress-circular>
+    </div>
+
+    <md-content ng-hide="vm.loading">
+        <md-list flex>
+            <md-subheader ng-if="vm.sinServicios" class="md-no-sticky">Todavía no se registró ningún servicio en el sistema</md-subheader>
+            <md-list-item class="md-3-line" ng-repeat="servicio in vm.servicios" ng-click="vm.irAlServicio(servicio)">
+                <img ng-src="{{servicio.prodAvatarUrl}}" class="md-avatar" alt="foto" />
+                <div class="md-list-item-text" layout="column">
+                    <h3>{{servicio.prodDisplay}}</h3>
+                    <h4>{{servicio.orgDisplay}}</h4>
+                    <p>Parcela {{servicio.parcelaDisplay}} el día {{vm.momentJs(servicio.fecha).format('DD/MM/YYYY')}}</p>
+                </div>
+            </md-list-item>
+    </md-content>
+</div>
