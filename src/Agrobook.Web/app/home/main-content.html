@@ -1,11 +1,15 @@
-﻿<div>
+﻿<div ng-controller="mainContentController as vm">
+
+    <h1>Agricultura de Precisión</h1>
+    <p class="lead">El futuro de la agricultura está aquí</p>
+
     <md-content class="md-padding" layout-xs="column" layout="row">
         <div flex-xs flex-gt-xs="50" layout="column">
             <md-card>
                 <img src="../assets/img/home/agro1.jpg" class="md-card-image" alt="Washed Out">
                 <md-card-title>
                     <md-card-title-text>
-                        <span class="md-headline">Agricultura de precisión</span>
+                        <span class="md-headline">¿Qué es agricultura de precisión?</span>
                     </md-card-title-text>
                 </md-card-title>
                 <md-card-content>
@@ -20,11 +24,11 @@
                     </p>
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
-                    <md-button>Más info</md-button>
-                    <md-button>Contacto</md-button>
+                    <md-button ng-click="vm.goTo('https://es.wikipedia.org/wiki/Agricultura_de_precisión')">Más info</md-button>
+                    <!--<md-button>Contacto</md-button>-->
                 </md-card-actions>
             </md-card>
-            <md-card>
+            <!--<md-card>
                 <img src="../assets/img/home/agro3.jpg" class="md-card-image" alt="Washed Out">
                 <md-card-title>
                     <md-card-title-text>
@@ -41,14 +45,14 @@
                     <md-button>Leer más</md-button>
                     <md-button>Contacto</md-button>
                 </md-card-actions>
-            </md-card>
+            </md-card>-->
         </div>
         <div flex-xs flex-gt-xs="50" layout="column">
             <md-card>
                 <img src="../assets/img/home/agro2.jpg" class="md-card-image" alt="Washed Out">
                 <md-card-title>
                     <md-card-title-text>
-                        <span class="md-headline">Análisis de suelos</span>
+                        <span class="md-headline">La importancia de realizar análisis de suelo</span>
                     </md-card-title-text>
                 </md-card-title>
                 <md-card-content>
@@ -57,18 +61,11 @@
                     </p>
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
-                    <md-button class="md-icon-button" aria-label="Favorite">
-                        <ng-md-icon icon="favorite"></ng-md-icon>
-                    </md-button>
-                    <md-button class="md-icon-button" aria-label="Settings">
-                        <ng-md-icon icon="menu"></ng-md-icon>
-                    </md-button>
-                    <md-button class="md-icon-button" aria-label="Share">
-                        <ng-md-icon icon="share"></ng-md-icon>
-                    </md-button>
+                    <md-button ng-click="vm.goTo('http://www.abc.com.py/articulos/el-analisis-de-suelos-333350.html')">Más info</md-button>
+                    <!--<md-button>Contacto</md-button>-->
                 </md-card-actions>
             </md-card>
-            <md-card>
+            <!--<md-card>
                 <img src="../assets/img/home/agro4.jpg" class="md-card-image" alt="Washed Out">
                 <md-card-actions layout="row" layout-align="end center">
                     <md-button class="md-icon-button" aria-label="Favorite">
@@ -81,9 +78,9 @@
                         <ng-md-icon icon="share"></ng-md-icon>
                     </md-button>
                 </md-card-actions>
-            </md-card>
+            </md-card>-->
 
-            <md-card>
+            <!--<md-card>
                 <md-card-header>
                     <md-card-avatar>
                         <img src="../assets/svg/twitter.svg" />
@@ -104,8 +101,10 @@
                         La FECOPROD fue creada el 23 de Agosto del año 1975. La Federación tiene como propósito principal el fortalecimiento institucional, estableciendo mecanismos para la defensa de los intereses económicos y sociales de sus asociadas.
                     </p>
                 </md-card-content>
-            </md-card>
+            </md-card>-->
 
         </div>
     </md-content>
+
+    <p class="footer"><a href="http://www.fecoprod.com.py">Fecoprod Ltda.</a> {{vm.currentYear}}</p>
 </div>

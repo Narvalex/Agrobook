@@ -7,6 +7,7 @@ module homeArea {
         .service('httpLite', common.httpLite)
         .service('loginService', login.loginService)
         .service('loginQueryService', login.loginQueryService)
+        .controller('mainContentController', mainContentController)
         .controller('toolbar-headerController', ToolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$injector', (

@@ -87,7 +87,7 @@
     <Content Include="app\assets\area-archivos.css" />
     <Content Include="app\assets\dialogs.css" />
     <Content Include="app\assets\google-font-roboto.css" />
-    <Content Include="app\assets\home.css" />
+    <Content Include="app\home\home.css" />
     <Content Include="app\assets\img\avatar\1.png" />
     <Content Include="app\assets\img\avatar\10.png" />
     <Content Include="app\assets\img\avatar\2.png" />
@@ -1273,6 +1273,7 @@
     <TypeScriptCompile Include="app\common\infrastructure.ts" />
     <TypeScriptCompile Include="app\common\userMenu\widgetController.ts" />
     <TypeScriptCompile Include="app\home\homeArea.ts" />
+    <TypeScriptCompile Include="app\home\mainContentController.ts" />
     <TypeScriptCompile Include="app\home\toolbar-headerController.ts" />
     <TypeScriptCompile Include="app\login\loginDTOs.ts" />
     <TypeScriptCompile Include="app\login\loginQueryService.ts" />

@@ -7,6 +7,7 @@ var homeArea;
         .service('httpLite', common.httpLite)
         .service('loginService', login.loginService)
         .service('loginQueryService', login.loginQueryService)
+        .controller('mainContentController', homeArea.mainContentController)
         .controller('toolbar-headerController', homeArea.ToolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$injector', function ($mdIconProvider, $mdThemingProvider, $httpProvider, $injector) {

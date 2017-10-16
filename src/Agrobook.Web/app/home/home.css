@@ -1,0 +1,37 @@
+﻿.home-input {
+    background-color: rgb(255, 255, 255) !important;
+}
+
+.home-login-form {
+    margin-top: 25px;
+    padding: 0px;
+}
+h1 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 60px;
+    font-weight: 100;
+    text-align:center;
+}
+
+p.lead {
+    color: #4caf50;
+    font-weight:500;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    font-size: 25px;
+}
+
+@media only screen and (max-width: 960px) {
+    h1 {
+        font-size: 40px;
+        margin-bottom: 0px;
+    }
+    p.lead {
+        margin-top: 5px;
+        font-size: 20px;
+    }
+}
+
+p.footer {
+    padding-left: 2em;
+}
