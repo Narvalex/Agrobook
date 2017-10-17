@@ -124,7 +124,7 @@ var common;
                     reader.readAsDataURL(unit.file);
                 }
                 else if (unit.state === this.states.uploaded) {
-                    unit.iconUrl = "./archivos/query/preview/" + this.idColeccion + "/" + unit.name + "/" + this.loginInfo.usuario;
+                    unit.iconUrl = "../archivos/query/preview/" + this.idColeccion + "/" + unit.name + "/" + this.loginInfo.usuario;
                 }
                 else {
                     throw 'El estado de la imagen no es valido para ver su preview: ' + unit.state;
