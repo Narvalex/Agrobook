@@ -13,23 +13,37 @@ namespace Eventing.GetEventStore
         private readonly Func<Task<IEventStoreConnection>> connectionFactory;
         private readonly IJsonSerializer serializer;
         private readonly string streamPrefix = "checkpoint.repo";
+        private readonly int checkpointHistoryMaxCount;
 
-        public EventStoreCheckpointRepository(Func<Task<IEventStoreConnection>> connectionFactory, IJsonSerializer serializer)
+        public EventStoreCheckpointRepository(Func<Task<IEventStoreConnection>> connectionFactory, IJsonSerializer serializer,
+            int checkpointHistoryMaxCount = 1)
         {
             Ensure.NotNull(connectionFactory, nameof(connectionFactory));
             Ensure.NotNull(serializer, nameof(serializer));
+            Ensure.Positive(checkpointHistoryMaxCount, nameof(checkpointHistoryMaxCount));
 
             this.connectionFactory = connectionFactory;
             this.serializer = serializer;
+            this.checkpointHistoryMaxCount = checkpointHistoryMaxCount;
         }
 
-        public long? GetCheckpoint(string subscriptionId) => this.GetCheckpointAsync(subscriptionId).Result;
+        public long? GetCheckpoint(string subscriptionId)
+        {
+            var connection = this.connectionFactory.Invoke().Result;
+
+            var readResult = connection.ReadEventAsync(this.GetSubStreamName(subscriptionId), StreamPosition.End, false).Result;
+            if (readResult.Status != EventReadStatus.Success)
+                return null;
+            var deserialized = this.Deserialize(readResult.Event.Value);
+            var e = (SubscriptionCheckpoint)deserialized;
+            return e.EventNumber;
+        }
 
         public async Task<long?> GetCheckpointAsync(string subscriptionId)
         {
             var connection = await this.connectionFactory.Invoke();
 
-            var readResult = await connection.ReadEventAsync(this.GetSubStreamName(subscriptionId), StreamPosition.Start, false);
+            var readResult = await connection.ReadEventAsync(this.GetSubStreamName(subscriptionId), StreamPosition.End, false);
             if (readResult.Status != EventReadStatus.Success)
                 return null;
             var deserialized = this.Deserialize(readResult.Event.Value);
@@ -55,10 +69,10 @@ namespace Eventing.GetEventStore
         private async Task TrySetMetadata(string subId, IEventStoreConnection connection)
         {
             var result = await connection.GetStreamMetadataAsync(this.GetSubStreamName(subId));
-            if (!result.StreamMetadata.MaxCount.HasValue || result.StreamMetadata.MaxCount != 1)
+            if (!result.StreamMetadata.MaxCount.HasValue || result.StreamMetadata.MaxCount != this.checkpointHistoryMaxCount)
             {
                 await connection.SetStreamMetadataAsync(this.GetSubStreamName(subId), ExpectedVersion.Any,
-                    StreamMetadata.Build().SetMaxCount(1).Build());
+                    StreamMetadata.Build().SetMaxCount(this.checkpointHistoryMaxCount).Build());
             }
         }
 

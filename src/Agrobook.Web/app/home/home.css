@@ -6,19 +6,22 @@
     margin-top: 25px;
     padding: 0px;
 }
+
 h1 {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 60px;
     font-weight: 100;
-    text-align:center;
+    text-align: center;
+    margin-bottom: 0px;
 }
 
 p.lead {
     color: #4caf50;
-    font-weight:500;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: center;
     font-size: 25px;
+    margin-top: 5px;
 }
 
 @media only screen and (max-width: 960px) {

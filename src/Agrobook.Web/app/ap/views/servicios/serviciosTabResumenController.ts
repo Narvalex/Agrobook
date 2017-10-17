@@ -205,10 +205,11 @@ module apArea {
                         this.toasterLite.success('El servicio se registró con el id ' + value.data);
                         this.action = 'view';
                         servicio.id = value.data;
+                        this.idServicio = servicio.id;
                         this.submitting = false;
                         this.$rootScope.$broadcast(this.config.eventIndex.ap_servicios.nuevoServicioCreado, servicio);
                         this.servicio = servicio;
-                        window.location.replace(`#!/servicios/${this.idProd}/${this.idServicio}?tab=resumen&action=view`);
+                        window.location.href = `#!/servicios/${this.idProd}/${this.idServicio}?tab=resumen&action=view`;
                     },
                     reason => {
                         this.submitting = false;

@@ -9,7 +9,7 @@
     <!-- View -->
     <md-content ng-show="!vm.loading && vm.action === 'view'" class="width-sm">
         <p>
-            El servicio se realizó a {{vm.servicio.parcelaId === null ? 'una parcela todavía no especificada' : 'la parcela ' + vm.servicio.parcelaDisplay}} bajo el contrato "{{vm.servicio.contratoDisplay}}" con "{{vm.servicio.orgDisplay}}". El mismo fue completado el día {{vm.momentInstance(vm.servicio.fecha).format('DD/MM/YYYY')}}.
+            El servicio se realizó a {{vm.servicio.parcelaDisplay === null ? 'una parcela todavía no especificada' : 'la parcela ' + vm.servicio.parcelaDisplay}} bajo el contrato "{{vm.servicio.contratoDisplay}}" con "{{vm.servicio.orgDisplay}}". El mismo fue completado el día {{vm.momentInstance(vm.servicio.fecha).format('DD/MM/YYYY')}}.
         </p>
 
         <p ng-hide="vm.eliminando || vm.servicio.eliminado">Puede <a href="" ng-click="vm.enableEditMode()">actualizar</a> el servicio, o incluso, <a href="" ng-click="vm.eliminar()">eliminarlo</a>.</p>

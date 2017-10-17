@@ -94,7 +94,7 @@ namespace Agrobook.Server
 
             // Ordenado a partir de aqui
             var efCheckpointRepository = new EfCheckpointRepository(dbContextFactory, readOnlyDbContextFactory);
-            var esCheckpointRepository = new EventStoreCheckpointRepository(esm.GetFailFastConnection, jsonSerializer);
+            var esCheckpointRepository = new EventStoreCheckpointRepository(esm.GetFailFastConnection, jsonSerializer, 3);
 
             var apQueryService = new ApQueryService(readOnlyDbContextFactory, eventSourcedRepository);
             container.Register<ApQueryService>(apQueryService);

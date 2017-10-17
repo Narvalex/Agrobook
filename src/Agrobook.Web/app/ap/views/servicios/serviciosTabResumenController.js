@@ -148,10 +148,11 @@ var apArea;
                 _this.toasterLite.success('El servicio se registró con el id ' + value.data);
                 _this.action = 'view';
                 servicio.id = value.data;
+                _this.idServicio = servicio.id;
                 _this.submitting = false;
                 _this.$rootScope.$broadcast(_this.config.eventIndex.ap_servicios.nuevoServicioCreado, servicio);
                 _this.servicio = servicio;
-                window.location.replace("#!/servicios/" + _this.idProd + "/" + _this.idServicio + "?tab=resumen&action=view");
+                window.location.href = "#!/servicios/" + _this.idProd + "/" + _this.idServicio + "?tab=resumen&action=view";
             }, function (reason) {
                 _this.submitting = false;
             }));
