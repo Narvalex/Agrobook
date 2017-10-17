@@ -61,6 +61,9 @@ var common;
                     perfilActualizado: 'perfilActualizado',
                     usuarioAgregadoAOrganizacion: 'usuarioAgregadoAOrganizacion'
                 },
+                filesWidget: {
+                    reloadFiles: 'filesWidget-reloadFiles'
+                },
                 archivos: {
                     productorSeleccionado: 'productorSeleccionado',
                     abrirCuadroDeCargaDeArchivos: 'abrirCuadroDeCargaDeArchivos',
@@ -83,10 +86,13 @@ var common;
             };
             this._conventions = {};
             this._categoriaDeArchivos = {
+                // servicio
                 servicioDatosBasicos: 'servicioDatosBasicos',
                 servicioParcelas: 'servicioParcelas',
                 servicioDiagnostico: 'servicioDiagnostico',
-                servicioPrescripciones: 'servicioPrescripciones'
+                servicioPrescripciones: 'servicioPrescripciones',
+                // org
+                orgContratos: 'orgContratos'
             };
         }
         Object.defineProperty(config.prototype, "keyCodes", {

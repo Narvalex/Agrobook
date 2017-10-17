@@ -2,7 +2,7 @@
 
 module apArea {
     export class orgTabContratosController {
-        static $inject = ['$routeParams', '$scope', '$mdPanel', 'apQueryService', 'apService', 'toasterLite']
+        static $inject = ['$routeParams', '$scope', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'config', '$rootScope']
 
         constructor(
             private $routeParams: angular.route.IRouteParamsService,
@@ -10,7 +10,9 @@ module apArea {
             private $mdPanel: angular.material.IPanelService,
             private apQueryService: apQueryService,
             private apService: apService,
-            private toasterLite: common.toasterLite
+            private toasterLite: common.toasterLite,
+            private config: common.config,
+            private $roogScope: angular.IRootScopeService
         ) {
             this.idOrg = this.$routeParams['idOrg'];
 
@@ -25,6 +27,7 @@ module apArea {
         ocultarEliminados = true;
 
         // object
+        idColeccion: string; // de archivos
         idOrg: string;
         dirty: contratoDto;
         tipoContrato: string;
@@ -93,6 +96,10 @@ module apArea {
                 contrato.eliminado,
                 contrato.idContratoDeLaAdenda,
                 contrato.fecha);
+
+            this.idColeccion = `${this.config.categoriaDeArchivos.orgContratos}-${contrato.id}`;
+
+            this.$roogScope.$broadcast(this.config.eventIndex.filesWidget.reloadFiles, { idColeccion: this.idColeccion });
 
             this.mostrarForm(true);
         }

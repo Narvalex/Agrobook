@@ -60,6 +60,12 @@
                 </md-input-container>
             </div>
 
+            <div ng-if="vm.editMode">
+                <file-widget id-coleccion="vm.idColeccion"
+                             header="'Documento de respaldo'">
+                </file-widget>
+            </div>
+
             <div layout="row">
                 <div>
                     <md-button class="md-button md-primary md-raised"

@@ -2,13 +2,15 @@
 var apArea;
 (function (apArea) {
     var orgTabContratosController = (function () {
-        function orgTabContratosController($routeParams, $scope, $mdPanel, apQueryService, apService, toasterLite) {
+        function orgTabContratosController($routeParams, $scope, $mdPanel, apQueryService, apService, toasterLite, config, $roogScope) {
             this.$routeParams = $routeParams;
             this.$scope = $scope;
             this.$mdPanel = $mdPanel;
             this.apQueryService = apQueryService;
             this.apService = apService;
             this.toasterLite = toasterLite;
+            this.config = config;
+            this.$roogScope = $roogScope;
             this.submitting = false;
             this.tieneContrato = false;
             this.ocultarEliminados = true;
@@ -59,6 +61,8 @@ var apArea;
         };
         orgTabContratosController.prototype.habilitarEdicion = function (contrato) {
             this.dirty = new apArea.contratoDto(contrato.id, contrato.idOrg, contrato.display, contrato.esAdenda, contrato.eliminado, contrato.idContratoDeLaAdenda, contrato.fecha);
+            this.idColeccion = this.config.categoriaDeArchivos.orgContratos + "-" + contrato.id;
+            this.$roogScope.$broadcast(this.config.eventIndex.filesWidget.reloadFiles, { idColeccion: this.idColeccion });
             this.mostrarForm(true);
         };
         orgTabContratosController.prototype.eliminar = function (contrato) {
@@ -211,7 +215,7 @@ var apArea;
         };
         return orgTabContratosController;
     }());
-    orgTabContratosController.$inject = ['$routeParams', '$scope', '$mdPanel', 'apQueryService', 'apService', 'toasterLite'];
+    orgTabContratosController.$inject = ['$routeParams', '$scope', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'config', '$rootScope'];
     apArea.orgTabContratosController = orgTabContratosController;
     var panelMenuController = (function () {
         function panelMenuController(mdPanelRef) {

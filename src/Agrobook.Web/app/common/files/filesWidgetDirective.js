@@ -17,6 +17,7 @@ var common;
     common.filesWidgetDirectiveFactory = filesWidgetDirectiveFactory;
     var filesWidgetController = (function () {
         function filesWidgetController($scope, toasterLite, localStorageLite, config, $http, $mdPanel) {
+            var _this = this;
             this.$scope = $scope;
             this.toasterLite = toasterLite;
             this.localStorageLite = localStorageLite;
@@ -44,20 +45,11 @@ var common;
             vm.loadingFiles = this.loadingFiles;
             vm.prepFiles = this.prepFiles;
             vm.units = [];
-            vm.loadingFiles = true;
-            this.$http.get('../archivos/query/coleccion/' + vm.idColeccion).then(function (value) {
-                for (var i = 0; i < value.data.length; i++) {
-                    var meta = value.data[i];
-                    var unit = new fileUnit(meta.nombre, meta.extension, vm.states.uploaded, null, meta.size, meta.size > 1024 * 1024 ? (meta.size / 1024 / 1024).toFixed(1) + " MB" : (meta.size / 1024).toFixed(1) + " KB");
-                    vm.setIconUrlAndSvgs(unit);
-                    unit.deleted = meta.deleted;
-                    vm.units.push(unit);
-                }
-                vm.loadingFiles = false;
-            }, function (response) {
-                vm.toasterLite.error('Hubo un error al recuperar los archivos cargados');
-                vm.loadingFiles = false;
+            this.$scope.$on(this.config.eventIndex.filesWidget.reloadFiles, function (e, args) {
+                vm.idColeccion = args.idColeccion;
+                _this.setWidget(vm);
             });
+            this.setWidget(vm);
         }
         // angular typing
         filesWidgetController.prototype.$apply = function (action) {
@@ -358,6 +350,23 @@ var common;
                 escapeToClose: true,
             };
             this.$mdPanel.open(config);
+        };
+        filesWidgetController.prototype.setWidget = function (vm) {
+            vm.loadingFiles = true;
+            vm.units = [];
+            this.$http.get('../archivos/query/coleccion/' + vm.idColeccion).then(function (value) {
+                for (var i = 0; i < value.data.length; i++) {
+                    var meta = value.data[i];
+                    var unit = new fileUnit(meta.nombre, meta.extension, vm.states.uploaded, null, meta.size, meta.size > 1024 * 1024 ? (meta.size / 1024 / 1024).toFixed(1) + " MB" : (meta.size / 1024).toFixed(1) + " KB");
+                    vm.setIconUrlAndSvgs(unit);
+                    unit.deleted = meta.deleted;
+                    vm.units.push(unit);
+                }
+                vm.loadingFiles = false;
+            }, function (response) {
+                vm.toasterLite.error('Hubo un error al recuperar los archivos cargados');
+                vm.loadingFiles = false;
+            });
         };
         return filesWidgetController;
     }());

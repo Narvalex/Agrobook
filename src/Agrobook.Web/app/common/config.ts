@@ -65,6 +65,9 @@ module common {
                 perfilActualizado: 'perfilActualizado',
                 usuarioAgregadoAOrganizacion: 'usuarioAgregadoAOrganizacion'
             },
+            filesWidget: {
+                reloadFiles: 'filesWidget-reloadFiles'
+            },
             archivos: {
                 productorSeleccionado: 'productorSeleccionado',
                 abrirCuadroDeCargaDeArchivos: 'abrirCuadroDeCargaDeArchivos',
@@ -93,10 +96,13 @@ module common {
         }
 
         private _categoriaDeArchivos = {
+            // servicio
             servicioDatosBasicos: 'servicioDatosBasicos',
             servicioParcelas: 'servicioParcelas',
             servicioDiagnostico: 'servicioDiagnostico',
-            servicioPrescripciones: 'servicioPrescripciones'
+            servicioPrescripciones: 'servicioPrescripciones',
+            // org
+            orgContratos: 'orgContratos'
         }
 
         get keyCodes() { return this._keyCodes; }

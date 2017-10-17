@@ -50,23 +50,12 @@ module common {
             vm.prepFiles = this.prepFiles;
             vm.units = [];
 
-            vm.loadingFiles = true;
-            this.$http.get<metadatosDeArchivo[]>('../archivos/query/coleccion/' + vm.idColeccion).then(
-                value => {
-                    for (var i = 0; i < value.data.length; i++) {
-                        var meta = value.data[i];
-                        var unit = new fileUnit(meta.nombre, meta.extension, vm.states.uploaded, null, meta.size,
-                            meta.size > 1024 * 1024 ? `${(meta.size / 1024 / 1024).toFixed(1)} MB` : `${(meta.size / 1024).toFixed(1)} KB`);
-                        vm.setIconUrlAndSvgs(unit);
-                        unit.deleted = meta.deleted;
-                        vm.units.push(unit);
-                    }
-                    vm.loadingFiles = false;
-                },
-                response => {
-                    vm.toasterLite.error('Hubo un error al recuperar los archivos cargados');
-                    vm.loadingFiles = false;
-                });
+            this.$scope.$on(this.config.eventIndex.filesWidget.reloadFiles, (e, args) => {
+                vm.idColeccion = args.idColeccion;
+                this.setWidget(vm as any);
+            });
+
+            this.setWidget(vm as any);
         }
 
         // states
@@ -428,6 +417,27 @@ module common {
             }
 
             this.$mdPanel.open(config);
+        }
+
+        setWidget(vm: filesWidgetController) {
+            vm.loadingFiles = true;
+            vm.units = [];
+            this.$http.get<metadatosDeArchivo[]>('../archivos/query/coleccion/' + vm.idColeccion).then(
+                value => {
+                    for (var i = 0; i < value.data.length; i++) {
+                        var meta = value.data[i];
+                        var unit = new fileUnit(meta.nombre, meta.extension, vm.states.uploaded, null, meta.size,
+                            meta.size > 1024 * 1024 ? `${(meta.size / 1024 / 1024).toFixed(1)} MB` : `${(meta.size / 1024).toFixed(1)} KB`);
+                        vm.setIconUrlAndSvgs(unit);
+                        unit.deleted = meta.deleted;
+                        vm.units.push(unit);
+                    }
+                    vm.loadingFiles = false;
+                },
+                response => {
+                    vm.toasterLite.error('Hubo un error al recuperar los archivos cargados');
+                    vm.loadingFiles = false;
+                });
         }
     }
 
