@@ -3,13 +3,14 @@
 module homeArea {
     export class ToolbarHeaderController {
 
-        static $inject = ['loginService', 'loginQueryService', 'config', '$rootScope'];
+        static $inject = ['loginService', 'loginQueryService', 'config', '$rootScope', 'toasterLite'];
 
         constructor(
             private loginService: login.loginService,
             private loginQueryService: login.loginQueryService,
             private config: common.config,
-            private $rootScope: angular.IRootScopeService
+            private $rootScope: angular.IRootScopeService,
+            private toasterLite: common.toasterLite
         ) {
             // Auth
             this.mostrarUsuariosSiSePuede();
@@ -23,7 +24,9 @@ module homeArea {
             this.verificarSiEstaLogueado();
 
             if (window.location.search === "?unauth=1") {
-                window.alert('Usted no tiene permiso para continuar o sus permisos fueron modificados. Por favor vuelva a introducir sus credenciales');
+                let message = 'Usted no tiene permiso para continuar o sus permisos fueron modificados. Por favor vuelva a introducir sus credenciales';
+                this.toasterLite.error(message, this.toasterLite.delayForever);
+                //window.alert(message);
                 if (this.estaLogueado)
                     this.loginService.logOut();
             }

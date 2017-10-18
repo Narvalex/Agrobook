@@ -2,12 +2,13 @@
 var homeArea;
 (function (homeArea) {
     var ToolbarHeaderController = (function () {
-        function ToolbarHeaderController(loginService, loginQueryService, config, $rootScope) {
+        function ToolbarHeaderController(loginService, loginQueryService, config, $rootScope, toasterLite) {
             var _this = this;
             this.loginService = loginService;
             this.loginQueryService = loginQueryService;
             this.config = config;
             this.$rootScope = $rootScope;
+            this.toasterLite = toasterLite;
             this.estaLogueado = false;
             this.enEspera = false;
             // mostrar menus
@@ -20,7 +21,9 @@ var homeArea;
             this.establecerFormularioDeLogin();
             this.verificarSiEstaLogueado();
             if (window.location.search === "?unauth=1") {
-                window.alert('Usted no tiene permiso para continuar o sus permisos fueron modificados. Por favor vuelva a introducir sus credenciales');
+                var message = 'Usted no tiene permiso para continuar o sus permisos fueron modificados. Por favor vuelva a introducir sus credenciales';
+                this.toasterLite.error(message, this.toasterLite.delayForever);
+                //window.alert(message);
                 if (this.estaLogueado)
                     this.loginService.logOut();
             }
@@ -100,7 +103,7 @@ var homeArea;
         };
         return ToolbarHeaderController;
     }());
-    ToolbarHeaderController.$inject = ['loginService', 'loginQueryService', 'config', '$rootScope'];
+    ToolbarHeaderController.$inject = ['loginService', 'loginQueryService', 'config', '$rootScope', 'toasterLite'];
     homeArea.ToolbarHeaderController = ToolbarHeaderController;
 })(homeArea || (homeArea = {}));
 //# sourceMappingURL=toolbar-headerController.js.map

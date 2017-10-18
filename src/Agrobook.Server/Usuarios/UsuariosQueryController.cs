@@ -48,10 +48,10 @@ namespace Agrobook.Server.Usuarios
         }
 
 
-        [Autorizar(Roles.Gerente, Roles.Tecnico)]
+        [Autorizar(Roles.Gerente, Roles.Tecnico, Roles.Productor)]
         [HttpGet]
         [Route("claims")]
-        public async Task<IHttpActionResult> ObtenerClaims()
+        public async Task<IHttpActionResult> ObtenerClaimsDelPropioUsuario()
         {
             var claims = await this.usuariosService.ObtenerListaDeClaimsDisponiblesParaElUsuario(this.ActionContext.GetToken());
             return this.Ok(claims);

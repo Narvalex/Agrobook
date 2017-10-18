@@ -7,6 +7,7 @@ var homeArea;
         .service('httpLite', common.httpLite)
         .service('loginService', login.loginService)
         .service('loginQueryService', login.loginQueryService)
+        .service('toasterLite', common.toasterLite)
         .controller('mainContentController', homeArea.mainContentController)
         .controller('toolbar-headerController', homeArea.ToolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)

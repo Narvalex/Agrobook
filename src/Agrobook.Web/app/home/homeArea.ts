@@ -7,6 +7,7 @@ module homeArea {
         .service('httpLite', common.httpLite)
         .service('loginService', login.loginService)
         .service('loginQueryService', login.loginQueryService)
+        .service('toasterLite', common.toasterLite)
         .controller('mainContentController', mainContentController)
         .controller('toolbar-headerController', ToolbarHeaderController)
         .controller('userMenuWidgetController', common.userMenuWidgetController)

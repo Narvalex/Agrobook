@@ -3,6 +3,7 @@ var common;
 (function (common) {
     function registerHttpInterceptors($httpProvider) {
         $httpProvider.interceptors.push(['config', 'localStorageLite', function (conf, ls) {
+                // The interceptor for the unauth response is in the httpLite component.
                 return {
                     request: function (config) {
                         var loginInfo = ls.get(conf.repoIndex.login.usuarioActual);

@@ -155,7 +155,7 @@ namespace Agrobook.Domain.Usuarios
             var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(cmd.Usuario);
             var usuarioEnEdicion = this.ExtraerElLoginInfo(usuario);
 
-            var autorizado = this.VerificarSiPuedeActualizarPerfil(cmd.ElQueRealizaEstaAccion, usuarioEnEdicion);
+            var autorizado = this.IntentarAutorizar(cmd.ElQueRealizaEstaAccion, usuarioEnEdicion);
             if (!autorizado) return false;
 
             if (cmd.AvatarUrl != null && usuario.AvatarUrl != cmd.AvatarUrl)
@@ -217,7 +217,7 @@ namespace Agrobook.Domain.Usuarios
             var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(cmd.Usuario);
             var loginInfo = this.ExtraerElLoginInfo(usuario);
 
-            var autorizado = this.VerificarSiPuedeActualizarPerfil(cmd.ElQueRealizaEstaAccion, loginInfo);
+            var autorizado = this.IntentarAutorizar(cmd.ElQueRealizaEstaAccion, loginInfo);
             if (!autorizado) return false;
 
             loginInfo.ActualizarPassword(DefaultPassword);
@@ -274,7 +274,7 @@ namespace Agrobook.Domain.Usuarios
             var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(cmd.IdUsuario);
             var loginInfo = this.ExtraerElLoginInfo(usuario);
 
-            var autorizado = this.VerificarSiPuedeActualizarPerfil(cmd.Autor, loginInfo);
+            var autorizado = this.IntentarAutorizar(cmd.Autor, loginInfo);
             if (!autorizado) return false;
 
             // obtengo los roles y permisos actuales del usuario
@@ -313,7 +313,7 @@ namespace Agrobook.Domain.Usuarios
             var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(cmd.IdUsuario);
             var loginInfo = this.ExtraerElLoginInfo(usuario);
 
-            var autorizado = this.VerificarSiPuedeActualizarPerfil(cmd.Autor, loginInfo);
+            var autorizado = this.IntentarAutorizar(cmd.Autor, loginInfo);
             if (!autorizado) return false;
 
             if (loginInfo.Claims.Any(x => x.EqualsIgnoringCase(cmd.Permiso)))
@@ -340,7 +340,7 @@ namespace Agrobook.Domain.Usuarios
             return info;
         }
 
-        private bool VerificarSiPuedeActualizarPerfil(LoginInfo autor, LoginInfo objetivo)
+        private bool IntentarAutorizar(LoginInfo autor, LoginInfo objetivo)
         {
             var autorizado = false;
             if (autor.Claims.Any(x => x == Roles.Admin))
