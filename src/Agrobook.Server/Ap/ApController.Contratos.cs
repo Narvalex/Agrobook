@@ -1,11 +1,14 @@
 ﻿using Agrobook.Domain.Ap.Messages;
+using Agrobook.Server.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
+using static Agrobook.Domain.Usuarios.Login.ClaimDef;
 
 namespace Agrobook.Server.Ap
 {
     public partial class ApController
     {
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
         [HttpPost]
         [Route("registrar-contrato")]
         public async Task<IHttpActionResult> RegistrarContrato([FromBody]RegistrarNuevoContrato cmd)
@@ -14,6 +17,7 @@ namespace Agrobook.Server.Ap
             return this.Ok(idContrato);
         }
 
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
         [HttpPost]
         [Route("editar-contrato")]
         public async Task<IHttpActionResult> EditarContrato([FromBody]EditarContrato cmd)
@@ -22,6 +26,7 @@ namespace Agrobook.Server.Ap
             return this.Ok();
         }
 
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
         [HttpPost]
         [Route("eliminar-contrato/{id}")]
         public async Task<IHttpActionResult> EliminarContrato([FromUri]string id)
@@ -30,6 +35,7 @@ namespace Agrobook.Server.Ap
             return this.Ok();
         }
 
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
         [HttpPost]
         [Route("restaurar-contrato/{id}")]
         public async Task<IHttpActionResult> RestaurarContrato([FromUri]string id)
@@ -38,6 +44,7 @@ namespace Agrobook.Server.Ap
             return this.Ok();
         }
 
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
         [HttpPost]
         [Route("registrar-adenda")]
         public async Task<IHttpActionResult> RegistrarAdenda([FromBody]RegistrarNuevaAdenda cmd)
@@ -46,6 +53,7 @@ namespace Agrobook.Server.Ap
             return this.Ok(idAdenda);
         }
 
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
         [HttpPost]
         [Route("editar-adenda")]
         public async Task<IHttpActionResult> EditarAdenda([FromBody]EditarAdenda cmd)
@@ -54,6 +62,7 @@ namespace Agrobook.Server.Ap
             return this.Ok();
         }
 
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
         [HttpPost]
         [Route("eliminar-adenda")]
         public async Task<IHttpActionResult> EliminarAdenda([FromUri]string idContrato, [FromUri]string idAdenda)
@@ -62,6 +71,7 @@ namespace Agrobook.Server.Ap
             return this.Ok();
         }
 
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
         [HttpPost]
         [Route("restaurar-adenda")]
         public async Task<IHttpActionResult> RestaurarAdenda([FromUri]string idContrato, [FromUri]string idAdenda)
