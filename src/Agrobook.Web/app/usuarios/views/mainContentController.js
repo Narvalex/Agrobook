@@ -18,7 +18,7 @@ var usuariosArea;
             this.mostrarOrganizacionesYGrupos = this.loginService.autorizar([
                 claims.roles.Admin,
                 claims.roles.Gerente,
-                claims.permisos.AdministrarOrganizaciones
+                claims.roles.Tecnico
             ]);
             var idUsuario = this.$routeParams['idUsuario'];
             if (idUsuario === undefined)

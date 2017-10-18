@@ -19,7 +19,7 @@ module usuariosArea {
             this.mostrarOrganizacionesYGrupos = this.loginService.autorizar([
                 claims.roles.Admin,
                 claims.roles.Gerente,
-                claims.permisos.AdministrarOrganizaciones
+                claims.roles.Tecnico
             ]);
 
 

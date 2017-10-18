@@ -27,8 +27,12 @@ namespace Agrobook.Server.Usuarios
                 return this.Ok(await this.usuarioQueryService.ObtenerTodosLosUsuariosMenosAdmines());
 
             else if (claims.Any(x => x == Roles.Tecnico))
-                return this.Ok(await this.usuarioQueryService.ObtenerTodosLosUsuariosMenosGerentesYAdmines());
-
+            {
+                var usuarios = await this.usuarioQueryService.ObtenerTodosLosProductores();
+                var elTecnicoQueSolicitaEsto = await this.usuarioQueryService.ObtenerUsuarioInfoBasica(this.usuariosService.GetCurrentUser(this.ActionContext.GetToken()).Usuario);
+                usuarios.Add(elTecnicoQueSolicitaEsto);
+                return this.Ok(usuarios);
+            }
             return this.BadRequest();
         }
 

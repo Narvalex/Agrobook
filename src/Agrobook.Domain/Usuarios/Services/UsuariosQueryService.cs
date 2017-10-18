@@ -1,8 +1,6 @@
-﻿using Agrobook.Common;
-using Agrobook.Domain.Common;
+﻿using Agrobook.Domain.Common;
 using Agrobook.Domain.Usuarios.Login;
 using Eventing;
-using Eventing.Core.Domain;
 using Eventing.Core.Persistence;
 using Eventing.Core.Serialization;
 using System;
@@ -75,12 +73,12 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public async Task<IList<UsuarioInfoBasica>> ObtenerTodosLosUsuariosMenosGerentesYAdmines()
+        public async Task<IList<UsuarioInfoBasica>> ObtenerTodosLosProductores()
         {
             return await this.QueryAsync(async context =>
             {
                 var lista = await context.Usuarios
-                .Where(x => !x.EsAdmin && !x.EsGerente)
+                .Where(x => !x.EsAdmin && !x.EsGerente && !x.EsTecnico && x.EsProductor)
                 .Select(u => new UsuarioInfoBasica
                 {
                     Nombre = u.Id,

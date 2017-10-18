@@ -16,7 +16,7 @@ namespace Agrobook.Domain.Usuarios.Login
                 { Roles.Productor, new Claim(Roles.Productor, TipoDeClaim.Rol, "Productor", "Los productores son los clientes.") },
                 { Roles.Invitado, new Claim(Roles.Invitado, TipoDeClaim.Rol, "Invitado", "Los invitados pueden ver los trabajos realizados a productores de su organización.") },
                 // Permisos
-                { Permisos.AdministrarOrganizaciones, new Claim(Permisos.AdministrarOrganizaciones, TipoDeClaim.Permiso, "Permiso para administrar organizaciones", "Los que tengan este permiso pueden administrar las organizaciones del sistema") }
+                //{ Permisos.AdministrarOrganizaciones, new Claim(Permisos.AdministrarOrganizaciones, TipoDeClaim.Permiso, "Permiso para administrar organizaciones", "Los que tengan este permiso pueden administrar las organizaciones del sistema") }
             };
 
         public static int ClaimCount => _claims.Count();
