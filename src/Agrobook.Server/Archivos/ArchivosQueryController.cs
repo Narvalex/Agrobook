@@ -1,15 +1,18 @@
 ﻿using Agrobook.Domain.Archivos;
 using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Common;
+using Agrobook.Server.Filters;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
+using static Agrobook.Domain.Usuarios.Login.ClaimDef;
 
 namespace Agrobook.Server.Archivos
 {
+    [Autorizar(Roles.Gerente, Roles.Tecnico, Roles.Productor)]
     [RoutePrefix("archivos/query")]
     public class ArchivosQueryController : ApiController
     {
