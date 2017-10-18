@@ -78,7 +78,6 @@ namespace Agrobook.Domain.Usuarios
             return claimsPermitidos;
         }
 
-
         public async Task<IList<Claim>> ObtenerClaimsDelUsuario(string idUsuario)
         {
             var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(idUsuario);
@@ -87,6 +86,9 @@ namespace Agrobook.Domain.Usuarios
             var claims = ClaimProvider.ObtenerClaimsValidos(loginInfo.Claims).ToList();
             return claims;
         }
+
+        public async Task<bool> ExisteEsteUsuario(string idUsuario)
+            => await this.repository.Exists<Usuario>(idUsuario);
 
         public bool TryAuthorize(string token, params string[] claimsRequired)
         {

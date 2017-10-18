@@ -12,14 +12,14 @@ using static Agrobook.Domain.Usuarios.Login.ClaimDef;
 
 namespace Agrobook.Server.Archivos
 {
-    [Autorizar(Roles.Gerente, Roles.Tecnico, Roles.Productor)]
     [RoutePrefix("archivos/query")]
-    public class ArchivosQueryController : ApiController
+    public class ArchivosQueryController : BaseApiController
     {
         private readonly ArchivosService service = ServiceLocator.ResolveSingleton<ArchivosService>();
         private readonly ArchivosQueryService queryService = ServiceLocator.ResolveSingleton<ArchivosQueryService>();
         private readonly IFileWriter fileManager = ServiceLocator.ResolveSingleton<IFileWriter>();
 
+        [Autorizar(Roles.Gerente, Roles.Tecnico, Roles.Productor)]
         [HttpGet]
         [Route("coleccion/{idColeccion}")]
         public async Task<IHttpActionResult> ObtenerListaDeArchivos([FromUri]string idColeccion)
@@ -39,6 +39,9 @@ namespace Agrobook.Server.Archivos
 
             // Validar aqui el usuario
 
+            if (!(await this.usuariosService.ExisteEsteUsuario(usuario)))
+                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
+
             var response = this.PrepareFileResponse(idColeccion, nombreArchivo);
 
             await this.service.HandleAsync(new RegistrarDescargaExitosa(new Firma(usuario, DateTime.Now), idColeccion, nombreArchivo));
@@ -48,9 +51,11 @@ namespace Agrobook.Server.Archivos
 
         [HttpGet]
         [Route("preview/{idColeccion}/{nombreArchivo}/{usuario}")]
-        public HttpResponseMessage Preview([FromUri]string idColeccion, [FromUri] string nombreArchivo, [FromUri] string usuario)
+        public async Task<HttpResponseMessage> Preview([FromUri]string idColeccion, [FromUri] string nombreArchivo, [FromUri] string usuario)
         {
-            // Validar aqui el usuario
+            if (!(await this.usuariosService.ExisteEsteUsuario(usuario)))
+                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
+
             // Validar que sea imagen
             var response = this.PrepareFileResponse(idColeccion, nombreArchivo);
 
