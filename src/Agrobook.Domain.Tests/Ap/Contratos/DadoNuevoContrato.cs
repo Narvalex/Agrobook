@@ -41,6 +41,7 @@ namespace Agrobook.Domain.Tests.Ap.Contratos
         }
 
         [Test]
+        [Ignore]
         public void CuandoSeQuiereRegistrarLaPrimeraAdendaEntoncesSeAcepta()
         {
             var cmd = new RegistrarNuevaAdenda(TestFirma.New, "chorti_Nuevocontrato", "Adenda I", DateTime.Now);

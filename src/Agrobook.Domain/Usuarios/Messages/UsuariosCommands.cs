@@ -1,4 +1,5 @@
 ﻿using Agrobook.Domain.Common;
+using Agrobook.Domain.Usuarios.Login;
 using System;
 
 namespace Agrobook.Domain.Usuarios
@@ -55,6 +56,8 @@ namespace Agrobook.Domain.Usuarios
             this.NuevoPassword = nuevoPassword;
         }
 
+        public LoginInfo ElQueRealizaEstaAccion { get; set; }
+
         /// <summary>
         /// El usuario a ser actualizado.
         /// </summary>
@@ -88,6 +91,7 @@ namespace Agrobook.Domain.Usuarios
             this.Usuario = usuario;
         }
 
+        public LoginInfo ElQueRealizaEstaAccion { get; set; }
         public string Usuario { get; }
     }
 
@@ -99,6 +103,7 @@ namespace Agrobook.Domain.Usuarios
             this.Permiso = permiso;
         }
 
+        public LoginInfo Autor { get; set; }
         public string IdUsuario { get; }
         public string Permiso { get; }
     }
@@ -111,6 +116,7 @@ namespace Agrobook.Domain.Usuarios
             this.Permiso = permiso;
         }
 
+        public LoginInfo Autor { get; set; }
         public string IdUsuario { get; }
         public string Permiso { get; }
     }

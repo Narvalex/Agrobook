@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Agrobook.Domain.Usuarios.Login.ClaimDef;
 using static Agrobook.Domain.Usuarios.UsuariosConstants;
 
 namespace Agrobook.Domain.Usuarios
@@ -146,9 +147,14 @@ namespace Agrobook.Domain.Usuarios
             return new LoginResult(true, cmd.Usuario, usuario.NombreParaMostrar, usuario.LoginInfoEncriptado, usuario.AvatarUrl, loginInfo.Claims);
         }
 
-        public async Task HandleAsync(ActualizarPerfil cmd)
+        // Retorna false si no esta autorizado
+        public async Task<bool> HandleAsync(ActualizarPerfil cmd)
         {
             var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(cmd.Usuario);
+            var usuarioEnEdicion = this.ExtraerElLoginInfo(usuario);
+
+            var autorizado = this.VerificarSiPuedeActualizarPerfil(cmd.ElQueRealizaEstaAccion, usuarioEnEdicion);
+            if (!autorizado) return false;
 
             if (cmd.AvatarUrl != null && usuario.AvatarUrl != cmd.AvatarUrl)
                 usuario.Emit(new AvatarUrlActualizado(cmd.Firma, cmd.Usuario, cmd.AvatarUrl));
@@ -159,16 +165,17 @@ namespace Agrobook.Domain.Usuarios
             if (cmd.NuevoPassword != null)
             {
                 // Intento de cambiar password detectado
-                var loginInfo = this.ExtraerElLoginInfo(usuario);
-                if (cmd.PasswordActual != loginInfo.Password)
+                usuarioEnEdicion = this.ExtraerElLoginInfo(usuario);
+                if (cmd.PasswordActual != usuarioEnEdicion.Password)
                     throw new InvalidOperationException($"El password ingresado no es válido. La atualización del perfil se ha cancelado.");
 
-                loginInfo.ActualizarPassword(cmd.NuevoPassword);
-                var encriptado = this.EncriptarLoginInfo(loginInfo);
+                usuarioEnEdicion.ActualizarPassword(cmd.NuevoPassword);
+                var encriptado = this.EncriptarLoginInfo(usuarioEnEdicion);
                 usuario.Emit(new PasswordCambiado(cmd.Firma, cmd.Usuario, encriptado));
             }
 
             await this.repository.SaveAsync(usuario);
+            return true;
         }
 
         public async Task HandleAsync(AgregarUsuarioALaOrganizacion cmd)
@@ -202,15 +209,21 @@ namespace Agrobook.Domain.Usuarios
             await this.repository.SaveAsync(org);
         }
 
-        public async Task HandleAsync(ResetearPassword cmd)
+        // return false si no esta autorizado
+        public async Task<bool> HandleAsync(ResetearPassword cmd)
         {
             var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(cmd.Usuario);
             var loginInfo = this.ExtraerElLoginInfo(usuario);
+
+            var autorizado = this.VerificarSiPuedeActualizarPerfil(cmd.ElQueRealizaEstaAccion, loginInfo);
+            if (!autorizado) return false;
+
             loginInfo.ActualizarPassword(DefaultPassword);
             var encriptado = this.EncriptarLoginInfo(loginInfo);
             usuario.Emit(new PasswordReseteado(cmd.Firma, cmd.Usuario, encriptado));
 
             await this.repository.SaveAsync(usuario);
+            return true;
         }
 
         public async Task<OrganizacionDto> HandleAsync(CrearNuevaOrganizacion cmd)
@@ -249,7 +262,7 @@ namespace Agrobook.Domain.Usuarios
             await this.repository.SaveAsync(org);
         }
 
-        public async Task HandleAsync(RetirarPermiso cmd)
+        public async Task<bool> HandleAsync(RetirarPermiso cmd)
         {
             // verificamos que no se quiera quitar permiso de admin al usuario de nombre admin
             if (cmd.IdUsuario.EqualsIgnoringCase(UsuariosConstants.UsuarioAdmin)
@@ -258,6 +271,9 @@ namespace Agrobook.Domain.Usuarios
 
             var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(cmd.IdUsuario);
             var loginInfo = this.ExtraerElLoginInfo(usuario);
+
+            var autorizado = this.VerificarSiPuedeActualizarPerfil(cmd.Autor, loginInfo);
+            if (!autorizado) return false;
 
             // obtengo los roles y permisos actuales del usuario
             var rolesYPermisos = ClaimProvider.ObtenerClaimsValidos(loginInfo.Claims);
@@ -287,12 +303,16 @@ namespace Agrobook.Domain.Usuarios
             }
 
             await this.repository.SaveAsync(usuario);
+            return true;
         }
 
-        public async Task HandleAsync(OtorgarPermiso cmd)
+        public async Task<bool> HandleAsync(OtorgarPermiso cmd)
         {
             var usuario = await this.repository.GetOrFailByIdAsync<Usuario>(cmd.IdUsuario);
             var loginInfo = this.ExtraerElLoginInfo(usuario);
+
+            var autorizado = this.VerificarSiPuedeActualizarPerfil(cmd.Autor, loginInfo);
+            if (!autorizado) return false;
 
             if (loginInfo.Claims.Any(x => x.EqualsIgnoringCase(cmd.Permiso)))
                 throw new InvalidOperationException("El usuario ya tiene ese permiso");
@@ -302,6 +322,7 @@ namespace Agrobook.Domain.Usuarios
             usuario.Emit(new PermisoOtorgadoAlUsuario(cmd.Firma, cmd.IdUsuario, cmd.Permiso, encriptado));
 
             await this.repository.SaveAsync(usuario);
+            return true;
         }
 
         #region Helpers
@@ -315,6 +336,48 @@ namespace Agrobook.Domain.Usuarios
         {
             var info = this.cryptoSerializer.Deserialize<LoginInfo>(usuario.LoginInfoEncriptado);
             return info;
+        }
+
+        private bool VerificarSiPuedeActualizarPerfil(LoginInfo autor, LoginInfo objetivo)
+        {
+            var autorizado = false;
+            if (autor.Claims.Any(x => x == Roles.Admin))
+                autorizado = true;
+            else if (autor.Claims.Any(x => x == Roles.Gerente))
+            {
+                if (objetivo.Claims.Any(x => x == Roles.Admin))
+                    autorizado = false;
+                else if (objetivo.Claims.Any(x => x == Roles.Gerente))
+                {
+                    // esta intentando actualizar su propio perfil el gerente
+                    if (objetivo.Usuario == autor.Usuario)
+                        autorizado = true;
+                    else
+                        autorizado = false;
+                }
+                else
+                    autorizado = true;
+            }
+            else if (autor.Claims.Any(x => x == Roles.Tecnico))
+            {
+                if (objetivo.Claims.Any(x => x == Roles.Admin || x == Roles.Gerente))
+                    autorizado = false;
+                else if (objetivo.Claims.Any(x => x == Roles.Tecnico))
+                {
+                    // esta editando su propio perfil el tecnico
+                    if (objetivo.Usuario == autor.Usuario)
+                        autorizado = true;
+                }
+                else
+                    autorizado = true;
+            }
+            else
+            {
+                // el productor / invitado solo puede actualizar su propio perfil
+                if (objetivo.Usuario == autor.Usuario)
+                    autorizado = true;
+            }
+            return autorizado;
         }
         #endregion
     }
