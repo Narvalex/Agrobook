@@ -16,15 +16,16 @@
         <span flex></span>
 
         <div hide-sm hide-xs>
-            <md-button ng-click="vm.goTo('../ap/index.html')"
+            <!--<md-button ng-click="vm.goTo('../ap/index.html')"
                        title="Archivos"
                        aria-label="Archivos">
                 &nbsp;Ag. de Precisión
-            </md-button>
-            <md-button ng-click="vm.goTo('../usuarios/index.html')"
+            </md-button>-->
+            <md-button ng-if="vm.mostrarUsuarios"
+                       ng-click="vm.goTo('../usuarios/index.html')"
                        title="Usuarios"
                        aria-label="Usuarios">
-                &nbsp;{{vm.tituloUsuarios}}
+                &nbsp;Usuarios
             </md-button>
         </div>
 

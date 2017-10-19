@@ -2,12 +2,21 @@
 var apArea;
 (function (apArea) {
     var mainContentController = (function () {
-        function mainContentController(apQueryService, toasterLite) {
+        function mainContentController(apQueryService, toasterLite, loginService, loginQueryService, config) {
             this.apQueryService = apQueryService;
             this.toasterLite = toasterLite;
+            this.loginService = loginService;
+            this.loginQueryService = loginQueryService;
+            this.config = config;
             // Model
             this.momentJs = moment;
-            this.getServicios();
+            var claims = config.claims;
+            var puedeVerElMainDeAp = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
+            if (puedeVerElMainDeAp)
+                this.getServicios();
+            else {
+                window.location.href = "./index.html#!/prod/" + this.loginQueryService.tryGetLocalLoginInfo().usuario;
+            }
         }
         mainContentController.prototype.irAlServicio = function (servicio) {
             window.location.href = "./index.html#!/servicios/" + servicio.idProd + "/" + servicio.id + "?tab=resumen&action=view";
@@ -30,7 +39,7 @@ var apArea;
         };
         return mainContentController;
     }());
-    mainContentController.$inject = ['apQueryService', 'toasterLite'];
+    mainContentController.$inject = ['apQueryService', 'toasterLite', 'loginService', 'loginQueryService', 'config'];
     apArea.mainContentController = mainContentController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=mainContentController.js.map

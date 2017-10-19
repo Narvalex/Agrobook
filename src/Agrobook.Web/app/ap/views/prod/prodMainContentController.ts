@@ -2,16 +2,21 @@
 
 module apArea {
     export class prodMainContentController {
-        static $inject = ['$routeParams', '$scope', 'apQueryService']
+        static $inject = ['$routeParams', '$scope', 'apQueryService', 'config', 'loginService', 'toasterLite']
 
         constructor(
             private $routeParams: angular.route.IRouteParamsService,
             private $scope: ng.IScope,
             private apQueryService: apQueryService,
+            private config: common.config,
+            private loginService: login.loginService,
+            private toasterLite: common.toasterLite
         ) {
             this.idProd = this.$routeParams['idProd'];
 
             this.recuperarProd(this.idProd);
+
+            this.puedeIrAOrg = this.loginService.autorizar([config.claims.roles.Gerente, config.claims.roles.Tecnico]);
 
             this.abrirTabCorrespondiente();
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
@@ -21,6 +26,7 @@ module apArea {
 
         // Estados
         tabIndex: number;
+        puedeIrAOrg: boolean;
 
         // Objetos seleccionados
         idProd: string;
@@ -28,7 +34,10 @@ module apArea {
 
         // API
         irAOrg(org: orgDto) {
-            window.location.replace(`#!/org/${org.id}`);
+            if (this.puedeIrAOrg)
+                window.location.replace(`#!/org/${org.id}`);
+            else
+                this.toasterLite.info('Esta es la cooperativa a la cual pertence: ' + org.display);
         }
 
         //--------------------------

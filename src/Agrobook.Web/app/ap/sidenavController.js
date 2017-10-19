@@ -11,6 +11,8 @@ var apArea;
             this.mostrarSidenav = false;
             var claims = this.config.claims;
             this.mostrarSidenav = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
+            if (!this.mostrarSidenav)
+                return;
             this.resolverFiltros();
             this.establecerFiltro('todos');
             this.recuperarListaDeClientes();

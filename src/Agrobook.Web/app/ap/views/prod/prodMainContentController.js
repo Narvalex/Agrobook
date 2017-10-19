@@ -2,13 +2,17 @@
 var apArea;
 (function (apArea) {
     var prodMainContentController = (function () {
-        function prodMainContentController($routeParams, $scope, apQueryService) {
+        function prodMainContentController($routeParams, $scope, apQueryService, config, loginService, toasterLite) {
             var _this = this;
             this.$routeParams = $routeParams;
             this.$scope = $scope;
             this.apQueryService = apQueryService;
+            this.config = config;
+            this.loginService = loginService;
+            this.toasterLite = toasterLite;
             this.idProd = this.$routeParams['idProd'];
             this.recuperarProd(this.idProd);
+            this.puedeIrAOrg = this.loginService.autorizar([config.claims.roles.Gerente, config.claims.roles.Tecnico]);
             this.abrirTabCorrespondiente();
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
                 _this.abrirTabCorrespondiente();
@@ -16,7 +20,10 @@ var apArea;
         }
         // API
         prodMainContentController.prototype.irAOrg = function (org) {
-            window.location.replace("#!/org/" + org.id);
+            if (this.puedeIrAOrg)
+                window.location.replace("#!/org/" + org.id);
+            else
+                this.toasterLite.info('Esta es la cooperativa a la cual pertence: ' + org.display);
         };
         //--------------------------
         // Private
@@ -58,7 +65,7 @@ var apArea;
         };
         return prodMainContentController;
     }());
-    prodMainContentController.$inject = ['$routeParams', '$scope', 'apQueryService'];
+    prodMainContentController.$inject = ['$routeParams', '$scope', 'apQueryService', 'config', 'loginService', 'toasterLite'];
     apArea.prodMainContentController = prodMainContentController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=prodMainContentController.js.map

@@ -12,6 +12,7 @@ module apArea {
         ) {
             var claims = this.config.claims;
             this.mostrarSidenav = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
+            if (!this.mostrarSidenav) return;
 
             this.resolverFiltros();
             this.establecerFiltro('todos');

@@ -9,7 +9,7 @@ var apArea;
             var claims = this.config.claims;
             var esTecnicoOSuperior = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
             this.mostrarSidenav = esTecnicoOSuperior;
-            this.tituloUsuarios = esTecnicoOSuperior ? 'Usuarios' : 'Mi Perfil';
+            this.mostrarUsuarios = esTecnicoOSuperior;
         }
         toolbarHeaderController.prototype.goTo = function (location) {
             window.location.href = location;

@@ -2,13 +2,22 @@
 
 module apArea {
     export class mainContentController {
-        static $inject = ['apQueryService', 'toasterLite']
+        static $inject = ['apQueryService', 'toasterLite', 'loginService', 'loginQueryService', 'config']
 
         constructor(
             private apQueryService: apQueryService,
-            private toasterLite: common.toasterLite
+            private toasterLite: common.toasterLite,
+            private loginService: login.loginService,
+            private loginQueryService: login.loginQueryService,
+            private config: common.config
         ) {
-            this.getServicios();
+            var claims = config.claims;
+            var puedeVerElMainDeAp = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
+            if (puedeVerElMainDeAp)
+                this.getServicios();
+            else {
+                window.location.href = `./index.html#!/prod/${this.loginQueryService.tryGetLocalLoginInfo().usuario}`;
+            }
         }
 
         // Estado
