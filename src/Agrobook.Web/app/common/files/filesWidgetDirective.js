@@ -16,7 +16,7 @@ var common;
     }
     common.filesWidgetDirectiveFactory = filesWidgetDirectiveFactory;
     var filesWidgetController = (function () {
-        function filesWidgetController($scope, toasterLite, localStorageLite, config, $http, $mdPanel) {
+        function filesWidgetController($scope, toasterLite, localStorageLite, config, $http, $mdPanel, loginService) {
             var _this = this;
             this.$scope = $scope;
             this.toasterLite = toasterLite;
@@ -24,6 +24,9 @@ var common;
             this.config = config;
             this.$http = $http;
             this.$mdPanel = $mdPanel;
+            this.loginService = loginService;
+            var roles = this.config.claims.roles;
+            this.canUpload = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
             var vm = this.$scope;
             vm.toasterLite = this.toasterLite;
             vm.$mdPanel = this.$mdPanel;
@@ -40,6 +43,7 @@ var common;
             vm.showOptions = this.showOptions;
             vm.deleteFile = this.deleteFile;
             vm.restore = this.restore;
+            vm.canUpload = this.canUpload;
             vm.showDeleted = this.showDeleted;
             vm.toggleShowDeleted = this.toggleShowDeleted;
             vm.loadingFiles = this.loadingFiles;
@@ -370,7 +374,8 @@ var common;
         };
         return filesWidgetController;
     }());
-    filesWidgetController.$inject = ['$scope', 'toasterLite', 'localStorageLite', 'config', '$http', '$mdPanel'];
+    filesWidgetController.$inject = ['$scope', 'toasterLite', 'localStorageLite', 'config', '$http', '$mdPanel',
+        'loginService'];
     var fileUnit = (function () {
         function fileUnit(name, extension, state, file, size, // in bytes
             formattedSize, 

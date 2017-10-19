@@ -2,7 +2,7 @@
 
 module apArea {
     export class prodTabServiciosController {
-        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel'];
+        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', 'loginService'];
 
         constructor(
             private config: common.config,
@@ -10,9 +10,13 @@ module apArea {
             private apQueryService: apQueryService,
             private toasterLite: common.toasterLite,
             private $routeParams: angular.route.IRouteParamsService,
-            private $mdPanel: angular.material.IPanelService
+            private $mdPanel: angular.material.IPanelService,
+            private loginService: login.loginService
         ) {
             this.idProd = this.$routeParams['idProd'];
+
+            var roles = this.config.claims.roles;
+            this.puedeCrearServicios = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
 
             this.obtenerServicios();
         }
@@ -22,6 +26,7 @@ module apArea {
         // Estados
         loadingServicios: boolean = false;
         ocultarEliminados: boolean = true;
+        puedeCrearServicios: boolean;
 
         // Objetos
         idProd: string;
@@ -31,11 +36,11 @@ module apArea {
 
         // Api
         nuevoServicio() {
-            window.location.replace(`#!/servicios/${this.idProd}/new?tab=resumen&action=new`);
+            window.location.href = `#!/servicios/${this.idProd}/new?tab=resumen&action=new`;
         }
 
         irAServicio(servicio: servicioDto) {
-            window.location.replace(`#!/servicios/${this.idProd}/${servicio.id}`);
+            window.location.href = `#!/servicios/${this.idProd}/${servicio.id}`;
         }
 
         toggleMostrarEliminados() {

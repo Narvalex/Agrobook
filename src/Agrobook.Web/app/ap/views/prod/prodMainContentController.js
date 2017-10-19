@@ -21,7 +21,7 @@ var apArea;
         // API
         prodMainContentController.prototype.irAOrg = function (org) {
             if (this.puedeIrAOrg)
-                window.location.replace("#!/org/" + org.id);
+                window.location.href = "#!/org/" + org.id;
             else
                 this.toasterLite.info('Esta es la cooperativa a la cual pertence: ' + org.display);
         };
@@ -41,7 +41,7 @@ var apArea;
                     tabId = "servicios";
                     break;
             }
-            window.location.replace("#!/prod/" + this.idProd + "?tab=" + tabId);
+            window.location.href = "#!/prod/" + this.idProd + "?tab=" + tabId;
         };
         prodMainContentController.prototype.abrirTabCorrespondiente = function () {
             var tabId = this.$routeParams['tab'];

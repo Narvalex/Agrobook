@@ -2,7 +2,7 @@
 var apArea;
 (function (apArea) {
     var serviciosTabResumenController = (function () {
-        function serviciosTabResumenController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope) {
+        function serviciosTabResumenController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope, loginService) {
             var _this = this;
             this.config = config;
             this.apService = apService;
@@ -11,15 +11,19 @@ var apArea;
             this.$routeParams = $routeParams;
             this.$rootScope = $rootScope;
             this.$scope = $scope;
+            this.loginService = loginService;
             this.submitting = false;
             this.eliminando = false;
             this.restaurando = false;
             this.loading = false;
+            this.tienePermiso = false;
             // Objetos---------------------------------------
             this.momentInstance = moment;
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
             this.idColeccion = this.config.categoriaDeArchivos.servicioDatosBasicos + "-" + this.idServicio;
+            var roles = config.claims.roles;
+            this.tienePermiso = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
                 _this.cargarDatosSegunEstado();
             });
@@ -29,14 +33,21 @@ var apArea;
             this.cargarDatosSegunEstado();
         }
         // Api
+        serviciosTabResumenController.prototype.goToOrg = function () {
+            if (!this.tienePermiso) {
+                this.toasterLite.info('Usted pertenece a ' + this.servicio.orgDisplay);
+                return;
+            }
+            window.location.href = "#!/org/" + this.servicio.idOrg;
+        };
         serviciosTabResumenController.prototype.enableEditMode = function () {
-            window.location.replace("#!/servicios/" + this.idProd + "/" + this.idServicio + "?tab=resumen&action=edit");
+            window.location.href = "#!/servicios/" + this.idProd + "/" + this.idServicio + "?tab=resumen&action=edit";
         };
         serviciosTabResumenController.prototype.cancelar = function () {
             if (this.action === 'new')
-                window.location.replace("#!/prod/" + this.idProd);
+                window.location.href = "#!/prod/" + this.idProd;
             else if (this.action === 'edit')
-                window.location.replace("#!/servicios/" + this.idProd + "/" + this.idServicio + "?tab=resumen&action=view");
+                window.location.href = "#!/servicios/" + this.idProd + "/" + this.idServicio + "?tab=resumen&action=view";
         };
         serviciosTabResumenController.prototype.eliminar = function () {
             var _this = this;
@@ -172,7 +183,7 @@ var apArea;
         };
         return serviciosTabResumenController;
     }());
-    serviciosTabResumenController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope'];
+    serviciosTabResumenController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope', 'loginService'];
     apArea.serviciosTabResumenController = serviciosTabResumenController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=serviciosTabResumenController.js.map

@@ -1,5 +1,6 @@
 ﻿<md-content ng-controller="prodTabServiciosController as vm">
-    <div layout-gt-md="row">
+    <div ng-if="vm.puedeCrearServicios"
+         layout-gt-md="row">
         <div class="padding-top">
             <md-button class="md-button"
                        ng-hide="false"
@@ -22,7 +23,7 @@
         </md-list-item>
     </md-list>
 
-    <div ng-hide="vm.loadingServicios">
+    <div ng-hide="vm.loadingServicios || !vm.puedeCrearServicios">
         <md-subheader class="md-no-sticky" ng-show="vm.servicios.length > 0">
             <span>Tiene {{vm.servicios.length}} servicios. </span>
             <a href="" ng-click="vm.toggleMostrarEliminados()">{{vm.ocultarEliminados ? 'Mostrar' : 'Ocultar'}}</a> servicios eliminados.

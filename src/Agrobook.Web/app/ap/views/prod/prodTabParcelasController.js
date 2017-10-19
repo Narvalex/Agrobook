@@ -2,19 +2,21 @@
 var apArea;
 (function (apArea) {
     var prodTabParcelasController = (function () {
-        function prodTabParcelasController(config, apService, apQueryService, toasterLite, $routeParams, $mdPanel) {
+        function prodTabParcelasController(config, apService, apQueryService, toasterLite, $routeParams, $mdPanel, loginService) {
             this.config = config;
             this.apService = apService;
             this.apQueryService = apQueryService;
             this.toasterLite = toasterLite;
             this.$routeParams = $routeParams;
             this.$mdPanel = $mdPanel;
-            // Estados
+            this.loginService = loginService;
             this.ocultarEliminados = true;
             // Listas
             this.parcelas = [];
             this.mostrarForm = false;
             this.idProd = this.$routeParams['idProd'];
+            var roles = config.claims.roles;
+            this.tienePermiso = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
             this.obtenerParcelasDelProd();
         }
         // Api
@@ -144,8 +146,8 @@ var apArea;
         };
         prodTabParcelasController.prototype.resetForm = function () {
             this.mostrarForm = false;
-            this.parcelaObject = undefined;
             this.submitting = false;
+            this.parcelaObject = undefined;
         };
         prodTabParcelasController.prototype.obtenerParcelasDelProd = function () {
             var _this = this;
@@ -155,7 +157,7 @@ var apArea;
         };
         return prodTabParcelasController;
     }());
-    prodTabParcelasController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel'];
+    prodTabParcelasController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', 'loginService'];
     apArea.prodTabParcelasController = prodTabParcelasController;
     var panelMenuController = (function () {
         function panelMenuController(mdPanelRef) {

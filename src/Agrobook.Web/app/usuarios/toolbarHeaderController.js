@@ -10,6 +10,7 @@ var usuariosArea;
             var claims = this.config.claims;
             var esTecnicoOSuperior = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
             this.mostrarSidenav = esTecnicoOSuperior;
+            this.titulo = esTecnicoOSuperior ? 'Usuarios' : 'Mi perfil';
         }
         toolbarHeaderController.prototype.goTo = function (location) {
             window.location.href = location;

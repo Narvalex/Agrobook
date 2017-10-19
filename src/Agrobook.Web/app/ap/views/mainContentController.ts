@@ -12,8 +12,8 @@ module apArea {
             private config: common.config
         ) {
             var claims = config.claims;
-            var puedeVerElMainDeAp = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
-            if (puedeVerElMainDeAp)
+            this.puedeVerElMainDeAp = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
+            if (this.puedeVerElMainDeAp)
                 this.getServicios();
             else {
                 window.location.href = `./index.html#!/prod/${this.loginQueryService.tryGetLocalLoginInfo().usuario}`;
@@ -23,6 +23,7 @@ module apArea {
         // Estado
         loading: boolean;
         sinServicios: boolean;
+        puedeVerElMainDeAp: boolean = false;
 
         // Model
         momentJs = moment;

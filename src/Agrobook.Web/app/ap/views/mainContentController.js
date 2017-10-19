@@ -8,11 +8,12 @@ var apArea;
             this.loginService = loginService;
             this.loginQueryService = loginQueryService;
             this.config = config;
+            this.puedeVerElMainDeAp = false;
             // Model
             this.momentJs = moment;
             var claims = config.claims;
-            var puedeVerElMainDeAp = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
-            if (puedeVerElMainDeAp)
+            this.puedeVerElMainDeAp = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
+            if (this.puedeVerElMainDeAp)
                 this.getServicios();
             else {
                 window.location.href = "./index.html#!/prod/" + this.loginQueryService.tryGetLocalLoginInfo().usuario;

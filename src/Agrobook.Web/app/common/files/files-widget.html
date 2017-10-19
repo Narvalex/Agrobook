@@ -17,15 +17,17 @@
 
         <p style="margin-bottom: 0px;">
             {{prepFiles ? 'Espere por favor...' : header}} <span ng-show="units.length < 1">(sin archivo)</span>
-            <md-button ng-disabled="prepFiles"
+            <md-button ng-if="canUpload"
+                       ng-disabled="prepFiles"
                        class="md-primary"
                        aria-label="Agregar archivos"
                        ng-click="addFiles()">
                 <ng-md-icon icon="add"></ng-md-icon>
                 Cargar
             </md-button>
-            <md-button class="md-icon-button launch"
-                       aria-label="Agregar archivos"
+            <md-button ng-if="canUpload"
+                       class="md-icon-button launch"
+                       aria-label="Mostrar/ocultar eliminados"
                        ng-click="toggleShowDeleted()">
                 <md-tooltip md-direction="top">{{showDeleted ? 'Ocultar archivos eliminados' : 'Mostrar archivos eliminados'}}</md-tooltip>
                 <ng-md-icon style="color:gray" icon="{{showDeleted ? 'visibility_off' : 'visibility'}}"></ng-md-icon>
@@ -82,7 +84,8 @@
                            ng-click="downloadFile(unit)">
                     <ng-md-icon icon="file_download"></ng-md-icon>
                 </md-button>
-                <md-button ng-show="unit.state === 'uploaded'"
+                <md-button ng-if="canUpload"
+                           ng-show="unit.state === 'uploaded'"
                            class="md-secondary md-icon-button launch"
                            aria-label="action"
                            ng-click="showOptions($event, unit)">

@@ -35,7 +35,7 @@ module apArea {
         // API
         irAOrg(org: orgDto) {
             if (this.puedeIrAOrg)
-                window.location.replace(`#!/org/${org.id}`);
+                window.location.href = `#!/org/${org.id}`;
             else
                 this.toasterLite.info('Esta es la cooperativa a la cual pertence: ' + org.display);
         }
@@ -52,7 +52,7 @@ module apArea {
                 default: tabId = "servicios"; break;
             }
 
-            window.location.replace(`#!/prod/${this.idProd}?tab=${tabId}`);
+            window.location.href = `#!/prod/${this.idProd}?tab=${tabId}`;
         }
 
         private abrirTabCorrespondiente() {

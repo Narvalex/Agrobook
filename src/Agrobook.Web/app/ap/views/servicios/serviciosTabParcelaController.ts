@@ -2,7 +2,8 @@
 
 module apArea {
     export class serviciosTabParcelaController {
-        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope'];
+        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope',
+        'loginService'];
 
         constructor(
             private config: common.config,
@@ -12,10 +13,14 @@ module apArea {
             private $routeParams: angular.route.IRouteParamsService,
             private $rootScope: angular.IRootScopeService,
             private $scope: angular.IScope,
+            private loginService: login.loginService
         ) {
             this.idProd = this.$routeParams['idProd'];
             this.idColeccion = `${this.config.categoriaDeArchivos.servicioParcelas}-${this.idProd}`;
             this.idServicio = this.$routeParams['idServicio'];
+
+            let roles = config.claims.roles;
+            this.tienePermiso = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
 
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
                 this.cargarDatosSegunEstado();
@@ -29,6 +34,7 @@ module apArea {
         action: string;
         tieneParcela: boolean = false;
         submitting: boolean = false;
+        tienePermiso: boolean = false;
 
         // Objetos---------------------------------------
         idServicio: string;

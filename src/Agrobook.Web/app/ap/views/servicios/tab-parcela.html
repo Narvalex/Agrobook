@@ -10,7 +10,7 @@
         <p>
             {{vm.tieneParcela ? 'Parcela ' + vm.parcela.display + ' de ' + vm.parcela.hectareas + ' ha' : 'La parcela no está especificada'}}
         </p>
-        <p>
+        <p ng-if="vm.tienePermiso">
             <a href="" ng-click="vm.actualizar()">{{vm.tieneParcela ? '¿No es esta la parcela?' : 'Especificar la parcela...'}}</a>
         </p>
     </md-content>

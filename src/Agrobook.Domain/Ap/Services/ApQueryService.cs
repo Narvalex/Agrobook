@@ -254,6 +254,7 @@ namespace Agrobook.Domain.Ap.Services
             => await this.QueryAsync(async context =>
                 await context
                     .Servicios
+                    .Where(s => s.Eliminado != true)
                     .OrderByDescending(s => s.Fecha)
                     .Take(cantidad)
                     .Join(context.Parcelas, outer => outer.IdParcela, inner => inner.Id,
@@ -273,6 +274,5 @@ namespace Agrobook.Domain.Ap.Services
                         ParcelaDisplay = x.servParcOrg.servParc.parcela.Display
                     })
                     .ToListAsync());
-
     }
 }

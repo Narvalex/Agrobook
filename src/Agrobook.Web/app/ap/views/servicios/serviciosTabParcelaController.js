@@ -2,7 +2,7 @@
 var apArea;
 (function (apArea) {
     var serviciosTabParcelaController = (function () {
-        function serviciosTabParcelaController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope) {
+        function serviciosTabParcelaController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope, loginService) {
             var _this = this;
             this.config = config;
             this.apService = apService;
@@ -11,13 +11,17 @@ var apArea;
             this.$routeParams = $routeParams;
             this.$rootScope = $rootScope;
             this.$scope = $scope;
+            this.loginService = loginService;
             // Estados--------------------------------------
             this.loading = false;
             this.tieneParcela = false;
             this.submitting = false;
+            this.tienePermiso = false;
             this.idProd = this.$routeParams['idProd'];
             this.idColeccion = this.config.categoriaDeArchivos.servicioParcelas + "-" + this.idProd;
             this.idServicio = this.$routeParams['idServicio'];
+            var roles = config.claims.roles;
+            this.tienePermiso = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
                 _this.cargarDatosSegunEstado();
             });
@@ -137,7 +141,8 @@ var apArea;
         };
         return serviciosTabParcelaController;
     }());
-    serviciosTabParcelaController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope'];
+    serviciosTabParcelaController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope',
+        'loginService'];
     apArea.serviciosTabParcelaController = serviciosTabParcelaController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=serviciosTabParcelaController.js.map

@@ -1,6 +1,7 @@
 ﻿<md-content ng-controller="prodTabParcelasController as vm">
     <div layout-gt-md="row">
-        <div class="padding-top">
+        <div class="padding-top"
+             ng-if="vm.tienePermiso">
             <md-button class="md-button"
                        ng-hide="vm.mostrarForm"
                        ng-click="vm.habilitarCreacionDeNuevaParcela()">
@@ -48,17 +49,21 @@
             <span class="md-secondary">{{parcela.hectareas}} ha&nbsp;</span>
 
             <md-button class="md-icon-button md-secondary" aria-label="edit"
+                       ng-if="vm.tienePermiso"
                        ng-click="vm.mostrarOpciones($event, parcela)">
                 <ng-md-icon icon="more_horiz"></ng-md-icon>
             </md-button>
         </md-list-item>
     </md-list>
 
-    <md-subheader class="md-no-sticky" ng-show="vm.parcelas.length > 0">
+    <md-subheader class="md-no-sticky" ng-show="vm.parcelas.length > 0"
+                  ng-if="vm.tienePermiso">
         <span>Tiene {{vm.parcelas.length}} parcelas. </span>
         <a href="" ng-click="vm.toggleMostrarEliminados()">{{vm.ocultarEliminados ? 'Mostrar' : 'Ocultar'}}</a> parcelas eliminadas.
     </md-subheader>
-    <md-subheader class="md-no-sticky" ng-hide="vm.parcelas.length > 0">
+    <md-subheader class="md-no-sticky" 
+                  ng-hide="vm.parcelas.length > 0"
+                  ng-if="vm.tienePermiso">
         <span>No tiene ninguna parcela. </span><a href="" ng-click="vm.habilitarCreacionDeNuevaParcela()">Registre una</a>
     </md-subheader>
 </md-content>

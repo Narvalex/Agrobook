@@ -17,7 +17,8 @@ module common {
     }
 
     class filesWidgetController {
-        static $inject = ['$scope', 'toasterLite', 'localStorageLite', 'config', '$http', '$mdPanel'];
+        static $inject = ['$scope', 'toasterLite', 'localStorageLite', 'config', '$http', '$mdPanel',
+        'loginService'];
         private states: { pending: string, uploading: string, uploaded: string, uploadFailed: string }
 
         constructor(
@@ -26,8 +27,12 @@ module common {
             private localStorageLite: common.localStorageLite,
             private config: common.config,
             private $http: ng.IHttpService,
-            private $mdPanel: ng.material.IPanelService
+            private $mdPanel: ng.material.IPanelService,
+            private loginService: login.loginService
         ) {
+            var roles = this.config.claims.roles;
+            this.canUpload = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
+
             var vm = this.$scope;
             vm.toasterLite = this.toasterLite;
             vm.$mdPanel = this.$mdPanel;
@@ -44,6 +49,7 @@ module common {
             vm.showOptions = this.showOptions;
             vm.deleteFile = this.deleteFile;
             vm.restore = this.restore;
+            vm.canUpload = this.canUpload;
             vm.showDeleted = this.showDeleted;
             vm.toggleShowDeleted = this.toggleShowDeleted;
             vm.loadingFiles = this.loadingFiles;
@@ -59,6 +65,7 @@ module common {
         }
 
         // states
+        canUpload: boolean;
         showDeleted: boolean;
         loadingFiles: boolean;
         prepFiles: boolean;

@@ -2,7 +2,7 @@
 
 module apArea {
     export class serviciosTabResumenController {
-        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope'];
+        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope', 'loginService'];
 
         constructor(
             private config: common.config,
@@ -12,10 +12,14 @@ module apArea {
             private $routeParams: angular.route.IRouteParamsService,
             private $rootScope: angular.IRootScopeService,
             private $scope: angular.IScope,
+            private loginService: login.loginService
         ) {
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
             this.idColeccion = `${this.config.categoriaDeArchivos.servicioDatosBasicos}-${this.idServicio}`;
+
+            let roles = config.claims.roles;
+            this.tienePermiso = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
 
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
                 this.cargarDatosSegunEstado();
@@ -33,6 +37,7 @@ module apArea {
         eliminando: boolean = false;
         restaurando: boolean = false;
         loading: boolean = false;
+        tienePermiso: boolean = false;
 
         // Objetos---------------------------------------
         momentInstance = moment;
@@ -50,15 +55,24 @@ module apArea {
         orgsConContratos: orgConContratos[];
 
         // Api
+        goToOrg() {
+            if (!this.tienePermiso) {
+                this.toasterLite.info('Usted pertenece a ' + this.servicio.orgDisplay);
+                return;
+            }
+
+            window.location.href = `#!/org/${this.servicio.idOrg}`;
+        }
+
         enableEditMode() {
-            window.location.replace(`#!/servicios/${this.idProd}/${this.idServicio}?tab=resumen&action=edit`);
+            window.location.href = `#!/servicios/${this.idProd}/${this.idServicio}?tab=resumen&action=edit`;
         }
 
         cancelar() {
             if (this.action === 'new')
-                window.location.replace(`#!/prod/${this.idProd}`);
+                window.location.href = `#!/prod/${this.idProd}`;
             else if (this.action === 'edit')
-                window.location.replace(`#!/servicios/${this.idProd}/${this.idServicio}?tab=resumen&action=view`);
+                window.location.href = `#!/servicios/${this.idProd}/${this.idServicio}?tab=resumen&action=view`;
         }
 
         eliminar() {

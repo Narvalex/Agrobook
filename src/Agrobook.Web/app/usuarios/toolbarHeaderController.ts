@@ -12,6 +12,7 @@ module usuariosArea {
             var claims = this.config.claims;
             var esTecnicoOSuperior = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]); 
             this.mostrarSidenav = esTecnicoOSuperior;
+            this.titulo = esTecnicoOSuperior ? 'Usuarios' : 'Mi perfil';
         }
 
         mostrarSidenav: boolean = false;

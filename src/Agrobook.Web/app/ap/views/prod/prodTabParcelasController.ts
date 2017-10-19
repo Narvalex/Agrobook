@@ -2,7 +2,7 @@
 
 module apArea {
     export class prodTabParcelasController {
-        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel'];
+        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', 'loginService'];
 
         constructor(
             private config: common.config,
@@ -10,16 +10,21 @@ module apArea {
             private apQueryService: apQueryService,
             private toasterLite: common.toasterLite,
             private $routeParams: angular.route.IRouteParamsService,
-            private $mdPanel: angular.material.IPanelService
+            private $mdPanel: angular.material.IPanelService,
+            private loginService: login.loginService
         ) {
             this.mostrarForm = false;
 
             this.idProd = this.$routeParams['idProd'];
 
+            var roles = config.claims.roles;
+            this.tienePermiso = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
+
             this.obtenerParcelasDelProd();
         }
 
         // Estados
+        tienePermiso: boolean;
         ocultarEliminados = true;
         mostrarForm: boolean;
         submitting: boolean;
@@ -192,8 +197,8 @@ module apArea {
 
         private resetForm() {
             this.mostrarForm = false;
-            this.parcelaObject = undefined;
             this.submitting = false;
+            this.parcelaObject = undefined;
         }
 
         private obtenerParcelasDelProd() {
