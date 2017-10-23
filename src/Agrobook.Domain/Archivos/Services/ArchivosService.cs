@@ -39,6 +39,7 @@ namespace Agrobook.Domain.Archivos.Services
                 // Requires more testing
                 if (@lock.CurrentCount < 1)
                     this.locks.TryRemove(cmd.idColeccion, out @lock);
+                // In high contentious scenarios (multiple concurrent uploads, it gets null) I do not know why....
                 @lock?.Release();
             }
         }
