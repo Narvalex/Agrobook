@@ -36,7 +36,7 @@
 
         <md-list ng-hide="loadingFiles">
             <md-list-item ng-repeat="unit in units" class="md-2-line"
-                          ng-hide="unit.deleted && !showDeleted">
+                          ng-hide="unit.deleted && !canShowDeleted()">
                 <img ng-if="unit.isAPicture" ng-src="{{unit.iconUrl}}" class="md-avatar" alt="..." />
                 <md-icon ng-if="!unit.isAPicture" md-svg-icon="{{unit.iconSvg}}"></md-icon>
                 <div class="md-list-item-text">

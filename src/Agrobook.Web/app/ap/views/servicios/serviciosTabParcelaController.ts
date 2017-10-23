@@ -16,8 +16,8 @@ module apArea {
             private loginService: login.loginService
         ) {
             this.idProd = this.$routeParams['idProd'];
-            this.idColeccion = `${this.config.categoriaDeArchivos.servicioParcelas}-${this.idProd}`;
             this.idServicio = this.$routeParams['idServicio'];
+            this.idColeccion = `${this.config.categoriaDeArchivos.servicioParcelas}-${this.idServicio}`;
 
             let roles = config.claims.roles;
             this.tienePermiso = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);

@@ -25,6 +25,7 @@ var common;
             this.$http = $http;
             this.$mdPanel = $mdPanel;
             this.loginService = loginService;
+            this.showDeleted = false;
             var roles = this.config.claims.roles;
             this.canUpload = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
             var vm = this.$scope;
@@ -45,6 +46,7 @@ var common;
             vm.restore = this.restore;
             vm.canUpload = this.canUpload;
             vm.showDeleted = this.showDeleted;
+            vm.canShowDeleted = this.canShowDeleted;
             vm.toggleShowDeleted = this.toggleShowDeleted;
             vm.loadingFiles = this.loadingFiles;
             vm.prepFiles = this.prepFiles;
@@ -59,7 +61,10 @@ var common;
         filesWidgetController.prototype.$apply = function (action) {
         };
         filesWidgetController.prototype.toggleShowDeleted = function () {
-            this.showDeleted = !this.showDeleted;
+            this.$parent.$parent.showDeleted = !this.$parent.$parent.showDeleted;
+        };
+        filesWidgetController.prototype.canShowDeleted = function () {
+            return this.$parent.$parent.showDeleted;
         };
         filesWidgetController.prototype.addFiles = function () {
             document.getElementById(this.fileInputId).click();

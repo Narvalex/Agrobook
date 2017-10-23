@@ -5,8 +5,8 @@ var apArea;
         function serviciosTabPrescripcionesController(config, $routeParams) {
             this.config = config;
             this.$routeParams = $routeParams;
-            var idProd = this.$routeParams['idProd'];
-            this.idColeccion = this.config.categoriaDeArchivos.servicioPrescripciones + "-" + idProd;
+            var idServicio = this.$routeParams['idServicio'];
+            this.idColeccion = this.config.categoriaDeArchivos.servicioPrescripciones + "-" + idServicio;
         }
         return serviciosTabPrescripcionesController;
     }());

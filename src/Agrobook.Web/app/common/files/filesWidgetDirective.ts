@@ -51,6 +51,7 @@ module common {
             vm.restore = this.restore;
             vm.canUpload = this.canUpload;
             vm.showDeleted = this.showDeleted;
+            vm.canShowDeleted = this.canShowDeleted;
             vm.toggleShowDeleted = this.toggleShowDeleted;
             vm.loadingFiles = this.loadingFiles;
             vm.prepFiles = this.prepFiles;
@@ -66,12 +67,14 @@ module common {
 
         // states
         canUpload: boolean;
-        showDeleted: boolean;
+        showDeleted: boolean = false;
         loadingFiles: boolean;
         prepFiles: boolean;
 
+        // ankward
+        $parent: any;
+
         // two-way binding
-        scope: ng.IScope;
         title: string
         idColeccion: string;
 
@@ -87,7 +90,11 @@ module common {
         }
 
         toggleShowDeleted() {
-            this.showDeleted = !this.showDeleted;
+            this.$parent.$parent.showDeleted = !this.$parent.$parent.showDeleted;
+        }
+
+        canShowDeleted() {
+            return this.$parent.$parent.showDeleted;
         }
 
         addFiles() {
