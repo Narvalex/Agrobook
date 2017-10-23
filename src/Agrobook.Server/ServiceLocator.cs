@@ -12,11 +12,13 @@ using Agrobook.Infrastructure.IoC;
 using Agrobook.Infrastructure.Persistence;
 using Agrobook.Infrastructure.Serialization;
 using Agrobook.Server.Filters;
+using Eventing;
 using Eventing.Core.Persistence;
 using Eventing.Core.Serialization;
 using Eventing.GetEventStore;
 using Eventing.Log;
 using System;
+using System.Configuration;
 
 namespace Agrobook.Server
 {
@@ -33,8 +35,24 @@ namespace Agrobook.Server
             var container = new SimpleContainer();
             _container = container;
 
+            var esIp = ConfigurationManager.AppSettings["esIp"];
+            var esTcpPort = int.Parse(ConfigurationManager.AppSettings["esTcpPort"]);
+            var esUser = ConfigurationManager.AppSettings["esUser"];
+            var esPass = ConfigurationManager.AppSettings["esPass"];
+
+            Ensure.NotNullOrWhiteSpace(esIp, nameof(esIp));
+            Ensure.Positive(esTcpPort, nameof(esTcpPort));
+            Ensure.NotNullOrWhiteSpace(esUser, nameof(esUser));
+            Ensure.NotNullOrWhiteSpace(esPass, nameof(esPass));
+
             // Event Store
-            var esm = new EventStoreManager(resilientConnectionNamePrefix: "AgrobookSubscriptions", failFastConnectionNamePrefix: "AgrobookEventSourcedRepository");
+            var esm = new EventStoreManager(
+                extIp: esIp,
+                tcpPort: esTcpPort,
+                defaultUserName: esUser,
+                defaultPassword: esPass,
+                resilientConnectionNamePrefix: "AgrobookSubscriptions",
+                failFastConnectionNamePrefix: "AgrobookEventSourcedRepository");
             container.Register<EventStoreManager>(esm);
 
             var sqlDbName = "AgrobookDb";

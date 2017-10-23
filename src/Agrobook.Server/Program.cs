@@ -5,10 +5,12 @@ using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Services;
 using Agrobook.Infrastructure.Persistence;
+using Eventing;
 using Eventing.GetEventStore;
 using Eventing.Log;
 using Microsoft.Owin.Hosting;
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Threading;
 
@@ -101,10 +103,11 @@ namespace Agrobook.Server
 
             // Web Api
             _log.Verbose("Starting web server...");
-            var baseUri = "http://localhost:8081";
+            var serverUrl = ConfigurationManager.AppSettings["serverUrl"];
+            Ensure.NotNullOrWhiteSpace(serverUrl, nameof(serverUrl));
             WebApiStartup.OnAppDisposing = () => OnExit();
-            WebApp.Start<WebApiStartup>(baseUri);
-            _log.Success($"Web server is ready! Server running at {baseUri}");
+            WebApp.Start<WebApiStartup>(serverUrl);
+            _log.Success($"Web server is ready! Server running at {serverUrl}");
 
             Prelude();
 

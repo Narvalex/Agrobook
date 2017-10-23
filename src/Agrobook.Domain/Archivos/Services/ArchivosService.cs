@@ -39,7 +39,7 @@ namespace Agrobook.Domain.Archivos.Services
                 // Requires more testing
                 if (@lock.CurrentCount < 1)
                     this.locks.TryRemove(cmd.idColeccion, out @lock);
-                @lock.Release();
+                @lock?.Release();
             }
         }
 
