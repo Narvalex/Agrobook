@@ -223,7 +223,7 @@ module apArea {
                         this.submitting = false;
                         this.$rootScope.$broadcast(this.config.eventIndex.ap_servicios.nuevoServicioCreado, servicio);
                         this.servicio = servicio;
-                        window.location.href = `#!/servicios/${this.idProd}/${this.idServicio}?tab=resumen&action=view`;
+                        //window.location.href = `#!/servicios/${this.idProd}/${this.idServicio}?tab=resumen&action=view`;
                     },
                     reason => {
                         this.submitting = false;

@@ -163,7 +163,7 @@ var apArea;
                 _this.submitting = false;
                 _this.$rootScope.$broadcast(_this.config.eventIndex.ap_servicios.nuevoServicioCreado, servicio);
                 _this.servicio = servicio;
-                window.location.href = "#!/servicios/" + _this.idProd + "/" + _this.idServicio + "?tab=resumen&action=view";
+                //window.location.href = `#!/servicios/${this.idProd}/${this.idServicio}?tab=resumen&action=view`;
             }, function (reason) {
                 _this.submitting = false;
             }));
