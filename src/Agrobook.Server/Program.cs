@@ -18,7 +18,9 @@ namespace Agrobook.Server
 {
     partial class Program
     {
+#if DEBUG 
         private static string dropDbParam = "dropdb";
+#endif
         private static ILogLite _log = LogManager.GlobalLogger;
 
         static void Main(string[] args)

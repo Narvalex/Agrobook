@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Server", "Agrobook.Server\Agrobook.Server.csproj", "{6B68ACFE-67B3-4AE4-9C2E-B723FCDC4DE5}"
 EndProject
@@ -13,41 +13,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Infrastructure", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Infrastructure.Tests", "Agrobook.Infrastructure.Tests\Agrobook.Infrastructure.Tests.csproj", "{661206F9-1F82-418E-912D-1595DDEB7B78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Desktop", "Agrobook.Desktop\Agrobook.Desktop.csproj", "{7461B967-5FD5-4BCF-BD16-9932585F1318}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{2773D51A-B4E8-4180-B403-A566314E72D9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.CLI", "Agrobook.CLI\Agrobook.CLI.csproj", "{1427506A-1548-4A66-8099-5D46D953C92E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Domain.Tests", "Agrobook.Domain.Tests\Agrobook.Domain.Tests.csproj", "{E07D41A5-55DE-4251-ABF2-C22992075DC7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Client", "Agrobook.Client\Agrobook.Client.csproj", "{28D58658-F70E-4F16-9AFE-CCBAE661A992}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{E3353730-C86E-4373-A842-0CBD906F8CBC}"
-	ProjectSection(SolutionItems) = preProject
-		..\docs\ArchivosDeAgricultura.docx = ..\docs\ArchivosDeAgricultura.docx
-		CategoriesProjection.js = CategoriesProjection.js
-		..\docs\queries.js = ..\docs\queries.js
-		..\docs\UsuariosYGrupos.docx = ..\docs\UsuariosYGrupos.docx
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Eventing", "Eventing", "{DEA078D5-15B3-426E-9FCB-482145F788DA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CasosDeUso", "CasosDeUso", "{50CC3FE7-1657-43A7-A1EE-C537B548A4C7}"
-	ProjectSection(SolutionItems) = preProject
-		..\docs\CasosDeUso\Archivos.docx = ..\docs\CasosDeUso\Archivos.docx
-		..\docs\CasosDeUso\SeccionUsuarios.docx = ..\docs\CasosDeUso\SeccionUsuarios.docx
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eventing.Core", "Eventing.Core\Eventing.Core.csproj", "{D8A3116A-5C51-4A6F-B364-512948E5A792}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eventing.Core", "libs\Eventing.Core-v1.0.0\Eventing.Core.csproj", "{D8A3116A-5C51-4A6F-B364-512948E5A792}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eventing.GetEventStore", "Eventing.GetEventStore\Eventing.GetEventStore.csproj", "{7C1FC9BB-A213-4E09-8FD2-F13ADFA758B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eventing.GetEventStore", "libs\Eventing.GetEventStore-v1.0.0\Eventing.GetEventStore.csproj", "{7C1FC9BB-A213-4E09-8FD2-F13ADFA758B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eventing.HttpClient", "Eventing.HttpClient\Eventing.HttpClient.csproj", "{FD80989B-08E7-446A-B967-670BAEB4BD5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eventing.HttpClient", "libs\Eventing.HttpClient-v1.0.0\Eventing.HttpClient.csproj", "{FD80989B-08E7-446A-B967-670BAEB4BD5F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eventing.TestHelpers", "libs\Eventing.TestHelpers-v1.0.0\Eventing.TestHelpers.csproj", "{31913791-9E19-4F54-BC07-EF281988C0CD}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{DEA078D5-15B3-426E-9FCB-482145F788DA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Common", "Agrobook.Common\Agrobook.Common.csproj", "{02F6C2B8-C3EB-4107-8D43-113A0258992F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eventing.TestHelpers", "Eventing.TestHelpers\Eventing.TestHelpers.csproj", "{31913791-9E19-4F54-BC07-EF281988C0CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,12 +66,6 @@ Global
 		{661206F9-1F82-418E-912D-1595DDEB7B78}.DropDb|Any CPU.Build.0 = DropDb|Any CPU
 		{661206F9-1F82-418E-912D-1595DDEB7B78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{661206F9-1F82-418E-912D-1595DDEB7B78}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7461B967-5FD5-4BCF-BD16-9932585F1318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7461B967-5FD5-4BCF-BD16-9932585F1318}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7461B967-5FD5-4BCF-BD16-9932585F1318}.DropDb|Any CPU.ActiveCfg = DropDb|Any CPU
-		{7461B967-5FD5-4BCF-BD16-9932585F1318}.DropDb|Any CPU.Build.0 = DropDb|Any CPU
-		{7461B967-5FD5-4BCF-BD16-9932585F1318}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7461B967-5FD5-4BCF-BD16-9932585F1318}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1427506A-1548-4A66-8099-5D46D953C92E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1427506A-1548-4A66-8099-5D46D953C92E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1427506A-1548-4A66-8099-5D46D953C92E}.DropDb|Any CPU.ActiveCfg = DropDb|Any CPU
@@ -134,20 +108,11 @@ Global
 		{31913791-9E19-4F54-BC07-EF281988C0CD}.DropDb|Any CPU.Build.0 = Debug|Any CPU
 		{31913791-9E19-4F54-BC07-EF281988C0CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31913791-9E19-4F54-BC07-EF281988C0CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02F6C2B8-C3EB-4107-8D43-113A0258992F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02F6C2B8-C3EB-4107-8D43-113A0258992F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02F6C2B8-C3EB-4107-8D43-113A0258992F}.DropDb|Any CPU.ActiveCfg = DropDb|Any CPU
-		{02F6C2B8-C3EB-4107-8D43-113A0258992F}.DropDb|Any CPU.Build.0 = DropDb|Any CPU
-		{02F6C2B8-C3EB-4107-8D43-113A0258992F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02F6C2B8-C3EB-4107-8D43-113A0258992F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7461B967-5FD5-4BCF-BD16-9932585F1318} = {2773D51A-B4E8-4180-B403-A566314E72D9}
-		{1427506A-1548-4A66-8099-5D46D953C92E} = {2773D51A-B4E8-4180-B403-A566314E72D9}
-		{50CC3FE7-1657-43A7-A1EE-C537B548A4C7} = {E3353730-C86E-4373-A842-0CBD906F8CBC}
 		{D8A3116A-5C51-4A6F-B364-512948E5A792} = {DEA078D5-15B3-426E-9FCB-482145F788DA}
 		{7C1FC9BB-A213-4E09-8FD2-F13ADFA758B4} = {DEA078D5-15B3-426E-9FCB-482145F788DA}
 		{FD80989B-08E7-446A-B967-670BAEB4BD5F} = {DEA078D5-15B3-426E-9FCB-482145F788DA}

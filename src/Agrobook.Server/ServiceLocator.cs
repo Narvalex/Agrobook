@@ -13,7 +13,7 @@ using Agrobook.Infrastructure.Persistence;
 using Agrobook.Infrastructure.Serialization;
 using Agrobook.Server.Filters;
 using Eventing;
-using Eventing.Core.Persistence;
+using Eventing.Core.Messaging;
 using Eventing.Core.Serialization;
 using Eventing.GetEventStore;
 using Eventing.Log;

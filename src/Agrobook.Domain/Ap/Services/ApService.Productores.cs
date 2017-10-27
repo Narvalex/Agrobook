@@ -1,5 +1,5 @@
 ﻿using Agrobook.Domain.Ap.Messages;
-using Eventing.Core.Persistence;
+using Eventing.Core.Messaging;
 using System;
 using System.Threading.Tasks;
 

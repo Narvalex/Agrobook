@@ -1,4 +1,4 @@
-﻿using Eventing.Core.Persistence;
+﻿using Eventing.Core.Messaging;
 using System;
 using System.Threading.Tasks;
 

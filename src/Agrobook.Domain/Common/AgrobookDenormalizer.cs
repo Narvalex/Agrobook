@@ -1,6 +1,6 @@
 ﻿using Agrobook.Common;
 using Eventing;
-using Eventing.Core.Persistence;
+using Eventing.Core.Messaging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

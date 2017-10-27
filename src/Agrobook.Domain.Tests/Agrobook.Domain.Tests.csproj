@@ -77,10 +77,6 @@
     <Compile Include="Utils\SimpleDateTimeProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Agrobook.Common\Agrobook.Common.csproj">
-      <Project>{02f6c2b8-c3eb-4107-8d43-113a0258992f}</Project>
-      <Name>Agrobook.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Agrobook.Domain\Agrobook.Domain.csproj">
       <Project>{6b9ad205-891c-491a-9166-9b7996821c5d}</Project>
       <Name>Agrobook.Domain</Name>
@@ -89,11 +85,11 @@
       <Project>{8194b76b-7583-48a8-a610-01efaded7417}</Project>
       <Name>Agrobook.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libs\Eventing.Core-v1.0.0\Eventing.Core.csproj">
+    <ProjectReference Include="..\Eventing.Core\Eventing.Core.csproj">
       <Project>{d8a3116a-5c51-4a6f-b364-512948e5a792}</Project>
       <Name>Eventing.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libs\Eventing.TestHelpers-v1.0.0\Eventing.TestHelpers.csproj">
+    <ProjectReference Include="..\Eventing.TestHelpers\Eventing.TestHelpers.csproj">
       <Project>{31913791-9e19-4f54-bc07-ef281988c0cd}</Project>
       <Name>Eventing.TestHelpers</Name>
     </ProjectReference>

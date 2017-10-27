@@ -2,7 +2,7 @@
 using Agrobook.Infrastructure.Serialization;
 using Agrobook.Infrastructure.Tests.EventSourcing.Fakes;
 using Eventing.Core.Domain;
-using Eventing.Core.Persistence;
+using Eventing.Core.Messaging;
 using Eventing.Core.Serialization;
 using Eventing.GetEventStore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

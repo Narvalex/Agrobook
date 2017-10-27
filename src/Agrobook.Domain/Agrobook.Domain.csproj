@@ -93,10 +93,10 @@
     <Compile Include="Ap\Services\ApService.Productores.cs" />
     <Compile Include="Ap\Services\ApService.Servicios.cs" />
     <Compile Include="Ap\Services\ApService.ServiciosSec.cs" />
-    <Compile Include="Ap\ServicioSaga\Servicio.cs" />
-    <Compile Include="Ap\ServicioSaga\ServicioSec.cs" />
-    <Compile Include="Ap\ServicioSaga\ServicioSecSnapshot.cs" />
-    <Compile Include="Ap\ServicioSaga\ServicioSnapshot.cs" />
+    <Compile Include="Ap\Servicio.cs" />
+    <Compile Include="Ap\ServicioSec.cs" />
+    <Compile Include="Ap\ServicioSecSnapshot.cs" />
+    <Compile Include="Ap\ServicioSnapshot.cs" />
     <Compile Include="Archivos\Messages\ArchivosCommands.cs" />
     <Compile Include="Archivos\Messages\ArchivosEvents.cs" />
     <Compile Include="Archivos\ColeccionDeArchivos.cs" />
@@ -149,12 +149,12 @@
     <None Include="Properties\DataSources\ParcelaEntity.datasource" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Agrobook.Common\Agrobook.Common.csproj">
-      <Project>{02f6c2b8-c3eb-4107-8d43-113a0258992f}</Project>
-      <Name>Agrobook.Common</Name>
+    <ProjectReference Include="..\Agrobook.Infrastructure\Agrobook.Infrastructure.csproj">
+      <Project>{8194b76b-7583-48a8-a610-01efaded7417}</Project>
+      <Name>Agrobook.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libs\Eventing.Core-v1.0.0\Eventing.Core.csproj">
-      <Project>{D8A3116A-5C51-4A6F-B364-512948E5A792}</Project>
+    <ProjectReference Include="..\Eventing.Core\Eventing.Core.csproj">
+      <Project>{d8a3116a-5c51-4a6f-b364-512948e5a792}</Project>
       <Name>Eventing.Core</Name>
     </ProjectReference>
   </ItemGroup>

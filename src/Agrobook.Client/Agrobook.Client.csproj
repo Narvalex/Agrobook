@@ -71,20 +71,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Agrobook.Common\Agrobook.Common.csproj">
-      <Project>{02f6c2b8-c3eb-4107-8d43-113a0258992f}</Project>
-      <Name>Agrobook.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Agrobook.Domain\Agrobook.Domain.csproj">
       <Project>{6b9ad205-891c-491a-9166-9b7996821c5d}</Project>
       <Name>Agrobook.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libs\Eventing.Core-v1.0.0\Eventing.Core.csproj">
-      <Project>{D8A3116A-5C51-4A6F-B364-512948E5A792}</Project>
+    <ProjectReference Include="..\Eventing.Core\Eventing.Core.csproj">
+      <Project>{d8a3116a-5c51-4a6f-b364-512948e5a792}</Project>
       <Name>Eventing.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libs\Eventing.HttpClient-v1.0.0\Eventing.HttpClient.csproj">
-      <Project>{FD80989B-08E7-446A-B967-670BAEB4BD5F}</Project>
+    <ProjectReference Include="..\Eventing.HttpClient\Eventing.HttpClient.csproj">
+      <Project>{fd80989b-08e7-446a-b967-670baeb4bd5f}</Project>
       <Name>Eventing.HttpClient</Name>
     </ProjectReference>
   </ItemGroup>

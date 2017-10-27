@@ -1,5 +1,5 @@
 ﻿using Eventing.Core.Domain;
-using Eventing.Core.Persistence;
+using Eventing.Core.Messaging;
 
 namespace Agrobook.Infrastructure.Tests.EventSourcing.Fakes
 {

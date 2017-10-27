@@ -1,5 +1,5 @@
 ﻿using Agrobook.Domain.Common;
-using Eventing.Core.Persistence;
+using Eventing.Core.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
