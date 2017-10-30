@@ -2,6 +2,7 @@
 using Eventing;
 using Eventing.Core.Domain;
 using Eventing.Core.Messaging;
+using Eventing.Core.Persistence;
 using Eventing.Log;
 using System;
 using System.Threading.Tasks;

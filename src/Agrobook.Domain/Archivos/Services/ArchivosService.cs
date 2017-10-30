@@ -1,6 +1,6 @@
 ﻿using Eventing;
 using Eventing.Core.Domain;
-using Eventing.Core.Messaging;
+using Eventing.Core.Persistence;
 using System;
 using System.Collections.Concurrent;
 using System.Threading;

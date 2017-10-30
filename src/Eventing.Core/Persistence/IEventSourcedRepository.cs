@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Eventing.Core.Messaging
+namespace Eventing.Core.Persistence
 {
     public interface IEventSourcedRepository : IEventSourcedReader
     {

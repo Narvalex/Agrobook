@@ -1,5 +1,5 @@
 ﻿using Eventing;
-using Eventing.Core.Messaging;
+using Eventing.Core.Persistence;
 using System;
 using System.Threading.Tasks;
 

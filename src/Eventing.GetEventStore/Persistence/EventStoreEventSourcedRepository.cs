@@ -1,5 +1,5 @@
 ﻿using Eventing.Core.Domain;
-using Eventing.Core.Messaging;
+using Eventing.Core.Persistence;
 using Eventing.Core.Serialization;
 using EventStore.ClientAPI;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eventing.GetEventStore
+namespace Eventing.GetEventStore.Persistence
 {
     public class EventStoreEventSourcedRepository : IEventSourcedRepository
     {

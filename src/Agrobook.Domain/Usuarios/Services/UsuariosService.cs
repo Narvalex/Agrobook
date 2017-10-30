@@ -4,7 +4,7 @@ using Agrobook.Domain.Usuarios.Login;
 using Agrobook.Domain.Usuarios.Services;
 using Eventing;
 using Eventing.Core.Domain;
-using Eventing.Core.Messaging;
+using Eventing.Core.Persistence;
 using Eventing.Core.Serialization;
 using System;
 using System.Collections.Generic;
@@ -46,8 +46,11 @@ namespace Agrobook.Domain.Usuarios
         }
 
 
-        public async Task CrearUsuarioAdminAsync()
+        public async Task CrearUsuarioAdminSiFaltaAsync()
         {
+            if (await this.repository.Exists<Usuario>(UsuarioAdmin))
+                return;
+
             var admin = new Usuario();
             var loginInfo = new LoginInfo(UsuarioAdmin, DefaultPassword, new string[] { ClaimDef.Roles.Admin });
             var encryptedLoginInfo = this.EncriptarLoginInfo(loginInfo);

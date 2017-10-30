@@ -52,11 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventStoreCheckpointRepository.cs" />
-    <Compile Include="EventStoreEventSourcedRepository.cs" />
+    <Compile Include="Messaging\SubscriptionCheckpoint.cs" />
+    <Compile Include="Persistence\EventStoreEventSourcedRepository.cs" />
     <Compile Include="EventStoreManager.cs" />
-    <Compile Include="EventStoreSubscriber.cs" />
-    <Compile Include="EventStoreSubscription.cs" />
+    <Compile Include="Messaging\EventStoreSubscription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

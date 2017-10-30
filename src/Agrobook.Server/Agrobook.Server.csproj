@@ -113,6 +113,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgrobookProcessor.cs" />
     <Compile Include="Ap\ApController.Productores.cs" />
     <Compile Include="Ap\ApController.cs" />
     <Compile Include="Ap\ApController.Contratos.cs" />

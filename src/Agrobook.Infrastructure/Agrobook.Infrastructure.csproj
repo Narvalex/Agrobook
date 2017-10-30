@@ -80,7 +80,6 @@
     <Compile Include="Cryptography\FauxCrypto.cs" />
     <Compile Include="Cryptography\StringCipher.cs" />
     <Compile Include="DateTimeExtensions.cs" />
-    <Compile Include="EventStreamHandler.cs" />
     <Compile Include="IDateTimeProvider.cs" />
     <Compile Include="IEvent.cs" />
     <Compile Include="ISimpleContainer.cs" />

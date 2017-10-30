@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Caching;
 
-namespace Eventing.Core.Messaging
+namespace Eventing.Core.Persistence
 {
     public class SnapshotCache : ISnapshotCache
     {

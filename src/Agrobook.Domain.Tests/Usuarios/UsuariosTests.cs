@@ -1,7 +1,7 @@
 ﻿using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Login;
 using Eventing.Core.Domain;
-using Eventing.Core.Messaging;
+using Eventing.Core.Persistence;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -39,7 +39,7 @@ namespace Agrobook.Domain.Tests.Usuarios
             this.sut
                 .When(s =>
                 {
-                    s.CrearUsuarioAdminAsync().Wait();
+                    s.CrearUsuarioAdminSiFaltaAsync().Wait();
                 })
                 .Then(e =>
                 {

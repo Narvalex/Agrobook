@@ -1,6 +1,6 @@
 ﻿using Agrobook.Domain.Ap.Messages;
 using Agrobook.Domain.Usuarios;
-using Eventing.Core.Messaging;
+using Eventing.Core.Persistence;
 using System;
 using System.Threading.Tasks;
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Eventing.Core.Messaging
+namespace Eventing.Core.Persistence
 {
     public class InMemoryEventSourcedRepository : IEventSourcedRepository
     {

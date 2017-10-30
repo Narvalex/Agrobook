@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Agrobook.Domain
@@ -39,6 +40,20 @@ namespace Agrobook.Domain
             checkpointEntity.LastCheckpoint = lastCheckpoint;
 
             return await base.SaveChangesAsync();
+        }
+
+        public int SaveChanges(string subscriptionName, long? lastCheckpoint)
+        {
+            var checkpointEntity = this.Checkpoints.SingleOrDefault(x => x.Subscription == subscriptionName);
+            if (checkpointEntity == null)
+            {
+                checkpointEntity = new CheckpointEntity { Subscription = subscriptionName };
+                this.Checkpoints.Add(checkpointEntity);
+            }
+
+            checkpointEntity.LastCheckpoint = lastCheckpoint;
+
+            return base.SaveChanges();
         }
 
         public class CheckpointEntity

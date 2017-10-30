@@ -1,4 +1,4 @@
-﻿using Eventing.Core.Messaging;
+﻿using Eventing.Core.Persistence;
 
 namespace Eventing.Core.Domain
 {

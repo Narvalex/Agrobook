@@ -1,30 +1,24 @@
-﻿using Agrobook.Common;
-using Agrobook.Domain.Ap.Messages;
+﻿using Agrobook.Domain.Ap.Messages;
 using Agrobook.Domain.Common;
-using Eventing.Core.Domain;
 using Eventing.Core.Messaging;
-using System;
 using System.Data.Entity;
-using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Ap.Denormalizers
 {
-    public class ProductoresDenormalizer : AgrobookDenormalizer,
-        IEventHandler<NuevaParcelaRegistrada>,
-        IEventHandler<ParcelaEditada>,
-        IEventHandler<ParcelaEliminada>,
-        IEventHandler<ParcelaRestaurada>
+    public class ProductoresDenormalizer : SqlDenormalizer,
+        IHandler<NuevaParcelaRegistrada>,
+        IHandler<ParcelaEditada>,
+        IHandler<ParcelaEliminada>,
+        IHandler<ParcelaRestaurada>
     {
-        public ProductoresDenormalizer(IEventSubscriber subscriber, Func<AgrobookDbContext> contextFactory)
-            : base(subscriber, contextFactory,
-                  typeof(ProductoresDenormalizer).Name,
-                  StreamCategoryAttribute.GetCategoryProjectionStream<Productor>())
+        public ProductoresDenormalizer(SqlDenormalizerConfig config)
+            : base(config)
         {
         }
 
-        public async Task HandleOnce(long eventNumber, NuevaParcelaRegistrada e)
+        public void Handle(long eventNumber, NuevaParcelaRegistrada e)
         {
-            await this.Denormalize(eventNumber, context =>
+            this.Denormalize(eventNumber, context =>
             {
                 context.Parcelas.Add(new ParcelaEntity
                 {
@@ -37,9 +31,9 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public async Task HandleOnce(long eventNumber, ParcelaEditada e)
+        public void Handle(long eventNumber, ParcelaEditada e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var parcela = await context.Parcelas.SingleAsync(x => x.Id == e.IdParcela);
                 parcela.Display = e.Nombre;
@@ -47,18 +41,18 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public async Task HandleOnce(long eventNumber, ParcelaEliminada e)
+        public void Handle(long eventNumber, ParcelaEliminada e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var parcela = await context.Parcelas.SingleAsync(x => x.Id == e.IdParcela);
                 parcela.Eliminado = true;
             });
         }
 
-        public async Task HandleOnce(long eventNumber, ParcelaRestaurada e)
+        public void Handle(long eventNumber, ParcelaRestaurada e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var parcela = await context.Parcelas.SingleAsync(x => x.Id == e.IdParcela);
                 parcela.Eliminado = false;

@@ -1,6 +1,5 @@
 ﻿using Agrobook.Common;
 using Agrobook.Domain;
-using Agrobook.Domain.Ap.Denormalizers;
 using Agrobook.Domain.Ap.Services;
 using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Common;
@@ -13,9 +12,10 @@ using Agrobook.Infrastructure.Persistence;
 using Agrobook.Infrastructure.Serialization;
 using Agrobook.Server.Filters;
 using Eventing;
-using Eventing.Core.Messaging;
+using Eventing.Core.Persistence;
 using Eventing.Core.Serialization;
 using Eventing.GetEventStore;
+using Eventing.GetEventStore.Persistence;
 using Eventing.Log;
 using System;
 using System.Configuration;
@@ -29,6 +29,8 @@ namespace Agrobook.Server
         public static T ResolveSingleton<T>() => _container.ResolveSingleton<T>();
 
         public static T ResolveNewOf<T>() => _container.ResolveNewOf<T>();
+
+        public static void TearDown() => _container.Dispose();
 
         public static void Initialize()
         {
@@ -61,12 +63,15 @@ namespace Agrobook.Server
             Func<AgrobookDbContext> readOnlyDbContextFactory = () => new AgrobookDbContext(true, sqlDbName);
 
             var sqlInitializer = new SqlDbInitializer<AgrobookDbContext>(dbContextFactory);
+            container.Register<SqlDbInitializer<AgrobookDbContext>>(sqlInitializer);
 
             var dateTimeProvider = new SimpleDateTimeProvider();
+            container.Register<IDateTimeProvider>(dateTimeProvider);
 
             var decryptor = new StringCipher();
 
             var jsonSerializer = new NewtonsoftJsonSerializer();
+            container.Register<IJsonSerializer>(jsonSerializer);
 
             var cryptoSerializer = new CryptoSerializer(decryptor, jsonSerializer);
 
@@ -74,51 +79,42 @@ namespace Agrobook.Server
 
             var eventSourcedRepository = new EventStoreEventSourcedRepository(esm.GetFailFastConnection, jsonSerializer, snapshotCache);
 
-            var eventStreamSubscriber = new EventStoreSubscriber(esm.ResilientConnection, jsonSerializer);
+            var efCheckpointRepository = new EfCheckpointProvider(readOnlyDbContextFactory);
 
+            // Services
             var usuariosService = new UsuariosService(eventSourcedRepository, dateTimeProvider, cryptoSerializer);
             AutorizarAttribute.SetTokenAuthProvider(usuariosService);
+            container.Register<UsuariosService>(usuariosService);
+            container.Register<ITokenAuthorizationProvider>(usuariosService);
+            container.Register<IProveedorDeFirmaDelUsuario>(usuariosService);
 
             var usuariosQueryService = new UsuariosQueryService(readOnlyDbContextFactory, eventSourcedRepository, cryptoSerializer);
-
-            var usuariosDenormalizer = new UsuariosDenormalizer(eventStreamSubscriber, dbContextFactory, usuariosQueryService);
-
-            var organizacionesDenormalizer = new OrganizacionesDenormalizer(eventStreamSubscriber, dbContextFactory);
+            container.Register<UsuariosQueryService>(usuariosQueryService);
 
             var organizacionesQueryService = new OrganizacionesQueryService(readOnlyDbContextFactory, eventSourcedRepository);
+            container.Register<OrganizacionesQueryService>(organizacionesQueryService);
 
             var archivosDelProductorFileManager = new FileWriter(LogManager.GetLoggerFor<FileWriter>(), jsonSerializer);
+            container.Register<IFileWriter>(archivosDelProductorFileManager);
 
             var archivosService = new ArchivosService(archivosDelProductorFileManager, eventSourcedRepository);
+            container.Register<ArchivosService>(archivosService);
 
             var archivosQueryService = new ArchivosQueryService(readOnlyDbContextFactory, eventSourcedRepository);
-
-            var fileIndexer = new ArchivosIndexerService(eventStreamSubscriber, dbContextFactory, archivosDelProductorFileManager);
-
-            container.Register<IJsonSerializer>(jsonSerializer);
-            container.Register<IDateTimeProvider>(dateTimeProvider);
-            container.Register<ITokenAuthorizationProvider>(usuariosService);
-            container.Register<SqlDbInitializer<AgrobookDbContext>>(sqlInitializer);
-            container.Register<UsuariosService>(usuariosService);
-            container.Register<IProveedorDeFirmaDelUsuario>(usuariosService);
-            container.Register<UsuariosQueryService>(usuariosQueryService);
-            container.Register<UsuariosDenormalizer>(usuariosDenormalizer);
-            container.Register<OrganizacionesDenormalizer>(organizacionesDenormalizer);
-            container.Register<OrganizacionesQueryService>(organizacionesQueryService);
-            container.Register<IFileWriter>(archivosDelProductorFileManager);
-            container.Register<ArchivosService>(archivosService);
             container.Register<ArchivosQueryService>(archivosQueryService);
-            container.Register<ArchivosIndexerService>(fileIndexer);
-
-            // Ordenado a partir de aqui
-            var efCheckpointRepository = new EfCheckpointRepository(dbContextFactory, readOnlyDbContextFactory);
-            var esCheckpointRepository = new EventStoreCheckpointRepository(esm.GetFailFastConnection, jsonSerializer, 3);
 
             var apQueryService = new ApQueryService(readOnlyDbContextFactory, eventSourcedRepository);
             container.Register<ApQueryService>(apQueryService);
 
             var apService = new ApService(eventSourcedRepository, eventStreamSubscriber, esCheckpointRepository, dateTimeProvider);
             container.Register<ApService>(apService);
+
+            // Procesors
+            var usuariosDenormalizer = new UsuariosDenormalizer(eventStreamSubscriber, dbContextFactory, usuariosQueryService);
+
+            var organizacionesDenormalizer = new OrganizacionesDenormalizer(eventStreamSubscriber, dbContextFactory);
+
+            var fileIndexer = new ArchivosIndexer(eventStreamSubscriber, dbContextFactory, archivosDelProductorFileManager);
 
             var contratoDenormalizer = new ContratosDenormalizer(eventStreamSubscriber, dbContextFactory);
             container.Register<ContratosDenormalizer>(contratoDenormalizer);

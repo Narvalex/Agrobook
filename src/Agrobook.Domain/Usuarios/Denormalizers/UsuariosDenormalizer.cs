@@ -1,39 +1,34 @@
-﻿using Agrobook.Common;
-using Agrobook.Domain.Common;
+﻿using Agrobook.Domain.Common;
 using Eventing;
-using Eventing.Core.Domain;
 using Eventing.Core.Messaging;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using static Agrobook.Domain.Usuarios.Login.ClaimDef;
 
 namespace Agrobook.Domain.Usuarios.Services
 {
-    public class UsuariosDenormalizer : AgrobookDenormalizer,
-        IEventHandler<NuevoUsuarioCreado>,
-        IEventHandler<AvatarUrlActualizado>,
-        IEventHandler<NombreParaMostrarActualizado>,
-        IEventHandler<PermisoOtorgadoAlUsuario>,
-        IEventHandler<PermisoRetiradoDelUsuario>
+    public class UsuariosDenormalizer : SqlDenormalizer,
+        IHandler<NuevoUsuarioCreado>,
+        IHandler<AvatarUrlActualizado>,
+        IHandler<NombreParaMostrarActualizado>,
+        IHandler<PermisoOtorgadoAlUsuario>,
+        IHandler<PermisoRetiradoDelUsuario>
     {
         private readonly UsuariosQueryService queryService;
 
-        public UsuariosDenormalizer(IEventSubscriber subscriber, Func<AgrobookDbContext> contextFactory, UsuariosQueryService queryService)
-           : base(subscriber, contextFactory,
-                 typeof(UsuariosDenormalizer).Name,
-                 StreamCategoryAttribute.GetCategoryProjectionStream<Usuario>())
+        public UsuariosDenormalizer(SqlDenormalizerConfig config, UsuariosQueryService queryService)
+           : base(config)
         {
             Ensure.NotNull(queryService, nameof(queryService));
 
             this.queryService = queryService;
         }
 
-        public async Task HandleOnce(long eventNumber, NuevoUsuarioCreado e)
+        public void Handle(long eventNumber, NuevoUsuarioCreado e)
         {
             var claims = this.queryService.ObtenerClaims(e.LoginInfoEncriptado);
 
-            await this.Denormalize(eventNumber, context =>
+            this.Denormalize(eventNumber, context =>
             {
                 context.Usuarios.Add(new UsuarioEntity
                 {
@@ -50,40 +45,44 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public async Task HandleOnce(long eventNumber, AvatarUrlActualizado e)
+        public void Handle(long eventNumber, AvatarUrlActualizado e)
         {
-            await this.Denormalize(eventNumber, context =>
+            this.DenormalizeAsync(eventNumber, context =>
             {
                 var usuario = context.Usuarios.Single(u => u.Id == e.Usuario);
                 usuario.AvatarUrl = e.NuevoAvatarUrl;
-            });
+            })
+            .Wait();
         }
 
-        public async Task HandleOnce(long eventNumber, NombreParaMostrarActualizado e)
+        public void Handle(long eventNumber, NombreParaMostrarActualizado e)
         {
-            await this.Denormalize(eventNumber, context =>
+            this.DenormalizeAsync(eventNumber, context =>
             {
                 var usuario = context.Usuarios.Single(u => u.Id == e.Usuario);
                 usuario.Display = e.NuevoNombreParaMostrar;
-            });
+            })
+            .Wait();
         }
 
-        public async Task HandleOnce(long eventNumber, PermisoOtorgadoAlUsuario e)
+        public void Handle(long eventNumber, PermisoOtorgadoAlUsuario e)
         {
-            await this.Denormalize(eventNumber, context =>
+            this.DenormalizeAsync(eventNumber, context =>
             {
                 var usuario = context.Usuarios.Single(x => x.Id == e.IdUsuario);
                 this.AplicarCambioDePermiso(usuario, e.Permiso, true);
-            });
+            })
+            .Wait();
         }
 
-        public async Task HandleOnce(long eventNumber, PermisoRetiradoDelUsuario e)
+        public void Handle(long eventNumber, PermisoRetiradoDelUsuario e)
         {
-            await this.Denormalize(eventNumber, context =>
+            this.DenormalizeAsync(eventNumber, context =>
             {
                 var usuario = context.Usuarios.Single(x => x.Id == e.IdUsuario);
                 this.AplicarCambioDePermiso(usuario, e.Permiso, false);
-            });
+            })
+            .Wait();
         }
 
         private void AplicarCambioDePermiso(UsuarioEntity usuario, string permisoACambiar, bool otorgar)

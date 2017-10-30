@@ -1,5 +1,5 @@
 ﻿using Eventing.Core.Domain;
-using Eventing.Core.Messaging;
+using Eventing.Core.Persistence;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Runtime.Caching;

@@ -1,29 +1,23 @@
-﻿using Agrobook.Common;
-using Agrobook.Domain.Common;
-using Eventing.Core.Domain;
+﻿using Agrobook.Domain.Common;
 using Eventing.Core.Messaging;
-using System;
 using System.Data.Entity;
-using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Usuarios.Services
 {
-    public class OrganizacionesDenormalizer : AgrobookDenormalizer,
-        IEventHandler<NuevaOrganizacionCreada>,
-        IEventHandler<OrganizacionEliminada>,
-        IEventHandler<OrganizacionRestaurada>,
-        IEventHandler<UsuarioAgregadoALaOrganizacion>,
-        IEventHandler<UsuarioRemovidoDeLaOrganizacion>
+    public class OrganizacionesDenormalizer : SqlDenormalizer,
+        IHandler<NuevaOrganizacionCreada>,
+        IHandler<OrganizacionEliminada>,
+        IHandler<OrganizacionRestaurada>,
+        IHandler<UsuarioAgregadoALaOrganizacion>,
+        IHandler<UsuarioRemovidoDeLaOrganizacion>
     {
-        public OrganizacionesDenormalizer(IEventSubscriber subscriber, Func<AgrobookDbContext> contextFactory)
-            : base(subscriber, contextFactory,
-                  typeof(OrganizacionesDenormalizer).Name,
-                  StreamCategoryAttribute.GetCategoryProjectionStream<Organizacion>())
+        public OrganizacionesDenormalizer(SqlDenormalizerConfig config)
+            : base(config)
         { }
 
-        public async Task HandleOnce(long eventNumber, NuevaOrganizacionCreada e)
+        public void Handle(long eventNumber, NuevaOrganizacionCreada e)
         {
-            await this.Denormalize(eventNumber, context =>
+            this.Denormalize(eventNumber, context =>
             {
                 context.Organizaciones.Add(new OrganizacionEntity
                 {
@@ -34,27 +28,27 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public async Task HandleOnce(long eventNumber, OrganizacionEliminada e)
+        public void Handle(long eventNumber, OrganizacionEliminada e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var entity = await context.Organizaciones.SingleAsync(x => x.OrganizacionId == e.Id);
                 entity.EstaEliminada = true;
             });
         }
 
-        public async Task HandleOnce(long eventNumber, OrganizacionRestaurada e)
+        public void Handle(long eventNumber, OrganizacionRestaurada e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var entity = await context.Organizaciones.SingleAsync(x => x.OrganizacionId == e.Id);
                 entity.EstaEliminada = false;
             });
         }
 
-        public async Task HandleOnce(long eventNumber, UsuarioAgregadoALaOrganizacion e)
+        public void Handle(long eventNumber, UsuarioAgregadoALaOrganizacion e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var org = await context.Organizaciones.SingleAsync(x => x.OrganizacionId == e.OrganizacionId);
                 context.OrganizacionesDeUsuarios.Add(new OrganizacionDeUsuarioEntity
@@ -66,9 +60,9 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public async Task HandleOnce(long eventNumber, UsuarioRemovidoDeLaOrganizacion e)
+        public void Handle(long eventNumber, UsuarioRemovidoDeLaOrganizacion e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var entity = await context.OrganizacionesDeUsuarios.SingleAsync(x => x.UsuarioId == e.IdUsuario && x.OrganizacionId == e.IdOrganizacion);
                 context.OrganizacionesDeUsuarios.Remove(entity);

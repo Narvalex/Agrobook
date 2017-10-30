@@ -1,6 +1,6 @@
 ﻿using Eventing.Core.Domain;
 
-namespace Eventing.Core.Messaging
+namespace Eventing.Core.Persistence
 {
     public interface ISnapshotCache
     {

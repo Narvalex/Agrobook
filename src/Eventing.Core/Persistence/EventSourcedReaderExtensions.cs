@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Eventing.Core.Messaging
+namespace Eventing.Core.Persistence
 {
     public static class EventSourcedReaderExtensions
     {

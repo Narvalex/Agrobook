@@ -1,31 +1,26 @@
-﻿using Agrobook.Common;
-using Agrobook.Domain.Ap.Messages;
+﻿using Agrobook.Domain.Ap.Messages;
 using Agrobook.Domain.Common;
-using Eventing.Core.Domain;
 using Eventing.Core.Messaging;
-using System;
 using System.Data.Entity;
-using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Ap.Denormalizers
 {
-    public class ServiciosDenormalizer : AgrobookDenormalizer,
-        IEventHandler<NuevoServicioRegistrado>,
-        IEventHandler<DatosBasicosDelSevicioEditados>,
-        IEventHandler<ServicioEliminado>,
-        IEventHandler<ServicioRestaurado>,
-        IEventHandler<ParcelaDeServicioEspecificada>,
-        IEventHandler<ParcelaDeServicioCambiada>
+    public class ServiciosDenormalizer : SqlDenormalizer,
+        IHandler<NuevoServicioRegistrado>,
+        IHandler<DatosBasicosDelSevicioEditados>,
+        IHandler<ServicioEliminado>,
+        IHandler<ServicioRestaurado>,
+        IHandler<ParcelaDeServicioEspecificada>,
+        IHandler<ParcelaDeServicioCambiada>
     {
-        public ServiciosDenormalizer(IEventSubscriber subscriber, Func<AgrobookDbContext> contextFactory)
-            : base(subscriber, contextFactory, typeof(ServiciosDenormalizer).Name,
-                  StreamCategoryAttribute.GetCategoryProjectionStream<Servicio>())
+        public ServiciosDenormalizer(SqlDenormalizerConfig config)
+            : base(config)
         {
         }
 
-        public async Task HandleOnce(long eventNumber, NuevoServicioRegistrado e)
+        public void Handle(long eventNumber, NuevoServicioRegistrado e)
         {
-            await this.Denormalize(eventNumber, context =>
+            this.Denormalize(eventNumber, context =>
             {
                 context.Servicios.Add(new ServicioEntity
                 {
@@ -41,9 +36,9 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public async Task HandleOnce(long eventNumber, DatosBasicosDelSevicioEditados e)
+        public void Handle(long eventNumber, DatosBasicosDelSevicioEditados e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
                 servicio.IdContrato = e.IdContrato;
@@ -52,27 +47,27 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public async Task HandleOnce(long eventNumber, ServicioEliminado e)
+        public void Handle(long eventNumber, ServicioEliminado e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
                 servicio.Eliminado = true;
             });
         }
 
-        public async Task HandleOnce(long eventNumber, ServicioRestaurado e)
+        public void Handle(long eventNumber, ServicioRestaurado e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
                 servicio.Eliminado = false;
             });
         }
 
-        public async Task HandleOnce(long eventNumber, ParcelaDeServicioEspecificada e)
+        public void Handle(long eventNumber, ParcelaDeServicioEspecificada e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
 
@@ -80,9 +75,9 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public async Task HandleOnce(long eventNumber, ParcelaDeServicioCambiada e)
+        public void Handle(long eventNumber, ParcelaDeServicioCambiada e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
 

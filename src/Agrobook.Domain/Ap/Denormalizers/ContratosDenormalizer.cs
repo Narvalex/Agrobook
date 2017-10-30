@@ -1,34 +1,28 @@
-﻿using Agrobook.Common;
-using Agrobook.Domain.Ap.Messages;
+﻿using Agrobook.Domain.Ap.Messages;
 using Agrobook.Domain.Common;
-using Eventing.Core.Domain;
 using Eventing.Core.Messaging;
-using System;
 using System.Data.Entity;
-using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Ap.Denormalizers
 {
-    public class ContratosDenormalizer : AgrobookDenormalizer,
-        IEventHandler<NuevoContrato>,
-        IEventHandler<ContratoEditado>,
-        IEventHandler<ContratoEliminado>,
-        IEventHandler<ContratoRestaurado>,
-        IEventHandler<NuevaAdenda>,
-        IEventHandler<AdendaEditada>,
-        IEventHandler<AdendaEliminada>,
-        IEventHandler<AdendaRestaurada>
+    public class ContratosDenormalizer : SqlDenormalizer,
+        IHandler<NuevoContrato>,
+        IHandler<ContratoEditado>,
+        IHandler<ContratoEliminado>,
+        IHandler<ContratoRestaurado>,
+        IHandler<NuevaAdenda>,
+        IHandler<AdendaEditada>,
+        IHandler<AdendaEliminada>,
+        IHandler<AdendaRestaurada>
     {
-        public ContratosDenormalizer(IEventSubscriber subscriber, Func<AgrobookDbContext> contextFactory)
-            : base(subscriber, contextFactory,
-                  typeof(ContratosDenormalizer).Name,
-                  StreamCategoryAttribute.GetCategoryProjectionStream<Contrato>())
+        public ContratosDenormalizer(SqlDenormalizerConfig config)
+            : base(config)
         {
         }
 
-        public async Task HandleOnce(long eventNumber, NuevoContrato e)
+        public void Handle(long eventNumber, NuevoContrato e)
         {
-            await this.Denormalize(eventNumber, context =>
+            this.Denormalize(eventNumber, context =>
             {
                 context.Contratos.Add(new ContratoEntity
                 {
@@ -43,9 +37,9 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public async Task HandleOnce(long eventNumber, ContratoEditado e)
+        public void Handle(long eventNumber, ContratoEditado e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var contrato = await context.Contratos.SingleAsync(x => x.Id == e.IdContrato);
                 contrato.Display = e.NombreDelContrato;
@@ -53,27 +47,27 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public async Task HandleOnce(long eventNumber, ContratoEliminado e)
+        public void Handle(long eventNumber, ContratoEliminado e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var contrato = await context.Contratos.SingleAsync(x => x.Id == e.IdContrato);
                 contrato.Eliminado = true;
             });
         }
 
-        public async Task HandleOnce(long eventNumber, ContratoRestaurado e)
+        public void Handle(long eventNumber, ContratoRestaurado e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var contrato = await context.Contratos.SingleAsync(x => x.Id == e.IdContrato);
                 contrato.Eliminado = false;
             });
         }
 
-        public async Task HandleOnce(long eventNumber, NuevaAdenda e)
+        public void Handle(long eventNumber, NuevaAdenda e)
         {
-            await this.Denormalize(eventNumber, context =>
+            this.Denormalize(eventNumber, context =>
             {
                 context.Contratos.Add(new ContratoEntity
                 {
@@ -88,9 +82,9 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public async Task HandleOnce(long eventNumber, AdendaEditada e)
+        public void Handle(long eventNumber, AdendaEditada e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var adenda = await context.Contratos.SingleAsync(x => x.Id == e.IdAdenda);
                 adenda.Display = e.NombreDeLaAdenda;
@@ -98,18 +92,18 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public async Task HandleOnce(long eventNumber, AdendaEliminada e)
+        public void Handle(long eventNumber, AdendaEliminada e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var adenda = await context.Contratos.SingleAsync(x => x.Id == e.IdAdenda);
                 adenda.Eliminado = true;
             });
         }
 
-        public async Task HandleOnce(long eventNumber, AdendaRestaurada e)
+        public void Handle(long eventNumber, AdendaRestaurada e)
         {
-            await this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, async context =>
             {
                 var adenda = await context.Contratos.SingleAsync(x => x.Id == e.IdAdenda);
                 adenda.Eliminado = false;

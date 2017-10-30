@@ -2,7 +2,7 @@
 
 namespace Agrobook.Common
 {
-    public interface ISimpleContainer
+    public interface ISimpleContainer : IDisposable
     {
         /// <summary>
         /// Resolves the unique instance of the specified object. If the the dependency is not 

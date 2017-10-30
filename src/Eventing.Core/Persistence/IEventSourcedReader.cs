@@ -1,7 +1,7 @@
 ﻿using Eventing.Core.Domain;
 using System.Threading.Tasks;
 
-namespace Eventing.Core.Messaging
+namespace Eventing.Core.Persistence
 {
     public interface IEventSourcedReader
     {
