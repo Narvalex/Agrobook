@@ -52,7 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Messaging\ProjectionDefinition.cs" />
     <Compile Include="Messaging\SubscriptionCheckpoint.cs" />
+    <Compile Include="EventStoreLogAdapter.cs" />
     <Compile Include="Persistence\EventStoreEventSourcedRepository.cs" />
     <Compile Include="EventStoreManager.cs" />
     <Compile Include="Messaging\EventStoreSubscription.cs" />
@@ -64,6 +66,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Agrobook.Common\Agrobook.Common.csproj">
+      <Project>{8194B76B-7583-48A8-A610-01EFADED7417}</Project>
+      <Name>Agrobook.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Eventing.Core\Eventing.Core.csproj">
       <Project>{d8a3116a-5c51-4a6f-b364-512948e5a792}</Project>
       <Name>Eventing.Core</Name>

@@ -13,7 +13,7 @@ namespace Agrobook.Server.Ap
         [Route("nuevo-servicio")]
         public async Task<IHttpActionResult> NuevoServicio([FromBody]RegistrarNuevoServicio cmd)
         {
-            var idServicio = await this.service.HandleAsync(cmd.ConFirma(this.ActionContext));
+            var idServicio = await this.numeradorDeServicios.HandleAsync(cmd.ConFirma(this.ActionContext));
             return this.Ok(idServicio);
         }
 

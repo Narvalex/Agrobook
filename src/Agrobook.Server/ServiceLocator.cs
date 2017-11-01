@@ -1,23 +1,28 @@
 ﻿using Agrobook.Common;
+using Agrobook.Common.Cryptography;
+using Agrobook.Common.IoC;
+using Agrobook.Common.Persistence;
+using Agrobook.Common.Serialization;
 using Agrobook.Domain;
+using Agrobook.Domain.Ap;
+using Agrobook.Domain.Ap.Denormalizers;
 using Agrobook.Domain.Ap.Services;
 using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Common;
 using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Services;
-using Agrobook.Infrastructure;
-using Agrobook.Infrastructure.Cryptography;
-using Agrobook.Infrastructure.IoC;
-using Agrobook.Infrastructure.Persistence;
-using Agrobook.Infrastructure.Serialization;
 using Agrobook.Server.Filters;
 using Eventing;
+using Eventing.Core.Domain;
+using Eventing.Core.Messaging;
 using Eventing.Core.Persistence;
 using Eventing.Core.Serialization;
 using Eventing.GetEventStore;
+using Eventing.GetEventStore.Messaging;
 using Eventing.GetEventStore.Persistence;
 using Eventing.Log;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 
 namespace Agrobook.Server
@@ -37,8 +42,12 @@ namespace Agrobook.Server
             var container = new SimpleContainer();
             _container = container;
 
+
+            // EventStore -----------------------------------------------------------
+
             var esIp = ConfigurationManager.AppSettings["esIp"];
             var esTcpPort = int.Parse(ConfigurationManager.AppSettings["esTcpPort"]);
+            var esHttpPort = int.Parse(ConfigurationManager.AppSettings["esHttpPort"]);
             var esUser = ConfigurationManager.AppSettings["esUser"];
             var esPass = ConfigurationManager.AppSettings["esPass"];
 
@@ -47,7 +56,6 @@ namespace Agrobook.Server
             Ensure.NotNullOrWhiteSpace(esUser, nameof(esUser));
             Ensure.NotNullOrWhiteSpace(esPass, nameof(esPass));
 
-            // Event Store
             var esm = new EventStoreManager(
                 extIp: esIp,
                 tcpPort: esTcpPort,
@@ -57,6 +65,9 @@ namespace Agrobook.Server
                 failFastConnectionNamePrefix: "AgrobookEventSourcedRepository");
             container.Register<EventStoreManager>(esm);
 
+
+            // SQL Server ------------------------------------------------------------
+
             var sqlDbName = "AgrobookDb";
 
             Func<AgrobookDbContext> dbContextFactory = () => new AgrobookDbContext(false, sqlDbName);
@@ -64,6 +75,9 @@ namespace Agrobook.Server
 
             var sqlInitializer = new SqlDbInitializer<AgrobookDbContext>(dbContextFactory);
             container.Register<SqlDbInitializer<AgrobookDbContext>>(sqlInitializer);
+
+
+            // Misc --------------------------------------------------------------------
 
             var dateTimeProvider = new SimpleDateTimeProvider();
             container.Register<IDateTimeProvider>(dateTimeProvider);
@@ -79,9 +93,11 @@ namespace Agrobook.Server
 
             var eventSourcedRepository = new EventStoreEventSourcedRepository(esm.GetFailFastConnection, jsonSerializer, snapshotCache);
 
-            var efCheckpointRepository = new EfCheckpointProvider(readOnlyDbContextFactory);
+            var efCheckpointProvider = new EfCheckpointProvider(readOnlyDbContextFactory);
 
-            // Services
+
+            // Services --------------------------------------------------------
+
             var usuariosService = new UsuariosService(eventSourcedRepository, dateTimeProvider, cryptoSerializer);
             AutorizarAttribute.SetTokenAuthProvider(usuariosService);
             container.Register<UsuariosService>(usuariosService);
@@ -106,24 +122,50 @@ namespace Agrobook.Server
             var apQueryService = new ApQueryService(readOnlyDbContextFactory, eventSourcedRepository);
             container.Register<ApQueryService>(apQueryService);
 
-            var apService = new ApService(eventSourcedRepository, eventStreamSubscriber, esCheckpointRepository, dateTimeProvider);
+            var apService = new ApService(eventSourcedRepository, dateTimeProvider);
             container.Register<ApService>(apService);
 
-            // Procesors
-            var usuariosDenormalizer = new UsuariosDenormalizer(eventStreamSubscriber, dbContextFactory, usuariosQueryService);
+            var numeradorDeServicios = new NumeradorDeServiciosCommandHandler(eventSourcedRepository);
+            container.Register<NumeradorDeServiciosCommandHandler>(numeradorDeServicios);
 
-            var organizacionesDenormalizer = new OrganizacionesDenormalizer(eventStreamSubscriber, dbContextFactory);
 
-            var fileIndexer = new ArchivosIndexer(eventStreamSubscriber, dbContextFactory, archivosDelProductorFileManager);
+            // Event Procesors -----------------------------------------------
 
-            var contratoDenormalizer = new ContratosDenormalizer(eventStreamSubscriber, dbContextFactory);
-            container.Register<ContratosDenormalizer>(contratoDenormalizer);
+            var procesors = new List<EventProcessor>();
 
-            var productoresDenormalizer = new ProductoresDenormalizer(eventStreamSubscriber, dbContextFactory);
-            container.Register<ProductoresDenormalizer>(productoresDenormalizer);
+            // AppReadModel Denormalizing
+            var subStream = "agrobookAppReadModelStream";
+            var subId = "agrobookReadModelSubscription";
+            var sqlConfig = new SqlDenormalizerConfig(dbContextFactory, subId);
 
-            var serviciosDenormalizer = new ServiciosDenormalizer(eventStreamSubscriber, dbContextFactory);
-            container.Register<ServiciosDenormalizer>(serviciosDenormalizer);
+
+            var appReadModelProjectionDef = ProjectionDefinition.New(subStream, subStream, esm.ProjectionManager, esm.UserCredentials)
+                .From<Usuario>()
+                .AndNothingMore();
+
+            var appReadModelSubscription = new EventStoreSubscription(appReadModelProjectionDef, subId, esm.ResilientConnection, jsonSerializer, () => efCheckpointProvider.GetCheckpoint(subId));
+
+            var appReadModelProcessor = new EventProcessor(appReadModelSubscription);
+            appReadModelProcessor.Register(
+                new NoOpSqlDenormalizer(sqlConfig),
+                new UsuariosDenormalizer(sqlConfig, usuariosQueryService),
+                new OrganizacionesDenormalizer(sqlConfig),
+                new ContratosDenormalizer(sqlConfig),
+                new ProductoresDenormalizer(sqlConfig),
+                new ServiciosDenormalizer(sqlConfig),
+                new ArchivosIndexer(sqlConfig, archivosDelProductorFileManager)
+            );
+            procesors.Add(appReadModelProcessor);
+
+            // Numeracion de Servicios
+            var numeracionDeServiciosSubscription =
+                new EventStoreSubscription(
+                    StreamCategoryAttribute.GetCategoryProjectionStream<NumeracionDeServicios>(),
+                    "numeracionDeServiciosEventHandler", esm.ResilientConnection, jsonSerializer);
+            var numeracionDeServiciosEventHandler = new EventProcessor(numeracionDeServiciosSubscription);
+            procesors.Add(numeracionDeServiciosEventHandler);
+
+            container.Register<List<EventProcessor>>(procesors);
         }
     }
 }

@@ -4,9 +4,9 @@ using System;
 
 namespace Agrobook.Domain.Ap.Messages
 {
-    public class NuevoServicioSec : MensajeAuditable, IEvent
+    public class NumeracionDeServiciosIniciada : MensajeAuditable, IEvent
     {
-        public NuevoServicioSec(Firma firma, string idProductor) : base(firma)
+        public NumeracionDeServiciosIniciada(Firma firma, string idProductor) : base(firma)
         {
             this.IdProductor = idProductor;
         }

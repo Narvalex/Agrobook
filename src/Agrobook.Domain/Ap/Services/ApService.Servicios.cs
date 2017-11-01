@@ -1,5 +1,4 @@
-﻿using Agrobook.Common;
-using Agrobook.Domain.Ap.Messages;
+﻿using Agrobook.Domain.Ap.Messages;
 using Agrobook.Domain.Usuarios;
 using Eventing.Core.Persistence;
 using System;
@@ -7,32 +6,8 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Ap.Services
 {
-    public partial class ApService :
-        IEventHandler<NuevoRegistroDeServicioPendiente>
+    public partial class ApService
     {
-        /// <summary>
-        /// This should only be called by the subscription of the Servicios Saga Execution Coordinator, 
-        /// and the unit test code
-        /// </summary>
-        public async Task HandleOnce(long eventNumber, NuevoRegistroDeServicioPendiente e)
-        {
-            if (await this.repository.Exists<Servicio>(e.IdServicio))
-            {
-                // This is the idemptency stuff
-                this.logger.Warning("Ignorando mensaje ya manejado del tipo " + typeof(NuevoRegistroDeServicioPendiente).Name);
-                return;
-            }
-
-            await AsegurarQueElContratoOLaAdendaSeanValidos(e.EsAdenda, e.IdContrato, e.IdContratoDeLaAdenda);
-
-            var servicio = new Servicio();
-
-            servicio.Emit(new NuevoServicioRegistrado(
-                e.Firma, e.IdServicio, e.IdProd, e.IdOrg, e.IdContrato, e.EsAdenda, e.IdContratoDeLaAdenda, e.Fecha));
-
-            await this.repository.SaveAsync(servicio);
-        }
-
         public async Task HandleAsync(EditarDatosBasicosDelSevicio cmd)
         {
             await this.repository.EnsureExistence<Organizacion>(cmd.IdOrg);
@@ -100,7 +75,10 @@ namespace Agrobook.Domain.Ap.Services
             await this.repository.SaveAsync(servicio);
         }
 
-        private async Task AsegurarQueElContratoOLaAdendaSeanValidos(bool esAdenda, string idContrato, string idContratoDeLaAdenda)
+        /// <summary>
+        /// Se asegura que el contrato o la adenda sean validos. Si no son válidos lanza un <see cref="InvalidOperationException"/>.
+        /// </summary>
+        public async Task AsegurarQueElContratoOLaAdendaSeanValidos(bool esAdenda, string idContrato, string idContratoDeLaAdenda)
         {
             // Verificamos que exista el contrato
             var contrato = await this.repository.GetOrFailByIdAsync<Contrato>(esAdenda ? idContratoDeLaAdenda : idContrato);

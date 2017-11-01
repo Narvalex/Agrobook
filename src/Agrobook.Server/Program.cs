@@ -8,13 +8,9 @@ namespace Agrobook.Server
         {
             using (var processor = new AgrobookProcessor(args))
             {
-                SetConsoleCtrlHandler(signal =>
-                {
-                    processor.Stop();
-                    // Shutdown right away
-                    Environment.Exit(-1);
-                    return true;
-                }, true);
+                processor.Start();
+
+                OnProgramExit(processor.Stop);
 
                 string line;
                 do

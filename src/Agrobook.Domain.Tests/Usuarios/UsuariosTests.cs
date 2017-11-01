@@ -33,24 +33,24 @@ namespace Agrobook.Domain.Tests.Usuarios
         //        });
         //}
 
-        [TestMethod]
-        public void SePuedeCrearElUsuarioAdminSiNoExiste()
-        {
-            this.sut
-                .When(s =>
-                {
-                    s.CrearUsuarioAdminSiFaltaAsync().Wait();
-                })
-                .Then(e =>
-                {
-                    Assert.AreEqual(1, e.Count);
-                    Assert.AreEqual("admin", e.OfType<NuevoUsuarioCreado>().Single().Usuario);
+        //[TestMethod]
+        //public void SePuedeCrearElUsuarioAdminSiNoExiste()
+        //{
+        //    this.sut
+        //        .When(s =>
+        //        {
+        //            s.CrearUsuarioAdminSiFaltaAsync().Wait();
+        //        })
+        //        .Then(e =>
+        //        {
+        //            Assert.AreEqual(1, e.Count);
+        //            Assert.AreEqual("admin", e.OfType<NuevoUsuarioCreado>().Single().Usuario);
 
-                    var loginInfo = this.crypto.Deserialize<LoginInfo>(e.OfType<NuevoUsuarioCreado>().Single().LoginInfoEncriptado);
+        //            var loginInfo = this.crypto.Deserialize<LoginInfo>(e.OfType<NuevoUsuarioCreado>().Single().LoginInfoEncriptado);
 
-                    Assert.AreEqual(UsuariosConstants.DefaultPassword, loginInfo.Password);
-                });
-        }
+        //            Assert.AreEqual(UsuariosConstants.DefaultPassword, loginInfo.Password);
+        //        });
+        //}
 
         //[TestMethod]
         //public void SePuedeDetectarQueSiExisteElUsuarioAdminUnaVezCreado()

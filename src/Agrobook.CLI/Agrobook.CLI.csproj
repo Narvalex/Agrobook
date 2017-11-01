@@ -81,13 +81,13 @@
       <Project>{28d58658-f70e-4f16-9afe-ccbae661a992}</Project>
       <Name>Agrobook.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Agrobook.Common\Agrobook.Common.csproj">
+      <Project>{8194b76b-7583-48a8-a610-01efaded7417}</Project>
+      <Name>Agrobook.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Agrobook.Domain\Agrobook.Domain.csproj">
       <Project>{6B9AD205-891C-491A-9166-9B7996821C5D}</Project>
       <Name>Agrobook.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Agrobook.Infrastructure\Agrobook.Infrastructure.csproj">
-      <Project>{8194B76B-7583-48A8-A610-01EFADED7417}</Project>
-      <Name>Agrobook.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Eventing.Core\Eventing.Core.csproj">
       <Project>{d8a3116a-5c51-4a6f-b364-512948e5a792}</Project>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Archivos.Services
 {
-    public class ArchivosService : EventSourcedService
+    public class ArchivosService : EventSourcedHandler
     {
         private readonly IFileWriter fileWriter;
         private readonly ConcurrentDictionary<string, SemaphoreSlim> locks = new ConcurrentDictionary<string, SemaphoreSlim>();

@@ -1,7 +1,7 @@
 ﻿using Agrobook.Domain.Tests.Utils;
 using Agrobook.Domain.Usuarios;
-using Agrobook.Infrastructure.Cryptography;
-using Agrobook.Infrastructure.Serialization;
+using Agrobook.Common.Cryptography;
+using Agrobook.Common.Serialization;
 using Eventing.Core.Serialization;
 using Eventing.TestHelpers;
 

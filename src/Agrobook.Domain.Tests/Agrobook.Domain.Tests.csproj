@@ -70,20 +70,19 @@
     <Compile Include="Usuarios\OrganizacionesTests.cs" />
     <Compile Include="Usuarios\UsuariosServiceTestBase.cs" />
     <Compile Include="Usuarios\UsuariosTests.cs" />
-    <Compile Include="Utils\FakeSubscriberAndCheckpointRepo.cs" />
     <Compile Include="Utils\SnapshotExtensions.cs" />
     <Compile Include="Utils\TestFirma.cs" />
     <Compile Include="Utils\FakeOneWayEncryptor.cs" />
     <Compile Include="Utils\SimpleDateTimeProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Agrobook.Common\Agrobook.Common.csproj">
+      <Project>{8194b76b-7583-48a8-a610-01efaded7417}</Project>
+      <Name>Agrobook.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Agrobook.Domain\Agrobook.Domain.csproj">
       <Project>{6b9ad205-891c-491a-9166-9b7996821c5d}</Project>
       <Name>Agrobook.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Agrobook.Infrastructure\Agrobook.Infrastructure.csproj">
-      <Project>{8194b76b-7583-48a8-a610-01efaded7417}</Project>
-      <Name>Agrobook.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Eventing.Core\Eventing.Core.csproj">
       <Project>{d8a3116a-5c51-4a6f-b364-512948e5a792}</Project>

@@ -1,5 +1,7 @@
-﻿using Eventing.Log;
+﻿using Eventing.Core.Utils;
+using Eventing.Log;
 using EventStore.ClientAPI;
+using EventStore.ClientAPI.Projections;
 using EventStore.ClientAPI.SystemData;
 using System;
 using System.Diagnostics;
@@ -19,7 +21,7 @@ namespace Eventing.GetEventStore
         private readonly string args = "--db=./ESData --start-standard-projections=true --run-projections=all --stats-period-sec=86400";
 
         private readonly UserCredentials userCredentials;
-        private readonly IPEndPoint ipEndPoint;
+        private readonly IPEndPoint tcpIpEndpoint;
 
         private readonly string resilientConnectionNamePrefix;
         private readonly string failFastConnectionNamePrefix;
@@ -31,6 +33,7 @@ namespace Eventing.GetEventStore
 
         private IEventStoreConnection failFastConnection = null;
         private IEventStoreConnection resilientConnection = null;
+        private ProjectionsManager projectionsManager;
 
         private readonly object resilientConnectionLock = new object();
 
@@ -39,6 +42,7 @@ namespace Eventing.GetEventStore
             string defaultPassword = "changeit",
             string extIp = "127.0.0.1",
             int tcpPort = 1113,
+            int httpPort = 2113,
             string resilientConnectionNamePrefix = "anonymous-resilient",
             string failFastConnectionNamePrefix = "anonymous-fail-fast")
         {
@@ -48,13 +52,17 @@ namespace Eventing.GetEventStore
             Ensure.NotNullOrWhiteSpace(failFastConnectionNamePrefix, nameof(failFastConnectionNamePrefix));
             Ensure.NotNull(resilientConnectionNamePrefix, nameof(resilientConnectionNamePrefix));
 
-            this.args += $" --ext-ip={extIp}";
+            this.args += $" --ext-ip={extIp} --ext-tcp-port={tcpPort} --ext-http-port={httpPort}";
 
             this.userCredentials = new UserCredentials(defaultUserName, defaultPassword);
-            this.ipEndPoint = new IPEndPoint(IPAddress.Parse(extIp), tcpPort);
+            this.tcpIpEndpoint = new IPEndPoint(IPAddress.Parse(extIp), tcpPort);
 
             this.resilientConnectionNamePrefix = resilientConnectionNamePrefix;
             this.failFastConnectionNamePrefix = failFastConnectionNamePrefix;
+
+            this.projectionsManager = new ProjectionsManager(
+                new EventStoreLogAdapter(LogManager.GetLoggerFor<ProjectionsManager>()),
+                new IPEndPoint(IPAddress.Parse(extIp), httpPort), TimeSpan.FromSeconds(30));
         }
 
         public void CreateDbIfNotExists() => this.InitializeDb();
@@ -123,6 +131,22 @@ namespace Eventing.GetEventStore
             }
         }
 
+        public ProjectionsManager ProjectionManager => this.projectionsManager;
+
+        public UserCredentials UserCredentials => this.userCredentials;
+
+        public async Task WaitForEventStoreToBeReady()
+        {
+            var timeout = TimeSpan.FromSeconds(30);
+
+            var connection = await this.GetFailFastConnection();
+            var e = await RetryIfNeeded.This(timeout, this.log, "Waiting for tcp connection",
+                () => connection.ReadEventAsync("$streams", 0, false));
+
+            var projections = await RetryIfNeeded.This(timeout, this.log, "Waiting for http connection",
+                () => this.projectionsManager.ListContinuousAsync(this.userCredentials));
+        }
+
         private async Task EstablishFailFastConnectionAsync()
         {
             var settings =
@@ -132,7 +156,7 @@ namespace Eventing.GetEventStore
                 .SetDefaultUserCredentials(this.userCredentials)
                 .Build();
 
-            this.failFastConnection = EventStoreConnection.Create(settings, this.ipEndPoint, this.FormatConnectionName(this.failFastConnectionNamePrefix));
+            this.failFastConnection = EventStoreConnection.Create(settings, this.tcpIpEndpoint, this.FormatConnectionName(this.failFastConnectionNamePrefix));
             this.failFastConnection.Closed += async (s, e) => await this.EstablishFailFastConnectionAsync();
 
             await this.failFastConnection.ConnectAsync();
@@ -154,7 +178,7 @@ namespace Eventing.GetEventStore
                 .SetDefaultUserCredentials(this.userCredentials)
                 .Build();
 
-            this.resilientConnection = EventStoreConnection.Create(settings, this.ipEndPoint, this.FormatConnectionName(this.resilientConnectionNamePrefix));
+            this.resilientConnection = EventStoreConnection.Create(settings, this.tcpIpEndpoint, this.FormatConnectionName(this.resilientConnectionNamePrefix));
             this.resilientConnection.ConnectAsync().Wait();
         }
 

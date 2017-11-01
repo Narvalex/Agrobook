@@ -12,7 +12,7 @@ namespace Agrobook.Server
     /// </summary>
     public class WebApiStartup
     {
-        internal static Action OnAppDisposing { get; set; }
+        internal static Action OnAppDisposing { get; set; } = () => { };
 
         /// <summary>
         /// Required by Katana

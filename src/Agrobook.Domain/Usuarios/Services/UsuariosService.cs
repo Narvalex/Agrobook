@@ -3,7 +3,6 @@ using Agrobook.Domain.Common;
 using Agrobook.Domain.Usuarios.Login;
 using Agrobook.Domain.Usuarios.Services;
 using Eventing;
-using Eventing.Core.Domain;
 using Eventing.Core.Persistence;
 using Eventing.Core.Serialization;
 using System;
@@ -22,10 +21,11 @@ namespace Agrobook.Domain.Usuarios
     }
 
     // TODO: se podria implementar el sistema de clases parciales con esta super clase
-    public class UsuariosService : EventSourcedService, ITokenAuthorizationProvider, IProveedorDeFirmaDelUsuario
+    public class UsuariosService : EventSourcedHandler, ITokenAuthorizationProvider, IProveedorDeFirmaDelUsuario
     {
         private readonly IDateTimeProvider dateTime;
         private readonly IJsonSerializer cryptoSerializer;
+        private bool existeUsuarioAdmin = false;
 
         private readonly string adminAvatarUrl;
 
@@ -43,19 +43,6 @@ namespace Agrobook.Domain.Usuarios
             this.adminAvatarUrl = adminAvatarUrl;
             this.cryptoSerializer = cryptoSerializer;
             this.dateTime = dateTime;
-        }
-
-
-        public async Task CrearUsuarioAdminSiFaltaAsync()
-        {
-            if (await this.repository.Exists<Usuario>(UsuarioAdmin))
-                return;
-
-            var admin = new Usuario();
-            var loginInfo = new LoginInfo(UsuarioAdmin, DefaultPassword, new string[] { ClaimDef.Roles.Admin });
-            var encryptedLoginInfo = this.EncriptarLoginInfo(loginInfo);
-            admin.Emit(new NuevoUsuarioCreado(new Firma("system", this.dateTime.Now), UsuarioAdmin, UsuarioAdmin, this.adminAvatarUrl, encryptedLoginInfo));
-            await this.repository.SaveAsync(admin);
         }
 
         public Firma ObtenerFirmaDelUsuario(string token)
@@ -139,6 +126,8 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task<LoginResult> HandleAsync(IniciarSesion cmd)
         {
+            await this.CrearUsuarioAdminSiFaltaAsync();
+
             var usuario = await this.repository.GetByIdAsync<Usuario>(cmd.Usuario);
             if (usuario is null) return LoginResult.Failed;
             LoginInfo loginInfo = this.ExtraerElLoginInfo(usuario);
@@ -330,7 +319,23 @@ namespace Agrobook.Domain.Usuarios
             return true;
         }
 
-        #region Helpers
+        private async Task CrearUsuarioAdminSiFaltaAsync()
+        {
+            if (this.existeUsuarioAdmin) return;
+            if (await this.repository.Exists<Usuario>(UsuarioAdmin))
+            {
+                this.existeUsuarioAdmin = true;
+                return;
+            }
+
+            var admin = new Usuario();
+            var loginInfo = new LoginInfo(UsuarioAdmin, DefaultPassword, new string[] { ClaimDef.Roles.Admin });
+            var encryptedLoginInfo = this.EncriptarLoginInfo(loginInfo);
+            admin.Emit(new NuevoUsuarioCreado(new Firma("system", this.dateTime.Now), UsuarioAdmin, UsuarioAdmin, this.adminAvatarUrl, encryptedLoginInfo));
+            await this.repository.SaveAsync(admin);
+            this.existeUsuarioAdmin = true;
+        }
+
         private string EncriptarLoginInfo(LoginInfo loginInfo)
         {
             var encriptado = this.cryptoSerializer.Serialize(loginInfo);
@@ -384,6 +389,5 @@ namespace Agrobook.Domain.Usuarios
             }
             return autorizado;
         }
-        #endregion
     }
 }

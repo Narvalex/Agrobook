@@ -92,9 +92,10 @@
     <Compile Include="Ap\Services\ApService.cs" />
     <Compile Include="Ap\Services\ApService.Productores.cs" />
     <Compile Include="Ap\Services\ApService.Servicios.cs" />
-    <Compile Include="Ap\Services\ApService.ServiciosSec.cs" />
+    <Compile Include="Ap\Subscribers\NumeracionDeServiciosEventHandler.cs" />
+    <Compile Include="Ap\Services\NumeradorDeServiciosCommandHandler.cs" />
     <Compile Include="Ap\Servicio.cs" />
-    <Compile Include="Ap\ServicioSec.cs" />
+    <Compile Include="Ap\NumeracionDeServicios.cs" />
     <Compile Include="Ap\ServicioSecSnapshot.cs" />
     <Compile Include="Ap\ServicioSnapshot.cs" />
     <Compile Include="Archivos\Messages\ArchivosCommands.cs" />
@@ -110,6 +111,9 @@
     <Compile Include="Archivos\Services\FileWriter.cs" />
     <Compile Include="Archivos\Services\IFileWriter.cs" />
     <Compile Include="Common\DbContext\AgrobookDbContext.cs" />
+    <Compile Include="Common\EventSourcedHandler.cs" />
+    <Compile Include="Common\IEvent.cs" />
+    <Compile Include="Common\NoOpSqlDenormalizer.cs" />
     <Compile Include="Common\SqlDenormalizer.cs" />
     <Compile Include="Common\AgrobookQueryService.cs" />
     <Compile Include="Common\DbContext\ContratosDbContext.cs" />
@@ -150,9 +154,9 @@
     <None Include="Properties\DataSources\ParcelaEntity.datasource" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Agrobook.Infrastructure\Agrobook.Infrastructure.csproj">
+    <ProjectReference Include="..\Agrobook.Common\Agrobook.Common.csproj">
       <Project>{8194b76b-7583-48a8-a610-01efaded7417}</Project>
-      <Name>Agrobook.Infrastructure</Name>
+      <Name>Agrobook.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Eventing.Core\Eventing.Core.csproj">
       <Project>{d8a3116a-5c51-4a6f-b364-512948e5a792}</Project>

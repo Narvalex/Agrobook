@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Agrobook.Server
 {
@@ -16,6 +17,17 @@ namespace Agrobook.Server
             CTRL_CLOSE_EVENT = 2,
             CTRL_LOGOFF_EVENT = 5,
             CTRL_SHUTDOWN_EVENT = 6
+        }
+
+        internal static void OnProgramExit(Action onExit)
+        {
+            SetConsoleCtrlHandler(signal =>
+            {
+                onExit();
+                // Shutdown right away
+                Environment.Exit(-1);
+                return true;
+            }, true);
         }
     }
 }

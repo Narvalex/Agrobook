@@ -55,10 +55,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Messaging\EventProcessor.cs" />
+    <Compile Include="Messaging\EventProcessorExtensions.cs" />
     <Compile Include="Messaging\IEventHandler.cs" />
     <Compile Include="Persistence\EventSourcedReaderExtensions.cs" />
     <Compile Include="Domain\EventSourced.cs" />
-    <Compile Include="Domain\EventSourcedService.cs" />
     <Compile Include="Domain\IEventSourced.cs" />
     <Compile Include="Persistence\IEventSourcedReader.cs" />
     <Compile Include="Persistence\IEventSourcedRepository.cs" />

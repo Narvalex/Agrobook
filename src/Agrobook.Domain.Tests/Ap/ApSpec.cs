@@ -10,7 +10,7 @@ namespace Agrobook.Domain.Tests.Ap
 
         public ApSpec()
         {
-            this.sut = new TestableEventSourcedService<ApService>(r => new ApService(r, new FakeSubscriber(), new FakeCheckpointRepository(), new SimpleDateTimeProvider()));
+            this.sut = new TestableEventSourcedService<ApService>(r => new ApService(r, new SimpleDateTimeProvider()));
         }
     }
 }

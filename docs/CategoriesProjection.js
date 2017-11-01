@@ -4,6 +4,7 @@ fromStream('$streams')
         return []
     },
     $any: function (s, e) {
+        if (e.streamId === undefined) return;
         var category = e.streamId.split("-")[0];
 
         if (s.includes(category))
@@ -12,20 +13,3 @@ fromStream('$streams')
         s.push(category);
     }
 })
-
-
-fromAll()
-    .when({
-        $init: function () {
-            return { eventCount: 0, categories: [] }
-        },
-        $any: function (s, e) {
-            s.eventCount++;
-            var category = e.streamId.split("-")[0];
-
-            if (s.categories.includes(category))
-                return;
-
-            s.categories.push(category);
-        }
-    })

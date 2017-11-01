@@ -3,8 +3,7 @@ using Agrobook.Client.Archivos;
 using Agrobook.Client.Login;
 using Agrobook.Client.Usuarios;
 using Agrobook.Common;
-using Agrobook.Infrastructure;
-using Agrobook.Infrastructure.IoC;
+using Agrobook.Common.IoC;
 using Eventing.Client.Http;
 using Eventing.Core.Serialization;
 

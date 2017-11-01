@@ -7,5 +7,6 @@ namespace Agrobook.Server.Ap
     public partial class ApController : ApiController
     {
         private readonly ApService service = ServiceLocator.ResolveSingleton<ApService>();
+        private readonly NumeradorDeServiciosCommandHandler numeradorDeServicios = ServiceLocator.ResolveSingleton<NumeradorDeServiciosCommandHandler>();
     }
 }

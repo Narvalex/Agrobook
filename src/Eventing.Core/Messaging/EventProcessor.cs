@@ -37,7 +37,7 @@ namespace Eventing.Core.Messaging
             var supportedEventTypes = handler.GetType()
                 .GetInterfaces()
                 .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == genericHandler)
-                .Select(i => i.GetGenericArguments()[1])
+                .Select(i => i.GetGenericArguments()[0])
                 .ToList();
 
             if (this.handlersByType.Keys.Any(registeredType => supportedEventTypes.Contains(registeredType)))
@@ -73,6 +73,7 @@ namespace Eventing.Core.Messaging
                 if (this.started)
                 {
                     this.subscription.Stop();
+                    // No need to remove the listener. The subscription will stop receiving events anyway.
                     this.started = false;
                 }
             }

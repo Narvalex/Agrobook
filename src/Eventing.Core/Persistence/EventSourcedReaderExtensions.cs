@@ -60,10 +60,10 @@ namespace Eventing.Core.Persistence
             private readonly IEventSourcedReader reader;
             private readonly List<string> streams = new List<string>();
 
-            internal BulkExistenceChecker(IEventSourcedReader reader, string streamId)
+            internal BulkExistenceChecker(IEventSourcedReader reader, string streamName)
             {
                 this.reader = reader;
-                this.streams.Add(streamId);
+                this.streams.Add(streamName);
             }
 
             public BulkExistenceChecker And<T>(string streamId)

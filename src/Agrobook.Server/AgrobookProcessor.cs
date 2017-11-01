@@ -1,7 +1,6 @@
-﻿using Agrobook.Domain;
+﻿using Agrobook.Common.Persistence;
+using Agrobook.Domain;
 using Agrobook.Domain.Archivos.Services;
-using Agrobook.Domain.Usuarios;
-using Agrobook.Infrastructure.Persistence;
 using Eventing;
 using Eventing.Core.Messaging;
 using Eventing.GetEventStore;
@@ -11,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Threading;
 
 namespace Agrobook.Server
 {
@@ -27,6 +25,14 @@ namespace Agrobook.Server
 
         public AgrobookProcessor(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                if (e.ExceptionObject is Exception)
+                    this.log.Error((Exception)e.ExceptionObject, "Ocurrió un error no manejado");
+                else
+                    this.log.Error("Ocurrió un error no manejado desconocido");
+            };
+
 #if DEBUG
             this.dropDb = args.Any(x => x == this.dropDbParam);
 #endif
@@ -38,8 +44,8 @@ namespace Agrobook.Server
         {
             this.InitializePersistenceEngines();
             this.InitializeWebServer();
+            this.WaitForEventStoreToBeReady();
             this.processors.ForEach(p => p.Start());
-            this.CheckDefaultAdminUser();
         }
 
         public void Stop()
@@ -117,45 +123,15 @@ namespace Agrobook.Server
             this.log.Success($"Web server is ready! Server running at {serverUrl}");
         }
 
-        private void CheckDefaultAdminUser()
+        private void WaitForEventStoreToBeReady()
         {
-            var tryCount = 0;
-            var maxRetries = 10;
-            var usuariosService = ServiceLocator.ResolveSingleton<UsuariosService>();
-            var sigaIntentando = true;
-            do
-            {
-                try
-                {
-                    usuariosService.CrearUsuarioAdminSiFaltaAsync().Wait();
-                    sigaIntentando = false;
-                }
-                catch (Exception ex)
-                {
-                    tryCount++;
-                    this.log.Warning($"Error al verificar usuario admin. {ex.Message}. Intento {tryCount} de {maxRetries}");
-                    if (tryCount >= maxRetries)
-                        throw;
-                    Thread.Sleep(1000 * tryCount);
-                }
-            } while (sigaIntentando);
-        }
-
-        private void SetGlobalExceptionHandler()
-        {
-            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
-            {
-                if (e.ExceptionObject is Exception)
-                    this.log.Error((Exception)e.ExceptionObject, "Ocurrió un error no manejado");
-                else
-                    this.log.Error("Ocurrió un error no manejado desconocido");
-            };
+            var esm = ServiceLocator.ResolveSingleton<EventStoreManager>();
+            esm.WaitForEventStoreToBeReady().Wait();
         }
 
         public void Dispose()
         {
-            ServiceLocator.ResolveSingleton<EventStoreManager>()
-                .TearDown();
+            ServiceLocator.ResolveSingleton<EventStoreManager>().TearDown();
             ServiceLocator.TearDown();
         }
     }

@@ -9,6 +9,12 @@ using System.Threading;
 
 namespace Eventing.GetEventStore.Messaging
 {
+    /// <summary>
+    /// A subscription that receives events from the EventStore and passes to a listener or consumer.
+    /// </summary>
+    /// <remarks>
+    /// We cannot subscribe to all because it will be forever receiving events from checkpoints being written.
+    /// </remarks>
     public class EventStoreSubscription : IEventSubscription, IDisposable
     {
         private ILogLite log = LogManager.GetLoggerFor<EventStoreSubscription>();
@@ -33,12 +39,22 @@ namespace Eventing.GetEventStore.Messaging
 
         private Action<long, object> listener;
 
-        public EventStoreSubscription(IEventStoreConnection resilientConnection, IJsonSerializer serializer, string streamName, string subscriptionId, Func<long?> externalCheckpointSource = null)
+        private ProjectionDefinition projectionDefinition = null;
+
+        /// <summary>
+        /// Inializes a new instance of the <see cref="EventStoreSubscription"/> class.
+        /// </summary>
+        /// <param name="streamName">The specific event stream from which events will be received.</param>
+        /// <param name="subscriptionId">The identifier of the subscription, useful for logging and to store checkpoints if applicable.</para
+        /// <param name="resilientConnection">The resilient connection to the EventStore database.</param>
+        /// <param name="serializer">The serializer to use for the event body.</param>
+        /// <param name="externalCheckpointSource">The source of the checkpoints. If the value is null, then the EventStore will be the source of the checkpoint.</param>
+        public EventStoreSubscription(string streamName, string subscriptionId, IEventStoreConnection resilientConnection, IJsonSerializer serializer, Func<long?> externalCheckpointSource = null)
         {
             Ensure.NotNull(resilientConnection, nameof(resilientConnection));
-            Ensure.NotNullOrWhiteSpace(streamName, nameof(streamName));
             Ensure.NotNullOrWhiteSpace(subscriptionId, nameof(subscriptionId));
             Ensure.NotNull(serializer, nameof(serializer));
+            Ensure.NotNullOrWhiteSpace(streamName, nameof(streamName));
 
             this.resilientConnection = resilientConnection;
             this.streamName = streamName;
@@ -56,6 +72,26 @@ namespace Eventing.GetEventStore.Messaging
             }
         }
 
+        /// <summary>
+        /// Inializes a new instance of the <see cref="EventStoreSubscription"/> class.
+        /// </summary>
+        /// <remarks>
+        /// There is a problem to subscribe to all events. When the subscription persists checkpoints in the EventStore, the subscription will receive those events that 
+        /// will end up filling all available storage.
+        /// </remarks>
+        /// <param name="streamName">The specific event stream from which events will be received.</param>
+        /// <param name="subscriptionId">The identifier of the subscription, useful for logging and to store checkpoints if applicable.</para
+        /// <param name="resilientConnection">The resilient connection to the EventStore database.</param>
+        /// <param name="serializer">The serializer to use for the event body.</param>
+        /// <param name="externalCheckpointSource">The source of the checkpoints. If the value is null, then the EventStore will be the source of the checkpoint.</param>
+        public EventStoreSubscription(ProjectionDefinition projectionDefinition, string subscriptionId, IEventStoreConnection resilientConnection, IJsonSerializer serializer, Func<long?> externalCheckpointSource = null)
+            : this(projectionDefinition.EmittedStream, subscriptionId, resilientConnection, serializer, externalCheckpointSource)
+        {
+            Ensure.NotNull(projectionDefinition, nameof(projectionDefinition));
+
+            this.projectionDefinition = projectionDefinition;
+        }
+
         public void Start()
         {
             lock (this.lockObject)
@@ -63,6 +99,7 @@ namespace Eventing.GetEventStore.Messaging
                 if (this.cancellationSource == null)
                 {
                     this.cancellationSource = new CancellationTokenSource();
+                    if (this.projectionDefinition != null) this.projectionDefinition.EnsureExistence().Wait();
                     this.log.Info($"Starting subscription {this.subscriptionId} from {this.streamName} at" + (!this.currentCheckpoint.HasValue ? " the beginning" : $" checkpoint {this.currentCheckpoint}"));
                     this.DoStart();
                 }
@@ -94,50 +131,54 @@ namespace Eventing.GetEventStore.Messaging
         {
             this.ResolveCurrentCheckpoint();
             this.subscription = this.resilientConnection.SubscribeToStreamFrom(this.streamName, this.currentCheckpoint, CatchUpSubscriptionSettings.Default,
-                   (sub, eventAppeared) =>
-                   {
-                       var newCheckpoint = eventAppeared.OriginalEventNumber;
-                       var deserialized = this.Deserialize(eventAppeared);
-                       this.listener.Invoke(newCheckpoint, deserialized);
-                       this.currentCheckpoint = newCheckpoint;
-                       if (!this.hasExternalCheckpointSource)
-                           this.PersistCurrentCheckpoint();
-                   },
-                   sub => this.log.Verbose(
-                       $"The subscription {this.subscriptionId} of {this.streamName} has caught-up on" + (this.currentCheckpoint.HasValue ? $" checkpoint {this.currentCheckpoint}!" : " the very beginning!")),
-                   (sub, reason, ex) =>
-                   {
-                       // See here: https://groups.google.com/forum/#!searchin/event-store/subscription/event-store/AdKzv8TxabM/6RzudeuAAgAJ
+                onEventApeared, onLive, onError);
 
-                       if (reason == SubscriptionDropReason.UserInitiated) return;
+            void onEventApeared(EventStoreCatchUpSubscription sub, ResolvedEvent eventAppeared)
+            {
+                var newCheckpoint = eventAppeared.OriginalEventNumber;
+                var deserialized = this.Deserialize(eventAppeared);
+                this.listener.Invoke(newCheckpoint, deserialized);
+                this.currentCheckpoint = newCheckpoint;
+                if (!this.hasExternalCheckpointSource)
+                    this.PersistCurrentCheckpoint();
+            }
 
-                       if (reason == SubscriptionDropReason.ConnectionClosed || reason == SubscriptionDropReason.CatchUpError)
-                       {
-                           var seconds = 3;
-                           var chkp = this.currentCheckpoint.HasValue ? this.currentCheckpoint : -1;
-                           var message = $"The subscription {this.subscriptionId} of {this.streamName} stopped because of {reason} on checkpoint {chkp}. Restarting in {seconds} seconds.";
-                           if (reason == SubscriptionDropReason.ConnectionClosed)
-                               this.log.Info(message);
-                           else if (reason == SubscriptionDropReason.CatchUpError && ex is NotAuthenticatedException)
-                           {
-                               seconds = 2;
-                               message = $"The connection was not authenticated yet. If this persist you should check the credentianls. The subscription {this.subscriptionId} of {this.streamName} stopped on checkpoint {chkp}. Retrying in {seconds} seconds.";
-                               this.log.Warning(message);
-                           }
-                           else
-                               this.log.Error(ex, message);
+            void onLive(EventStoreCatchUpSubscription sub)
+                => this.log.Verbose($"The subscription {this.subscriptionId} of {this.streamName} has caught-up on" + (this.currentCheckpoint.HasValue ? $" checkpoint {this.currentCheckpoint}!" : " the very beginning!"));
 
-                           this.subscription.Stop();
-                           Thread.Sleep(TimeSpan.FromSeconds(seconds));
-                           this.log.Info($"Restarting subscription {this.subscriptionId} of {this.streamName} on checkpoint {chkp}");
-                           this.DoStart();
-                           return;
-                       }
+            void onError(EventStoreCatchUpSubscription sub, SubscriptionDropReason reason, Exception ex)
+            {
+                // See here: https://groups.google.com/forum/#!searchin/event-store/subscription/event-store/AdKzv8TxabM/6RzudeuAAgAJ
 
-                       // This should be handled better
-                       this.Stop();
-                       throw ex;
-                   });
+                if (reason == SubscriptionDropReason.UserInitiated) return;
+
+                if (reason == SubscriptionDropReason.ConnectionClosed || reason == SubscriptionDropReason.CatchUpError)
+                {
+                    var seconds = 3;
+                    var chkp = this.currentCheckpoint.HasValue ? this.currentCheckpoint : -1;
+                    var message = $"The subscription {this.subscriptionId} of {this.streamName} stopped because of {reason} on checkpoint {chkp}. Restarting in {seconds} seconds.";
+                    if (reason == SubscriptionDropReason.ConnectionClosed)
+                        this.log.Info(message);
+                    else if (reason == SubscriptionDropReason.CatchUpError && ex is NotAuthenticatedException)
+                    {
+                        seconds = 2;
+                        message = $"The connection was not authenticated yet. If this persist you should check the credentianls. The subscription {this.subscriptionId} of {this.streamName} stopped on checkpoint {chkp}. Retrying in {seconds} seconds.";
+                        this.log.Warning(message);
+                    }
+                    else
+                        this.log.Error(ex, message);
+
+                    this.subscription.Stop();
+                    Thread.Sleep(TimeSpan.FromSeconds(seconds));
+                    this.log.Info($"Restarting subscription {this.subscriptionId} of {this.streamName} on checkpoint {chkp}");
+                    this.DoStart();
+                    return;
+                }
+
+                // This should be handled better
+                this.Stop();
+                throw ex;
+            }
         }
 
         private void ResolveCurrentCheckpoint()
