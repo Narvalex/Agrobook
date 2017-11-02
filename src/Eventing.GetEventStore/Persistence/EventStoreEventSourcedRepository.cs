@@ -3,7 +3,6 @@ using Eventing.Core.Persistence;
 using Eventing.Core.Serialization;
 using EventStore.ClientAPI;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -136,13 +135,7 @@ namespace Eventing.GetEventStore.Persistence
         {
             var eventId = Guid.NewGuid();
 
-            var eventHeaders = new KeyValuePair<string, string>[]
-            {
-                new KeyValuePair<string, string>("commitId", commitId.ToString()),
-                new KeyValuePair<string, string>("eventId", eventId.ToString())
-            };
-
-            var metadataBytes = Encoding.UTF8.GetBytes(this.serializer.Serialize(eventHeaders));
+            var metadataBytes = Encoding.UTF8.GetBytes($"{{\"commitId\":\"{commitId}\",\"eventId\":\"{eventId}\"}}");
             var dataBytes = Encoding.UTF8.GetBytes(this.serializer.Serialize(@event));
 
             var eventType = @event.GetType().Name.WithFirstCharInLower();
