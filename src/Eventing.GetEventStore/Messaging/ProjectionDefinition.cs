@@ -50,7 +50,6 @@ namespace Eventing.GetEventStore.Messaging
             {
                 persistedScript = await this.manager.GetQueryAsync(this.projectionName, this.credentials);
                 existeLaProyeccion = true;
-                this.logger.Verbose($"The projection {this.projectionName} was found. Updating if needed..");
             }
             catch (ProjectionCommandFailedException ex)
             {
@@ -58,15 +57,24 @@ namespace Eventing.GetEventStore.Messaging
                 {
                     existeLaProyeccion = false;
                     persistedScript = null;
-                    this.logger.Verbose($"The projection {this.projectionName} was NOT FOUND. Creating projection...");
                 }
                 else throw;
             }
 
+
             if (existeLaProyeccion && this.projectionScript != persistedScript)
+            {
+                this.logger.Info($"The projection {this.projectionName} was found but a new version is available. Updating now...");
                 await this.manager.UpdateQueryAsync(this.projectionName, this.projectionScript, credentials);
+                this.logger.Success($"The projection {this.projectionName} was successfully updated!");
+            }
             else if (!existeLaProyeccion)
+            {
+                this.logger.Verbose($"The projection {this.projectionName} was NOT FOUND. Creating projection...");
                 await this.manager.CreateContinuousAsync(this.projectionName, this.projectionScript, credentials);
+            }
+            else
+                this.logger.Verbose($"The projection {this.projectionName} was found and is up to date!");
 
             await this.manager.EnableAsync(this.projectionName, credentials);
 
@@ -75,7 +83,7 @@ namespace Eventing.GetEventStore.Messaging
 
         private static string buildScript(string emittedStream, List<string> streams)
         {
-            var streamsInString = streams.Aggregate(string.Empty, (acumulado, stringActual) => $"'{stringActual}',");
+            var streamsInString = streams.Aggregate(string.Empty, (acumulado, stringActual) => $"{acumulado}'{stringActual}',");
             return $"fromStreams([{streamsInString}]).when({{'$any':function(s, e) {{linkTo('{emittedStream}', e);}}}});";
         }
     }

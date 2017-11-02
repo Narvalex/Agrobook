@@ -21,7 +21,7 @@ namespace Agrobook.Server
 #endif
         private readonly ILogLite log = LogManager.GetLoggerFor<AgrobookProcessor>();
 
-        private readonly List<EventProcessor> processors;
+        private readonly List<EventProcessor> eventProcessors;
 
         public AgrobookProcessor(string[] args)
         {
@@ -37,7 +37,7 @@ namespace Agrobook.Server
             this.dropDb = args.Any(x => x == this.dropDbParam);
 #endif
             ServiceLocator.Initialize();
-            this.processors = ServiceLocator.ResolveSingleton<List<EventProcessor>>();
+            this.eventProcessors = ServiceLocator.ResolveSingleton<List<EventProcessor>>();
         }
 
         public void Start()
@@ -45,12 +45,12 @@ namespace Agrobook.Server
             this.InitializePersistenceEngines();
             this.InitializeWebServer();
             this.WaitForEventStoreToBeReady();
-            this.processors.ForEach(p => p.Start());
+            this.eventProcessors.ForEach(p => p.Start());
         }
 
         public void Stop()
         {
-            this.processors.ForEach(p => p.Stop());
+            this.eventProcessors.ForEach(p => p.Stop());
         }
 
         private void InitializePersistenceEngines()
@@ -125,8 +125,10 @@ namespace Agrobook.Server
 
         private void WaitForEventStoreToBeReady()
         {
+            this.log.Verbose("Waiting for EventStore...");
             var esm = ServiceLocator.ResolveSingleton<EventStoreManager>();
             esm.WaitForEventStoreToBeReady().Wait();
+            this.log.Success("EventStore is ready!");
         }
 
         public void Dispose()

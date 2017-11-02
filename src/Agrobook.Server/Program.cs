@@ -15,7 +15,7 @@ namespace Agrobook.Server
                 string line;
                 do
                 {
-                    Console.WriteLine("Type exit to shut down");
+                    Console.WriteLine("=> Type 'exit' to shut down");
                     line = Console.ReadLine();
                 }
                 while (!line.Equals("exit", StringComparison.InvariantCultureIgnoreCase));

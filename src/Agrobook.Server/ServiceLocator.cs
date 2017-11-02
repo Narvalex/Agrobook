@@ -7,6 +7,7 @@ using Agrobook.Domain;
 using Agrobook.Domain.Ap;
 using Agrobook.Domain.Ap.Denormalizers;
 using Agrobook.Domain.Ap.Services;
+using Agrobook.Domain.Archivos;
 using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Common;
 using Agrobook.Domain.Usuarios;
@@ -141,6 +142,11 @@ namespace Agrobook.Server
 
             var appReadModelProjectionDef = ProjectionDefinition.New(subStream, subStream, esm.ProjectionManager, esm.UserCredentials)
                 .From<Usuario>()
+                .And<Organizacion>()
+                .And<Contrato>()
+                .And<Productor>()
+                .And<Servicio>()
+                .And<ColeccionDeArchivos>()
                 .AndNothingMore();
 
             var appReadModelSubscription = new EventStoreSubscription(appReadModelProjectionDef, subId, esm.ResilientConnection, jsonSerializer, () => efCheckpointProvider.GetCheckpoint(subId));
@@ -163,6 +169,7 @@ namespace Agrobook.Server
                     StreamCategoryAttribute.GetCategoryProjectionStream<NumeracionDeServicios>(),
                     "numeracionDeServiciosEventHandler", esm.ResilientConnection, jsonSerializer);
             var numeracionDeServiciosEventHandler = new EventProcessor(numeracionDeServiciosSubscription);
+            numeracionDeServiciosEventHandler.Register(new NumeracionDeServiciosEventHandler(eventSourcedRepository, apService));
             procesors.Add(numeracionDeServiciosEventHandler);
 
             container.Register<List<EventProcessor>>(procesors);
