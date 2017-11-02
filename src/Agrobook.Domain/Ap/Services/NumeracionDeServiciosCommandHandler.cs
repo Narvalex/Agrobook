@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Ap.Services
 {
-    public class NumeradorDeServiciosCommandHandler : EventSourcedHandler
+    public class NumeracionDeServiciosCommandHandler : EventSourcedHandler
     {
-        public NumeradorDeServiciosCommandHandler(IEventSourcedRepository repository) : base(repository)
+        public NumeracionDeServiciosCommandHandler(IEventSourcedRepository repository) : base(repository)
         {
         }
 

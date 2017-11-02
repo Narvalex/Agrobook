@@ -28,14 +28,8 @@ namespace Agrobook.Domain.Ap.Services
                 return;
             }
 
-            this.apService.AsegurarQueElContratoOLaAdendaSeanValidos(e.EsAdenda, e.IdContrato, e.IdContratoDeLaAdenda).Wait();
-
-            var servicio = new Servicio();
-
-            servicio.Emit(new NuevoServicioRegistrado(
-                e.Firma, e.IdServicio, e.IdProd, e.IdOrg, e.IdContrato, e.EsAdenda, e.IdContratoDeLaAdenda, e.Fecha));
-
-            this.repository.SaveAsync(servicio).Wait();
+            var cmd = new ProcesarRegistroDeServicioPendiente(e);
+            this.apService.HandleAsync(cmd).Wait();
         }
     }
 }

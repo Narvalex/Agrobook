@@ -10,12 +10,12 @@ namespace Agrobook.Domain.Ap.Services
         public async Task<string> HandleAsync(RegistrarParcela cmd)
         {
             // we dont trust user input...
-            var idProductor = cmd.IdProductor.ToTrimmedAndWhiteSpaceless();
-
+            var idProductor = cmd.IdProductor;
             var productor = await this.repository.GetByIdAsync<Productor>(idProductor);
             if (productor is null)
             {
                 productor = new Productor();
+                idProductor = await ApIdProvider.ValidarNuevoIdParaProductor(idProductor, this.repository);
                 productor.Emit(new NuevoProductorRegistrado(cmd.Firma, idProductor));
             }
 

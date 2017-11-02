@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ap\ApIdProvider.cs" />
     <Compile Include="Ap\Contrato.cs" />
     <Compile Include="Ap\ContratoSnapshot.cs" />
     <Compile Include="Ap\Denormalizers\ContratosDenormalizer.cs" />
@@ -81,8 +82,8 @@
     <Compile Include="Ap\Messages\ProductorCommands.cs" />
     <Compile Include="Ap\Messages\ProductorEvents.cs" />
     <Compile Include="Ap\Messages\ServicioCommands.cs" />
-    <Compile Include="Ap\Messages\ServicioSecCommands.cs" />
-    <Compile Include="Ap\Messages\ServicioSecEvents.cs" />
+    <Compile Include="Ap\Messages\NumeracionDeServiciosCommands.cs" />
+    <Compile Include="Ap\Messages\NumeracionDeServiciosEvents.cs" />
     <Compile Include="Ap\Messages\ServicioEvents.cs" />
     <Compile Include="Ap\Productor.cs" />
     <Compile Include="Ap\ProductorSnapshot.cs" />
@@ -93,11 +94,12 @@
     <Compile Include="Ap\Services\ApService.Productores.cs" />
     <Compile Include="Ap\Services\ApService.Servicios.cs" />
     <Compile Include="Ap\Subscribers\NumeracionDeServiciosEventHandler.cs" />
-    <Compile Include="Ap\Services\NumeradorDeServiciosCommandHandler.cs" />
+    <Compile Include="Ap\Services\NumeracionDeServiciosCommandHandler.cs" />
     <Compile Include="Ap\Servicio.cs" />
     <Compile Include="Ap\NumeracionDeServicios.cs" />
     <Compile Include="Ap\ServicioSecSnapshot.cs" />
     <Compile Include="Ap\ServicioSnapshot.cs" />
+    <Compile Include="Archivos\ColeccionDeArchivosIdProvider.cs" />
     <Compile Include="Archivos\Messages\ArchivosCommands.cs" />
     <Compile Include="Archivos\Messages\ArchivosEvents.cs" />
     <Compile Include="Archivos\ColeccionDeArchivos.cs" />
@@ -135,6 +137,7 @@
     <Compile Include="Usuarios\Services\OrganizacionesQueryService.cs" />
     <Compile Include="Common\DbContext\UsuariosDbContext.cs" />
     <Compile Include="Usuarios\Denormalizers\UsuariosDenormalizer.cs" />
+    <Compile Include="Usuarios\UsuarioIdProvider.cs" />
     <Compile Include="Usuarios\Services\UsuariosQueryService.cs" />
     <Compile Include="Usuarios\Services\UsuariosQueryServiceDTOs.cs" />
     <Compile Include="Usuarios\Services\UsuariosService.cs" />

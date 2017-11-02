@@ -114,13 +114,12 @@ namespace Agrobook.Domain.Usuarios
 
         public async Task HandleAsync(CrearNuevoUsuario cmd)
         {
-            if (cmd.Usuario.Contains(' '))
-                throw new ArgumentException("El nombre de usuario no debe contener espacios en blanco");
+            var idUsuarioValidado = UsuarioIdProvider.ValidarElNombreDeUsuario(cmd.Usuario);
 
             var state = new Usuario();
-            var loginInfo = new LoginInfo(cmd.Usuario, cmd.PasswordCrudo, cmd.Claims ?? new string[] { ClaimDef.Roles.Invitado });
+            var loginInfo = new LoginInfo(idUsuarioValidado, cmd.PasswordCrudo, cmd.Claims ?? new string[] { ClaimDef.Roles.Invitado });
             var eLoginInfo = this.EncriptarLoginInfo(loginInfo);
-            state.Emit(new NuevoUsuarioCreado(cmd.Firma, cmd.Usuario, cmd.NombreParaMostrar, cmd.AvatarUrl, eLoginInfo));
+            state.Emit(new NuevoUsuarioCreado(cmd.Firma, idUsuarioValidado, cmd.NombreParaMostrar, cmd.AvatarUrl, eLoginInfo));
             await this.repository.SaveAsync(state);
         }
 
@@ -225,7 +224,7 @@ namespace Agrobook.Domain.Usuarios
             var organizacion = new Organizacion();
 
             var nombreFormateadoParaDisplay = cmd.NombreCrudo.Trim();
-            var nombreFormateadoParaId = cmd.NombreCrudo.ToTrimmedAndWhiteSpaceless().ToLowerInvariant();
+            var nombreFormateadoParaId = UsuarioIdProvider.ObtenerIdOrganizacionAPartirDelNombre(cmd.NombreCrudo);
 
             organizacion.Emit(new NuevaOrganizacionCreada(cmd.Firma, nombreFormateadoParaId, nombreFormateadoParaDisplay));
 

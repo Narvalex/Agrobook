@@ -8,6 +8,19 @@ namespace Agrobook.Domain.Ap.Services
 {
     public partial class ApService
     {
+        internal async Task HandleAsync(ProcesarRegistroDeServicioPendiente cmd)
+        {
+            var e = cmd.RegistroPendiente;
+            await this.AsegurarQueElContratoOLaAdendaSeanValidos(e.EsAdenda, e.IdContrato, e.IdContratoDeLaAdenda);
+
+            var servicio = new Servicio();
+
+            servicio.Emit(new NuevoServicioRegistrado(
+                e.Firma, e.IdServicio, e.IdProd, e.IdOrg, e.IdContrato, e.EsAdenda, e.IdContratoDeLaAdenda, e.Fecha));
+
+            await this.repository.SaveAsync(servicio);
+        }
+
         public async Task HandleAsync(EditarDatosBasicosDelSevicio cmd)
         {
             await this.repository.EnsureExistence<Organizacion>(cmd.IdOrg);
@@ -78,7 +91,7 @@ namespace Agrobook.Domain.Ap.Services
         /// <summary>
         /// Se asegura que el contrato o la adenda sean validos. Si no son válidos lanza un <see cref="InvalidOperationException"/>.
         /// </summary>
-        public async Task AsegurarQueElContratoOLaAdendaSeanValidos(bool esAdenda, string idContrato, string idContratoDeLaAdenda)
+        private async Task AsegurarQueElContratoOLaAdendaSeanValidos(bool esAdenda, string idContrato, string idContratoDeLaAdenda)
         {
             // Verificamos que exista el contrato
             var contrato = await this.repository.GetOrFailByIdAsync<Contrato>(esAdenda ? idContratoDeLaAdenda : idContrato);

@@ -126,8 +126,8 @@ namespace Agrobook.Server
             var apService = new ApService(eventSourcedRepository, dateTimeProvider);
             container.Register<ApService>(apService);
 
-            var numeradorDeServicios = new NumeradorDeServiciosCommandHandler(eventSourcedRepository);
-            container.Register<NumeradorDeServiciosCommandHandler>(numeradorDeServicios);
+            var numeradorDeServicios = new NumeracionDeServiciosCommandHandler(eventSourcedRepository);
+            container.Register<NumeracionDeServiciosCommandHandler>(numeradorDeServicios);
 
 
             // Event Procesors -----------------------------------------------
