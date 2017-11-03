@@ -87,8 +87,8 @@ namespace Agrobook.Domain.Archivos.Services
             if (coleccion == null)
             {
                 coleccion = new ColeccionDeArchivos();
-                var idColeccion = ColeccionDeArchivosIdProvider.ValidarElIdDeColecionPropuesto(cmd.idColeccion);
-                coleccion.Emit(new NuevaColeccionDeArchivosCreada(cmd.Firma, idColeccion));
+                ColeccionDeArchivosIdProvider.ValidarElIdDeColecionPropuesto(cmd.idColeccion);
+                coleccion.Emit(new NuevaColeccionDeArchivosCreada(cmd.Firma, cmd.idColeccion));
             }
             else if (coleccion.YaTieneArchivo(cmd.Descriptor.Nombre))
                 return ResultadoDelUpload.ResponderQueYaExiste();

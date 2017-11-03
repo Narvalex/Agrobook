@@ -8,6 +8,9 @@ namespace Agrobook.Domain.Ap.Services
 {
     public partial class ApService
     {
+        /// <summary>
+        /// To test this, use the event handler, do not try to call this.
+        /// </summary>
         internal async Task HandleAsync(ProcesarRegistroDeServicioPendiente cmd)
         {
             var e = cmd.RegistroPendiente;

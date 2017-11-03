@@ -21,7 +21,7 @@ var apArea;
             this.momentInstance = moment;
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
-            this.idColeccion = this.config.categoriaDeArchivos.servicioDatosBasicos + "-" + this.idServicio;
+            this.setIdColeccion();
             var roles = config.claims.roles;
             this.tienePermiso = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
@@ -159,10 +159,11 @@ var apArea;
                 _this.toasterLite.success('El servicio se registró con el id ' + value.data);
                 _this.action = 'view';
                 servicio.id = value.data;
-                _this.idServicio = servicio.id;
                 _this.submitting = false;
-                _this.$rootScope.$broadcast(_this.config.eventIndex.ap_servicios.nuevoServicioCreado, servicio);
                 _this.servicio = servicio;
+                _this.idServicio = servicio.id;
+                _this.setIdColeccion();
+                _this.$rootScope.$broadcast(_this.config.eventIndex.ap_servicios.nuevoServicioCreado, servicio);
                 //window.location.href = `#!/servicios/${this.idProd}/${this.idServicio}?tab=resumen&action=view`;
             }, function (reason) {
                 _this.submitting = false;
@@ -180,6 +181,9 @@ var apArea;
                 _this.toasterLite.error('Hubo un error al intentar editar el servicio. Verifique los datos por favor.');
                 _this.submitting = false;
             }));
+        };
+        serviciosTabResumenController.prototype.setIdColeccion = function () {
+            this.idColeccion = this.config.categoriaDeArchivos.servicioDatosBasicos + "-" + this.idServicio;
         };
         return serviciosTabResumenController;
     }());

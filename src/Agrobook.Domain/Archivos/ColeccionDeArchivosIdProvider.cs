@@ -1,26 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Agrobook.Domain.Archivos
 {
     public static class ColeccionDeArchivosIdProvider
     {
-        /// <summary>
-        /// Retorna el id de la coleccion validada. Puede ser cualquier identificador sin espacios.
-        /// Por ahora se hace desde el cliente, en el typescript. Por ejemplo: {seccion}-{servicio}-{idProductor}.
-        /// Cada vista es responsable de su id. Esto no parece ser muy bueno, pero es lo que hay...
-        /// </summary>
-        /// <remarks>
-        /// Se puede consultar en la directiva filesWidgetDirective.ts. Cada seccion del cliente tiene su lógica.
-        /// Por ejemplo: los mapas de limites sería algo así como: mapaDeLimites-servicio1-productor2. 
-        /// Para una migración, esto se debe tener en cuenta.
-        /// </remarks>
-        public static string ValidarElIdDeColecionPropuesto(string idColeccionPropuesta)
+        private static readonly HashSet<string> prefijos;
+
+        static ColeccionDeArchivosIdProvider()
         {
-            if (idColeccionPropuesta.Contains(' '))
+            prefijos = ResolverPrefijos();
+        }
+
+        public static void ValidarElIdDeColecionPropuesto(string idColeccion)
+        {
+            if (idColeccion.Contains(' '))
                 throw new ArgumentException("La id colección no debe contener espacios en blanco");
 
-            return idColeccionPropuesta;
+            var tokens = idColeccion.Split('-');
+
+            if (!prefijos.Contains(tokens.First()))
+                throw new ArgumentException($"El prefijo {tokens.First()} no es válido para ser pertenecer a un id colección.");
         }
+
+        private static HashSet<string> ResolverPrefijos()
+            => new HashSet<string>
+            {
+                "servicioDatosBasicos",     // seria el de la página resumen y el del Informe final
+                "servicioParcelas",         // parcelas del servicio
+                "servicioDiagnostico",      // diagnostico del servicio
+                "servicioPrescripciones"    // prescripciones del servicio
+            };
     }
 }

@@ -16,7 +16,7 @@ module apArea {
         ) {
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
-            this.idColeccion = `${this.config.categoriaDeArchivos.servicioDatosBasicos}-${this.idServicio}`;
+            this.setIdColeccion();
 
             let roles = config.claims.roles;
             this.tienePermiso = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
@@ -219,10 +219,11 @@ module apArea {
                         this.toasterLite.success('El servicio se registró con el id ' + value.data);
                         this.action = 'view';
                         servicio.id = value.data;
-                        this.idServicio = servicio.id;
                         this.submitting = false;
-                        this.$rootScope.$broadcast(this.config.eventIndex.ap_servicios.nuevoServicioCreado, servicio);
                         this.servicio = servicio;
+                        this.idServicio = servicio.id;
+                        this.setIdColeccion();
+                        this.$rootScope.$broadcast(this.config.eventIndex.ap_servicios.nuevoServicioCreado, servicio);
                         //window.location.href = `#!/servicios/${this.idProd}/${this.idServicio}?tab=resumen&action=view`;
                     },
                     reason => {
@@ -248,25 +249,8 @@ module apArea {
             );
         }
 
-        //-----------------------------
-        // Archivos implementation
-        //-----------------------------
-        //awTitle: string;
-        //awUploadLink: string;
-        //awFileUnits: common.fileUnit[] = [];
-        //awAllowUpload: boolean;
-        //awInit() {
-        //    this.awTitle = 'Documento del informe final.';
-        //    this.awAllowUpload = true;
-        //    this.awUploadLink = 'Levantar archivo...';
-        //}
-        //awPrepareFiles(element: HTMLInputElement) {
-        //    this.awService.resetFileInput();
-
-        //    var vm = (angular.element(this)[0] as any) as serviciosTabResumenController;
-        //    vm.$scope.$apply(scope => {
-        //        vm.awFileUnits = vm.awService.prepareFiles(element.files, vm.awFileUnits);
-        //    });
-        //}
+        private setIdColeccion() {
+            this.idColeccion = `${this.config.categoriaDeArchivos.servicioDatosBasicos}-${this.idServicio}`;
+        }
     }
 }
