@@ -33,18 +33,24 @@ namespace Eventing.Core.Persistence
             return await reader.Exists(GetStreamName<T>(streamId));
         }
 
-        public static async Task EnsureExistence<T>(this IEventSourcedReader reader, string streamId)
+        /// <summary>
+        /// Ensures the existence of a single entity.
+        /// </summary>
+        public static async Task EnsureExistenceOfThis<T>(this IEventSourcedReader reader, string streamId)
             where T : class, IEventSourced, new()
         {
-            await reader.EnsureExistence(GetStreamName<T>(streamId));
+            await reader.EnsureExistenceOfThis(GetStreamName<T>(streamId));
         }
 
-        public static async Task EnsureExistence(this IEventSourcedReader reader, string streamName)
+        public static async Task EnsureExistenceOfThis(this IEventSourcedReader reader, string streamName)
         {
             if (await reader.Exists(streamName)) return;
             throw new InvalidOperationException($"The stream {streamName} does not exists!");
         }
 
+        /// <summary>
+        /// Be careful to explicitly tell "And nothing more".
+        /// </summary>
         public static BulkExistenceChecker EnsureExistenceOf<T>(this IEventSourcedReader reader, string streamId)
             where T : class, IEventSourced, new()
         {
@@ -76,7 +82,7 @@ namespace Eventing.Core.Persistence
             public async Task AndNothingMore()
             {
                 foreach (var stream in this.streams)
-                    await this.reader.EnsureExistence(stream);
+                    await this.reader.EnsureExistenceOfThis(stream);
             }
         }
     }

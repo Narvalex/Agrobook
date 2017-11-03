@@ -16,7 +16,7 @@ namespace Agrobook.Domain.Ap
         public NumeracionDeServicios()
         {
             this.On<NumeracionDeServiciosIniciada>(e => base.SetStreamNameById(e.IdProductor));
-            this.On<NuevoRegistroDeServicioPendiente>(e => this.UltimoNroDeServicioDelProductor = e.NroDeServicioDelProd);
+            this.On<NuevoRegistroDeServicioPendiente>(e => this.UltimoNroDeServicioDelProductor++);
         }
 
         public int UltimoNroDeServicioDelProductor { get; private set; } = 0;

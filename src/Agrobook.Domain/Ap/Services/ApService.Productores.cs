@@ -15,7 +15,7 @@ namespace Agrobook.Domain.Ap.Services
             if (productor is null)
             {
                 productor = new Productor();
-                idProductor = await ApIdProvider.ValidarNuevoIdParaProductor(idProductor, this.repository);
+                await ApIdProvider.ValidarIdProductor(idProductor, this.repository);
                 productor.Emit(new NuevoProductorRegistrado(cmd.Firma, idProductor));
             }
 

@@ -15,24 +15,21 @@ namespace Agrobook.Domain.Ap.Services
         {
             await this.repository
                 .EnsureExistenceOf<Organizacion>(cmd.IdOrg)
-                // .And<Productor>(cmd.IdProd) --- Esto comentamos porque recien es un productor cuando tiene parcela
-                .And<Usuario>(cmd.IdProd)
                 .And<Contrato>(cmd.EsAdenda ? cmd.IdContratoDeLaAdenda : cmd.IdContrato)
                 .AndNothingMore();
 
-            var servicioSec = await this.repository.GetByIdAsync<NumeracionDeServicios>(cmd.IdProd);
-            if (servicioSec is null)
+            var numeracion = await this.repository.GetByIdAsync<NumeracionDeServicios>(cmd.IdProd);
+            if (numeracion is null)
             {
-                servicioSec = new NumeracionDeServicios();
-                servicioSec.Emit(new NumeracionDeServiciosIniciada(cmd.Firma, cmd.IdProd));
+                numeracion = new NumeracionDeServicios();
+                await ApIdProvider.ValidarIdDeNumeracionDeServiciosPorProductor(cmd.IdProd, this.repository);
+                numeracion.Emit(new NumeracionDeServiciosIniciada(cmd.Firma, cmd.IdProd));
             }
 
-            var nroDeServicio = servicioSec.UltimoNroDeServicioDelProductor + 1;
-            var idServicio = $"{cmd.IdProd.ToTrimmedAndWhiteSpaceless()}_{nroDeServicio}";
-            servicioSec.Emit(new NuevoRegistroDeServicioPendiente(
+            var idServicio = await ApIdProvider.ObtenerNuevoIdDeServicio(numeracion.UltimoNroDeServicioDelProductor, cmd.IdProd, this.repository);
+            numeracion.Emit(new NuevoRegistroDeServicioPendiente(
                 cmd.Firma,
                 cmd.IdProd,
-                nroDeServicio,
                 idServicio,
                 cmd.IdOrg,
                 cmd.IdContrato,
@@ -40,7 +37,7 @@ namespace Agrobook.Domain.Ap.Services
                 cmd.IdContratoDeLaAdenda,
                 cmd.Fecha));
 
-            await this.repository.SaveAsync(servicioSec);
+            await this.repository.SaveAsync(numeracion);
 
             return idServicio;
         }

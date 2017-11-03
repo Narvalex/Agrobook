@@ -1,6 +1,5 @@
 ﻿using Agrobook.Domain.Ap.Messages;
 using Eventing;
-using Eventing.Core.Domain;
 using Eventing.Core.Persistence;
 using System;
 using System.Threading.Tasks;
@@ -10,9 +9,6 @@ namespace Agrobook.Domain.Ap.Services
     {
         public async Task<string> HandleAsync(RegistrarNuevoContrato cmd)
         {
-            if (string.IsNullOrWhiteSpace(cmd.IdOrganizacion))
-                throw new InvalidOperationException("La organización debe estar especificada.");
-
             if (string.IsNullOrWhiteSpace(cmd.NombreDelContrato))
                 throw new InvalidOperationException("El nombre debe estar especificado");
 
@@ -21,7 +17,7 @@ namespace Agrobook.Domain.Ap.Services
 
             var contrato = new Contrato();
 
-            var idContrato = $"{cmd.IdOrganizacion.ToTrimmedAndWhiteSpaceless()}_{cmd.NombreDelContrato.ToTrimmedAndWhiteSpaceless()}";
+            var idContrato = await ApIdProvider.ObtenerNuevoIdContrato(cmd.IdOrganizacion, cmd.NombreDelContrato, this.repository);
             contrato.Emit(new NuevoContrato(cmd.Firma, idContrato, cmd.IdOrganizacion, cmd.NombreDelContrato, fecha));
 
             await this.repository.SaveAsync(contrato);
@@ -72,7 +68,7 @@ namespace Agrobook.Domain.Ap.Services
 
             var contrato = await this.repository.GetOrFailByIdAsync<Contrato>(cmd.IdContrato);
 
-            var idAdenda = $"{cmd.IdContrato}_{cmd.NombreDeLaAdenda.ToTrimmedAndWhiteSpaceless()}";
+            var idAdenda = await ApIdProvider.ObtenerNuevoIdAdenda(cmd.IdContrato, cmd.NombreDeLaAdenda, this.repository);
 
             if (contrato.TieneAdenda(idAdenda))
                 throw new InvalidOperationException("La adenda ya existe");

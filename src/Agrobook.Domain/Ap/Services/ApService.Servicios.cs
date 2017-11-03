@@ -26,7 +26,7 @@ namespace Agrobook.Domain.Ap.Services
 
         public async Task HandleAsync(EditarDatosBasicosDelSevicio cmd)
         {
-            await this.repository.EnsureExistence<Organizacion>(cmd.IdOrg);
+            await this.repository.EnsureExistenceOfThis<Organizacion>(cmd.IdOrg);
 
             await this.AsegurarQueElContratoOLaAdendaSeanValidos(cmd.EsAdenda, cmd.IdContrato, cmd.IdContratoDeLaAdenda);
 
