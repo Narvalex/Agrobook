@@ -44,7 +44,7 @@
                     <!-- Roles y permisos -->
                     <md-input-container class="md-block" flex-gt-md ng-cloak>
                         <label>Roles y permisos</label>
-                        <md-select ng-model="vm.tipoDeCuenta" name="claims" required>
+                        <md-select ng-model="vm.claimSelected" name="claims" required>
                             <md-option ng-repeat="claim in vm.claims" ng-value="claim" ng-click="vm.agregarClaim(claim)">
                                 {{claim.display}} <ng-md-icon title="{{claim.info}}" icon="help_outline"></ng-md-icon>
                             </md-option>

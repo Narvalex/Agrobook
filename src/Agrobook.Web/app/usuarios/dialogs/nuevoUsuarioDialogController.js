@@ -44,6 +44,9 @@ var usuariosArea;
             }
             this.setWorkingText();
             this.bloquearSubmit = true;
+            if (this.usuario.claims === undefined || this.usuario.claims.length === 0)
+                // probablemente con el teclado selecciono el claim!
+                this.agregarClaim(this.claimSelected);
             this.usuario.claims = this.claimsSeleccionados.map(function (c) { return c.id; });
             this.usuariosService.crearNuevoUsuario(this.usuario, function (value) {
                 _this.toasterLite.success('El usuario ' + nombre + ' fue creado exitosamente');

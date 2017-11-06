@@ -117,7 +117,7 @@ namespace Agrobook.Domain.Usuarios
             var idUsuarioValidado = UsuarioIdProvider.ValidarElNombreDeUsuario(cmd.Usuario);
 
             var state = new Usuario();
-            var loginInfo = new LoginInfo(idUsuarioValidado, cmd.PasswordCrudo, cmd.Claims ?? new string[] { ClaimDef.Roles.Invitado });
+            var loginInfo = new LoginInfo(idUsuarioValidado, cmd.PasswordCrudo, cmd.Claims == null || cmd.Claims.Length == 0 ? new string[] { ClaimDef.Roles.Invitado } : cmd.Claims);
             var eLoginInfo = this.EncriptarLoginInfo(loginInfo);
             state.Emit(new NuevoUsuarioCreado(cmd.Firma, idUsuarioValidado, cmd.NombreParaMostrar, cmd.AvatarUrl, eLoginInfo));
             await this.repository.SaveAsync(state);

@@ -25,6 +25,7 @@ module usuariosArea {
 
         usuario: usuarioDto;
         claimsSeleccionados: claimDto[] = [];
+        claimSelected: claimDto;
 
         bloquearSubmit: boolean = false;
         submitLabel: string;
@@ -61,6 +62,10 @@ module usuariosArea {
 
             this.setWorkingText();
             this.bloquearSubmit = true;
+
+            if (this.usuario.claims === undefined || this.usuario.claims.length === 0)
+                // probablemente con el teclado selecciono el claim!
+                this.agregarClaim(this.claimSelected);
 
             this.usuario.claims = this.claimsSeleccionados.map(c => { return c.id; });
 
