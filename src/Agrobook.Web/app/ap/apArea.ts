@@ -91,7 +91,8 @@ module apArea {
         ];
 
         $mdDateLocaleProvider.parseDate = function (dateString) {
-            var m = moment(dateString, 'L', true);
+            //var m = moment(dateString, 'L', true); 
+            var m = moment(dateString, ["DD/MM/YYYY", "D/MM/YYYY", "dd-mm-yyyy", "d-mm-yyyy"])
             return m.isValid() ? m.toDate() : new Date(NaN);
         };
         $mdDateLocaleProvider.formatDate = function (date) {

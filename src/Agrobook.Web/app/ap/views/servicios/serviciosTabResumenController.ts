@@ -110,6 +110,7 @@ module apArea {
                 this.toasterLite.error("Debe seleccionar un contrato");
                 return;
             }
+            
             if (this.fechaSeleccionada === undefined) {
                 this.toasterLite.error("Debe seleccionar la fecha del contrato");
                 return;
