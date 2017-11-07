@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\ap\index.html" />
+    <Content Include="app\ap\views\servicios\dialogs\precio-form-dialog.html" />
     <Content Include="app\assets\angular-locale_es-py.js" />
     <Content Include="app\assets\animate.css" />
     <Content Include="app\assets\area-archivos.css" />
@@ -1110,6 +1111,7 @@
     <Content Include="app\usuarios\views\organizaciones.html" />
     <Content Include="app\usuarios\views\perfil.html" />
     <Content Include="app\home\index.html" />
+    <TypeScriptCompile Include="app\ap\views\servicios\dialogs\precioFormDialogController.ts" />
     <TypeScriptCompile Include="app\bower_components\moment\moment.d.ts" />
     <Content Include="app\usuarios\index.html" />
     <Content Include="Global.asax" />

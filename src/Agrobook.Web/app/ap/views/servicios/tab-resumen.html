@@ -61,6 +61,21 @@
         </div>
     </md-content>
 
+    <!-- Precio -->
+    <md-content class="md-padding" layout-xs="column" layout="row">
+        <div flex-xs flex-gt-xs="50" layout="column">
+            <md-card md-theme="default" md-theme-watch>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Total: 4.411,50 $</span>
+                        <span class="md-subhead">16,5 $ x 23,56 ha</span>
+                        <span class="md-subhead"><a href="" ng-click="vm.ajustarPrecio($event)">Ajustar precio</a></span>
+                    </md-card-title-text>
+                </md-card-title>
+            </md-card>
+        </div>
+    </md-content>
+
     <!-- Archivos -->
     <div class="width-md" ng-if="vm.action != 'new'">
         <file-widget ng-hide="vm.loading" id-coleccion="vm.idColeccion" header="'Informe final'"></file-widget>

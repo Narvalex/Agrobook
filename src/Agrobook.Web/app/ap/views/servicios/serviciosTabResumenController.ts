@@ -2,7 +2,8 @@
 
 module apArea {
     export class serviciosTabResumenController {
-        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope', 'loginService'];
+        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope',
+            '$scope', 'loginService', '$mdDialog', '$mdMedia'];
 
         constructor(
             private config: common.config,
@@ -12,7 +13,9 @@ module apArea {
             private $routeParams: angular.route.IRouteParamsService,
             private $rootScope: angular.IRootScopeService,
             private $scope: angular.IScope,
-            private loginService: login.loginService
+            private loginService: login.loginService,
+            private $mdDialog: angular.material.IDialogService,
+            private $mdMedia: angular.material.IMedia
         ) {
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
@@ -110,7 +113,7 @@ module apArea {
                 this.toasterLite.error("Debe seleccionar un contrato");
                 return;
             }
-            
+
             if (this.fechaSeleccionada === undefined) {
                 this.toasterLite.error("Debe seleccionar la fecha del contrato");
                 return;
@@ -143,6 +146,23 @@ module apArea {
                     break;
 
             }
+        }
+
+        ajustarPrecio($event) {
+            this.$mdDialog.show({
+                templateUrl: './views/servicios/dialogs/precio-form-dialog.html',
+                parent: angular.element(document.body),
+                targetEvent: $event,
+                controller: precioFormDialogController,
+                controllerAs: 'vm',
+                clickOutsideToClose: true,
+                fullscreen: (this.$mdMedia('sm') || this.$mdMedia('xs'))
+            }).then(() => {
+                console.log('success');
+            },
+            () => {
+                console.log('error');
+            });
         }
 
         // Privados

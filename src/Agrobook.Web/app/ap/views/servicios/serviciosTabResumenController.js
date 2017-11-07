@@ -2,7 +2,7 @@
 var apArea;
 (function (apArea) {
     var serviciosTabResumenController = (function () {
-        function serviciosTabResumenController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope, loginService) {
+        function serviciosTabResumenController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope, loginService, $mdDialog, $mdMedia) {
             var _this = this;
             this.config = config;
             this.apService = apService;
@@ -12,6 +12,8 @@ var apArea;
             this.$rootScope = $rootScope;
             this.$scope = $scope;
             this.loginService = loginService;
+            this.$mdDialog = $mdDialog;
+            this.$mdMedia = $mdMedia;
             this.submitting = false;
             this.eliminando = false;
             this.restaurando = false;
@@ -94,6 +96,21 @@ var apArea;
                     this.actualizarDatosBasicos(servicio);
                     break;
             }
+        };
+        serviciosTabResumenController.prototype.ajustarPrecio = function ($event) {
+            this.$mdDialog.show({
+                templateUrl: './views/servicios/dialogs/precio-form-dialog.html',
+                parent: angular.element(document.body),
+                targetEvent: $event,
+                controller: apArea.precioFormDialogController,
+                controllerAs: 'vm',
+                clickOutsideToClose: true,
+                fullscreen: (this.$mdMedia('sm') || this.$mdMedia('xs'))
+            }).then(function () {
+                console.log('success');
+            }, function () {
+                console.log('error');
+            });
         };
         // Privados
         serviciosTabResumenController.prototype.cargarDatosSegunEstado = function () {
@@ -187,7 +204,8 @@ var apArea;
         };
         return serviciosTabResumenController;
     }());
-    serviciosTabResumenController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope', 'loginService'];
+    serviciosTabResumenController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope',
+        '$scope', 'loginService', '$mdDialog', '$mdMedia'];
     apArea.serviciosTabResumenController = serviciosTabResumenController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=serviciosTabResumenController.js.map
