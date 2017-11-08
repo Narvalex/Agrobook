@@ -38,8 +38,14 @@ module apArea {
             public fecha: Date,
             // With Defaults
             public eliminado: boolean = false,
+            // Parcela
             public parcelaId: string = null,
-            public parcelaDisplay: string = null
+            public parcelaDisplay: string = null,
+            public hectareas: string = null,
+            // Precio
+            public tienePrecio: boolean = false,
+            public precioTotal: string = null,
+            public precioPorHectarea: string = null
         ) {
         }
     }

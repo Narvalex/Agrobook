@@ -246,7 +246,9 @@ namespace Agrobook.Domain.Ap.Services
                     {
                         if (x.ParcelaId is null)
                             return x;
-                        x.ParcelaDisplay = (await context.Parcelas.SingleAsync(p => p.Id == x.ParcelaId)).Display;
+                        var parcelaEntity = await context.Parcelas.SingleAsync(p => p.Id == x.ParcelaId);
+                        x.ParcelaDisplay = parcelaEntity.Display;
+                        x.Hectareas = parcelaEntity.Hectareas;
                         return x;
                     })));
 

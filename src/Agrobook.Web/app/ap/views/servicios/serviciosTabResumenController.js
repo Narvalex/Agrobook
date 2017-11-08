@@ -33,6 +33,8 @@ var apArea;
                 _this.servicio.parcelaDisplay = parcelaDisplay;
             });
             this.cargarDatosSegunEstado();
+            //this.onServiciosLoaded = () => { };
+            this.onServiciosLoaded = function () { return _this.fijarOAjustarPrecio(null, false); };
         }
         // Api
         serviciosTabResumenController.prototype.goToOrg = function () {
@@ -97,7 +99,9 @@ var apArea;
                     break;
             }
         };
-        serviciosTabResumenController.prototype.ajustarPrecio = function ($event) {
+        serviciosTabResumenController.prototype.fijarOAjustarPrecio = function ($event, esAjuste) {
+            var scope = this.$rootScope;
+            scope.servicioActual = this.servicio;
             this.$mdDialog.show({
                 templateUrl: './views/servicios/dialogs/precio-form-dialog.html',
                 parent: angular.element(document.body),
@@ -166,6 +170,7 @@ var apArea;
                 _this.servicio = value.data;
                 _this.loading = false;
                 callback();
+                _this.onServiciosLoaded();
             }, function (reason) {
                 _this.loading = false;
             }));

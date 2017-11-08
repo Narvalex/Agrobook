@@ -12,6 +12,8 @@
             El servicio se realizó a {{vm.servicio.parcelaDisplay === null ? 'una parcela todavía no especificada' : 'la parcela ' + vm.servicio.parcelaDisplay}} bajo el contrato "{{vm.servicio.contratoDisplay}}" con <a href="" ng-click="vm.goToOrg()">"{{vm.servicio.orgDisplay}}"</a>. El mismo fue completado el día {{vm.momentInstance(vm.servicio.fecha).format('DD/MM/YYYY')}}.
         </p>
 
+        <p ng-if="vm.servicio.parcelaDisplay !== null">Total de hectáreas de la parcela {{vm.servicio.parcelaDisplay}}: <b>{{vm.servicio.hectareas}} ha</b></p>
+
         <p ng-if="vm.tienePermiso"
            ng-hide="vm.eliminando || vm.servicio.eliminado">Puede <a href="" ng-click="vm.enableEditMode()">actualizar</a> el servicio, o incluso, <a href="" ng-click="vm.eliminar()">eliminarlo</a>.</p>
         <p ng-show="vm.servicio.eliminado && !vm.eliminando && !vm.restaurando">Puede <a href="" ng-click="vm.restaurar()">restaurar</a> este servicio eliminado.</p>
@@ -62,14 +64,26 @@
     </md-content>
 
     <!-- Precio -->
-    <md-content class="md-padding" layout-xs="column" layout="row">
+    <md-content class="md-padding" layout-xs="column" layout="row" ng-if="!vm.loading && vm.servicio.tienePrecio">
         <div flex-xs flex-gt-xs="50" layout="column">
             <md-card md-theme="default" md-theme-watch>
                 <md-card-title>
                     <md-card-title-text>
                         <span class="md-headline">Total: 4.411,50 $</span>
                         <span class="md-subhead">16,5 $ x 23,56 ha</span>
-                        <span class="md-subhead"><a href="" ng-click="vm.ajustarPrecio($event)">Ajustar precio</a></span>
+                        <span class="md-subhead"><a href="" ng-click="vm.fijarOAjustarPrecio($event, true)">Ajustar precio</a></span>
+                    </md-card-title-text>
+                </md-card-title>
+            </md-card>
+        </div>
+    </md-content>
+    <md-content class="md-padding" layout-xs="column" layout="row" ng-if="!vm.loading && !vm.servicio.tienePrecio">
+        <div flex-xs flex-gt-xs="50" layout="column">
+            <md-card md-theme="'default'" md-theme-watch>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Precio no fijado</span>
+                        <span class="md-subhead"><a href="" ng-click="vm.fijarOAjustarPrecio($event, false)">Fijar precio ahora</a></span>
                     </md-card-title-text>
                 </md-card-title>
             </md-card>

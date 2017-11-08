@@ -505,6 +505,7 @@ declare namespace angular {
         $on(name: string, listener: (event: IAngularEvent, ...args: any[]) => any): Function;
 
         $watch(watchExpression: string, listener?: string, objectEquality?: boolean): Function;
+        $watch(...args: any[]): Function;
         $watch<T>(watchExpression: string, listener?: (newValue: T, oldValue: T, scope: IScope) => any, objectEquality?: boolean): Function;
         $watch(watchExpression: (scope: IScope) => any, listener?: string, objectEquality?: boolean): Function;
         $watch<T>(watchExpression: (scope: IScope) => T, listener?: (newValue: T, oldValue: T, scope: IScope) => any, objectEquality?: boolean): Function;

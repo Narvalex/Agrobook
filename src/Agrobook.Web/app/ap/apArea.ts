@@ -48,7 +48,9 @@ module apArea {
 
             $mdThemingProvider.theme('default')
                 .primaryPalette('green')
-                .accentPalette('blue');
+                    .accentPalette('blue');
+            $mdThemingProvider.theme('dark-red').backgroundPalette('red').dark();
+            $mdThemingProvider.theme('dark-yellow').backgroundPalette('yellow').dark();
 
             common.registerHttpInterceptors($httpProvider);
 
@@ -63,6 +65,8 @@ module apArea {
             $rootScope: angular.IRootScopeService
         ) => {
             // Aqui se pueden definir DTOS compartidos. Algo asi como "variables globales"
+            var apScope = $rootScope as IApScope;
+            // bla bla....
         }]);
 
     function configLang($mdDateLocaleProvider: angular.material.IDateLocaleProvider) {
@@ -129,5 +133,9 @@ module apArea {
             .icon('excel', '../assets/svg/excel.svg')
             .icon('word', '../assets/svg/word.svg')
             .icon('powerPoint', '../assets/svg/power-point.svg');
+    }
+
+    export interface IApScope extends angular.IRootScopeService {
+        servicioActual: servicioDto
     }
 }

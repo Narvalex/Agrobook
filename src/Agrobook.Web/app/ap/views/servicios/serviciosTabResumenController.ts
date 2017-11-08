@@ -32,6 +32,9 @@ module apArea {
             });
 
             this.cargarDatosSegunEstado();
+
+            //this.onServiciosLoaded = () => { };
+            this.onServiciosLoaded = () => this.fijarOAjustarPrecio(null, false);
         }
 
         // Estados--------------------------------------
@@ -56,6 +59,9 @@ module apArea {
 
         // Listas-----------------------------------------
         orgsConContratos: orgConContratos[];
+
+        // Reactors
+        onServiciosLoaded: () => any;
 
         // Api
         goToOrg() {
@@ -148,7 +154,9 @@ module apArea {
             }
         }
 
-        ajustarPrecio($event) {
+        fijarOAjustarPrecio($event, esAjuste: boolean) {
+            var scope = this.$rootScope as IApScope;
+            scope.servicioActual = this.servicio;
             this.$mdDialog.show({
                 templateUrl: './views/servicios/dialogs/precio-form-dialog.html',
                 parent: angular.element(document.body),
@@ -226,6 +234,7 @@ module apArea {
                         this.servicio = value.data;
                         this.loading = false;
                         callback();
+                        this.onServiciosLoaded();
                     },
                     reason => {
                         this.loading = false;

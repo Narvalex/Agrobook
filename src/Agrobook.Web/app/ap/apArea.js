@@ -35,6 +35,8 @@ var apArea;
             $mdThemingProvider.theme('default')
                 .primaryPalette('green')
                 .accentPalette('blue');
+            $mdThemingProvider.theme('dark-red').backgroundPalette('red').dark();
+            $mdThemingProvider.theme('dark-yellow').backgroundPalette('yellow').dark();
             common.registerHttpInterceptors($httpProvider);
             apArea.getRouteConfigs().forEach(function (config) {
                 $routeProvider.when(config.path, config.route);
@@ -44,6 +46,8 @@ var apArea;
         }])
         .run(['$rootScope', function ($rootScope) {
             // Aqui se pueden definir DTOS compartidos. Algo asi como "variables globales"
+            var apScope = $rootScope;
+            // bla bla....
         }]);
     function configLang($mdDateLocaleProvider) {
         $mdDateLocaleProvider.months = [

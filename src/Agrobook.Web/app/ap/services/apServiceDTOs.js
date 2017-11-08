@@ -31,10 +31,18 @@ var apArea;
     var servicioDto = (function () {
         function servicioDto(id, idContrato, esAdenda, idContratoDeLaAdenda, contratoDisplay, idOrg, orgDisplay, idProd, prodDislplay, fecha, 
             // With Defaults
-            eliminado, parcelaId, parcelaDisplay) {
+            eliminado, 
+            // Parcela
+            parcelaId, parcelaDisplay, hectareas, 
+            // Precio
+            tienePrecio, precioTotal, precioPorHectarea) {
             if (eliminado === void 0) { eliminado = false; }
             if (parcelaId === void 0) { parcelaId = null; }
             if (parcelaDisplay === void 0) { parcelaDisplay = null; }
+            if (hectareas === void 0) { hectareas = null; }
+            if (tienePrecio === void 0) { tienePrecio = false; }
+            if (precioTotal === void 0) { precioTotal = null; }
+            if (precioPorHectarea === void 0) { precioPorHectarea = null; }
             this.id = id;
             this.idContrato = idContrato;
             this.esAdenda = esAdenda;
@@ -48,6 +56,10 @@ var apArea;
             this.eliminado = eliminado;
             this.parcelaId = parcelaId;
             this.parcelaDisplay = parcelaDisplay;
+            this.hectareas = hectareas;
+            this.tienePrecio = tienePrecio;
+            this.precioTotal = precioTotal;
+            this.precioPorHectarea = precioPorHectarea;
         }
         return servicioDto;
     }());

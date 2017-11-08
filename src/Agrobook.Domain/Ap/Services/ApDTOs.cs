@@ -47,8 +47,14 @@ namespace Agrobook.Domain.Ap.Services
 
         // Defaults
         public bool Eliminado { get; set; }
+        // Parcela
         public string ParcelaId { get; set; }
         public string ParcelaDisplay { get; set; }
+        public string Hectareas { get; set; }
+        // Precio
+        public bool TienePrecio { get; set; }
+        public string PrecioTotal { get; set; }
+        public string PrecioPorHectarea { get; set; }
     }
 
     public class ServicioParaDashboardDto
