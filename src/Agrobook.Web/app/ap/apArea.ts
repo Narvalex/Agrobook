@@ -11,6 +11,7 @@ module apArea {
         .service('apQueryService', apQueryService)
         .service('apService', apService)
         .service('fakeDb', fakeDb)
+        .service('numberFormatter', common.numberFormatter)
         // Directives
         .directive('fileWidget', common.filesWidgetDirectiveFactory)
         // Controllers

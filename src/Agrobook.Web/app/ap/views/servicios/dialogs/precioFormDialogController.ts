@@ -2,14 +2,15 @@
 
 module apArea {
     export class precioFormDialogController {
-        static $inject = ['$mdDialog', '$rootScope', '$scope'];
+        static $inject = ['$mdDialog', '$rootScope', '$scope', 'numberFormatter'];
 
         private apScope: IApScope;
 
         constructor(
             private $mdDialog: angular.material.IDialogService,
             private $rootScope: angular.IRootScopeService,
-            private $scope: angular.IScope
+            private $scope: angular.IScope,
+            private nf: common.numberFormatter
         ) {
             this.apScope = $rootScope as IApScope;
             this.servicio = this.apScope.servicioActual;
@@ -26,7 +27,7 @@ module apArea {
 
         // Two-way
         precioInput: number;
-        precioLabel: number;
+        precioLabel: string;
 
         //----------------------------
         // Public API
@@ -36,30 +37,42 @@ module apArea {
             if (this.servicio.tienePrecio) {
             }
             else {
-                this.precioInput = 0;
-                this.precioLabel = 0;
+                this.precioInput = null;
+                this.precioLabel = '0';
             }
 
-            this.hectareas = parseFloat(this.servicio.hectareas);
+            this.hectareas = this.nf.parseNumberWithCommaAsDecimalSeparator(this.servicio.hectareas);
 
+            var self = this;
             this.$scope.$watch(angular.bind(this.$scope, () => this.precioInput),
                 (newValue: number, oldValue: number) => {
-                    this.calcularPrecioDisplay();
+                    if (newValue === undefined && oldValue.toString().length !== 1) {
+                        self.precioInput = oldValue;
+                        return;
+                    }
+                    self.calcularYMostrarPrecio();
+                });
+            this.$scope.$watch(angular.bind(this.$scope, () => this.ajustarDesdeElTotal),
+                (newValue: boolean, oldValue: boolean) => {
+                    self.calcularYMostrarPrecio();
                 });
         }
 
-        private calcularPrecioDisplay() {
-            var precioInput = this.precioInput;
+        private calcularYMostrarPrecio() {
+            let precioInput = this.precioInput;
+            let precioLabel: number;
             if (precioInput === null || precioInput === undefined) {
                 precioInput = 0;
             }
 
             if (this.ajustarDesdeElTotal) {
-                this.precioLabel = precioInput / this.hectareas;
+                precioLabel = precioInput / this.hectareas;
             }
             else {
-                this.precioLabel = precioInput * this.hectareas;
+                precioLabel = precioInput * this.hectareas;
             }
+
+            this.precioLabel = this.nf.formatFromUSNumber(precioLabel);
         }
 
         cancelar() {

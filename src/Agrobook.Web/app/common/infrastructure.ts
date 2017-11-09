@@ -169,4 +169,26 @@ module common {
         ) {
         }
     }
+
+    export class numberFormatter {
+        constructor() { }
+
+        parseNumberWithCommaAsDecimalSeparator(number: string): number {
+            let value = number.replace(',', '.');
+            return parseFloat(value);
+        }
+
+        formatFromUSNumber(n: number, decimalsQuantity: number = 2) : string {
+            let stringNumber = n.toString();
+            stringNumber = stringNumber.replace('.', ',');
+
+            let snArray = stringNumber.split(',');
+            let sn1 = snArray[0];
+            let sn2 = snArray.length > 1 ? ',' + snArray[1].substring(0, decimalsQuantity) : '';
+            let regex = /(\d+)(\d{3})/;
+            while (regex.test(sn1))
+                sn1 = sn1.replace(regex, '$1' + '.' + '$2');
+            return sn1 + sn2;
+        }
+    }
 }

@@ -11,30 +11,34 @@
     <md-dialog-content>
         <div class="md-dialog-content">
 
-            <div layout-gt-sm="row">
-                <md-switch ng-model="vm.ajustarDesdeElTotal" aria-label="Switch 1" ng-click="vm.calcularPrecioDisplay()">
-                    Ajustar precio desde el total
-                </md-switch>
-            </div>
+            <form name="precioForm">
+                <div layout-gt-sm="row">
+                    <md-switch ng-model="vm.ajustarDesdeElTotal" aria-label="ajustar precio">
+                        Ajustar precio desde el total
+                    </md-switch>
+                </div>
 
-            <div class="width-xs">
-                <md-input-container class="md-block">
-                    <label>{{vm.ajustarDesdeElTotal ? 'Precio total' : 'Precio por hectárea'}} (USD)</label>
-                    <input ng-model="vm.precioInput" 
-                           required
-                           type="number"
-                           min="0.00"
-                           max="999999999.99"
-                           step="0.01"
-                           style="text-align:right;"
-                           md-autofocus>
-                </md-input-container>
-            </div>
+                <div class="width-xs">
+                    <md-input-container class="md-block">
+                        <label>{{vm.ajustarDesdeElTotal ? 'Precio total' : 'Precio por hectárea'}} (USD)</label>
+                        <input ng-model="vm.precioInput"
+                               name="precioInput"
+                               required
+                               type="number"
+                               min="0.00"
+                               max="999999999.99"
+                               step="0.01"
+                               style="text-align:right;">
+                        <div ng-messages="precioForm.precioInput.$error" role="alert">
+                            <div ng-message="" ng-hide="vm.precioInput">Debe ingresar un precio</div>
+                        </div>
+                    </md-input-container>
+                </div>
 
-            <p>Total de hectáreas: {{vm.servicio.hectareas}} ha</p>
+                <p>Total de hectáreas: {{vm.servicio.hectareas}} ha</p>
 
-            <h2>{{vm.ajustarDesdeElTotal ? 'Precio por hectárea' : 'Precio total'}}: <span class="red-text">{{vm.precioLabel}} $</span></h2>
-
+                <h2>{{vm.ajustarDesdeElTotal ? 'Precio por hectárea' : 'Precio total'}}: <span class="red-text">{{vm.precioLabel}} $</span></h2>
+            </form>
         </div>
     </md-dialog-content>
     <md-dialog-actions layout="row">

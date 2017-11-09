@@ -167,5 +167,27 @@ var common;
         return callbackLite;
     }());
     common.callbackLite = callbackLite;
+    var numberFormatter = (function () {
+        function numberFormatter() {
+        }
+        numberFormatter.prototype.parseNumberWithCommaAsDecimalSeparator = function (number) {
+            var value = number.replace(',', '.');
+            return parseFloat(value);
+        };
+        numberFormatter.prototype.formatFromUSNumber = function (n, decimalsQuantity) {
+            if (decimalsQuantity === void 0) { decimalsQuantity = 2; }
+            var stringNumber = n.toString();
+            stringNumber = stringNumber.replace('.', ',');
+            var snArray = stringNumber.split(',');
+            var sn1 = snArray[0];
+            var sn2 = snArray.length > 1 ? ',' + snArray[1].substring(0, decimalsQuantity) : '';
+            var regex = /(\d+)(\d{3})/;
+            while (regex.test(sn1))
+                sn1 = sn1.replace(regex, '$1' + '.' + '$2');
+            return sn1 + sn2;
+        };
+        return numberFormatter;
+    }());
+    common.numberFormatter = numberFormatter;
 })(common || (common = {}));
 //# sourceMappingURL=infrastructure.js.map

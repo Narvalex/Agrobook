@@ -164,7 +164,7 @@ module apArea {
                 controller: precioFormDialogController,
                 controllerAs: 'vm',
                 clickOutsideToClose: true,
-                fullscreen: (this.$mdMedia('sm') || this.$mdMedia('xs'))
+                fullscreen: this.$mdMedia('xs')
             }).then(() => {
                 console.log('success');
             },

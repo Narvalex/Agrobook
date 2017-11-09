@@ -109,7 +109,7 @@ var apArea;
                 controller: apArea.precioFormDialogController,
                 controllerAs: 'vm',
                 clickOutsideToClose: true,
-                fullscreen: (this.$mdMedia('sm') || this.$mdMedia('xs'))
+                fullscreen: this.$mdMedia('xs')
             }).then(function () {
                 console.log('success');
             }, function () {
