@@ -24,10 +24,6 @@
                         <input ng-model="vm.precioInput"
                                name="precioInput"
                                required
-                               type="number"
-                               min="0.00"
-                               max="999999999.99"
-                               step="0.01"
                                style="text-align:right;">
                         <div ng-messages="precioForm.precioInput.$error" role="alert">
                             <div ng-message="" ng-hide="vm.precioInput">Debe ingresar un precio</div>

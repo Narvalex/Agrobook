@@ -21,16 +21,12 @@ var apArea;
             if (this.servicio.tienePrecio) {
             }
             else {
-                this.precioInput = null;
+                this.precioInput = undefined;
                 this.precioLabel = '0';
             }
             this.hectareas = this.nf.parseNumberWithCommaAsDecimalSeparator(this.servicio.hectareas);
             var self = this;
             this.$scope.$watch(angular.bind(this.$scope, function () { return _this.precioInput; }), function (newValue, oldValue) {
-                if (newValue === undefined && oldValue.toString().length !== 1) {
-                    self.precioInput = oldValue;
-                    return;
-                }
                 self.calcularYMostrarPrecio();
             });
             this.$scope.$watch(angular.bind(this.$scope, function () { return _this.ajustarDesdeElTotal; }), function (newValue, oldValue) {
@@ -38,11 +34,19 @@ var apArea;
             });
         };
         precioFormDialogController.prototype.calcularYMostrarPrecio = function () {
-            var precioInput = this.precioInput;
-            var precioLabel;
-            if (precioInput === null || precioInput === undefined) {
+            // Mostrando el input formateado
+            var precioInput;
+            if (this.precioInput === undefined)
                 precioInput = 0;
+            else {
+                precioInput = this.nf.parseNumberWithCommaAsDecimalSeparator(this.precioInput);
+                // Hay que ver la necesidad, si formatear o no
+                var lastChar = this.precioInput[this.precioInput.length - 1];
+                if (lastChar !== ',')
+                    this.precioInput = this.nf.formatFromUSNumber(precioInput);
             }
+            // Mostrando el label calculado
+            var precioLabel;
             if (this.ajustarDesdeElTotal) {
                 precioLabel = precioInput / this.hectareas;
             }

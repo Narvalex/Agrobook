@@ -26,7 +26,7 @@ module apArea {
         hectareas: number;
 
         // Two-way
-        precioInput: number;
+        precioInput: string; 
         precioLabel: string;
 
         //----------------------------
@@ -37,7 +37,7 @@ module apArea {
             if (this.servicio.tienePrecio) {
             }
             else {
-                this.precioInput = null;
+                this.precioInput = undefined;
                 this.precioLabel = '0';
             }
 
@@ -45,11 +45,7 @@ module apArea {
 
             var self = this;
             this.$scope.$watch(angular.bind(this.$scope, () => this.precioInput),
-                (newValue: number, oldValue: number) => {
-                    if (newValue === undefined && oldValue.toString().length !== 1) {
-                        self.precioInput = oldValue;
-                        return;
-                    }
+                (newValue: string, oldValue: string) => {
                     self.calcularYMostrarPrecio();
                 });
             this.$scope.$watch(angular.bind(this.$scope, () => this.ajustarDesdeElTotal),
@@ -59,12 +55,21 @@ module apArea {
         }
 
         private calcularYMostrarPrecio() {
-            let precioInput = this.precioInput;
-            let precioLabel: number;
-            if (precioInput === null || precioInput === undefined) {
+            // Mostrando el input formateado
+            let precioInput: number;
+            if (this.precioInput === undefined)
                 precioInput = 0;
+            else {
+                precioInput = this.nf.parseNumberWithCommaAsDecimalSeparator(this.precioInput);
+
+                // Hay que ver la necesidad, si formatear o no
+                let lastChar = this.precioInput[this.precioInput.length - 1];
+                if (lastChar !== ',')
+                    this.precioInput = this.nf.formatFromUSNumber(precioInput);
             }
 
+            // Mostrando el label calculado
+            let precioLabel: number;
             if (this.ajustarDesdeElTotal) {
                 precioLabel = precioInput / this.hectareas;
             }
