@@ -7,8 +7,6 @@ var apArea;
             this.$rootScope = $rootScope;
             this.$scope = $scope;
             this.nf = nf;
-            // states
-            this.ajustarDesdeElTotal = false;
             this.apScope = $rootScope;
             this.servicio = this.apScope.servicioActual;
             this.inicializar();
@@ -16,8 +14,17 @@ var apArea;
         //----------------------------
         // Public API
         //----------------------------
+        precioFormDialogController.prototype.cancelar = function () {
+            this.$mdDialog.cancel();
+        };
+        precioFormDialogController.prototype.fijarOAjustarPrecio = function () {
+        };
+        //---------------------------
+        // Private
+        //---------------------------
         precioFormDialogController.prototype.inicializar = function () {
             var _this = this;
+            this.ajustarDesdeElTotal = true;
             if (this.servicio.tienePrecio) {
             }
             else {
@@ -54,9 +61,6 @@ var apArea;
                 precioLabel = precioInput * this.hectareas;
             }
             this.precioLabel = this.nf.formatFromUSNumber(precioLabel);
-        };
-        precioFormDialogController.prototype.cancelar = function () {
-            this.$mdDialog.cancel();
         };
         return precioFormDialogController;
     }());

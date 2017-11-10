@@ -1,7 +1,7 @@
 ﻿using Agrobook.Domain.Ap.Messages;
 using Agrobook.Domain.Common;
 using Eventing.Core.Messaging;
-using System.Data.Entity;
+using System.Linq;
 
 namespace Agrobook.Domain.Ap.Denormalizers
 {
@@ -11,7 +11,9 @@ namespace Agrobook.Domain.Ap.Denormalizers
         IHandler<ServicioEliminado>,
         IHandler<ServicioRestaurado>,
         IHandler<ParcelaDeServicioEspecificada>,
-        IHandler<ParcelaDeServicioCambiada>
+        IHandler<ParcelaDeServicioCambiada>,
+        IHandler<PrecioDeServicioFijado>,
+        IHandler<PrecioDeServicioAjustado>
     {
         public ServiciosDenormalizer(SqlDenormalizerConfig config)
             : base(config)
@@ -38,9 +40,9 @@ namespace Agrobook.Domain.Ap.Denormalizers
 
         public void Handle(long eventNumber, DatosBasicosDelSevicioEditados e)
         {
-            this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, context =>
             {
-                var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
+                var servicio = context.Servicios.Single(x => x.Id == e.IdServicio);
                 servicio.IdContrato = e.IdContrato;
                 servicio.IdOrg = e.IdOrg;
                 servicio.Fecha = e.Fecha;
@@ -49,27 +51,27 @@ namespace Agrobook.Domain.Ap.Denormalizers
 
         public void Handle(long eventNumber, ServicioEliminado e)
         {
-            this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, context =>
             {
-                var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
+                var servicio = context.Servicios.Single(x => x.Id == e.IdServicio);
                 servicio.Eliminado = true;
             });
         }
 
         public void Handle(long eventNumber, ServicioRestaurado e)
         {
-            this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, context =>
             {
-                var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
+                var servicio = context.Servicios.Single(x => x.Id == e.IdServicio);
                 servicio.Eliminado = false;
             });
         }
 
         public void Handle(long eventNumber, ParcelaDeServicioEspecificada e)
         {
-            this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, context =>
             {
-                var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
+                var servicio = context.Servicios.Single(x => x.Id == e.IdServicio);
 
                 servicio.IdParcela = e.IdParcela;
             });
@@ -77,11 +79,32 @@ namespace Agrobook.Domain.Ap.Denormalizers
 
         public void Handle(long eventNumber, ParcelaDeServicioCambiada e)
         {
-            this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, context =>
             {
-                var servicio = await context.Servicios.SingleAsync(x => x.Id == e.IdServicio);
+                var servicio = context.Servicios.Single(x => x.Id == e.IdServicio);
 
                 servicio.IdParcela = e.IdParcela;
+            });
+        }
+
+        public void Handle(long checkpoint, PrecioDeServicioFijado e)
+        {
+            this.Denormalize(checkpoint, context =>
+            {
+                var servicio = context.Servicios.Single(x => x.Id == e.IdServicio);
+
+                servicio.TienePrecio = true;
+                servicio.PrecioTotal = e.Precio;
+            });
+        }
+
+        public void Handle(long checkpoint, PrecioDeServicioAjustado e)
+        {
+            this.Denormalize(checkpoint, context =>
+            {
+                var servicio = context.Servicios.Single(x => x.Id == e.IdServicio);
+
+                servicio.PrecioTotal = e.Precio;
             });
         }
     }

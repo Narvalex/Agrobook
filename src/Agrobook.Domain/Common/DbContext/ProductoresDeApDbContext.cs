@@ -18,7 +18,7 @@ namespace Agrobook.Domain
         public string Id { get; set; }
         public string IdProd { get; set; }
         public string Display { get; set; }
-        public string Hectareas { get; set; }
+        public decimal Hectareas { get; set; }
         public bool Eliminado { get; set; }
     }
 

@@ -20,6 +20,7 @@ var apArea;
             _this.timer = timer;
             return _this;
         }
+        // Parcelas
         apService.prototype.registrarNuevaParcela = function (dto, callback) {
             var cmd = {
                 idProductor: dto.idProd,
@@ -51,6 +52,7 @@ var apArea;
             };
             _super.prototype.postWithCallback.call(this, 'restaurar-parcela', cmd, callback);
         };
+        // Contratos
         apService.prototype.registrarNuevoContrato = function (contrato, callback) {
             if (contrato.esAdenda) {
                 _super.prototype.postWithCallback.call(this, 'registrar-adenda', { IdContrato: contrato.idContratoDeLaAdenda, NombreDeLaAdenda: contrato.display, Fecha: contrato.fecha }, callback);
@@ -90,6 +92,7 @@ var apArea;
         apService.prototype.restaurarContrato = function (idContrato, callback) {
             _super.prototype.postWithCallback.call(this, 'restaurar-contrato/' + idContrato, {}, callback);
         };
+        // Servicios
         apService.prototype.registrarNuevoServicio = function (servicio, callback) {
             var cmd = {
                 idProd: servicio.idProd,
@@ -121,15 +124,6 @@ var apArea;
             _super.prototype.postWithCallback.call(this, 'restaurar-servicio', cmd, callback);
         };
         apService.prototype.especificarParcelaDelServicio = function (idServicio, parcela, callback) {
-            //for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-            //    let servicio = this.fakeDb.servicios[i];
-            //    if (servicio.id === idServicio) {
-            //        this.fakeDb.servicios[i].parcelaId = parcela.id;
-            //        this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
-            //        break;
-            //    }
-            //}
-            //this.timer(() => callback.onSuccess({}), 500);
             var cmd = {
                 idServicio: idServicio,
                 idParcela: parcela.id
@@ -137,20 +131,25 @@ var apArea;
             _super.prototype.postWithCallback.call(this, 'especificar-parcela-del-servicio', cmd, callback);
         };
         apService.prototype.cambiarParcelaDelServicio = function (idServicio, parcela, callback) {
-            //for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-            //    let servicio = this.fakeDb.servicios[i];
-            //    if (servicio.id === idServicio) {
-            //        this.fakeDb.servicios[i].parcelaId = parcela.id;
-            //        this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
-            //        break;
-            //    }
-            //}
-            //this.timer(() => callback.onSuccess({}), 500);
             var cmd = {
                 idServicio: idServicio,
                 idParcela: parcela.id
             };
             _super.prototype.postWithCallback.call(this, 'cambiar-parcela-del-servicio', cmd, callback);
+        };
+        apService.prototype.fijarPrecio = function (idServicio, precio, callback) {
+            var cmd = {
+                idServicio: idServicio,
+                precio: precio
+            };
+            _super.prototype.postWithCallback.call(this, 'fijar-precio-al-servicio', cmd, callback);
+        };
+        apService.prototype.ajustarPrecio = function (idServicio, precio, callback) {
+            var cmd = {
+                idServicio: idServicio,
+                precio: precio
+            };
+            _super.prototype.postWithCallback.call(this, 'ajustar-precio-del-servicio', cmd, callback);
         };
         return apService;
     }(common.httpLite));

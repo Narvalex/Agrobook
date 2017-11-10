@@ -91,6 +91,35 @@ namespace Agrobook.Domain.Ap.Services
             await this.repository.SaveAsync(servicio);
         }
 
+        public async Task HandleAsync(FijarPrecioAlServicio cmd)
+        {
+            var servicio = await this.repository.GetOrFailByIdAsync<Servicio>(cmd.IdServicio);
+            if (servicio.TienePrecio)
+                throw new InvalidOperationException("Ya se tiene fijado el precio");
+
+            // If fails to parse, it will throw
+            var precio = decimal.Parse(cmd.Precio);
+
+            servicio.Emit(new PrecioDeServicioFijado(cmd.Firma, cmd.IdServicio, precio));
+
+            await this.repository.SaveAsync(servicio);
+        }
+
+        public async Task HandleAsync(AjustarPrecioDelServicio cmd)
+        {
+            var servicio = await this.repository.GetOrFailByIdAsync<Servicio>(cmd.IdServicio);
+            if (!servicio.TienePrecio)
+                throw new InvalidOperationException("El documento no tiene precio para ajustar. Fijelo primero");
+
+            var precio = decimal.Parse(cmd.Precio);
+            if (precio == servicio.Precio)
+                throw new InvalidOperationException("El precio que se quiere ajustar es igual al ajuste");
+
+            servicio.Emit(new PrecioDeServicioAjustado(cmd.Firma, cmd.IdServicio, precio));
+
+            await this.repository.SaveAsync(servicio);
+        }
+
         /// <summary>
         /// Se asegura que el contrato o la adenda sean validos. Si no son válidos lanza un <see cref="InvalidOperationException"/>.
         /// </summary>

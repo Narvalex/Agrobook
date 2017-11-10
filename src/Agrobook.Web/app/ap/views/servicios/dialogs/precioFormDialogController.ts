@@ -19,7 +19,7 @@ module apArea {
         }
 
         // states
-        ajustarDesdeElTotal: boolean = false;
+        ajustarDesdeElTotal: boolean;
 
         // dtos
         servicio: servicioDto;
@@ -33,7 +33,20 @@ module apArea {
         // Public API
         //----------------------------
 
-        inicializar() {
+        cancelar() {
+            this.$mdDialog.cancel();
+        }
+
+        fijarOAjustarPrecio() {
+        }
+
+        //---------------------------
+        // Private
+        //---------------------------
+
+        private inicializar() {
+            this.ajustarDesdeElTotal = true;
+
             if (this.servicio.tienePrecio) {
             }
             else {
@@ -78,10 +91,6 @@ module apArea {
             }
 
             this.precioLabel = this.nf.formatFromUSNumber(precioLabel);
-        }
-
-        cancelar() {
-            this.$mdDialog.cancel();
         }
     }
 }

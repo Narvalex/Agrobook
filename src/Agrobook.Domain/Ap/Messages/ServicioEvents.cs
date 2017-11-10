@@ -112,4 +112,34 @@ namespace Agrobook.Domain.Ap.Messages
 
         public string StreamId => this.IdServicio;
     }
+
+    public class PrecioDeServicioFijado : MensajeAuditable, IEvent
+    {
+        public PrecioDeServicioFijado(Firma firma, string idServicio, decimal precio)
+            : base(firma)
+        {
+            this.IdServicio = idServicio;
+            this.Precio = precio;
+        }
+
+        public string IdServicio { get; }
+        public decimal Precio { get; }
+
+        public string StreamId => this.IdServicio;
+    }
+
+    public class PrecioDeServicioAjustado : MensajeAuditable, IEvent
+    {
+        public PrecioDeServicioAjustado(Firma firma, string idServicio, decimal precio)
+            : base(firma)
+        {
+            this.IdServicio = idServicio;
+            this.Precio = precio;
+        }
+
+        public string IdServicio { get; }
+        public decimal Precio { get; }
+
+        public string StreamId => this.IdServicio;
+    }
 }

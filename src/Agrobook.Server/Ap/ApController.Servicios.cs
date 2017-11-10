@@ -61,5 +61,23 @@ namespace Agrobook.Server.Ap
             await this.service.HandleAsync(cmd.ConFirma(this.ActionContext));
             return this.Ok();
         }
+
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
+        [HttpPost]
+        [Route("fijar-precio-al-servicio")]
+        public async Task<IHttpActionResult> FijarPrecio([FromBody]FijarPrecioAlServicio cmd)
+        {
+            await this.service.HandleAsync(cmd.ConFirma(this.ActionContext));
+            return this.Ok();
+        }
+
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
+        [HttpPost]
+        [Route("ajustar-precio-del-servicio")]
+        public async Task<IHttpActionResult> FijarPrecio([FromBody]AjustarPrecioDelServicio cmd)
+        {
+            await this.service.HandleAsync(cmd.ConFirma(this.ActionContext));
+            return this.Ok();
+        }
     }
 }

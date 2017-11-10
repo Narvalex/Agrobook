@@ -12,10 +12,8 @@ module apArea {
             super($http, '../ap');
         }
 
-        registrarNuevaParcela(
-            dto: edicionParcelaDto,
-            callback: common.callbackLite<string>
-        ) {
+        // Parcelas
+        registrarNuevaParcela(dto: edicionParcelaDto, callback: common.callbackLite<string>) {
             let cmd = {
                 idProductor: dto.idProd,
                 nombreDeLaParcela: dto.display,
@@ -25,10 +23,7 @@ module apArea {
             super.postWithCallback('registrar-parcela', cmd, callback);
         }
 
-        editarParcela(
-            dto: edicionParcelaDto,
-            callback: common.callbackLite<{}>
-        ) {
+        editarParcela(dto: edicionParcelaDto, callback: common.callbackLite<{}>) {
             var cmd = {
                 idProductor: dto.idProd,
                 idParcela: dto.idParcela,
@@ -39,11 +34,7 @@ module apArea {
             super.postWithCallback('editar-parcela', cmd, callback);
         }
 
-        eliminarParcela(
-            idProductor: string,
-            idParcela: string,
-            callback: common.callbackLite<{}>
-        ) {
+        eliminarParcela(idProductor: string, idParcela: string, callback: common.callbackLite<{}>) {
             var cmd = {
                 idProductor: idProductor,
                 idParcela: idParcela
@@ -52,11 +43,7 @@ module apArea {
             super.postWithCallback('eliminar-parcela', cmd, callback);
         }
 
-        restaurarParcela(
-            idProductor: string,
-            idParcela: string,
-            callback: common.callbackLite<{}>
-        ) {
+        restaurarParcela(idProductor: string, idParcela: string, callback: common.callbackLite<{}>) {
             var cmd = {
                 idProductor: idProductor,
                 idParcela: idParcela
@@ -65,6 +52,7 @@ module apArea {
             super.postWithCallback('restaurar-parcela', cmd, callback);
         }
 
+        // Contratos
         registrarNuevoContrato(contrato: contratoDto, callback: common.callbackLite<string>) {
             if (contrato.esAdenda) {
                 super.postWithCallback('registrar-adenda', { IdContrato: contrato.idContratoDeLaAdenda, NombreDeLaAdenda: contrato.display, Fecha: contrato.fecha }, callback);
@@ -110,6 +98,7 @@ module apArea {
             super.postWithCallback('restaurar-contrato/' + idContrato, {}, callback); 
         }
 
+        // Servicios
         registrarNuevoServicio(servicio: servicioDto, callback: common.callbackLite<string>) {
             let cmd = {
                 idProd: servicio.idProd,
@@ -145,16 +134,6 @@ module apArea {
         }
 
         especificarParcelaDelServicio(idServicio: string, parcela: parcelaDto, callback: common.callbackLite<any>) {
-            //for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-            //    let servicio = this.fakeDb.servicios[i];
-            //    if (servicio.id === idServicio) {
-            //        this.fakeDb.servicios[i].parcelaId = parcela.id;
-            //        this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
-            //        break;
-            //    }
-            //}
-
-            //this.timer(() => callback.onSuccess({}), 500);
             let cmd = {
                 idServicio: idServicio,
                 idParcela: parcela.id
@@ -163,21 +142,27 @@ module apArea {
         }
 
         cambiarParcelaDelServicio(idServicio: string, parcela: parcelaDto, callback: common.callbackLite<any>) {
-            //for (var i = 0; i < this.fakeDb.servicios.length; i++) {
-            //    let servicio = this.fakeDb.servicios[i];
-            //    if (servicio.id === idServicio) {
-            //        this.fakeDb.servicios[i].parcelaId = parcela.id;
-            //        this.fakeDb.servicios[i].parcelaDisplay = parcela.display;
-            //        break;
-            //    }
-            //}
-
-            //this.timer(() => callback.onSuccess({}), 500);
             let cmd = {
                 idServicio: idServicio,
                 idParcela: parcela.id
             };
             super.postWithCallback('cambiar-parcela-del-servicio', cmd, callback);
+        }
+
+        fijarPrecio(idServicio: string, precio: string, callback: common.callbackLite<any>) {
+            let cmd = {
+                idServicio: idServicio,
+                precio: precio
+            };
+            super.postWithCallback('fijar-precio-al-servicio', cmd, callback);
+        }
+
+        ajustarPrecio(idServicio: string, precio: string, callback: common.callbackLite<any>) {
+            let cmd = {
+                idServicio: idServicio,
+                precio: precio
+            };
+            super.postWithCallback('ajustar-precio-del-servicio', cmd, callback);
         }
     }
 }

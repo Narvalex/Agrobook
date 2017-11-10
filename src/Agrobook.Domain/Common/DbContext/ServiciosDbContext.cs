@@ -25,6 +25,10 @@ namespace Agrobook.Domain
         // Defaults
         public bool Eliminado { get; set; }
         public string IdParcela { get; set; }
+
+        // Precio
+        public bool TienePrecio { get; set; }
+        public decimal PrecioTotal { get; set; }
     }
 
     public class ServicioEntityMap : EntityTypeConfiguration<ServicioEntity>

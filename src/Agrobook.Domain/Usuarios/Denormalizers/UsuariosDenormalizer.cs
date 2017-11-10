@@ -47,42 +47,38 @@ namespace Agrobook.Domain.Usuarios.Services
 
         public void Handle(long eventNumber, AvatarUrlActualizado e)
         {
-            this.DenormalizeAsync(eventNumber, context =>
+            this.Denormalize(eventNumber, context =>
             {
                 var usuario = context.Usuarios.Single(u => u.Id == e.Usuario);
                 usuario.AvatarUrl = e.NuevoAvatarUrl;
-            })
-            .Wait();
+            });
         }
 
         public void Handle(long eventNumber, NombreParaMostrarActualizado e)
         {
-            this.DenormalizeAsync(eventNumber, context =>
+            this.Denormalize(eventNumber, context =>
             {
                 var usuario = context.Usuarios.Single(u => u.Id == e.Usuario);
                 usuario.Display = e.NuevoNombreParaMostrar;
-            })
-            .Wait();
+            });
         }
 
         public void Handle(long eventNumber, PermisoOtorgadoAlUsuario e)
         {
-            this.DenormalizeAsync(eventNumber, context =>
+            this.Denormalize(eventNumber, context =>
             {
                 var usuario = context.Usuarios.Single(x => x.Id == e.IdUsuario);
                 this.AplicarCambioDePermiso(usuario, e.Permiso, true);
-            })
-            .Wait();
+            });
         }
 
         public void Handle(long eventNumber, PermisoRetiradoDelUsuario e)
         {
-            this.DenormalizeAsync(eventNumber, context =>
+            this.Denormalize(eventNumber, context =>
             {
                 var usuario = context.Usuarios.Single(x => x.Id == e.IdUsuario);
                 this.AplicarCambioDePermiso(usuario, e.Permiso, false);
-            })
-            .Wait();
+            });
         }
 
         private void AplicarCambioDePermiso(UsuarioEntity usuario, string permisoACambiar, bool otorgar)

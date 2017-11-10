@@ -1,7 +1,7 @@
 ﻿using Agrobook.Domain.Common;
 using Eventing;
 using Eventing.Core.Messaging;
-using System.Data.Entity;
+using System.Linq;
 
 namespace Agrobook.Domain.Archivos.Services
 {
@@ -42,18 +42,18 @@ namespace Agrobook.Domain.Archivos.Services
 
         public void Handle(long eventNumber, ArchivoEliminado e)
         {
-            this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, context =>
             {
-                var archivo = await context.Archivos.SingleAsync(x => x.IdColeccion == e.IdColeccion && x.Nombre == e.NombreArchivo);
+                var archivo = context.Archivos.Single(x => x.IdColeccion == e.IdColeccion && x.Nombre == e.NombreArchivo);
                 archivo.Eliminado = true;
             });
         }
 
         public void Handle(long eventNumber, ArchivoRestaurado e)
         {
-            this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, context =>
             {
-                var archivo = await context.Archivos.SingleAsync(x => x.IdColeccion == e.IdColeccion && x.Nombre == e.NombreArchivo);
+                var archivo = context.Archivos.Single(x => x.IdColeccion == e.IdColeccion && x.Nombre == e.NombreArchivo);
                 archivo.Eliminado = false;
             });
         }

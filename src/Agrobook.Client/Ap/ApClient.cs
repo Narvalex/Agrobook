@@ -86,5 +86,9 @@ namespace Agrobook.Client.Ap
 
         public async Task Send(CambiarParcelaDelServicio cmd)
             => await base.Post("cambiar-parcela-del-servicio", cmd);
+
+        public async Task Send(FijarPrecioAlServicio cmd) => await base.Post("fijar-precio-al-servicio", cmd);
+
+        public async Task Send(AjustarPrecioDelServicio cmd) => await base.Post("ajustar-precio-del-servicio", cmd);
     }
 }

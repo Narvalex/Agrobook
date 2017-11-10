@@ -53,5 +53,21 @@ namespace Agrobook.Web.Controllers.Ap
             await this.client.Send(cmd);
             return this.Ok();
         }
+
+        [HttpPost]
+        [Route("fijar-precio-al-servicio")]
+        public async Task<IHttpActionResult> FijarPrecio([FromBody]FijarPrecioAlServicio cmd)
+        {
+            await this.client.Send(cmd);
+            return this.Ok();
+        }
+
+        [HttpPost]
+        [Route("ajustar-precio-del-servicio")]
+        public async Task<IHttpActionResult> FijarPrecio([FromBody]AjustarPrecioDelServicio cmd)
+        {
+            await this.client.Send(cmd);
+            return this.Ok();
+        }
     }
 }

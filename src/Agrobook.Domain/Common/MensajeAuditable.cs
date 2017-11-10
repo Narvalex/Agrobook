@@ -2,6 +2,8 @@
 
 namespace Agrobook.Domain.Common
 {
+    // TODO: Esto se podria guardar haciendo que se compruebe que cualquier evento 
+    // que sea mensaje auditable no se guarde si no tiene firma
     public class MensajeAuditable
     {
         public MensajeAuditable(Firma firma)

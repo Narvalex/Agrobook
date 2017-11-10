@@ -1,6 +1,6 @@
 ﻿using Agrobook.Domain.Common;
 using Eventing.Core.Messaging;
-using System.Data.Entity;
+using System.Linq;
 
 namespace Agrobook.Domain.Usuarios.Services
 {
@@ -30,27 +30,27 @@ namespace Agrobook.Domain.Usuarios.Services
 
         public void Handle(long eventNumber, OrganizacionEliminada e)
         {
-            this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, context =>
             {
-                var entity = await context.Organizaciones.SingleAsync(x => x.OrganizacionId == e.Id);
+                var entity = context.Organizaciones.Single(x => x.OrganizacionId == e.Id);
                 entity.EstaEliminada = true;
             });
         }
 
         public void Handle(long eventNumber, OrganizacionRestaurada e)
         {
-            this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, context =>
             {
-                var entity = await context.Organizaciones.SingleAsync(x => x.OrganizacionId == e.Id);
+                var entity = context.Organizaciones.Single(x => x.OrganizacionId == e.Id);
                 entity.EstaEliminada = false;
             });
         }
 
         public void Handle(long eventNumber, UsuarioAgregadoALaOrganizacion e)
         {
-            this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, context =>
             {
-                var org = await context.Organizaciones.SingleAsync(x => x.OrganizacionId == e.OrganizacionId);
+                var org = context.Organizaciones.Single(x => x.OrganizacionId == e.OrganizacionId);
                 context.OrganizacionesDeUsuarios.Add(new OrganizacionDeUsuarioEntity
                 {
                     OrganizacionId = e.OrganizacionId,
@@ -62,9 +62,9 @@ namespace Agrobook.Domain.Usuarios.Services
 
         public void Handle(long eventNumber, UsuarioRemovidoDeLaOrganizacion e)
         {
-            this.Denormalize(eventNumber, async context =>
+            this.Denormalize(eventNumber, context =>
             {
-                var entity = await context.OrganizacionesDeUsuarios.SingleAsync(x => x.UsuarioId == e.IdUsuario && x.OrganizacionId == e.IdOrganizacion);
+                var entity = context.OrganizacionesDeUsuarios.Single(x => x.UsuarioId == e.IdUsuario && x.OrganizacionId == e.IdOrganizacion);
                 context.OrganizacionesDeUsuarios.Remove(entity);
             });
         }

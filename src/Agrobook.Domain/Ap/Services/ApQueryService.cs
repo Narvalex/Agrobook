@@ -239,7 +239,9 @@ namespace Agrobook.Domain.Ap.Services
                          IdOrg = so.serv.IdOrg,
                          IdProd = so.serv.IdProd,
                          OrgDisplay = so.org.NombreParaMostrar,
-                         ParcelaId = so.serv.IdParcela
+                         ParcelaId = so.serv.IdParcela,
+                         TienePrecio = so.serv.TienePrecio,
+                         PrecioTotal = so.serv.TienePrecio ? so.serv.PrecioTotal.ToString() : "0"
                      })
                     .SingleAsync())
                     .Transform(async x =>
@@ -248,7 +250,8 @@ namespace Agrobook.Domain.Ap.Services
                             return x;
                         var parcelaEntity = await context.Parcelas.SingleAsync(p => p.Id == x.ParcelaId);
                         x.ParcelaDisplay = parcelaEntity.Display;
-                        x.Hectareas = parcelaEntity.Hectareas;
+                        x.Hectareas = parcelaEntity.Hectareas.ToString();
+                        x.PrecioPorHectarea = x.TienePrecio ? (decimal.Parse(x.PrecioTotal) / parcelaEntity.Hectareas).ToString() : "0";
                         return x;
                     })));
 

@@ -35,6 +35,9 @@ namespace Agrobook.Domain.Ap
         public bool EstaEliminado { get; private set; } = false;
         public string IdParcela { get; private set; } = null;
 
+        public bool TienePrecio { get; private set; } = false;
+        public decimal Precio { get; private set; } = default(decimal);
+
         public bool HayDiferenciaEnDatosBasicos(string idOrg, string idContrato, DateTime fecha)
         {
             if (idOrg != this.idOrganizacion) return true;
