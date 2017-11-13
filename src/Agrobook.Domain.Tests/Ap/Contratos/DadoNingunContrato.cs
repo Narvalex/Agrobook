@@ -1,4 +1,5 @@
-﻿using Agrobook.Domain.Ap.Messages;
+﻿using Agrobook.Domain.Ap;
+using Agrobook.Domain.Ap.Commands;
 using Eventing.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

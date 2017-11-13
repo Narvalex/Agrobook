@@ -1,4 +1,4 @@
-﻿using Agrobook.Domain.Ap.Messages;
+﻿using Agrobook.Domain.Ap.Commands;
 using Eventing.Core.Domain;
 
 namespace Agrobook.Domain.Ap
@@ -22,13 +22,13 @@ namespace Agrobook.Domain.Ap
         public int UltimoNroDeServicioDelProductor { get; private set; } = 0;
 
         protected override ISnapshot TakeSnapshot()
-            => new ServicioSecSnapshot(this.StreamName, this.Version, this.UltimoNroDeServicioDelProductor);
+            => new NumeracionDeServiciosSnapshot(this.StreamName, this.Version, this.UltimoNroDeServicioDelProductor);
 
         protected override void Rehydrate(ISnapshot snapshot)
         {
             base.Rehydrate(snapshot);
 
-            var state = (ServicioSecSnapshot)snapshot;
+            var state = (NumeracionDeServiciosSnapshot)snapshot;
             this.UltimoNroDeServicioDelProductor = state.UltimoNroDeServicioDelProductor;
         }
     }

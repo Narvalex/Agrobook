@@ -1,7 +1,7 @@
 ﻿using Agrobook.Core;
 using Agrobook.Domain.Common;
 
-namespace Agrobook.Domain.Ap.Messages
+namespace Agrobook.Domain.Ap
 {
     public class NuevoProductorRegistrado : MensajeAuditable, IEvent
     {

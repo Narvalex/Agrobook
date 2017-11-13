@@ -21,6 +21,8 @@ var apArea;
             this.tienePermiso = false;
             // Objetos---------------------------------------
             this.momentInstance = moment;
+            // Reactors
+            this.onServiciosLoaded = function () { };
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
             this.setIdColeccion();
@@ -29,12 +31,14 @@ var apArea;
             this.$scope.$on('$routeUpdate', function (scope, next, current) {
                 _this.cargarDatosSegunEstado();
             });
-            this.$scope.$on(this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, function (e, parcelaDisplay) {
+            this.$scope.$on(this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, function (e, idParcela, parcelaDisplay, hectareas) {
+                _this.servicio.parcelaId = idParcela;
                 _this.servicio.parcelaDisplay = parcelaDisplay;
+                _this.servicio.hectareas = hectareas;
             });
             this.cargarDatosSegunEstado();
-            //this.onServiciosLoaded = () => { };
-            this.onServiciosLoaded = function () { return _this.fijarOAjustarPrecio(null, false); };
+            // Esto esta solo para desarrollo.
+            this.onServiciosLoaded = function () { return setTimeout(function () { return _this.fijarOAjustarPrecio(null, false); }, 1000); };
         }
         // Api
         serviciosTabResumenController.prototype.goToOrg = function () {
@@ -100,6 +104,10 @@ var apArea;
             }
         };
         serviciosTabResumenController.prototype.fijarOAjustarPrecio = function ($event, esAjuste) {
+            if (this.servicio.parcelaId === null) {
+                this.toasterLite.info("Debe especificar la parcela primero para poder fijar el precio");
+                return;
+            }
             var scope = this.$rootScope;
             scope.servicioActual = this.servicio;
             this.$mdDialog.show({

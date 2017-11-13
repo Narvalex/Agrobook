@@ -3,7 +3,7 @@
 module apArea {
     export class serviciosTabParcelaController {
         static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope',
-        'loginService'];
+        'loginService', 'numberFormatter'];
 
         constructor(
             private config: common.config,
@@ -13,7 +13,8 @@ module apArea {
             private $routeParams: angular.route.IRouteParamsService,
             private $rootScope: angular.IRootScopeService,
             private $scope: angular.IScope,
-            private loginService: login.loginService
+            private loginService: login.loginService,
+            private nf: common.numberFormatter
         ) {
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
@@ -111,6 +112,7 @@ module apArea {
                                 new common.callbackLite<parcelaDto>(
                                     value => {
                                         this.parcela = value.data;
+                                        this.parcela.hectareas = this.nf.formatFromUSNumber(parseFloat(this.parcela.hectareas));
                                         this.loading = false;
                                     },
                                     reason => {
@@ -133,6 +135,9 @@ module apArea {
                 new common.callbackLite<parcelaDto[]>(
                     value => {
                         this.parcelas = value.data.filter(x => !x.eliminado);
+                        this.parcelas.forEach(x => {
+                            x.hectareas = this.nf.formatFromUSNumber(parseFloat(x.hectareas));
+                        });
                         if (this.tieneParcela) {
                             for (var i = 0; i < this.parcelas.length; i++) {
                                 let parcela = this.parcelas[i];
@@ -160,7 +165,7 @@ module apArea {
                         this.parcela = parcela;
                         this.toasterLite.success('Parcela especificada correctamente');
                         this.tieneParcela = true;
-                        this.$rootScope.$broadcast(this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, parcela.display);
+                        this.$rootScope.$broadcast(this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, parcela.id, parcela.display, parcela.hectareas);
                         window.location.replace(`#!/servicios/${this.idProd}/${this.idServicio}?tab=parcela&action=view`);
                         this.submitting = false;
                     },
@@ -179,7 +184,7 @@ module apArea {
                         this.servicio.parcelaDisplay = parcela.display;
                         this.parcela = parcela;
                         this.toasterLite.success('La parcela ha sido cambiada');
-                        this.$rootScope.$broadcast(this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, parcela.display);
+                        this.$rootScope.$broadcast(this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, parcela.id, parcela.display, parcela.hectareas);
                         window.location.replace(`#!/servicios/${this.idProd}/${this.idServicio}?tab=parcela&action=view`);
                         this.submitting = false;
                     },

@@ -64,31 +64,33 @@
     </md-content>
 
     <!-- Precio -->
-    <md-content class="md-padding" layout-xs="column" layout="row" ng-if="!vm.loading && vm.servicio.tienePrecio">
-        <div flex-xs flex-gt-xs="50" layout="column">
-            <md-card md-theme="default" md-theme-watch>
-                <md-card-title>
-                    <md-card-title-text>
-                        <span class="md-headline">Total: 4.411,50 $</span>
-                        <span class="md-subhead">16,5 $ x 23,56 ha</span>
-                        <span class="md-subhead"><a href="" ng-click="vm.fijarOAjustarPrecio($event, true)">Ajustar precio</a></span>
-                    </md-card-title-text>
-                </md-card-title>
-            </md-card>
-        </div>
-    </md-content>
-    <md-content class="md-padding" layout-xs="column" layout="row" ng-if="!vm.loading && !vm.servicio.tienePrecio">
-        <div flex-xs flex-gt-xs="50" layout="column">
-            <md-card md-theme="'default'" md-theme-watch>
-                <md-card-title>
-                    <md-card-title-text>
-                        <span class="md-headline">Precio no fijado</span>
-                        <span class="md-subhead"><a href="" ng-click="vm.fijarOAjustarPrecio($event, false)">Fijar precio ahora</a></span>
-                    </md-card-title-text>
-                </md-card-title>
-            </md-card>
-        </div>
-    </md-content>
+    <div ng-show="!vm.loading && vm.action === 'view'">
+        <md-content class="md-padding" layout-xs="column" layout="row" ng-if="!vm.loading && vm.servicio.tienePrecio">
+            <div flex-xs flex-gt-xs="50" layout="column">
+                <md-card md-theme="default" md-theme-watch>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">Total: 4.411,50 $</span>
+                            <span class="md-subhead">16,5 $ x 23,56 ha</span>
+                            <span class="md-subhead"><a href="" ng-click="vm.fijarOAjustarPrecio($event, true)">Ajustar precio</a></span>
+                        </md-card-title-text>
+                    </md-card-title>
+                </md-card>
+            </div>
+        </md-content>
+        <md-content class="md-padding" layout-xs="column" layout="row" ng-if="!vm.loading && !vm.servicio.tienePrecio">
+            <div flex-xs flex-gt-xs="50" layout="column">
+                <md-card md-theme="'default'" md-theme-watch>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">Precio no fijado</span>
+                            <span class="md-subhead"><a href="" ng-click="vm.fijarOAjustarPrecio($event, false)">Fijar precio ahora</a></span>
+                        </md-card-title-text>
+                    </md-card-title>
+                </md-card>
+            </div>
+        </md-content>
+    </div>
 
     <!-- Archivos -->
     <div class="width-md" ng-if="vm.action != 'new'">

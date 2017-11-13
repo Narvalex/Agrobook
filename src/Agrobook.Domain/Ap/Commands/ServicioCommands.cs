@@ -1,7 +1,7 @@
 ﻿using Agrobook.Domain.Common;
 using System;
 
-namespace Agrobook.Domain.Ap.Messages
+namespace Agrobook.Domain.Ap.Commands
 {
     public class ProcesarRegistroDeServicioPendiente
     {
@@ -84,7 +84,7 @@ namespace Agrobook.Domain.Ap.Messages
 
     public class FijarPrecioAlServicio : MensajeAuditable
     {
-        public FijarPrecioAlServicio(Firma firma, string idServicio, string precio)
+        public FijarPrecioAlServicio(Firma firma, string idServicio, decimal precio)
             : base(firma)
         {
             this.IdServicio = idServicio;
@@ -92,12 +92,12 @@ namespace Agrobook.Domain.Ap.Messages
         }
 
         public string IdServicio { get; }
-        public string Precio { get; }
+        public decimal Precio { get; }
     }
 
     public class AjustarPrecioDelServicio : MensajeAuditable
     {
-        public AjustarPrecioDelServicio(Firma firma, string idServicio, string precio)
+        public AjustarPrecioDelServicio(Firma firma, string idServicio, decimal precio)
             : base(firma)
         {
             this.IdServicio = idServicio;
@@ -105,6 +105,6 @@ namespace Agrobook.Domain.Ap.Messages
         }
 
         public string IdServicio { get; }
-        public string Precio { get; }
+        public decimal Precio { get; }
     }
 }

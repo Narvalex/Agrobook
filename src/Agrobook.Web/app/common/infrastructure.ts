@@ -173,8 +173,9 @@ module common {
     export class numberFormatter {
         constructor() { }
 
-        parseNumberWithCommaAsDecimalSeparator(value: string): number {
-            value = value.split('.').join('').replace(',', '.');
+        parseCommaAsDecimalSeparatorToUSNumber(value: string): number {
+            // we invoke toString because it could be a number...
+            value = value.toString().split('.').join('').replace(',', '.');
             return parseFloat(value);
         }
 

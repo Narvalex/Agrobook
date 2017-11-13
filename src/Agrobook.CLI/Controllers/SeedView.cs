@@ -37,14 +37,24 @@ namespace Agrobook.CLI.Controllers
             Console.WriteLine("Se creó el usuario " + dto.NombreDeUsuario);
         }
 
-        internal void NotificarOrgCreada(string nombreDeLaOrg)
+        internal void NotificarOrgCreada(string nombreDeLaOrg, string id)
         {
-            Console.WriteLine("Se creo la org " + nombreDeLaOrg);
+            Console.WriteLine("Se creo la org " + nombreDeLaOrg + " con el id: " + id);
         }
 
-        internal void NotificarUsuarioAgregadoAOrg()
+        internal void NotificarUsuarioAgregadoAOrg(string usuario, string org)
         {
-            Console.WriteLine("Se agrego a usuario a la org");
+            Console.WriteLine($"Se agrego a '{usuario}' a la org '{org}'");
+        }
+
+        internal void NotificarNuevoContrato(string contrato, string org)
+        {
+            Console.WriteLine($"Nuevo contrato '{contrato}' con la org '{org}'");
+        }
+
+        internal void NotificarNuevaAdenda(string adenda, string org)
+        {
+            Console.WriteLine($"Nueva adenda '{adenda}' con la org '{org}'");
         }
     }
 }

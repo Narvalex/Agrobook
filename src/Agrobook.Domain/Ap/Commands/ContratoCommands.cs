@@ -1,7 +1,7 @@
 ﻿using Agrobook.Domain.Common;
 using System;
 
-namespace Agrobook.Domain.Ap.Messages
+namespace Agrobook.Domain.Ap.Commands
 {
     public class RegistrarNuevoContrato : MensajeAuditable
     {

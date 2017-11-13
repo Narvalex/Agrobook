@@ -1,5 +1,6 @@
 ﻿using Agrobook.CLI.Controllers;
 using Agrobook.CLI.Views;
+using Agrobook.Client.Ap;
 using Agrobook.Client.Login;
 using Agrobook.Client.Usuarios;
 using Eventing.Client.Http;
@@ -20,9 +21,9 @@ namespace Agrobook.CLI
             var loginController = new LoginController(new LoginView(), accessTokenProvider);
 
             var usuariosClient = new UsuariosClient(http, () => loginController.Token);
+            var apClient = new ApClient(http, () => loginController.Token);
 
-
-            var seedController = new SeedController(new SeedView(), usuariosClient);
+            var seedController = new SeedController(new SeedView(), usuariosClient, apClient);
 
             var helpController = new HelpController(new HelpView(), loginController, seedController);
 

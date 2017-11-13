@@ -27,14 +27,17 @@ module apArea {
             this.$scope.$on('$routeUpdate', (scope, next, current) => {
                 this.cargarDatosSegunEstado();
             });
-            this.$scope.$on(this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, (e, parcelaDisplay: string) => {
-                this.servicio.parcelaDisplay = parcelaDisplay;
-            });
+            this.$scope.$on(this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio,
+                (e, idParcela: string, parcelaDisplay: string, hectareas: string) => {
+                    this.servicio.parcelaId = idParcela;
+                    this.servicio.parcelaDisplay = parcelaDisplay;
+                    this.servicio.hectareas = hectareas;
+                });
 
             this.cargarDatosSegunEstado();
 
-            //this.onServiciosLoaded = () => { };
-            this.onServiciosLoaded = () => this.fijarOAjustarPrecio(null, false);
+            // Esto esta solo para desarrollo.
+            this.onServiciosLoaded = () => setTimeout(() => this.fijarOAjustarPrecio(null, false), 1000);
         }
 
         // Estados--------------------------------------
@@ -61,7 +64,7 @@ module apArea {
         orgsConContratos: orgConContratos[];
 
         // Reactors
-        onServiciosLoaded: () => any;
+        onServiciosLoaded: () => any = () => { };
 
         // Api
         goToOrg() {
@@ -155,6 +158,11 @@ module apArea {
         }
 
         fijarOAjustarPrecio($event, esAjuste: boolean) {
+            if (this.servicio.parcelaId === null) {
+                this.toasterLite.info("Debe especificar la parcela primero para poder fijar el precio");
+                return;
+            }
+
             var scope = this.$rootScope as IApScope;
             scope.servicioActual = this.servicio;
             this.$mdDialog.show({
@@ -168,9 +176,9 @@ module apArea {
             }).then(() => {
                 console.log('success');
             },
-            () => {
-                console.log('error');
-            });
+                () => {
+                    console.log('error');
+                });
         }
 
         // Privados

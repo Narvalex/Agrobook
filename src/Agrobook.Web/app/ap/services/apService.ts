@@ -13,22 +13,22 @@ module apArea {
         }
 
         // Parcelas
-        registrarNuevaParcela(dto: edicionParcelaDto, callback: common.callbackLite<string>) {
+        registrarNuevaParcela(idProductor: string, nombreDeLaParcela: string, hectareas: number, callback: common.callbackLite<string>) {
             let cmd = {
-                idProductor: dto.idProd,
-                nombreDeLaParcela: dto.display,
-                hectareas: dto.hectareas
+                idProductor: idProductor,
+                nombreDeLaParcela: nombreDeLaParcela,
+                hectareas: hectareas
             };
 
             super.postWithCallback('registrar-parcela', cmd, callback);
         }
 
-        editarParcela(dto: edicionParcelaDto, callback: common.callbackLite<{}>) {
+        editarParcela(idProductor: string, idParcela: string, nombreDeLaParcela: string, hectareas: number, callback: common.callbackLite<{}>) {
             var cmd = {
-                idProductor: dto.idProd,
-                idParcela: dto.idParcela,
-                nombre: dto.display,
-                hectareas: dto.hectareas
+                idProductor: idProductor,
+                idParcela: idParcela,
+                nombre: nombreDeLaParcela,
+                hectareas: hectareas
             };
 
             super.postWithCallback('editar-parcela', cmd, callback);
@@ -149,7 +149,7 @@ module apArea {
             super.postWithCallback('cambiar-parcela-del-servicio', cmd, callback);
         }
 
-        fijarPrecio(idServicio: string, precio: string, callback: common.callbackLite<any>) {
+        fijarPrecio(idServicio: string, precio: number, callback: common.callbackLite<any>) {
             let cmd = {
                 idServicio: idServicio,
                 precio: precio
@@ -157,7 +157,7 @@ module apArea {
             super.postWithCallback('fijar-precio-al-servicio', cmd, callback);
         }
 
-        ajustarPrecio(idServicio: string, precio: string, callback: common.callbackLite<any>) {
+        ajustarPrecio(idServicio: string, precio: number, callback: common.callbackLite<any>) {
             let cmd = {
                 idServicio: idServicio,
                 precio: precio

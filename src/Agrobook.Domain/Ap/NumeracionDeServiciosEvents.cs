@@ -2,7 +2,7 @@
 using Agrobook.Domain.Common;
 using System;
 
-namespace Agrobook.Domain.Ap.Messages
+namespace Agrobook.Domain.Ap
 {
     public class NumeracionDeServiciosIniciada : MensajeAuditable, IEvent
     {

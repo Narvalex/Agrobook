@@ -170,8 +170,9 @@ var common;
     var numberFormatter = (function () {
         function numberFormatter() {
         }
-        numberFormatter.prototype.parseNumberWithCommaAsDecimalSeparator = function (value) {
-            value = value.split('.').join('').replace(',', '.');
+        numberFormatter.prototype.parseCommaAsDecimalSeparatorToUSNumber = function (value) {
+            // we invoke toString because it could be a number...
+            value = value.toString().split('.').join('').replace(',', '.');
             return parseFloat(value);
         };
         numberFormatter.prototype.formatFromUSNumber = function (n, decimalsQuantity) {

@@ -27,6 +27,12 @@ namespace Eventing
                 throw new ArgumentOutOfRangeException(argumentName, $"{argumentName} should be positive.");
         }
 
+        public static void Positive(decimal number, string argumentName)
+        {
+            if (number < 0)
+                throw new ArgumentOutOfRangeException(argumentName, $"{argumentName} should be positive.");
+        }
+
         public static void NotDefaultValue<T>(T argument, string argumentName) where T : class
         {
             if (argument == default(T))

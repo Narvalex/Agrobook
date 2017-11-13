@@ -2,7 +2,7 @@
 var apArea;
 (function (apArea) {
     var serviciosTabParcelaController = (function () {
-        function serviciosTabParcelaController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope, loginService) {
+        function serviciosTabParcelaController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope, loginService, nf) {
             var _this = this;
             this.config = config;
             this.apService = apService;
@@ -12,6 +12,7 @@ var apArea;
             this.$rootScope = $rootScope;
             this.$scope = $scope;
             this.loginService = loginService;
+            this.nf = nf;
             // Estados--------------------------------------
             this.loading = false;
             this.tieneParcela = false;
@@ -78,6 +79,7 @@ var apArea;
                     // esta logica no tiene sentido... solamente esta por las hectareas
                     _this.apQueryService.getParcela(_this.servicio.parcelaId, new common.callbackLite(function (value) {
                         _this.parcela = value.data;
+                        _this.parcela.hectareas = _this.nf.formatFromUSNumber(parseFloat(_this.parcela.hectareas));
                         _this.loading = false;
                     }, function (reason) {
                         _this.loading = false;
@@ -94,6 +96,9 @@ var apArea;
             this.loading = true;
             this.apQueryService.getParcelasDelProd(this.idProd, new common.callbackLite(function (value) {
                 _this.parcelas = value.data.filter(function (x) { return !x.eliminado; });
+                _this.parcelas.forEach(function (x) {
+                    x.hectareas = _this.nf.formatFromUSNumber(parseFloat(x.hectareas));
+                });
                 if (_this.tieneParcela) {
                     for (var i = 0; i < _this.parcelas.length; i++) {
                         var parcela = _this.parcelas[i];
@@ -117,7 +122,7 @@ var apArea;
                 _this.parcela = parcela;
                 _this.toasterLite.success('Parcela especificada correctamente');
                 _this.tieneParcela = true;
-                _this.$rootScope.$broadcast(_this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, parcela.display);
+                _this.$rootScope.$broadcast(_this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, parcela.id, parcela.display, parcela.hectareas);
                 window.location.replace("#!/servicios/" + _this.idProd + "/" + _this.idServicio + "?tab=parcela&action=view");
                 _this.submitting = false;
             }, function (reason) {
@@ -132,7 +137,7 @@ var apArea;
                 _this.servicio.parcelaDisplay = parcela.display;
                 _this.parcela = parcela;
                 _this.toasterLite.success('La parcela ha sido cambiada');
-                _this.$rootScope.$broadcast(_this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, parcela.display);
+                _this.$rootScope.$broadcast(_this.config.eventIndex.ap_servicios.cambioDeParcelaEnServicio, parcela.id, parcela.display, parcela.hectareas);
                 window.location.replace("#!/servicios/" + _this.idProd + "/" + _this.idServicio + "?tab=parcela&action=view");
                 _this.submitting = false;
             }, function (reason) {
@@ -142,7 +147,7 @@ var apArea;
         return serviciosTabParcelaController;
     }());
     serviciosTabParcelaController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope',
-        'loginService'];
+        'loginService', 'numberFormatter'];
     apArea.serviciosTabParcelaController = serviciosTabParcelaController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=serviciosTabParcelaController.js.map

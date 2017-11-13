@@ -1,4 +1,4 @@
-﻿using Agrobook.Domain.Ap.Messages;
+﻿using Agrobook.Domain.Ap.Commands;
 using Eventing;
 using Eventing.Core.Messaging;
 using Eventing.Core.Persistence;

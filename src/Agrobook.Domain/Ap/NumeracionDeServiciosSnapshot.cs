@@ -2,9 +2,9 @@
 
 namespace Agrobook.Domain.Ap
 {
-    public class ServicioSecSnapshot : Snapshot
+    public class NumeracionDeServiciosSnapshot : Snapshot
     {
-        public ServicioSecSnapshot(string streamName, int version, int ultimoNroDeServicioDelProductor) : base(streamName, version)
+        public NumeracionDeServiciosSnapshot(string streamName, int version, int ultimoNroDeServicioDelProductor) : base(streamName, version)
         {
             this.UltimoNroDeServicioDelProductor = ultimoNroDeServicioDelProductor;
         }

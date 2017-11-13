@@ -2,7 +2,7 @@
 var apArea;
 (function (apArea) {
     var prodTabParcelasController = (function () {
-        function prodTabParcelasController(config, apService, apQueryService, toasterLite, $routeParams, $mdPanel, loginService) {
+        function prodTabParcelasController(config, apService, apQueryService, toasterLite, $routeParams, $mdPanel, loginService, numberFormatter) {
             this.config = config;
             this.apService = apService;
             this.apQueryService = apQueryService;
@@ -10,6 +10,7 @@ var apArea;
             this.$routeParams = $routeParams;
             this.$mdPanel = $mdPanel;
             this.loginService = loginService;
+            this.numberFormatter = numberFormatter;
             this.ocultarEliminados = true;
             // Listas
             this.parcelas = [];
@@ -112,7 +113,7 @@ var apArea;
         prodTabParcelasController.prototype.registrarNuevaParcela = function () {
             var _this = this;
             this.parcelaObject.idProd = this.idProd;
-            this.apService.registrarNuevaParcela(this.parcelaObject, new common.callbackLite(function (value) {
+            this.apService.registrarNuevaParcela(this.parcelaObject.idProd, this.parcelaObject.display, this.numberFormatter.parseCommaAsDecimalSeparatorToUSNumber(this.parcelaObject.hectareas), new common.callbackLite(function (value) {
                 var parcela = new apArea.parcelaDto(value.data, _this.parcelaObject.idProd, _this.parcelaObject.display, _this.parcelaObject.hectareas, false);
                 _this.parcelas.push(parcela);
                 _this.toasterLite.success('Parcela creada');
@@ -123,7 +124,7 @@ var apArea;
         };
         prodTabParcelasController.prototype.editarParcela = function () {
             var _this = this;
-            this.apService.editarParcela(this.parcelaObject, new common.callbackLite(function (value) {
+            this.apService.editarParcela(this.parcelaObject.idProd, this.parcelaObject.idParcela, this.parcelaObject.display, this.numberFormatter.parseCommaAsDecimalSeparatorToUSNumber(this.parcelaObject.hectareas), new common.callbackLite(function (value) {
                 // eventual consistency handling before reseting form
                 for (var i = 0; i < _this.parcelas.length; i++) {
                     if (_this.parcelas[i].id === _this.parcelaObject.idParcela) {
@@ -152,12 +153,16 @@ var apArea;
         prodTabParcelasController.prototype.obtenerParcelasDelProd = function () {
             var _this = this;
             this.apQueryService.getParcelasDelProd(this.idProd, new common.callbackLite(function (response) {
+                response.data.forEach(function (x) {
+                    x.hectareas = _this.numberFormatter.formatFromUSNumber(parseFloat(x.hectareas));
+                });
                 _this.parcelas = response.data;
             }, function (reason) { }));
         };
         return prodTabParcelasController;
     }());
-    prodTabParcelasController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', 'loginService'];
+    prodTabParcelasController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', 'loginService',
+        'numberFormatter'];
     apArea.prodTabParcelasController = prodTabParcelasController;
     var panelMenuController = (function () {
         function panelMenuController(mdPanelRef) {

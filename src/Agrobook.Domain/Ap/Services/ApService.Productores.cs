@@ -1,4 +1,5 @@
-﻿using Agrobook.Domain.Ap.Messages;
+﻿using Agrobook.Domain.Ap.Commands;
+using Eventing;
 using Eventing.Core.Persistence;
 using System;
 using System.Threading.Tasks;
@@ -25,7 +26,8 @@ namespace Agrobook.Domain.Ap.Services
             if (productor.TieneParcela(idParcela))
                 throw new InvalidOperationException("El productor ya tiene esa parcela");
 
-            productor.Emit(new NuevaParcelaRegistrada(cmd.Firma, idProductor, idParcela, cmd.NombreDeLaParcela, decimal.Parse(cmd.Hectareas)));
+            Ensure.Positive(cmd.Hectareas, nameof(cmd.Hectareas));
+            productor.Emit(new NuevaParcelaRegistrada(cmd.Firma, idProductor, idParcela, cmd.NombreDeLaParcela, cmd.Hectareas));
 
             await this.repository.SaveAsync(productor);
             return idParcela;
@@ -38,7 +40,8 @@ namespace Agrobook.Domain.Ap.Services
             if (!productor.TieneParcela(cmd.IdParcela))
                 throw new InvalidOperationException("El productor no tiene la parcela que se quiere editar");
 
-            productor.Emit(new ParcelaEditada(cmd.Firma, cmd.IdProductor, cmd.IdParcela, cmd.Nombre, decimal.Parse(cmd.Hectareas)));
+            Ensure.Positive(cmd.Hectareas, nameof(cmd.Hectareas));
+            productor.Emit(new ParcelaEditada(cmd.Firma, cmd.IdProductor, cmd.IdParcela, cmd.Nombre, cmd.Hectareas));
 
             await this.repository.SaveAsync(productor);
         }

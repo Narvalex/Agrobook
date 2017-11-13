@@ -1,10 +1,10 @@
 ﻿using Agrobook.Domain.Common;
 
-namespace Agrobook.Domain.Ap.Messages
+namespace Agrobook.Domain.Ap.Commands
 {
     public class RegistrarParcela : MensajeAuditable
     {
-        public RegistrarParcela(Firma firma, string idProductor, string nombreDeLaParcela, string hectareas) : base(firma)
+        public RegistrarParcela(Firma firma, string idProductor, string nombreDeLaParcela, decimal hectareas) : base(firma)
         {
             this.IdProductor = idProductor;
             this.NombreDeLaParcela = nombreDeLaParcela;
@@ -13,12 +13,12 @@ namespace Agrobook.Domain.Ap.Messages
 
         public string IdProductor { get; }
         public string NombreDeLaParcela { get; }
-        public string Hectareas { get; }
+        public decimal Hectareas { get; }
     }
 
     public class EditarParcela : MensajeAuditable
     {
-        public EditarParcela(Firma firma, string idProductor, string idParcela, string nombre, string hectareas)
+        public EditarParcela(Firma firma, string idProductor, string idParcela, string nombre, decimal hectareas)
             : base(firma)
         {
             this.IdProductor = idProductor;
@@ -30,7 +30,7 @@ namespace Agrobook.Domain.Ap.Messages
         public string IdProductor { get; }
         public string IdParcela { get; }
         public string Nombre { get; }
-        public string Hectareas { get; }
+        public decimal Hectareas { get; }
     }
 
     public class EliminarParcela : MensajeAuditable

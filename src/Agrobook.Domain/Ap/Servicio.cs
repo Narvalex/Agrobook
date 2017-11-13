@@ -1,4 +1,4 @@
-﻿using Agrobook.Domain.Ap.Messages;
+﻿using Agrobook.Domain.Ap.Commands;
 using Eventing.Core.Domain;
 using System;
 
@@ -30,6 +30,15 @@ namespace Agrobook.Domain.Ap
             this.On<ServicioRestaurado>(e => this.EstaEliminado = false);
             this.On<ParcelaDeServicioEspecificada>(e => this.IdParcela = e.IdParcela);
             this.On<ParcelaDeServicioCambiada>(e => this.IdParcela = e.IdParcela);
+            this.On<PrecioDeServicioFijado>(e =>
+            {
+                this.TienePrecio = true;
+                this.Precio = e.Precio;
+            });
+            this.On<PrecioDeServicioAjustado>(e =>
+            {
+                this.Precio = e.Precio;
+            });
         }
 
         public bool EstaEliminado { get; private set; } = false;

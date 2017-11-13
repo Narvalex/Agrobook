@@ -21,20 +21,20 @@ var apArea;
             return _this;
         }
         // Parcelas
-        apService.prototype.registrarNuevaParcela = function (dto, callback) {
+        apService.prototype.registrarNuevaParcela = function (idProductor, nombreDeLaParcela, hectareas, callback) {
             var cmd = {
-                idProductor: dto.idProd,
-                nombreDeLaParcela: dto.display,
-                hectareas: dto.hectareas
+                idProductor: idProductor,
+                nombreDeLaParcela: nombreDeLaParcela,
+                hectareas: hectareas
             };
             _super.prototype.postWithCallback.call(this, 'registrar-parcela', cmd, callback);
         };
-        apService.prototype.editarParcela = function (dto, callback) {
+        apService.prototype.editarParcela = function (idProductor, idParcela, nombreDeLaParcela, hectareas, callback) {
             var cmd = {
-                idProductor: dto.idProd,
-                idParcela: dto.idParcela,
-                nombre: dto.display,
-                hectareas: dto.hectareas
+                idProductor: idProductor,
+                idParcela: idParcela,
+                nombre: nombreDeLaParcela,
+                hectareas: hectareas
             };
             _super.prototype.postWithCallback.call(this, 'editar-parcela', cmd, callback);
         };

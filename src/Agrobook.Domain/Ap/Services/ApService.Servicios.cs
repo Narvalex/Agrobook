@@ -1,5 +1,6 @@
-﻿using Agrobook.Domain.Ap.Messages;
+﻿using Agrobook.Domain.Ap.Commands;
 using Agrobook.Domain.Usuarios;
+using Eventing;
 using Eventing.Core.Persistence;
 using System;
 using System.Threading.Tasks;
@@ -97,10 +98,8 @@ namespace Agrobook.Domain.Ap.Services
             if (servicio.TienePrecio)
                 throw new InvalidOperationException("Ya se tiene fijado el precio");
 
-            // If fails to parse, it will throw
-            var precio = decimal.Parse(cmd.Precio);
-
-            servicio.Emit(new PrecioDeServicioFijado(cmd.Firma, cmd.IdServicio, precio));
+            Ensure.Positive(cmd.Precio, nameof(cmd.Precio));
+            servicio.Emit(new PrecioDeServicioFijado(cmd.Firma, cmd.IdServicio, cmd.Precio));
 
             await this.repository.SaveAsync(servicio);
         }
@@ -111,11 +110,11 @@ namespace Agrobook.Domain.Ap.Services
             if (!servicio.TienePrecio)
                 throw new InvalidOperationException("El documento no tiene precio para ajustar. Fijelo primero");
 
-            var precio = decimal.Parse(cmd.Precio);
-            if (precio == servicio.Precio)
+            Ensure.Positive(cmd.Precio, nameof(cmd.Precio));
+            if (cmd.Precio == servicio.Precio)
                 throw new InvalidOperationException("El precio que se quiere ajustar es igual al ajuste");
 
-            servicio.Emit(new PrecioDeServicioAjustado(cmd.Firma, cmd.IdServicio, precio));
+            servicio.Emit(new PrecioDeServicioAjustado(cmd.Firma, cmd.IdServicio, cmd.Precio));
 
             await this.repository.SaveAsync(servicio);
         }

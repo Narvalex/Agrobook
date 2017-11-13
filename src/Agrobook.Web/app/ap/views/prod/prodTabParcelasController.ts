@@ -2,7 +2,8 @@
 
 module apArea {
     export class prodTabParcelasController {
-        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', 'loginService'];
+        static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', 'loginService',
+        'numberFormatter'];
 
         constructor(
             private config: common.config,
@@ -11,7 +12,8 @@ module apArea {
             private toasterLite: common.toasterLite,
             private $routeParams: angular.route.IRouteParamsService,
             private $mdPanel: angular.material.IPanelService,
-            private loginService: login.loginService
+            private loginService: login.loginService,
+            private numberFormatter: common.numberFormatter
         ) {
             this.mostrarForm = false;
 
@@ -153,7 +155,10 @@ module apArea {
         // Privados
         registrarNuevaParcela() {
             this.parcelaObject.idProd = this.idProd;
-            this.apService.registrarNuevaParcela(this.parcelaObject,
+            this.apService.registrarNuevaParcela(
+                this.parcelaObject.idProd,
+                this.parcelaObject.display, 
+                this.numberFormatter.parseCommaAsDecimalSeparatorToUSNumber(this.parcelaObject.hectareas),
                 new common.callbackLite<string>(
                     value => {
                         var parcela = new parcelaDto(value.data, this.parcelaObject.idProd, this.parcelaObject.display, this.parcelaObject.hectareas, false);
@@ -168,7 +173,11 @@ module apArea {
         }
 
         editarParcela() {
-            this.apService.editarParcela(this.parcelaObject,
+            this.apService.editarParcela(
+                this.parcelaObject.idProd,
+                this.parcelaObject.idParcela,
+                this.parcelaObject.display,
+                this.numberFormatter.parseCommaAsDecimalSeparatorToUSNumber(this.parcelaObject.hectareas),
                 new common.callbackLite<{}>(
                     value => {
                         // eventual consistency handling before reseting form
@@ -205,6 +214,9 @@ module apArea {
             this.apQueryService.getParcelasDelProd(this.idProd,
                 new common.callbackLite<parcelaDto[]>(
                     response => {
+                        response.data.forEach(x => {
+                            x.hectareas = this.numberFormatter.formatFromUSNumber(parseFloat(x.hectareas));
+                        });
                         this.parcelas = response.data;
                     },
                     reason => { })

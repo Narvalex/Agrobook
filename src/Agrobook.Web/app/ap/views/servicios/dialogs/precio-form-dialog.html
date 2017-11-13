@@ -1,7 +1,7 @@
 ﻿<md-dialog aria-label="Precio Dialog" class="fullscreen-dialog">
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>{{vm.servicio.tienePrecio ? 'Ajustar precio' : 'Fijar precio'}}</h2>
+            <h2>{{vm.servicio.tienePrecio ? 'Ajustar precio' : 'Fijar precio'}} para parcela {{vm.servicio.parcelaDisplay}}</h2>
             <span flex></span>
             <md-button class="md-icon-button" ng-click="vm.cancelar()" aria-label="cancel">
                 <ng-md-icon icon="close"></ng-md-icon>
@@ -23,8 +23,12 @@
                         <label>{{vm.ajustarDesdeElTotal ? 'Precio total' : 'Precio por hectárea'}} (USD)</label>
                         <input ng-model="vm.precioInput"
                                name="precioInput"
+                               id="precioInput"
+                               ng-disabled="vm.working"
+                               ng-autofocus
                                required
-                               style="text-align:right;">
+                               style="text-align:right;"
+                               ng-keyup="vm.checkIfEnter($event)">
                         <div ng-messages="precioForm.precioInput.$error" role="alert">
                             <div ng-message="" ng-hide="vm.precioInput">Debe ingresar un precio</div>
                         </div>
@@ -39,11 +43,11 @@
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <span flex></span>
-        <md-button ng-click="vm.cancelar()">
+        <md-button ng-click="vm.cancelar()" ng-disabled="vm.working">
             Cancelar
         </md-button>
         <md-button ng-click="vm.ajustarOFijarPrecio()" class="md-primary md-raised">
-            {{vm.servicio.tienePrecio ? 'Ajustar precio' : 'Fijar precio'}}
+            {{vm.servicio.tienePrecio ? (vm.working ? 'Ajustando precio' : 'Ajustar precio') : (vm.working ? 'Fijando precio' : 'Fijar precio')}}
         </md-button>
     </md-dialog-actions>
 </md-dialog>

@@ -2,12 +2,17 @@
 var apArea;
 (function (apArea) {
     var precioFormDialogController = (function () {
-        function precioFormDialogController($mdDialog, $rootScope, $scope, nf) {
+        function precioFormDialogController($mdDialog, $rootScope, $scope, nf, apService, $timeout, config, toasterLite) {
             this.$mdDialog = $mdDialog;
             this.$rootScope = $rootScope;
             this.$scope = $scope;
             this.nf = nf;
-            this.apScope = $rootScope;
+            this.apService = apService;
+            this.$timeout = $timeout;
+            this.config = config;
+            this.toasterLite = toasterLite;
+            this.working = false;
+            this.apScope = this.$rootScope;
             this.servicio = this.apScope.servicioActual;
             this.inicializar();
         }
@@ -17,13 +22,43 @@ var apArea;
         precioFormDialogController.prototype.cancelar = function () {
             this.$mdDialog.cancel();
         };
+        precioFormDialogController.prototype.checkIfEnter = function ($event) {
+            if ($event.keyCode === this.config.keyCodes.enter)
+                this.fijarOAjustarPrecio();
+        };
         precioFormDialogController.prototype.fijarOAjustarPrecio = function () {
+            var _this = this;
+            this.working = true;
+            if (this.servicio.tienePrecio) {
+                this.apService.ajustarPrecio(this.servicio.id, this.precioTotal, new common.callbackLite(function (value) {
+                    _this.$mdDialog.hide();
+                    _this.working = false;
+                }, function (error) {
+                    _this.toasterLite.error('Hubo un error al intentar ajustar el precio');
+                    _this.working = false;
+                }));
+            }
+            else {
+                this.apService.fijarPrecio(this.servicio.id, this.precioTotal, new common.callbackLite(function (value) {
+                    _this.$mdDialog.hide();
+                    _this.working = false;
+                }, function (error) {
+                    _this.toasterLite.error('Hubo un error al intentar fijar el precio');
+                    _this.working = false;
+                }));
+            }
         };
         //---------------------------
         // Private
         //---------------------------
         precioFormDialogController.prototype.inicializar = function () {
             var _this = this;
+            this.$timeout(function () {
+                _this.$scope.$apply(function () {
+                    var e = document.getElementById('precioInput');
+                    e.focus();
+                });
+            }, 750);
             this.ajustarDesdeElTotal = true;
             if (this.servicio.tienePrecio) {
             }
@@ -31,7 +66,7 @@ var apArea;
                 this.precioInput = undefined;
                 this.precioLabel = '0';
             }
-            this.hectareas = this.nf.parseNumberWithCommaAsDecimalSeparator(this.servicio.hectareas);
+            this.hectareas = this.nf.parseCommaAsDecimalSeparatorToUSNumber(this.servicio.hectareas);
             var self = this;
             this.$scope.$watch(angular.bind(this.$scope, function () { return _this.precioInput; }), function (newValue, oldValue) {
                 self.calcularYMostrarPrecio();
@@ -46,7 +81,7 @@ var apArea;
             if (this.precioInput === undefined)
                 precioInput = 0;
             else {
-                precioInput = this.nf.parseNumberWithCommaAsDecimalSeparator(this.precioInput);
+                precioInput = this.nf.parseCommaAsDecimalSeparatorToUSNumber(this.precioInput);
                 // Hay que ver la necesidad, si formatear o no
                 var lastChar = this.precioInput[this.precioInput.length - 1];
                 if (lastChar !== ',')
@@ -56,15 +91,17 @@ var apArea;
             var precioLabel;
             if (this.ajustarDesdeElTotal) {
                 precioLabel = precioInput / this.hectareas;
+                this.precioTotal = precioInput;
             }
             else {
                 precioLabel = precioInput * this.hectareas;
+                this.precioTotal = precioLabel;
             }
             this.precioLabel = this.nf.formatFromUSNumber(precioLabel);
         };
         return precioFormDialogController;
     }());
-    precioFormDialogController.$inject = ['$mdDialog', '$rootScope', '$scope', 'numberFormatter'];
+    precioFormDialogController.$inject = ['$mdDialog', '$rootScope', '$scope', 'numberFormatter', 'apService', '$timeout', 'config', 'toasterLite'];
     apArea.precioFormDialogController = precioFormDialogController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=precioFormDialogController.js.map
