@@ -51,6 +51,10 @@ md-autocomplete input:not(.md-input) {
     color: red !important;
 }
 
+.dark-red-text {
+    color: #be0303 !important;
+}
+
 .h2-subtitle {
     font-size: 16px;
     color: #9b9b9b

@@ -1,5 +1,4 @@
-﻿using Agrobook.Domain.Ap.Commands;
-using Agrobook.Domain.Common;
+﻿using Agrobook.Domain.Common;
 using Eventing.Core.Messaging;
 using System.Linq;
 
@@ -94,7 +93,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
                 var servicio = context.Servicios.Single(x => x.Id == e.IdServicio);
 
                 servicio.TienePrecio = true;
-                servicio.PrecioTotal = e.Precio;
+                servicio.PrecioTotal = e.PrecioTotal;
             });
         }
 
@@ -104,7 +103,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
             {
                 var servicio = context.Servicios.Single(x => x.Id == e.IdServicio);
 
-                servicio.PrecioTotal = e.Precio;
+                servicio.PrecioTotal = e.PrecioTotal;
             });
         }
     }

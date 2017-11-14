@@ -2,7 +2,7 @@
 var apArea;
 (function (apArea) {
     var serviciosTabResumenController = (function () {
-        function serviciosTabResumenController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope, loginService, $mdDialog, $mdMedia) {
+        function serviciosTabResumenController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope, loginService, $mdDialog, $mdMedia, nf) {
             var _this = this;
             this.config = config;
             this.apService = apService;
@@ -14,6 +14,7 @@ var apArea;
             this.loginService = loginService;
             this.$mdDialog = $mdDialog;
             this.$mdMedia = $mdMedia;
+            this.nf = nf;
             this.submitting = false;
             this.eliminando = false;
             this.restaurando = false;
@@ -22,7 +23,7 @@ var apArea;
             // Objetos---------------------------------------
             this.momentInstance = moment;
             // Reactors
-            this.onServiciosLoaded = function () { };
+            this.onServiciosLoadedForDev = function () { };
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
             this.setIdColeccion();
@@ -38,7 +39,7 @@ var apArea;
             });
             this.cargarDatosSegunEstado();
             // Esto esta solo para desarrollo.
-            this.onServiciosLoaded = function () { return setTimeout(function () { return _this.fijarOAjustarPrecio(null, false); }, 1000); };
+            //this.onServiciosLoaded = () => setTimeout(() => this.fijarOAjustarPrecio(null, false), 1000);
         }
         // Api
         serviciosTabResumenController.prototype.goToOrg = function () {
@@ -104,6 +105,7 @@ var apArea;
             }
         };
         serviciosTabResumenController.prototype.fijarOAjustarPrecio = function ($event, esAjuste) {
+            var _this = this;
             if (this.servicio.parcelaId === null) {
                 this.toasterLite.info("Debe especificar la parcela primero para poder fijar el precio");
                 return;
@@ -118,10 +120,17 @@ var apArea;
                 controllerAs: 'vm',
                 clickOutsideToClose: true,
                 fullscreen: this.$mdMedia('xs')
-            }).then(function () {
-                console.log('success');
+            }).then(function (precioTotal) {
+                _this.setPrecio(precioTotal);
+                if (_this.servicio.tienePrecio) {
+                    _this.toasterLite.success('Precio fijado correctamente');
+                }
+                else {
+                    _this.servicio.tienePrecio = true;
+                    _this.toasterLite.success('Precio ajustado correctamente');
+                }
             }, function () {
-                console.log('error');
+                //console.log('error');
             });
         };
         // Privados
@@ -176,9 +185,11 @@ var apArea;
             this.loading = true;
             this.apQueryService.getServicio(this.idServicio, new common.callbackLite(function (value) {
                 _this.servicio = value.data;
+                if (_this.servicio.tienePrecio)
+                    _this.setPrecio(parseFloat(_this.servicio.precioTotal));
                 _this.loading = false;
                 callback();
-                _this.onServiciosLoaded();
+                _this.onServiciosLoadedForDev();
             }, function (reason) {
                 _this.loading = false;
             }));
@@ -215,10 +226,16 @@ var apArea;
         serviciosTabResumenController.prototype.setIdColeccion = function () {
             this.idColeccion = this.config.categoriaDeArchivos.servicioDatosBasicos + "-" + this.idServicio;
         };
+        serviciosTabResumenController.prototype.setPrecio = function (precioTotal) {
+            this.servicio.precioTotal = this.nf.formatFromUSNumber(precioTotal);
+            var ha = this.nf.parseCommaAsDecimalSeparatorToUSNumber(this.servicio.hectareas);
+            var pph = precioTotal / ha;
+            this.servicio.precioPorHectarea = this.nf.formatFromUSNumber(pph);
+        };
         return serviciosTabResumenController;
     }());
     serviciosTabResumenController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope',
-        '$scope', 'loginService', '$mdDialog', '$mdMedia'];
+        '$scope', 'loginService', '$mdDialog', '$mdMedia', 'numberFormatter'];
     apArea.serviciosTabResumenController = serviciosTabResumenController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=serviciosTabResumenController.js.map

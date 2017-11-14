@@ -72,8 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ap\ApIdProvider.cs" />
+    <Compile Include="Ap\Commands\ServicioCommands.cs" />
+    <Compile Include="Ap\Commands\ServicioInternalCommands.cs" />
     <Compile Include="Ap\Contrato.cs" />
-    <Compile Include="Ap\ContratoSnapshot.cs" />
     <Compile Include="Ap\Denormalizers\ContratosDenormalizer.cs" />
     <Compile Include="Ap\Denormalizers\ProductoresDenormalizer.cs" />
     <Compile Include="Ap\Denormalizers\ServiciosDenormalizer.cs" />
@@ -81,12 +82,10 @@
     <Compile Include="Ap\ContratoEvents.cs" />
     <Compile Include="Ap\Commands\ProductorCommands.cs" />
     <Compile Include="Ap\ProductorEvents.cs" />
-    <Compile Include="Ap\Commands\ServicioCommands.cs" />
     <Compile Include="Ap\Commands\NumeracionDeServiciosCommands.cs" />
     <Compile Include="Ap\NumeracionDeServiciosEvents.cs" />
     <Compile Include="Ap\ServicioEvents.cs" />
     <Compile Include="Ap\Productor.cs" />
-    <Compile Include="Ap\ProductorSnapshot.cs" />
     <Compile Include="Ap\Services\ApDTOs.cs" />
     <Compile Include="Ap\Services\ApQueryService.cs" />
     <Compile Include="Ap\Services\ApService.Contratos.cs" />
@@ -97,8 +96,7 @@
     <Compile Include="Ap\Services\NumeracionDeServiciosCommandHandler.cs" />
     <Compile Include="Ap\Servicio.cs" />
     <Compile Include="Ap\NumeracionDeServicios.cs" />
-    <Compile Include="Ap\NumeracionDeServiciosSnapshot.cs" />
-    <Compile Include="Ap\ServicioSnapshot.cs" />
+    <Compile Include="Ap\ValueObjects\Parcela.cs" />
     <Compile Include="Archivos\ColeccionDeArchivosIdProvider.cs" />
     <Compile Include="Archivos\Messages\ArchivosCommands.cs" />
     <Compile Include="Archivos\Messages\ArchivosEvents.cs" />
@@ -115,6 +113,7 @@
     <Compile Include="Common\DbContext\AgrobookDbContext.cs" />
     <Compile Include="Common\EventSourcedHandler.cs" />
     <Compile Include="Common\IEvent.cs" />
+    <Compile Include="Ap\ValueObjects\Moneda.cs" />
     <Compile Include="Common\NoOpSqlDenormalizer.cs" />
     <Compile Include="Common\SqlDenormalizer.cs" />
     <Compile Include="Common\AgrobookQueryService.cs" />

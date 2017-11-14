@@ -1,4 +1,5 @@
 ﻿using Agrobook.Domain.Ap.Commands;
+using Agrobook.Domain.Ap.ValueObjects;
 using Agrobook.Domain.Usuarios;
 using Eventing;
 using Eventing.Core.Persistence;
@@ -72,8 +73,13 @@ namespace Agrobook.Domain.Ap.Services
         {
             var servicio = await this.repository.GetOrFailByIdAsync<Servicio>(cmd.IdServicio);
 
-            if (servicio.IdParcela != null)
+            if (servicio.TieneParcela)
                 throw new InvalidOperationException("El servicio ya tiene una parcela especificada.");
+
+            var productor = await this.repository.GetOrFailByIdAsync<Productor>(servicio.IdProductor);
+
+            if (!productor.TieneParcela(cmd.IdParcela))
+                throw new InvalidOperationException("El productor no tiene esa parcela!");
 
             servicio.Emit(new ParcelaDeServicioEspecificada(cmd.Firma, cmd.IdServicio, cmd.IdParcela));
 
@@ -87,6 +93,10 @@ namespace Agrobook.Domain.Ap.Services
             if (servicio.IdParcela == cmd.IdParcela)
                 throw new InvalidOperationException("La parcela que se quiere cambiar es igual a la actual");
 
+            var productor = await this.repository.GetOrFailByIdAsync<Productor>(servicio.IdProductor);
+            if (!productor.TieneParcela(cmd.IdParcela))
+                throw new InvalidOperationException("El productor no tiene esa parcela!");
+
             servicio.Emit(new ParcelaDeServicioCambiada(cmd.Firma, cmd.IdServicio, cmd.IdParcela));
 
             await this.repository.SaveAsync(servicio);
@@ -99,7 +109,7 @@ namespace Agrobook.Domain.Ap.Services
                 throw new InvalidOperationException("Ya se tiene fijado el precio");
 
             Ensure.Positive(cmd.Precio, nameof(cmd.Precio));
-            servicio.Emit(new PrecioDeServicioFijado(cmd.Firma, cmd.IdServicio, cmd.Precio));
+            servicio.Emit(new PrecioDeServicioFijado(cmd.Firma, cmd.IdServicio, Moneda.DolaresAmericanos, cmd.Precio));
 
             await this.repository.SaveAsync(servicio);
         }
@@ -110,11 +120,11 @@ namespace Agrobook.Domain.Ap.Services
             if (!servicio.TienePrecio)
                 throw new InvalidOperationException("El documento no tiene precio para ajustar. Fijelo primero");
 
-            Ensure.Positive(cmd.Precio, nameof(cmd.Precio));
             if (cmd.Precio == servicio.Precio)
                 throw new InvalidOperationException("El precio que se quiere ajustar es igual al ajuste");
 
-            servicio.Emit(new PrecioDeServicioAjustado(cmd.Firma, cmd.IdServicio, cmd.Precio));
+            Ensure.Positive(cmd.Precio, nameof(cmd.Precio));
+            servicio.Emit(new PrecioDeServicioAjustado(cmd.Firma, cmd.IdServicio, Moneda.DolaresAmericanos, cmd.Precio));
 
             await this.repository.SaveAsync(servicio);
         }

@@ -54,7 +54,7 @@ module apArea {
                 this.apService.ajustarPrecio(this.servicio.id, this.precioTotal,
                     new common.callbackLite<any>(
                         value => {
-                            this.$mdDialog.hide();
+                            this.$mdDialog.hide(this.precioTotal);
                             this.working = false;
                         },
                         error => {
@@ -66,7 +66,7 @@ module apArea {
                 this.apService.fijarPrecio(this.servicio.id, this.precioTotal,
                     new common.callbackLite<any>(
                         value => {
-                            this.$mdDialog.hide();
+                            this.$mdDialog.hide(this.precioTotal);
                             this.working = false;
                         },
                         error => {
@@ -90,13 +90,6 @@ module apArea {
 
             this.ajustarDesdeElTotal = true;
 
-            if (this.servicio.tienePrecio) {
-            }
-            else {
-                this.precioInput = undefined;
-                this.precioLabel = '0';
-            }
-
             this.hectareas = this.nf.parseCommaAsDecimalSeparatorToUSNumber(this.servicio.hectareas);
 
             var self = this;
@@ -108,6 +101,14 @@ module apArea {
                 (newValue: boolean, oldValue: boolean) => {
                     self.calcularYMostrarPrecio();
                 });
+
+            if (this.servicio.tienePrecio) {
+                this.precioInput = this.servicio.precioTotal;
+            }
+            else {
+                this.precioInput = undefined;
+                this.precioLabel = '0';
+            }
         }
 
         private calcularYMostrarPrecio() {

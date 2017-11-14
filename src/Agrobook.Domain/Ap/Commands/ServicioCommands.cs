@@ -3,16 +3,6 @@ using System;
 
 namespace Agrobook.Domain.Ap.Commands
 {
-    public class ProcesarRegistroDeServicioPendiente
-    {
-        public ProcesarRegistroDeServicioPendiente(NuevoRegistroDeServicioPendiente registroPendiente)
-        {
-            this.RegistroPendiente = registroPendiente;
-        }
-
-        public NuevoRegistroDeServicioPendiente RegistroPendiente { get; }
-    }
-
     public class EditarDatosBasicosDelSevicio : MensajeAuditable
     {
         public EditarDatosBasicosDelSevicio(Firma firma, string idServicio, string idOrg, string idContrato, bool esAdenda, string idContratoDeLaAdenda, DateTime fecha)

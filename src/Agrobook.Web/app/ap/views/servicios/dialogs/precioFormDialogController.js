@@ -31,7 +31,7 @@ var apArea;
             this.working = true;
             if (this.servicio.tienePrecio) {
                 this.apService.ajustarPrecio(this.servicio.id, this.precioTotal, new common.callbackLite(function (value) {
-                    _this.$mdDialog.hide();
+                    _this.$mdDialog.hide(_this.precioTotal);
                     _this.working = false;
                 }, function (error) {
                     _this.toasterLite.error('Hubo un error al intentar ajustar el precio');
@@ -40,7 +40,7 @@ var apArea;
             }
             else {
                 this.apService.fijarPrecio(this.servicio.id, this.precioTotal, new common.callbackLite(function (value) {
-                    _this.$mdDialog.hide();
+                    _this.$mdDialog.hide(_this.precioTotal);
                     _this.working = false;
                 }, function (error) {
                     _this.toasterLite.error('Hubo un error al intentar fijar el precio');
@@ -60,12 +60,6 @@ var apArea;
                 });
             }, 750);
             this.ajustarDesdeElTotal = true;
-            if (this.servicio.tienePrecio) {
-            }
-            else {
-                this.precioInput = undefined;
-                this.precioLabel = '0';
-            }
             this.hectareas = this.nf.parseCommaAsDecimalSeparatorToUSNumber(this.servicio.hectareas);
             var self = this;
             this.$scope.$watch(angular.bind(this.$scope, function () { return _this.precioInput; }), function (newValue, oldValue) {
@@ -74,6 +68,13 @@ var apArea;
             this.$scope.$watch(angular.bind(this.$scope, function () { return _this.ajustarDesdeElTotal; }), function (newValue, oldValue) {
                 self.calcularYMostrarPrecio();
             });
+            if (this.servicio.tienePrecio) {
+                this.precioInput = this.servicio.precioTotal;
+            }
+            else {
+                this.precioInput = undefined;
+                this.precioLabel = '0';
+            }
         };
         precioFormDialogController.prototype.calcularYMostrarPrecio = function () {
             // Mostrando el input formateado

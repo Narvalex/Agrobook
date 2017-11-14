@@ -1,5 +1,4 @@
-﻿using Agrobook.Domain.Ap.Commands;
-using Eventing;
+﻿using Agrobook.Domain.Ap.ValueObjects;
 using Eventing.Core.Domain;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +8,19 @@ namespace Agrobook.Domain.Ap
     [StreamCategory("agrobook.ap.productores")]
     public class Productor : EventSourced
     {
-        private readonly IDictionary<string, bool> parcelasById = new Dictionary<string, bool>(); // if true: deleted
+        private readonly List<Parcela> parcelas = new List<Parcela>();
 
         public Productor()
         {
             this.On<NuevoProductorRegistrado>(e => this.SetStreamNameById(e.IdProductor));
-            this.On<NuevaParcelaRegistrada>(e => this.parcelasById.Add(e.IdParcela, false));
-            this.On<ParcelaEliminada>(e => this.parcelasById[e.IdParcela] = true);
-            this.On<ParcelaRestaurada>(e => this.parcelasById[e.IdParcela] = false);
+            this.On<NuevaParcelaRegistrada>(e => this.parcelas.Add(new Parcela(e.IdParcela, e.Hectareas, false)));
+            this.On<ParcelaEliminada>(e => this.parcelas.Single(x => x.Id == e.IdParcela).MarcarComoEliminada());
+            this.On<ParcelaRestaurada>(e => this.parcelas.Single(x => x.Id == e.IdParcela).MarcarComoRestaurada());
         }
 
         protected override ISnapshot TakeSnapshot()
         {
-            return new ProductorSnapshot(this.StreamName, this.Version, this.parcelasById.ToArray());
+            return new ProductorSnapshot(this.StreamName, this.Version, this.parcelas.ToArray());
         }
 
         protected override void Rehydrate(ISnapshot snapshot)
@@ -29,10 +28,28 @@ namespace Agrobook.Domain.Ap
             base.Rehydrate(snapshot);
 
             var state = (ProductorSnapshot)snapshot;
-            state.Parcelas.ForEach(x => this.parcelasById.Add(x.Key, x.Value));
+            this.parcelas.AddRange(state.Parcelas);
         }
 
-        public bool TieneParcela(string idParcela) => this.parcelasById.ContainsKey(idParcela);
-        public bool ParcelaEstaEliminada(string idParcela) => this.parcelasById.ContainsKey(idParcela) && this.parcelasById[idParcela];
+        public bool TieneParcela(string idParcela) => this.parcelas.Any(x => x.Id == idParcela);
+
+        // Le hacemos una copia
+        public Parcela MirarParcela(string idParcela)
+            => this.parcelas
+                .Where(x => x.Id == idParcela)
+                .Select(x => new Parcela(x.Id, x.Hectareas, x.Eliminada))
+                .Single();
+
+        public bool ParcelaEstaEliminada(string idParcela) => this.parcelas.Single(x => x.Id == idParcela).Eliminada;
+    }
+
+    public class ProductorSnapshot : Snapshot
+    {
+        public ProductorSnapshot(string streamName, int version, Parcela[] parcelas) : base(streamName, version)
+        {
+            this.Parcelas = parcelas;
+        }
+
+        public Parcela[] Parcelas { get; }
     }
 }

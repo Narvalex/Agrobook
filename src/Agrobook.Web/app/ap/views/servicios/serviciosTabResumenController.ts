@@ -3,7 +3,7 @@
 module apArea {
     export class serviciosTabResumenController {
         static $inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope',
-            '$scope', 'loginService', '$mdDialog', '$mdMedia'];
+            '$scope', 'loginService', '$mdDialog', '$mdMedia', 'numberFormatter'];
 
         constructor(
             private config: common.config,
@@ -15,7 +15,8 @@ module apArea {
             private $scope: angular.IScope,
             private loginService: login.loginService,
             private $mdDialog: angular.material.IDialogService,
-            private $mdMedia: angular.material.IMedia
+            private $mdMedia: angular.material.IMedia,
+            private nf: common.numberFormatter
         ) {
             this.idProd = this.$routeParams['idProd'];
             this.idServicio = this.$routeParams['idServicio'];
@@ -37,7 +38,7 @@ module apArea {
             this.cargarDatosSegunEstado();
 
             // Esto esta solo para desarrollo.
-            this.onServiciosLoaded = () => setTimeout(() => this.fijarOAjustarPrecio(null, false), 1000);
+            //this.onServiciosLoaded = () => setTimeout(() => this.fijarOAjustarPrecio(null, false), 1000);
         }
 
         // Estados--------------------------------------
@@ -64,7 +65,7 @@ module apArea {
         orgsConContratos: orgConContratos[];
 
         // Reactors
-        onServiciosLoaded: () => any = () => { };
+        onServiciosLoadedForDev: () => any = () => { };
 
         // Api
         goToOrg() {
@@ -173,11 +174,18 @@ module apArea {
                 controllerAs: 'vm',
                 clickOutsideToClose: true,
                 fullscreen: this.$mdMedia('xs')
-            }).then(() => {
-                console.log('success');
+            }).then((precioTotal: number) => {
+                this.setPrecio(precioTotal);
+                if (this.servicio.tienePrecio) {
+                    this.toasterLite.success('Precio fijado correctamente');
+                }
+                else {
+                    this.servicio.tienePrecio = true;
+                    this.toasterLite.success('Precio ajustado correctamente');
+                }
             },
                 () => {
-                    console.log('error');
+                    //console.log('error');
                 });
         }
 
@@ -240,9 +248,11 @@ module apArea {
                 new common.callbackLite<servicioDto>(
                     value => {
                         this.servicio = value.data;
+                        if (this.servicio.tienePrecio)
+                            this.setPrecio(parseFloat(this.servicio.precioTotal));
                         this.loading = false;
                         callback();
-                        this.onServiciosLoaded();
+                        this.onServiciosLoadedForDev();
                     },
                     reason => {
                         this.loading = false;
@@ -289,6 +299,13 @@ module apArea {
 
         private setIdColeccion() {
             this.idColeccion = `${this.config.categoriaDeArchivos.servicioDatosBasicos}-${this.idServicio}`;
+        }
+
+        private setPrecio(precioTotal: number) {
+            this.servicio.precioTotal = this.nf.formatFromUSNumber(precioTotal);
+            let ha = this.nf.parseCommaAsDecimalSeparatorToUSNumber(this.servicio.hectareas);
+            let pph = precioTotal / ha;
+            this.servicio.precioPorHectarea = this.nf.formatFromUSNumber(pph); 
         }
     }
 }

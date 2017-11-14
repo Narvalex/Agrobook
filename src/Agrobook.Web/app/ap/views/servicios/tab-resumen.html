@@ -70,8 +70,8 @@
                 <md-card md-theme="default" md-theme-watch>
                     <md-card-title>
                         <md-card-title-text>
-                            <span class="md-headline">Total: 4.411,50 $</span>
-                            <span class="md-subhead">16,5 $ x 23,56 ha</span>
+                            <span class="md-headline">Total: <b class="dark-red-text">{{vm.servicio.precioTotal}} $</b></span>
+                            <span class="md-subhead">Por hectárea: <b class="dark-red-text">{{vm.servicio.precioPorHectarea}} $</b></span>
                             <span class="md-subhead"><a href="" ng-click="vm.fijarOAjustarPrecio($event, true)">Ajustar precio</a></span>
                         </md-card-title-text>
                     </md-card-title>

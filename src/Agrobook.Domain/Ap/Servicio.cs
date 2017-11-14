@@ -1,5 +1,4 @@
-﻿using Agrobook.Domain.Ap.Commands;
-using Eventing.Core.Domain;
+﻿using Eventing.Core.Domain;
 using System;
 
 namespace Agrobook.Domain.Ap
@@ -18,6 +17,7 @@ namespace Agrobook.Domain.Ap
                 this.SetStreamNameById(e.StreamId);
                 this.idOrganizacion = e.IdOrg;
                 this.idContrato = e.IdContrato;
+                this.IdProductor = e.IdProd;
                 this.fecha = e.Fecha;
             });
             this.On<DatosBasicosDelSevicioEditados>(e =>
@@ -33,16 +33,19 @@ namespace Agrobook.Domain.Ap
             this.On<PrecioDeServicioFijado>(e =>
             {
                 this.TienePrecio = true;
-                this.Precio = e.Precio;
+                this.Precio = e.PrecioTotal;
             });
             this.On<PrecioDeServicioAjustado>(e =>
             {
-                this.Precio = e.Precio;
+                this.Precio = e.PrecioTotal;
             });
         }
 
-        public bool EstaEliminado { get; private set; } = false;
+        public bool TieneParcela => this.IdParcela != null;
+
+        public string IdProductor { get; private set; }
         public string IdParcela { get; private set; } = null;
+        public bool EstaEliminado { get; private set; } = false;
 
         public bool TienePrecio { get; private set; } = false;
         public decimal Precio { get; private set; } = default(decimal);
@@ -56,19 +59,42 @@ namespace Agrobook.Domain.Ap
         }
 
         protected override ISnapshot TakeSnapshot()
-            => new ServicioSnapshot(this.StreamName, this.Version, this.idOrganizacion, this.idContrato, this.fecha, this.EstaEliminado,
-                this.IdParcela);
+            => new ServicioSnapshot(this.StreamName, this.Version, this.IdProductor, this.idOrganizacion,
+                this.idContrato, this.fecha, this.EstaEliminado, this.IdParcela);
 
         protected override void Rehydrate(ISnapshot snapshot)
         {
             base.Rehydrate(snapshot);
 
             var state = (ServicioSnapshot)snapshot;
+            this.IdProductor = state.IdProductor;
             this.idOrganizacion = state.IdOrganizacion;
             this.idContrato = state.IdContrato;
             this.fecha = state.Fecha;
             this.EstaEliminado = state.EstaEliminado;
             this.IdParcela = state.IdParcela;
         }
+    }
+
+    public class ServicioSnapshot : Snapshot
+    {
+        public ServicioSnapshot(string streamName, int version, string idProductor, string idOrganizacion, string idContrato,
+            DateTime fecha, bool eliminado, string idParcela)
+            : base(streamName, version)
+        {
+            this.IdProductor = idProductor;
+            this.IdOrganizacion = idOrganizacion;
+            this.IdContrato = idContrato;
+            this.Fecha = fecha;
+            this.EstaEliminado = eliminado;
+            this.IdParcela = idParcela;
+        }
+
+        public string IdProductor { get; }
+        public string IdOrganizacion { get; }
+        public string IdContrato { get; }
+        public DateTime Fecha { get; }
+        public bool EstaEliminado { get; }
+        public string IdParcela { get; }
     }
 }

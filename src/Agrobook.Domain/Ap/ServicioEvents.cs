@@ -83,6 +83,11 @@ namespace Agrobook.Domain.Ap
         public string StreamId => this.IdServicio;
     }
 
+    /// <summary>
+    /// Confirma que se especificó una parcela, tal cual estaba en el momento en que se especificó. 
+    /// Si la parcela cambia de estado, o se modifica el número de hectáreas, esto no afecta el registro
+    /// del servicio, por que se supone que la parcela se cambió DESPUÉS del servicio.
+    /// </summary>
     public class ParcelaDeServicioEspecificada : MensajeAuditable, IEvent
     {
         public ParcelaDeServicioEspecificada(Firma firma, string idServicio, string idParcela)
@@ -115,30 +120,34 @@ namespace Agrobook.Domain.Ap
 
     public class PrecioDeServicioFijado : MensajeAuditable, IEvent
     {
-        public PrecioDeServicioFijado(Firma firma, string idServicio, decimal precio)
+        public PrecioDeServicioFijado(Firma firma, string idServicio, string moneda, decimal precioTotal)
             : base(firma)
         {
             this.IdServicio = idServicio;
-            this.Precio = precio;
+            this.PrecioTotal = precioTotal;
+            this.Moneda = moneda;
         }
 
         public string IdServicio { get; }
-        public decimal Precio { get; }
+        public string Moneda { get; }
+        public decimal PrecioTotal { get; }
 
         public string StreamId => this.IdServicio;
     }
 
     public class PrecioDeServicioAjustado : MensajeAuditable, IEvent
     {
-        public PrecioDeServicioAjustado(Firma firma, string idServicio, decimal precio)
+        public PrecioDeServicioAjustado(Firma firma, string idServicio, string moneda, decimal precioTotal)
             : base(firma)
         {
             this.IdServicio = idServicio;
-            this.Precio = precio;
+            this.PrecioTotal = precioTotal;
+            this.Moneda = moneda;
         }
 
         public string IdServicio { get; }
-        public decimal Precio { get; }
+        public string Moneda { get; }
+        public decimal PrecioTotal { get; }
 
         public string StreamId => this.IdServicio;
     }
