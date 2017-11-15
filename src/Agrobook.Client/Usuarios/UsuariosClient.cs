@@ -13,13 +13,13 @@ namespace Agrobook.Client.Usuarios
 
         public async Task CrearNuevoUsuario(UsuarioDto dto)
         {
-            var command = new CrearNuevoUsuario(null, dto.NombreDeUsuario, dto.NombreParaMostrar, dto.AvatarUrl, dto.Password, dto.Claims);
+            var command = new CrearNuevoUsuario(null, dto.NombreDeUsuario, dto.NombreParaMostrar, dto.AvatarUrl, dto.Password, dto.Claims, dto.Telefono, dto.Email);
             await base.Post("crear-nuevo-usuario", command);
         }
 
         public async Task ActualizarPerfil(ActualizarPerfilDto dto)
         {
-            var command = new ActualizarPerfil(null, dto.Usuario, dto.AvatarUrl, dto.NombreParaMostrar, dto.PasswordActual, dto.NuevoPassword);
+            var command = new ActualizarPerfil(null, dto.Usuario, dto.AvatarUrl, dto.NombreParaMostrar, dto.PasswordActual, dto.NuevoPassword, dto.Telefono, dto.Email);
             await base.Post("actualizar-perfil", command);
         }
 

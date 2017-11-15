@@ -47,7 +47,9 @@ namespace Agrobook.Domain.Usuarios.Services
                 {
                     Nombre = u.Id,
                     NombreParaMostrar = u.Display,
-                    AvatarUrl = u.AvatarUrl
+                    AvatarUrl = u.AvatarUrl,
+                    Telefono = u.Telefono,
+                    Email = u.Email
                 })
                 .ToListAsync();
 
@@ -65,7 +67,9 @@ namespace Agrobook.Domain.Usuarios.Services
                 {
                     Nombre = u.Id,
                     NombreParaMostrar = u.Display,
-                    AvatarUrl = u.AvatarUrl
+                    AvatarUrl = u.AvatarUrl,
+                    Telefono = u.Telefono,
+                    Email = u.Email
                 })
                 .ToListAsync();
 
@@ -83,7 +87,9 @@ namespace Agrobook.Domain.Usuarios.Services
                 {
                     Nombre = u.Id,
                     NombreParaMostrar = u.Display,
-                    AvatarUrl = u.AvatarUrl
+                    AvatarUrl = u.AvatarUrl,
+                    Telefono = u.Telefono,
+                    Email = u.Email
                 })
                 .ToListAsync();
 
@@ -102,7 +108,9 @@ namespace Agrobook.Domain.Usuarios.Services
                                 {
                                     Nombre = u.Id,
                                     NombreParaMostrar = u.Display,
-                                    AvatarUrl = u.AvatarUrl
+                                    AvatarUrl = u.AvatarUrl,
+                                    Telefono = u.Telefono,
+                                    Email = u.Email
                                 })
                                 .SingleOrDefaultAsync();
 

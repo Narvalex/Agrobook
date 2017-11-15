@@ -30,7 +30,7 @@ var usuariosArea;
                 _this.toasterLite.error('Ocurrió un error al recuperar información del usuario ' + idUsuario, _this.toasterLite.delayForever);
             });
             this.$scope.$on(this.config.eventIndex.usuarios.perfilActualizado, function (e, args) {
-                _this.usuario = new usuariosArea.usuarioInfoBasica(_this.usuario.nombre, args.nombreParaMostrar, args.avatarUrl);
+                _this.usuario = new usuariosArea.usuarioInfoBasica(_this.usuario.nombre, args.nombreParaMostrar, args.avatarUrl, args.telefono, args.email);
             });
             this.abrirTabCorrespondiente();
             this.$scope.$on('$routeUpdate', function (scope, next, current) {

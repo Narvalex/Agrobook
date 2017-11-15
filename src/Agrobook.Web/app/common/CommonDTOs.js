@@ -2,10 +2,12 @@
 var common;
 (function (common) {
     var perfilActualizado = (function () {
-        function perfilActualizado(usuario, avatarUrl, nombreParaMostrar) {
+        function perfilActualizado(usuario, avatarUrl, nombreParaMostrar, telefono, email) {
             this.usuario = usuario;
             this.avatarUrl = avatarUrl;
             this.nombreParaMostrar = nombreParaMostrar;
+            this.telefono = telefono;
+            this.email = email;
         }
         return perfilActualizado;
     }());

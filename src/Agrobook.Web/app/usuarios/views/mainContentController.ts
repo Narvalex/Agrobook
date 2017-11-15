@@ -42,7 +42,10 @@ module usuariosArea {
                     this.usuario = new usuarioInfoBasica(
                         this.usuario.nombre,
                         args.nombreParaMostrar,
-                        args.avatarUrl);
+                        args.avatarUrl,
+                        args.telefono,
+                        args.email
+                    );
                 });
 
             this.abrirTabCorrespondiente();

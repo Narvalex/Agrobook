@@ -6,6 +6,8 @@
         public string NombreDeUsuario { get; set; }
         public string NombreParaMostrar { get; set; }
         public string Password { get; set; }
+        public string Telefono { get; set; }
+        public string Email { get; set; }
         public string[] Claims { get; set; }
     }
 
@@ -16,5 +18,7 @@
         public string NombreParaMostrar { get; set; }
         public string PasswordActual { get; set; }
         public string NuevoPassword { get; set; }
+        public string Telefono { get; set; }
+        public string Email { get; set; }
     }
 }

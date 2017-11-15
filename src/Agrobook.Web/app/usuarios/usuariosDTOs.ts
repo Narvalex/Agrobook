@@ -7,6 +7,8 @@ module usuariosArea {
             public nombreDeUsuario: string,
             public nombreParaMostrar: string,
             public password: string,
+            public telefono: string,
+            public email: string,
             public claims: string[]
         ) { }
     }
@@ -15,7 +17,9 @@ module usuariosArea {
         constructor(
             public nombre: string,
             public nombreParaMostrar: string,
-            public avatarUrl: string
+            public avatarUrl: string,
+            public telefono: string,
+            public email: string
         ) {
         }
     }
@@ -35,7 +39,9 @@ module usuariosArea {
             public avatarUrl: string,
             public nombreParaMostrar: string,
             public passwordActual: string,
-            public nuevoPassword: string
+            public nuevoPassword: string,
+            public telefono: string, 
+            public email: string
         ){
         }
     }

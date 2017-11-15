@@ -51,7 +51,7 @@ var usuariosArea;
                 _this.toasterLite.error("Error al recuperar claims");
             }));
             this.$scope.$on(this.config.eventIndex.usuarios.perfilActualizado, function (e, args) {
-                _this.inicializarEdicionDeInfoBasica(new usuariosArea.usuarioInfoBasica(args.usuario, args.nombreParaMostrar, args.avatarUrl));
+                _this.inicializarEdicionDeInfoBasica(new usuariosArea.usuarioInfoBasica(args.usuario, args.nombreParaMostrar, args.avatarUrl, args.telefono, args.email));
             });
         }
         perfilController.prototype.allLoaded = function () { return this.infoBasicaLoaded && this.claimsLoaded && this.permisosOtorgadosLoaded; };
@@ -63,9 +63,9 @@ var usuariosArea;
             }
             if (!this.intentarValidarEdicionDePerfil())
                 return;
-            var dto = new usuariosArea.actualizarPerfilDto(this.usuarioRecuperado.nombre, this.usuarioEditado.avatarUrl, this.usuarioEditado.nombreParaMostrar, this.passwordActual, this.nuevoPassword);
+            var dto = new usuariosArea.actualizarPerfilDto(this.usuarioRecuperado.nombre, this.usuarioEditado.avatarUrl, this.usuarioEditado.nombreParaMostrar, this.passwordActual, this.nuevoPassword, this.usuarioEditado.telefono, this.usuarioEditado.email);
             this.usuariosService.actualizarPerfil(dto, function (value) {
-                _this.$rootScope.$broadcast(_this.config.eventIndex.usuarios.perfilActualizado, new common.perfilActualizado(dto.usuario, dto.avatarUrl, dto.nombreParaMostrar));
+                _this.$rootScope.$broadcast(_this.config.eventIndex.usuarios.perfilActualizado, new common.perfilActualizado(dto.usuario, dto.avatarUrl, dto.nombreParaMostrar, dto.telefono, dto.email));
                 _this.toasterLite.info('El perfil se ha actualizado exitosamente. Atención: si actualizó su contraseña entonces usted debe volver a iniciar sesión.');
             }, function (reason) { return _this.toasterLite.error('Ocurrió un error al intentar actualizar el perfil'); });
         };
@@ -82,6 +82,10 @@ var usuariosArea;
                 if (this.usuarioRecuperado.nombreParaMostrar !== this.usuarioEditado.nombreParaMostrar)
                     return true;
                 if (this.seQuiereActualizarPassword)
+                    return true;
+                if (this.usuarioRecuperado.telefono !== this.usuarioEditado.telefono)
+                    return true;
+                if (this.usuarioRecuperado.email !== this.usuarioEditado.email)
                     return true;
                 return false;
             },
@@ -122,7 +126,7 @@ var usuariosArea;
         };
         perfilController.prototype.inicializarEdicionDeInfoBasica = function (usuarioRecuperado) {
             this.usuarioRecuperado = usuarioRecuperado;
-            this.usuarioEditado = new usuariosArea.usuarioInfoBasica(usuarioRecuperado.nombre, usuarioRecuperado.nombreParaMostrar, usuarioRecuperado.avatarUrl);
+            this.usuarioEditado = new usuariosArea.usuarioInfoBasica(usuarioRecuperado.nombre, usuarioRecuperado.nombreParaMostrar, usuarioRecuperado.avatarUrl, usuarioRecuperado.telefono, usuarioRecuperado.email);
         };
         Object.defineProperty(perfilController.prototype, "seQuiereActualizarPassword", {
             get: function () {

@@ -122,4 +122,88 @@ namespace Agrobook.Domain.Usuarios
 
         public string StreamId => this.IdUsuario;
     }
+
+    public class TelefonoDeUsuarioRegistrado : MensajeAuditable, IEvent
+    {
+        public TelefonoDeUsuarioRegistrado(Firma firma, string usuario, string telefono) : base(firma)
+        {
+            this.Usuario = usuario;
+            this.Telefono = telefono;
+        }
+
+        public string Usuario { get; }
+        public string Telefono { get; }
+
+        public string StreamId => this.Usuario;
+    }
+
+    public class TelefonoDeUsuarioActualizado : MensajeAuditable, IEvent
+    {
+        public TelefonoDeUsuarioActualizado(Firma firma, string usuario, string telefono) : base(firma)
+        {
+            this.Usuario = usuario;
+            this.Telefono = telefono;
+        }
+
+        public string Usuario { get; }
+        public string Telefono { get; }
+
+        public string StreamId => this.Usuario;
+    }
+
+    public class TelefonoDeUsuarioEliminado : MensajeAuditable, IEvent
+    {
+        public TelefonoDeUsuarioEliminado(Firma firma, string usuario, string telefono) : base(firma)
+        {
+            this.Usuario = usuario;
+            this.Telefono = telefono;
+        }
+
+        public string Usuario { get; }
+        public string Telefono { get; }
+
+        public string StreamId => this.Usuario;
+    }
+
+    public class EmailDeUsuarioRegistrado : MensajeAuditable, IEvent
+    {
+        public EmailDeUsuarioRegistrado(Firma firma, string usuario, string email) : base(firma)
+        {
+            this.Usuario = usuario;
+            this.Email = email;
+        }
+
+        public string Usuario { get; }
+        public string Email { get; }
+
+        public string StreamId => this.Usuario;
+    }
+
+    public class EmailDeUsuarioActualizado : MensajeAuditable, IEvent
+    {
+        public EmailDeUsuarioActualizado(Firma firma, string usuario, string email) : base(firma)
+        {
+            this.Usuario = usuario;
+            this.Email = email;
+        }
+
+        public string Usuario { get; }
+        public string Email { get; }
+
+        public string StreamId => this.Usuario;
+    }
+
+    public class EmailDeUsuarioEliminado : MensajeAuditable, IEvent
+    {
+        public EmailDeUsuarioEliminado(Firma firma, string usuario, string email) : base(firma)
+        {
+            this.Usuario = usuario;
+            this.Email = email;
+        }
+
+        public string Usuario { get; }
+        public string Email { get; }
+
+        public string StreamId => this.Usuario;
+    }
 }

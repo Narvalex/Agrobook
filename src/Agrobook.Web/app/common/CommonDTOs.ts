@@ -5,7 +5,9 @@ module common {
         constructor(
             public usuario: string,
             public avatarUrl: string,
-            public nombreParaMostrar: string
+            public nombreParaMostrar: string,
+            public telefono: string, 
+            public email: string
         ) {
         }
     }

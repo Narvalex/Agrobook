@@ -78,6 +78,16 @@
                             <div ng-message="required">Debe elegir una contraseña</div>
                         </div>
                     </md-input-container>
+                    <!-- Teléfono -->
+                    <md-input-container class="md-block" flex-gt-md>
+                        <label>Teléfono</label>
+                        <input ng-model="vm.usuario.telefono" name="telefono" />
+                    </md-input-container>
+                    <!-- Email -->
+                    <md-input-container class="md-block" flex-gt-md>
+                        <label>Correo electrónico</label>
+                        <input ng-model="vm.usuario.email" name="email" />
+                    </md-input-container>
                 </div>
             </div>
 

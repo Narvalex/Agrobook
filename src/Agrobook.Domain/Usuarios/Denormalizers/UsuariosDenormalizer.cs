@@ -12,7 +12,15 @@ namespace Agrobook.Domain.Usuarios.Services
         IHandler<AvatarUrlActualizado>,
         IHandler<NombreParaMostrarActualizado>,
         IHandler<PermisoOtorgadoAlUsuario>,
-        IHandler<PermisoRetiradoDelUsuario>
+        IHandler<PermisoRetiradoDelUsuario>,
+        // telefono
+        IHandler<TelefonoDeUsuarioRegistrado>,
+        IHandler<TelefonoDeUsuarioActualizado>,
+        IHandler<TelefonoDeUsuarioEliminado>,
+        // Email
+        IHandler<EmailDeUsuarioRegistrado>,
+        IHandler<EmailDeUsuarioActualizado>,
+        IHandler<EmailDeUsuarioEliminado>
     {
         private readonly UsuariosQueryService queryService;
 
@@ -78,6 +86,60 @@ namespace Agrobook.Domain.Usuarios.Services
             {
                 var usuario = context.Usuarios.Single(x => x.Id == e.IdUsuario);
                 this.AplicarCambioDePermiso(usuario, e.Permiso, false);
+            });
+        }
+
+        public void Handle(long checkpoint, TelefonoDeUsuarioRegistrado e)
+        {
+            this.Denormalize(checkpoint, context =>
+            {
+                var usuario = context.Usuarios.Single(x => x.Id == e.StreamId);
+                usuario.Telefono = e.Telefono;
+            });
+        }
+
+        public void Handle(long checkpoint, TelefonoDeUsuarioActualizado e)
+        {
+            this.Denormalize(checkpoint, context =>
+            {
+                var usuario = context.Usuarios.Single(x => x.Id == e.StreamId);
+                usuario.Telefono = e.Telefono;
+            });
+        }
+
+        public void Handle(long checkpoint, TelefonoDeUsuarioEliminado e)
+        {
+            this.Denormalize(checkpoint, context =>
+            {
+                var usuario = context.Usuarios.Single(x => x.Id == e.StreamId);
+                usuario.Telefono = null;
+            });
+        }
+
+        public void Handle(long checkpoint, EmailDeUsuarioRegistrado e)
+        {
+            this.Denormalize(checkpoint, context =>
+            {
+                var usuario = context.Usuarios.Single(x => x.Id == e.StreamId);
+                usuario.Email = e.Email;
+            });
+        }
+
+        public void Handle(long checkpoint, EmailDeUsuarioActualizado e)
+        {
+            this.Denormalize(checkpoint, context =>
+            {
+                var usuario = context.Usuarios.Single(x => x.Id == e.StreamId);
+                usuario.Email = e.Email;
+            });
+        }
+
+        public void Handle(long checkpoint, EmailDeUsuarioEliminado e)
+        {
+            this.Denormalize(checkpoint, context =>
+            {
+                var usuario = context.Usuarios.Single(x => x.Id == e.StreamId);
+                usuario.Email = e.Email;
             });
         }
 

@@ -20,7 +20,7 @@ namespace Agrobook.Domain.Usuarios
 
     public class CrearNuevoUsuario : MensajeAuditable
     {
-        public CrearNuevoUsuario(Firma metadatos, string usuario, string nombreParaMostrar, string avatarUrl, string passwordCrudo, string[] claims)
+        public CrearNuevoUsuario(Firma metadatos, string usuario, string nombreParaMostrar, string avatarUrl, string passwordCrudo, string[] claims, string telefono, string email)
             : base(metadatos)
         {
             this.Usuario = usuario;
@@ -28,6 +28,8 @@ namespace Agrobook.Domain.Usuarios
             this.AvatarUrl = avatarUrl;
             this.PasswordCrudo = passwordCrudo;
             this.Claims = claims;
+            this.Telefono = telefono;
+            this.Email = email;
         }
 
         public string Usuario { get; }
@@ -35,6 +37,8 @@ namespace Agrobook.Domain.Usuarios
         public string AvatarUrl { get; }
         public string PasswordCrudo { get; }
         public string[] Claims { get; }
+        public string Telefono { get; }
+        public string Email { get; }
     }
 
     public class ActualizarPerfil : MensajeAuditable
@@ -45,8 +49,9 @@ namespace Agrobook.Domain.Usuarios
             string avatarUrl,
             string nombreParaMostrar,
             string passwordActual,
-            string nuevoPassword
-            )
+            string nuevoPassword,
+            string telefono,
+            string email)
             : base(metadatos)
         {
             this.Usuario = usuario;
@@ -54,6 +59,8 @@ namespace Agrobook.Domain.Usuarios
             this.NombreParaMostrar = nombreParaMostrar;
             this.PasswordActual = passwordActual;
             this.NuevoPassword = nuevoPassword;
+            this.Telefono = telefono;
+            this.Email = email;
         }
 
         public LoginInfo ElQueRealizaEstaAccion { get; set; }
@@ -82,6 +89,9 @@ namespace Agrobook.Domain.Usuarios
         /// Nuevo password propuesto. Si no se quiere cambiar este, entonces es nulo.
         /// </summary>
         public string NuevoPassword { get; }
+
+        public string Telefono { get; }
+        public string Email { get; }
     }
 
     public class ResetearPassword : MensajeAuditable

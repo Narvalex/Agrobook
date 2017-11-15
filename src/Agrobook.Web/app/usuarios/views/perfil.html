@@ -35,6 +35,18 @@
                             <div ng-message="required">Debe especificar un nombre para mostrar.</div>
                         </div>
                     </md-input-container>
+                    <!--Telefono-->
+                    <md-input-container class="md-block" flex-gt-md>
+                        <label>Telefono</label>
+                        <input ng-model="vm.usuarioEditado.telefono"
+                               name="telefono" />
+                    </md-input-container>
+                    <!--Telefono-->
+                    <md-input-container class="md-block" flex-gt-md>
+                        <label>Correo electrónico</label>
+                        <input ng-model="vm.usuarioEditado.email"
+                               name="email" />
+                    </md-input-container>
                 </div>
                 <div layout="column">
                     <!-- Password-->

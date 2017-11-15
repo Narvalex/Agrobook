@@ -51,7 +51,7 @@ var usuariosArea;
                 clickOutsideToClose: true,
                 fullscreen: (this.$mdMedia('sm') || this.$mdMedia('xs'))
             }).then(function (usuario) {
-                _this.usuarios.unshift(new usuariosArea.usuarioInfoBasica(usuario.nombreDeUsuario, usuario.nombreParaMostrar, usuario.avatarUrl));
+                _this.usuarios.unshift(new usuariosArea.usuarioInfoBasica(usuario.nombreDeUsuario, usuario.nombreParaMostrar, usuario.avatarUrl, usuario.telefono, usuario.email));
             }, function () {
                 //this.toasterLite.info('Creación de nuevo usuario cancelada');
             });

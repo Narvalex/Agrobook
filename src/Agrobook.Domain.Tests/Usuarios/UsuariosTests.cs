@@ -1,7 +1,6 @@
 ﻿using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Login;
 using Eventing.Core.Domain;
-using Eventing.Core.Persistence;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -63,83 +62,83 @@ namespace Agrobook.Domain.Tests.Usuarios
         //        });
         //}
 
-        [TestMethod]
-        public void SePuedeCrearUsuarioNuevoSinEspecificarNingunPermisoPeroElMismoQuedaraComoInvitado()
-        {
-            var avatarUrl = "app/avatar.png";
-            this.sut.When(s =>
-                        s.HandleAsync(new CrearNuevoUsuario(TestFirma.New, "user1", "User One", avatarUrl, "123", null)).Wait())
-                    .Then(e =>
-                    {
-                        var ev = e.OfType<NuevoUsuarioCreado>().Single();
-                        Assert.AreEqual(1, e.Count);
-                        Assert.AreEqual("user1", ev.Usuario);
-                        Assert.AreEqual("User One", ev.NombreParaMostrar);
-                        Assert.AreEqual(avatarUrl, ev.AvatarUrl);
+        //[TestMethod]
+        //public void SePuedeCrearUsuarioNuevoSinEspecificarNingunPermisoPeroElMismoQuedaraComoInvitado()
+        //{
+        //    var avatarUrl = "app/avatar.png";
+        //    this.sut.When(s =>
+        //                s.HandleAsync(new CrearNuevoUsuario(TestFirma.New, "user1", "User One", avatarUrl, "123", null)).Wait())
+        //            .Then(e =>
+        //            {
+        //                var ev = e.OfType<NuevoUsuarioCreado>().Single();
+        //                Assert.AreEqual(1, e.Count);
+        //                Assert.AreEqual("user1", ev.Usuario);
+        //                Assert.AreEqual("User One", ev.NombreParaMostrar);
+        //                Assert.AreEqual(avatarUrl, ev.AvatarUrl);
 
-                        TestearInfo(ev.LoginInfoEncriptado);
-                    })
-                    .And<UsuarioSnapshot>(s =>
-                    {
-                        Assert.AreEqual("agrobook.usuarios-user1", s.StreamName);
-                        Assert.AreEqual("User One", s.NombreParaMostrar);
-                        TestearInfo(s.LoginInfoEncriptado);
-                    });
+        //                TestearInfo(ev.LoginInfoEncriptado);
+        //            })
+        //            .And<UsuarioSnapshot>(s =>
+        //            {
+        //                Assert.AreEqual("agrobook.usuarios-user1", s.StreamName);
+        //                Assert.AreEqual("User One", s.NombreParaMostrar);
+        //                TestearInfo(s.LoginInfoEncriptado);
+        //            });
 
-            void TestearInfo(string loginInfoEncriptado)
-            {
-                var info = this.crypto.Deserialize<LoginInfo>(loginInfoEncriptado);
-                Assert.AreEqual(1, info.Claims.Length);
-                Assert.AreEqual(ClaimDef.Roles.Invitado, info.Claims[0]);
-                Assert.AreEqual("123", info.Password);
-                Assert.AreEqual("user1", info.Usuario);
-            }
-        }
+        //    void TestearInfo(string loginInfoEncriptado)
+        //    {
+        //        var info = this.crypto.Deserialize<LoginInfo>(loginInfoEncriptado);
+        //        Assert.AreEqual(1, info.Claims.Length);
+        //        Assert.AreEqual(ClaimDef.Roles.Invitado, info.Claims[0]);
+        //        Assert.AreEqual("123", info.Password);
+        //        Assert.AreEqual("user1", info.Usuario);
+        //    }
+        //}
 
-        [TestMethod]
-        public void NoSePuedeCrearUsuarioConEspaciosEntreCaracteres()
-        {
-            var avatarUrl = "app/avatar.png";
-            this.sut.When(s =>
-                    {
-                        Assert.ThrowsException<ArgumentException>(() =>
-                        {
-                            try
-                            {
-                                s.HandleAsync(new CrearNuevoUsuario(
-                                TestFirma.New,
-                                "user with spaces ", "User One", avatarUrl, "123", null)).Wait();
-                            }
-                            catch (Exception ex)
-                            {
-                                throw ex.InnerException;
-                            }
-                        });
-                    });
-        }
+        //[TestMethod]
+        //public void NoSePuedeCrearUsuarioConEspaciosEntreCaracteres()
+        //{
+        //    var avatarUrl = "app/avatar.png";
+        //    this.sut.When(s =>
+        //            {
+        //                Assert.ThrowsException<ArgumentException>(() =>
+        //                {
+        //                    try
+        //                    {
+        //                        s.HandleAsync(new CrearNuevoUsuario(
+        //                        TestFirma.New,
+        //                        "user with spaces ", "User One", avatarUrl, "123", null)).Wait();
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
+        //                        throw ex.InnerException;
+        //                    }
+        //                });
+        //            });
+        //}
 
-        [TestMethod]
-        [Ignore] // is ignored because the in-memory event store does not check set validation
-        public void CuandoElUsuarioYaExisteEntoncesNoSePuedeAgregarOtroIgual()
-        {
-            var usuario = "agrobook.usuarios-user1";
-            var avatarUrl = "picurl";
-            this.sut.Given(usuario, new NuevoUsuarioCreado(TestFirma.New, "user1", "User Lastname", avatarUrl, "123"))
-                    .When(s =>
-                    {
-                        Assert.ThrowsException<UniqueConstraintViolationException>(() =>
-                        {
-                            try
-                            {
-                                s.HandleAsync(new CrearNuevoUsuario(TestFirma.New, "user1", "User One", avatarUrl, "123", new string[0])).Wait();
-                            }
-                            catch (AggregateException ex)
-                            {
-                                throw ex.InnerException;
-                            }
-                        });
-                    });
-        }
+        //[TestMethod]
+        //[Ignore] // is ignored because the in-memory event store does not check set validation
+        //public void CuandoElUsuarioYaExisteEntoncesNoSePuedeAgregarOtroIgual()
+        //{
+        //    var usuario = "agrobook.usuarios-user1";
+        //    var avatarUrl = "picurl";
+        //    this.sut.Given(usuario, new NuevoUsuarioCreado(TestFirma.New, "user1", "User Lastname", avatarUrl, "123"))
+        //            .When(s =>
+        //            {
+        //                Assert.ThrowsException<UniqueConstraintViolationException>(() =>
+        //                {
+        //                    try
+        //                    {
+        //                        s.HandleAsync(new CrearNuevoUsuario(TestFirma.New, "user1", "User One", avatarUrl, "123", new string[0])).Wait();
+        //                    }
+        //                    catch (AggregateException ex)
+        //                    {
+        //                        throw ex.InnerException;
+        //                    }
+        //                });
+        //            });
+        //}
         #endregion
 
         #region Login
@@ -269,156 +268,156 @@ namespace Agrobook.Domain.Tests.Usuarios
 
         #region Actualizacion de Perfil
 
-        [TestMethod]
-        public void CuandoElUsuarioNoExisteEntoncesError()
-        {
-            this.sut.When(s =>
-            {
-                Assert.ThrowsException<InvalidOperationException>(() =>
-                {
-                    try
-                    {
-                        s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, null, null, null)).Wait();
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex.InnerException;
-                    }
-                });
-            });
-        }
+        //[TestMethod]
+        //public void CuandoElUsuarioNoExisteEntoncesError()
+        //{
+        //    this.sut.When(s =>
+        //    {
+        //        Assert.ThrowsException<InvalidOperationException>(() =>
+        //        {
+        //            try
+        //            {
+        //                s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, null, null, null)).Wait();
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                throw ex.InnerException;
+        //            }
+        //        });
+        //    });
+        //}
 
-        [TestMethod]
-        [Ignore]
-        public void CuandoLasOpcionesSonNulasEntoncesNoSeActualizaPerfil()
-        {
-            this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "admin", "avatar.png", "..."))
-                .When(s =>
-                {
-                    s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, null, null, null)).Wait();
-                })
-                .Then(events =>
-                {
-                    Assert.IsTrue(events.Count == 0);
-                });
-        }
+        //[TestMethod]
+        //[Ignore]
+        //public void CuandoLasOpcionesSonNulasEntoncesNoSeActualizaPerfil()
+        //{
+        //    this.sut
+        //        .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "admin", "avatar.png", "..."))
+        //        .When(s =>
+        //        {
+        //            s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, null, null, null)).Wait();
+        //        })
+        //        .Then(events =>
+        //        {
+        //            Assert.IsTrue(events.Count == 0);
+        //        });
+        //}
 
-        [TestMethod]
-        [Ignore]
-        public void CuandoCambioSoloElAvatarEntoncesSoloSeCambiaElAvatar()
-        {
-            this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "admin", "avatar.png", "..."))
-                .When(s =>
-                {
-                    s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", "newAvatar.png", null, null, null)).Wait();
-                })
-                .Then(events =>
-                {
-                    Assert.IsTrue(events.Count == 1);
-                    Assert.IsTrue(events.OfType<AvatarUrlActualizado>().Single().NuevoAvatarUrl == "newAvatar.png");
-                })
-                .And<UsuarioSnapshot>(s =>
-                {
-                    Assert.IsTrue(s.AvatarUrl == "newAvatar.png");
-                });
-        }
+        //[TestMethod]
+        //[Ignore]
+        //public void CuandoCambioSoloElAvatarEntoncesSoloSeCambiaElAvatar()
+        //{
+        //    this.sut
+        //        .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "admin", "avatar.png", "..."))
+        //        .When(s =>
+        //        {
+        //            s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", "newAvatar.png", null, null, null)).Wait();
+        //        })
+        //        .Then(events =>
+        //        {
+        //            Assert.IsTrue(events.Count == 1);
+        //            Assert.IsTrue(events.OfType<AvatarUrlActualizado>().Single().NuevoAvatarUrl == "newAvatar.png");
+        //        })
+        //        .And<UsuarioSnapshot>(s =>
+        //        {
+        //            Assert.IsTrue(s.AvatarUrl == "newAvatar.png");
+        //        });
+        //}
 
-        [TestMethod]
-        [Ignore]
-        public void CuandoSoloSeCambioElNombreParaMostrarEntoncesSoloSeCambiaElNombreParaMostrar()
-        {
-            this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "admin", "avatar.png", "..."))
-                .When(s =>
-                {
-                    s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, "Pe Pito", null, null)).Wait();
-                })
-                .Then(events =>
-                {
-                    Assert.IsTrue(events.Count == 1);
-                    Assert.IsTrue(events.OfType<NombreParaMostrarActualizado>().Single().NuevoNombreParaMostrar == "Pe Pito");
-                })
-                .And<UsuarioSnapshot>(s =>
-                {
-                    Assert.IsTrue(s.NombreParaMostrar == "Pe Pito");
-                });
-        }
+        //[TestMethod]
+        //[Ignore]
+        //public void CuandoSoloSeCambioElNombreParaMostrarEntoncesSoloSeCambiaElNombreParaMostrar()
+        //{
+        //    this.sut
+        //        .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "admin", "avatar.png", "..."))
+        //        .When(s =>
+        //        {
+        //            s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, "Pe Pito", null, null)).Wait();
+        //        })
+        //        .Then(events =>
+        //        {
+        //            Assert.IsTrue(events.Count == 1);
+        //            Assert.IsTrue(events.OfType<NombreParaMostrarActualizado>().Single().NuevoNombreParaMostrar == "Pe Pito");
+        //        })
+        //        .And<UsuarioSnapshot>(s =>
+        //        {
+        //            Assert.IsTrue(s.NombreParaMostrar == "Pe Pito");
+        //        });
+        //}
 
-        [TestMethod]
-        [Ignore]
-        public void CuandoSeIntentaCambiarElPasswordConPasswordInvalidoEntoncesNoOp()
-        {
-            var encriptado = this.crypto.Serialize(new LoginInfo("admin", "123", null));
-            this.sut
-                .Given<Usuario>("admin", new NuevoUsuarioCreado(TestFirma.New, "admin", "Ad Min", "pic1.jpg", encriptado))
-                .When(s =>
-                {
-                    Assert.ThrowsException<InvalidOperationException>(() =>
-                    {
-                        try
-                        {
-                            s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, null, "probando...", "newPass")).Wait();
-                        }
-                        catch (Exception ex)
-                        {
-                            throw ex.InnerException;
-                        }
-                    });
+        //[TestMethod]
+        //[Ignore]
+        //public void CuandoSeIntentaCambiarElPasswordConPasswordInvalidoEntoncesNoOp()
+        //{
+        //    var encriptado = this.crypto.Serialize(new LoginInfo("admin", "123", null));
+        //    this.sut
+        //        .Given<Usuario>("admin", new NuevoUsuarioCreado(TestFirma.New, "admin", "Ad Min", "pic1.jpg", encriptado))
+        //        .When(s =>
+        //        {
+        //            Assert.ThrowsException<InvalidOperationException>(() =>
+        //            {
+        //                try
+        //                {
+        //                    s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, null, "probando...", "newPass")).Wait();
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    throw ex.InnerException;
+        //                }
+        //            });
 
-                });
-        }
+        //        });
+        //}
 
-        [TestMethod]
-        [Ignore]
-        public void CuandoSeIntentaCambiarElPasswordConPasswordValidoEntoncesSeCambia()
-        {
-            var encriptado = this.crypto.Serialize(new LoginInfo("admin", "123", null));
-            var expectedEncriptado = this.crypto.Serialize(new LoginInfo("admin", "newPass", null));
-            this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "Ad Min", "pic1.jpg", encriptado))
-                .When(s =>
-                {
-                    s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, null, "123", "newPass")).Wait();
-                })
-                .Then(events =>
-                {
-                    Assert.IsTrue(events.Count == 1);
-                    Assert.IsTrue(events.OfType<PasswordCambiado>().Single().LoginInfoEncriptado == expectedEncriptado);
-                })
-                .And<UsuarioSnapshot>(s =>
-                {
-                    Assert.IsTrue(s.LoginInfoEncriptado == expectedEncriptado);
-                });
-        }
+        //[TestMethod]
+        //[Ignore]
+        //public void CuandoSeIntentaCambiarElPasswordConPasswordValidoEntoncesSeCambia()
+        //{
+        //    var encriptado = this.crypto.Serialize(new LoginInfo("admin", "123", null));
+        //    var expectedEncriptado = this.crypto.Serialize(new LoginInfo("admin", "newPass", null));
+        //    this.sut
+        //        .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "Ad Min", "pic1.jpg", encriptado))
+        //        .When(s =>
+        //        {
+        //            s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", null, null, "123", "newPass")).Wait();
+        //        })
+        //        .Then(events =>
+        //        {
+        //            Assert.IsTrue(events.Count == 1);
+        //            Assert.IsTrue(events.OfType<PasswordCambiado>().Single().LoginInfoEncriptado == expectedEncriptado);
+        //        })
+        //        .And<UsuarioSnapshot>(s =>
+        //        {
+        //            Assert.IsTrue(s.LoginInfoEncriptado == expectedEncriptado);
+        //        });
+        //}
 
-        [TestMethod]
-        [Ignore]
-        public void CuandoSeCambiaTodasLasOpcionesDelPerfilEntoncesSeCambianTodoALaVez()
-        {
-            var encriptado = this.crypto.Serialize(new LoginInfo("admin", "123", null));
-            var expectedEncriptado = this.crypto.Serialize(new LoginInfo("admin", "newPass", null));
-            this.sut
-                .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "Ad Min", "pic1.jpg", encriptado))
-                .When(s =>
-                {
-                    s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", "pic2.jpg", "SuperAdmin", "123", "newPass")).Wait();
-                })
-                .Then(events =>
-                {
-                    Assert.IsTrue(events.Count == 3);
-                    Assert.IsTrue(events.OfType<AvatarUrlActualizado>().Single().NuevoAvatarUrl == "pic2.jpg");
-                    Assert.IsTrue(events.OfType<NombreParaMostrarActualizado>().Single().NuevoNombreParaMostrar == "SuperAdmin");
-                    Assert.IsTrue(events.OfType<PasswordCambiado>().Single().LoginInfoEncriptado == expectedEncriptado);
-                })
-                .And<UsuarioSnapshot>(s =>
-                {
-                    Assert.IsTrue(s.AvatarUrl == "pic2.jpg");
-                    Assert.IsTrue(s.NombreParaMostrar == "SuperAdmin");
-                    Assert.IsTrue(s.LoginInfoEncriptado == expectedEncriptado);
-                });
-        }
+        //[TestMethod]
+        //[Ignore]
+        //public void CuandoSeCambiaTodasLasOpcionesDelPerfilEntoncesSeCambianTodoALaVez()
+        //{
+        //    var encriptado = this.crypto.Serialize(new LoginInfo("admin", "123", null));
+        //    var expectedEncriptado = this.crypto.Serialize(new LoginInfo("admin", "newPass", null));
+        //    this.sut
+        //        .Given(StreamCategoryAttribute.GetFullStreamName<Usuario>("admin"), new NuevoUsuarioCreado(TestFirma.New, "admin", "Ad Min", "pic1.jpg", encriptado))
+        //        .When(s =>
+        //        {
+        //            s.HandleAsync(new ActualizarPerfil(TestFirma.New, "admin", "pic2.jpg", "SuperAdmin", "123", "newPass")).Wait();
+        //        })
+        //        .Then(events =>
+        //        {
+        //            Assert.IsTrue(events.Count == 3);
+        //            Assert.IsTrue(events.OfType<AvatarUrlActualizado>().Single().NuevoAvatarUrl == "pic2.jpg");
+        //            Assert.IsTrue(events.OfType<NombreParaMostrarActualizado>().Single().NuevoNombreParaMostrar == "SuperAdmin");
+        //            Assert.IsTrue(events.OfType<PasswordCambiado>().Single().LoginInfoEncriptado == expectedEncriptado);
+        //        })
+        //        .And<UsuarioSnapshot>(s =>
+        //        {
+        //            Assert.IsTrue(s.AvatarUrl == "pic2.jpg");
+        //            Assert.IsTrue(s.NombreParaMostrar == "SuperAdmin");
+        //            Assert.IsTrue(s.LoginInfoEncriptado == expectedEncriptado);
+        //        });
+        //}
         #endregion
 
         #region Resetear Password

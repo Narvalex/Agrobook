@@ -65,7 +65,10 @@ module usuariosArea {
                     new usuarioInfoBasica(
                         usuario.nombreDeUsuario,
                         usuario.nombreParaMostrar,
-                        usuario.avatarUrl));
+                        usuario.avatarUrl,
+                        usuario.telefono,
+                        usuario.email
+                    ));
             }, () => {
                 //this.toasterLite.info('Creación de nuevo usuario cancelada');
             });

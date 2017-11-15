@@ -65,7 +65,7 @@ module usuariosArea {
             this.$scope.$on(this.config.eventIndex.usuarios.perfilActualizado,
                 (e, args: common.perfilActualizado) => {
                     this.inicializarEdicionDeInfoBasica(new usuarioInfoBasica(
-                        args.usuario, args.nombreParaMostrar, args.avatarUrl));
+                        args.usuario, args.nombreParaMostrar, args.avatarUrl, args.telefono, args.email));
                 });
         }
 
@@ -104,13 +104,16 @@ module usuariosArea {
                 this.usuarioEditado.avatarUrl,
                 this.usuarioEditado.nombreParaMostrar,
                 this.passwordActual,
-                this.nuevoPassword);
+                this.nuevoPassword,
+                this.usuarioEditado.telefono,
+                this.usuarioEditado.email
+            );
 
             this.usuariosService.actualizarPerfil(
                 dto,
                 value => {
                     this.$rootScope.$broadcast(this.config.eventIndex.usuarios.perfilActualizado,
-                        new common.perfilActualizado(dto.usuario, dto.avatarUrl, dto.nombreParaMostrar));
+                        new common.perfilActualizado(dto.usuario, dto.avatarUrl, dto.nombreParaMostrar, dto.telefono, dto.email));
                     this.toasterLite.info('El perfil se ha actualizado exitosamente. Atención: si actualizó su contraseña entonces usted debe volver a iniciar sesión.');
                 },
                 reason => this.toasterLite.error('Ocurrió un error al intentar actualizar el perfil')
@@ -131,6 +134,10 @@ module usuariosArea {
             if (this.usuarioRecuperado.nombreParaMostrar !== this.usuarioEditado.nombreParaMostrar)
                 return true;
             if (this.seQuiereActualizarPassword)
+                return true;
+            if (this.usuarioRecuperado.telefono !== this.usuarioEditado.telefono)
+                return true;
+            if (this.usuarioRecuperado.email !== this.usuarioEditado.email)
                 return true;
             return false;
         }
@@ -188,7 +195,10 @@ module usuariosArea {
             this.usuarioEditado = new usuarioInfoBasica(
                 usuarioRecuperado.nombre,
                 usuarioRecuperado.nombreParaMostrar,
-                usuarioRecuperado.avatarUrl);
+                usuarioRecuperado.avatarUrl,
+                usuarioRecuperado.telefono,
+                usuarioRecuperado.email
+            );
         }
 
         private get seQuiereActualizarPassword(): boolean {

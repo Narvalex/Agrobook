@@ -71,7 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ap\ApIdProvider.cs" />
+    <Compile Include="Ap\Services\ApIdProvider.cs" />
     <Compile Include="Ap\Commands\ServicioCommands.cs" />
     <Compile Include="Ap\Commands\ServicioInternalCommands.cs" />
     <Compile Include="Ap\Contrato.cs" />
@@ -97,7 +97,7 @@
     <Compile Include="Ap\Servicio.cs" />
     <Compile Include="Ap\NumeracionDeServicios.cs" />
     <Compile Include="Ap\ValueObjects\Parcela.cs" />
-    <Compile Include="Archivos\ColeccionDeArchivosIdProvider.cs" />
+    <Compile Include="Archivos\Services\ColeccionDeArchivosIdProvider.cs" />
     <Compile Include="Archivos\Messages\ArchivosCommands.cs" />
     <Compile Include="Archivos\Messages\ArchivosEvents.cs" />
     <Compile Include="Archivos\ColeccionDeArchivos.cs" />
@@ -128,23 +128,21 @@
     <Compile Include="Usuarios\Login\LoginInfo.cs" />
     <Compile Include="Usuarios\Login\Claim.cs" />
     <Compile Include="Usuarios\Organizacion.cs" />
-    <Compile Include="Usuarios\Messages\OrganizacionCommands.cs" />
-    <Compile Include="Usuarios\Messages\OrganizacionEvents.cs" />
-    <Compile Include="Usuarios\OrganizacionSnapshot.cs" />
+    <Compile Include="Usuarios\Commands\OrganizacionCommands.cs" />
+    <Compile Include="Usuarios\OrganizacionEvents.cs" />
     <Compile Include="Common\DbContext\OrganizacionesDbContext.cs" />
     <Compile Include="Usuarios\Denormalizers\OrganizacionesDenormalizer.cs" />
     <Compile Include="Usuarios\Services\OrganizacionesQueryService.cs" />
     <Compile Include="Common\DbContext\UsuariosDbContext.cs" />
     <Compile Include="Usuarios\Denormalizers\UsuariosDenormalizer.cs" />
-    <Compile Include="Usuarios\UsuarioIdProvider.cs" />
+    <Compile Include="Usuarios\Services\UsuarioIdProvider.cs" />
     <Compile Include="Usuarios\Services\UsuariosQueryService.cs" />
     <Compile Include="Usuarios\Services\UsuariosQueryServiceDTOs.cs" />
     <Compile Include="Usuarios\Services\UsuariosService.cs" />
-    <Compile Include="Usuarios\Messages\UsuariosCommands.cs" />
-    <Compile Include="Usuarios\Messages\UsuariosEvents.cs" />
+    <Compile Include="Usuarios\Commands\UsuariosCommands.cs" />
+    <Compile Include="Usuarios\UsuariosEvents.cs" />
     <Compile Include="Usuarios\Usuario.cs" />
     <Compile Include="Usuarios\Services\UsuariosServiceResults.cs" />
-    <Compile Include="Usuarios\UsuarioSnapshot.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

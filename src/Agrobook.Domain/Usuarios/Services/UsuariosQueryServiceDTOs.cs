@@ -5,6 +5,8 @@
         public string Nombre { get; set; }
         public string NombreParaMostrar { get; set; }
         public string AvatarUrl { get; set; }
+        public string Telefono { get; set; }
+        public string Email { get; set; }
     }
 
     public class OrganizacionDto

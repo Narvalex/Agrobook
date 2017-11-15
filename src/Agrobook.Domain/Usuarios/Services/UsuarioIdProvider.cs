@@ -18,6 +18,7 @@ namespace Agrobook.Domain.Usuarios.Services
             return nombreDeUsuario;
         }
 
+
         /// <summary>
         /// Retorna un id de organizacion a travéz del nombre designado que puede contener espacios en 
         /// blanco y otras cosas. Ejemplo: CooperativaChortizerLtda.

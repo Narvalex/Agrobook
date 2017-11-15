@@ -24,6 +24,8 @@ namespace Agrobook.Domain
         public bool EsProductor { get; set; }
         public bool EsInvitado { get; set; }
         public bool PuedeAdministrarOrganizaciones { get; set; }
+        public string Telefono { get; set; }
+        public string Email { get; set; }
     }
 
     public class UsuariosEntityMap : EntityTypeConfiguration<UsuarioEntity>

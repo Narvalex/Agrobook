@@ -120,6 +120,9 @@ namespace Agrobook.Domain.Usuarios
             var loginInfo = new LoginInfo(idUsuarioValidado, cmd.PasswordCrudo, cmd.Claims == null || cmd.Claims.Length == 0 ? new string[] { ClaimDef.Roles.Invitado } : cmd.Claims);
             var eLoginInfo = this.EncriptarLoginInfo(loginInfo);
             state.Emit(new NuevoUsuarioCreado(cmd.Firma, idUsuarioValidado, cmd.NombreParaMostrar, cmd.AvatarUrl, eLoginInfo));
+
+            state = this.VerSiHayCambiosEnInfoDeContactoYAplicarlos(cmd.Firma, idUsuarioValidado, state, cmd.Telefono, cmd.Email);
+
             await this.repository.SaveAsync(state);
         }
 
@@ -166,6 +169,8 @@ namespace Agrobook.Domain.Usuarios
                 var encriptado = this.EncriptarLoginInfo(usuarioEnEdicion);
                 usuario.Emit(new PasswordCambiado(cmd.Firma, cmd.Usuario, encriptado));
             }
+
+            usuario = this.VerSiHayCambiosEnInfoDeContactoYAplicarlos(cmd.Firma, cmd.Usuario, usuario, cmd.Telefono, cmd.Email);
 
             await this.repository.SaveAsync(usuario);
             return true;
@@ -387,6 +392,57 @@ namespace Agrobook.Domain.Usuarios
                     autorizado = true;
             }
             return autorizado;
+        }
+
+        private Usuario VerSiHayCambiosEnInfoDeContactoYAplicarlos(Firma firma, string userName, Usuario usuario, string telefonoPropuesto, string emailPropuesto)
+        {
+            // Analizamos el telefono
+            telefonoPropuesto = telefonoPropuesto?.Trim();
+            if (telefonoPropuesto == null || telefonoPropuesto == "")
+            {
+                // el cliente parece que quiere intentar quitar el telefono
+                if (usuario.TieneTelefono)
+                {
+                    usuario.Emit(new TelefonoDeUsuarioEliminado(firma, userName, usuario.Telefono));
+                }
+            }
+            else
+            {
+                // El usuario quiere registrar o actualizar un telefono...
+
+                if (usuario.TieneTelefono && telefonoPropuesto != usuario.Telefono)
+                {
+                    usuario.Emit(new TelefonoDeUsuarioActualizado(firma, userName, telefonoPropuesto));
+                }
+                else
+                {
+                    usuario.Emit(new TelefonoDeUsuarioRegistrado(firma, userName, telefonoPropuesto));
+                }
+            }
+
+            // Analizamos el mail
+            emailPropuesto = emailPropuesto?.Trim();
+            if (emailPropuesto == null || emailPropuesto == "")
+            {
+                // el cliente parece que quiere quitar el mail
+                if (usuario.TieneEmail)
+                {
+                    usuario.Emit(new EmailDeUsuarioEliminado(firma, userName, usuario.Email));
+                }
+            }
+            else
+            {
+                if (usuario.TieneEmail && emailPropuesto != usuario.Email)
+                {
+                    usuario.Emit(new EmailDeUsuarioActualizado(firma, userName, emailPropuesto));
+                }
+                else
+                {
+                    usuario.Emit(new EmailDeUsuarioRegistrado(firma, userName, emailPropuesto));
+                }
+            }
+
+            return usuario;
         }
     }
 }
