@@ -12,8 +12,13 @@
             El servicio se realizó a {{vm.servicio.parcelaDisplay === null ? 'una parcela todavía no especificada' : 'la parcela ' + vm.servicio.parcelaDisplay}} bajo el contrato "{{vm.servicio.contratoDisplay}}" con <a href="" ng-click="vm.goToOrg()">"{{vm.servicio.orgDisplay}}"</a>. El mismo fue completado el día {{vm.momentInstance(vm.servicio.fecha).format('DD/MM/YYYY')}}.
         </p>
 
+        <!--Observaciones-->
+        <p ng-if="vm.servicio.observaciones"><b>Observaciones:</b> {{vm.servicio.observaciones}}</p>
+
+        <!-- Parcelas -->
         <p ng-if="vm.servicio.parcelaDisplay !== null">Total de hectáreas de la parcela {{vm.servicio.parcelaDisplay}}: <b>{{vm.servicio.hectareas}} ha</b></p>
 
+        <!-- Control de datos basicos -->
         <p ng-if="vm.tienePermiso"
            ng-hide="vm.eliminando || vm.servicio.eliminado">Puede <a href="" ng-click="vm.enableEditMode()">actualizar</a> el servicio, o incluso, <a href="" ng-click="vm.eliminar()">eliminarlo</a>.</p>
         <p ng-show="vm.servicio.eliminado && !vm.eliminando && !vm.restaurando">Puede <a href="" ng-click="vm.restaurar()">restaurar</a> este servicio eliminado.</p>
@@ -22,7 +27,7 @@
     </md-content>
 
     <!-- Formulario -->
-    <md-content ng-hide="vm.loading || vm.action === 'view'">
+    <md-content ng-hide="vm.loading || vm.action === 'view'" layout-padding>
         <div layout-gt-xs="row">
             <md-input-container>
                 <label>Organización</label>
@@ -46,6 +51,13 @@
                 <md-datepicker ng-model="vm.fechaSeleccionada"
                                ng-disabled="false"
                                required></md-datepicker>
+            </md-input-container>
+        </div>
+
+        <div layout-gt-xs="row" class="width-sm">
+            <md-input-container class="md-block" flex>
+                <label>Observaciones</label>
+                <textarea ng-model="vm.observacionesInput" md-maxlength="500" rows="2" md-select-on-focus></textarea>
             </md-input-container>
         </div>
 

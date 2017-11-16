@@ -58,6 +58,7 @@ module apArea {
         orgConContratosSeleccionada: orgConContratos;
         contratoSeleccionado: contratoDto;
         fechaSeleccionada: Date
+        observacionesInput: string;
         // View
         servicio: servicioDto;
 
@@ -145,7 +146,9 @@ module apArea {
                 this.orgConContratosSeleccionada.org.display,
                 this.idProd,
                 null,
-                this.fechaSeleccionada);
+                this.fechaSeleccionada,
+                this.observacionesInput
+            );
 
             switch (this.action) {
                 case 'new':
@@ -229,9 +232,6 @@ module apArea {
                                     break;
                                 }
                             }
-
-                            // Setear la fecha original del servicio
-                            this.fechaSeleccionada = this.servicio.fecha;
                         }
 
                         this.loading = false;
@@ -248,6 +248,10 @@ module apArea {
                 new common.callbackLite<servicioDto>(
                     value => {
                         this.servicio = value.data;
+                        // Setear la fecha original del servicio
+                        this.fechaSeleccionada = this.servicio.fecha;
+                        // Setear la observacion
+                        this.observacionesInput = this.servicio.observaciones;
                         if (this.servicio.tienePrecio)
                             this.setPrecio(parseFloat(this.servicio.precioTotal));
                         this.loading = false;

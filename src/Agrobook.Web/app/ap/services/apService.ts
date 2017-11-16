@@ -106,7 +106,8 @@ module apArea {
                 idContrato: servicio.idContrato,
                 esAdenda: servicio.esAdenda,
                 idContratoDeLaAdenda: servicio.idContratoDeLaAdenda,
-                fecha: servicio.fecha
+                fecha: servicio.fecha,
+                observaciones: servicio.observaciones
             };
             super.postWithCallback('nuevo-servicio', cmd, callback);
         }
@@ -119,6 +120,7 @@ module apArea {
                 esAdenda: servicio.esAdenda,
                 idContratoDeLaAdenda: servicio.idContratoDeLaAdenda,
                 fecha: servicio.fecha,
+                observaciones: servicio.observaciones
             };
             super.postWithCallback('editar-datos-basicos-del-servicio', cmd, callback);
         }

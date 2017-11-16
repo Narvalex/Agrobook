@@ -100,7 +100,8 @@ var apArea;
                 idContrato: servicio.idContrato,
                 esAdenda: servicio.esAdenda,
                 idContratoDeLaAdenda: servicio.idContratoDeLaAdenda,
-                fecha: servicio.fecha
+                fecha: servicio.fecha,
+                observaciones: servicio.observaciones
             };
             _super.prototype.postWithCallback.call(this, 'nuevo-servicio', cmd, callback);
         };
@@ -112,6 +113,7 @@ var apArea;
                 esAdenda: servicio.esAdenda,
                 idContratoDeLaAdenda: servicio.idContratoDeLaAdenda,
                 fecha: servicio.fecha,
+                observaciones: servicio.observaciones
             };
             _super.prototype.postWithCallback.call(this, 'editar-datos-basicos-del-servicio', cmd, callback);
         };

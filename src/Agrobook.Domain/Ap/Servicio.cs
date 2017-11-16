@@ -9,6 +9,7 @@ namespace Agrobook.Domain.Ap
         private string idOrganizacion;
         private string idContrato;
         private DateTime fecha;
+        private string observaciones;
 
         public Servicio()
         {
@@ -19,12 +20,14 @@ namespace Agrobook.Domain.Ap
                 this.idContrato = e.IdContrato;
                 this.IdProductor = e.IdProd;
                 this.fecha = e.Fecha;
+                this.observaciones = e.Observaciones;
             });
             this.On<DatosBasicosDelSevicioEditados>(e =>
             {
                 this.idContrato = e.IdContrato;
                 this.idOrganizacion = e.IdOrg;
                 this.fecha = e.Fecha;
+                this.observaciones = e.Observaciones;
             });
             this.On<ServicioEliminado>(e => this.EstaEliminado = true);
             this.On<ServicioRestaurado>(e => this.EstaEliminado = false);
@@ -50,17 +53,18 @@ namespace Agrobook.Domain.Ap
         public bool TienePrecio { get; private set; } = false;
         public decimal Precio { get; private set; } = default(decimal);
 
-        public bool HayDiferenciaEnDatosBasicos(string idOrg, string idContrato, DateTime fecha)
+        public bool HayDiferenciaEnDatosBasicos(string idOrg, string idContrato, DateTime fecha, string observaciones)
         {
             if (idOrg != this.idOrganizacion) return true;
             if (idContrato != this.idContrato) return true;
             if (fecha != this.fecha) return true;
+            if (observaciones != this.observaciones) return true;
             return false;
         }
 
         protected override ISnapshot TakeSnapshot()
             => new ServicioSnapshot(this.StreamName, this.Version, this.IdProductor, this.idOrganizacion,
-                this.idContrato, this.fecha, this.EstaEliminado, this.IdParcela);
+                this.idContrato, this.fecha, this.observaciones, this.EstaEliminado, this.IdParcela);
 
         protected override void Rehydrate(ISnapshot snapshot)
         {
@@ -71,6 +75,7 @@ namespace Agrobook.Domain.Ap
             this.idOrganizacion = state.IdOrganizacion;
             this.idContrato = state.IdContrato;
             this.fecha = state.Fecha;
+            this.observaciones = state.Observaciones;
             this.EstaEliminado = state.EstaEliminado;
             this.IdParcela = state.IdParcela;
         }
@@ -79,13 +84,14 @@ namespace Agrobook.Domain.Ap
     public class ServicioSnapshot : Snapshot
     {
         public ServicioSnapshot(string streamName, int version, string idProductor, string idOrganizacion, string idContrato,
-            DateTime fecha, bool eliminado, string idParcela)
+            DateTime fecha, string observaciones, bool eliminado, string idParcela)
             : base(streamName, version)
         {
             this.IdProductor = idProductor;
             this.IdOrganizacion = idOrganizacion;
             this.IdContrato = idContrato;
             this.Fecha = fecha;
+            this.Observaciones = observaciones;
             this.EstaEliminado = eliminado;
             this.IdParcela = idParcela;
         }
@@ -94,6 +100,7 @@ namespace Agrobook.Domain.Ap
         public string IdOrganizacion { get; }
         public string IdContrato { get; }
         public DateTime Fecha { get; }
+        public string Observaciones { get; }
         public bool EstaEliminado { get; }
         public string IdParcela { get; }
     }

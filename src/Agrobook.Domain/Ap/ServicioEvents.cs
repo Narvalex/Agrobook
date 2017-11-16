@@ -7,7 +7,7 @@ namespace Agrobook.Domain.Ap
     public class NuevoServicioRegistrado : MensajeAuditable, IEvent
     {
         public NuevoServicioRegistrado(Firma firma, string idServicio, string idProd, string idOrg,
-            string idContrato, bool esAdenda, string idContratoDeLaAdenda, DateTime fecha)
+            string idContrato, bool esAdenda, string idContratoDeLaAdenda, DateTime fecha, string observaciones)
             : base(firma)
         {
             this.IdServicio = idServicio;
@@ -17,6 +17,7 @@ namespace Agrobook.Domain.Ap
             this.EsAdenda = esAdenda;
             this.IdContratoDeLaAdenda = idContratoDeLaAdenda;
             this.Fecha = fecha;
+            this.Observaciones = observaciones;
         }
 
         /// <summary>
@@ -29,6 +30,7 @@ namespace Agrobook.Domain.Ap
         public bool EsAdenda { get; }
         public string IdContratoDeLaAdenda { get; }
         public DateTime Fecha { get; }
+        public string Observaciones { get; }
 
         public string StreamId => this.IdServicio;
     }
@@ -36,7 +38,7 @@ namespace Agrobook.Domain.Ap
     public class DatosBasicosDelSevicioEditados : MensajeAuditable, IEvent
     {
         public DatosBasicosDelSevicioEditados(Firma firma, string idServicio, string idOrg,
-            string idContrato, bool esAdenda, string idContratoDeLaAdenda, DateTime fecha)
+            string idContrato, bool esAdenda, string idContratoDeLaAdenda, DateTime fecha, string observaciones)
             : base(firma)
         {
             this.IdServicio = idServicio;
@@ -45,6 +47,7 @@ namespace Agrobook.Domain.Ap
             this.EsAdenda = esAdenda;
             this.IdContratoDeLaAdenda = idContratoDeLaAdenda;
             this.Fecha = fecha;
+            this.Observaciones = observaciones;
         }
 
         public string IdServicio { get; }
@@ -53,6 +56,7 @@ namespace Agrobook.Domain.Ap
         public bool EsAdenda { get; }
         public string IdContratoDeLaAdenda { get; }
         public DateTime Fecha { get; }
+        public string Observaciones { get; }
 
         public string StreamId => this.IdServicio;
     }

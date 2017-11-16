@@ -21,7 +21,7 @@ namespace Agrobook.Domain.Ap.Services
             var servicio = new Servicio();
 
             servicio.Emit(new NuevoServicioRegistrado(
-                e.Firma, e.IdServicio, e.IdProd, e.IdOrg, e.IdContrato, e.EsAdenda, e.IdContratoDeLaAdenda, e.Fecha));
+                e.Firma, e.IdServicio, e.IdProd, e.IdOrg, e.IdContrato, e.EsAdenda, e.IdContratoDeLaAdenda, e.Fecha, e.Observaciones));
 
             await this.repository.SaveAsync(servicio);
         }
@@ -36,11 +36,11 @@ namespace Agrobook.Domain.Ap.Services
 
             var servicio = await this.repository.GetOrFailByIdAsync<Servicio>(cmd.IdServicio);
 
-            if (!servicio.HayDiferenciaEnDatosBasicos(cmd.IdOrg, cmd.IdContrato, cmd.Fecha))
+            if (!servicio.HayDiferenciaEnDatosBasicos(cmd.IdOrg, cmd.IdContrato, cmd.Fecha, cmd.Observaciones))
                 throw new InvalidOperationException("No hay diferencias que registrar en datos basicos del servicio!");
 
             servicio.Emit(new DatosBasicosDelSevicioEditados(cmd.Firma, cmd.IdServicio, cmd.IdOrg,
-                cmd.IdContrato, cmd.EsAdenda, cmd.IdContratoDeLaAdenda, cmd.Fecha));
+                cmd.IdContrato, cmd.EsAdenda, cmd.IdContratoDeLaAdenda, cmd.Fecha, cmd.Observaciones));
 
             await this.repository.SaveAsync(servicio);
         }

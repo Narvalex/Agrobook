@@ -94,7 +94,7 @@ var apArea;
                 return;
             }
             this.submitting = true;
-            var servicio = new apArea.servicioDto(this.idServicio, this.contratoSeleccionado.id, this.contratoSeleccionado.esAdenda, this.contratoSeleccionado.idContratoDeLaAdenda, this.contratoSeleccionado.display, this.orgConContratosSeleccionada.org.id, this.orgConContratosSeleccionada.org.display, this.idProd, null, this.fechaSeleccionada);
+            var servicio = new apArea.servicioDto(this.idServicio, this.contratoSeleccionado.id, this.contratoSeleccionado.esAdenda, this.contratoSeleccionado.idContratoDeLaAdenda, this.contratoSeleccionado.display, this.orgConContratosSeleccionada.org.id, this.orgConContratosSeleccionada.org.display, this.idProd, null, this.fechaSeleccionada, this.observacionesInput);
             switch (this.action) {
                 case 'new':
                     this.registrarNuevoServicio(servicio);
@@ -171,8 +171,6 @@ var apArea;
                             break;
                         }
                     }
-                    // Setear la fecha original del servicio
-                    _this.fechaSeleccionada = _this.servicio.fecha;
                 }
                 _this.loading = false;
             }, function (reason) {
@@ -185,6 +183,10 @@ var apArea;
             this.loading = true;
             this.apQueryService.getServicio(this.idServicio, new common.callbackLite(function (value) {
                 _this.servicio = value.data;
+                // Setear la fecha original del servicio
+                _this.fechaSeleccionada = _this.servicio.fecha;
+                // Setear la observacion
+                _this.observacionesInput = _this.servicio.observaciones;
                 if (_this.servicio.tienePrecio)
                     _this.setPrecio(parseFloat(_this.servicio.precioTotal));
                 _this.loading = false;

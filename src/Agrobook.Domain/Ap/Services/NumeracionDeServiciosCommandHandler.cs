@@ -35,7 +35,8 @@ namespace Agrobook.Domain.Ap.Services
                 cmd.IdContrato,
                 cmd.EsAdenda,
                 cmd.IdContratoDeLaAdenda,
-                cmd.Fecha));
+                cmd.Fecha,
+                cmd.Observaciones));
 
             await this.repository.SaveAsync(numeracion);
 

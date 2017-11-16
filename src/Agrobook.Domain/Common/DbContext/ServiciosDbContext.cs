@@ -21,6 +21,7 @@ namespace Agrobook.Domain
         public string IdOrg { get; set; }
         public string IdProd { get; set; }
         public DateTime Fecha { get; set; }
+        public string Observaciones { get; set; }
 
         // Defaults
         public bool Eliminado { get; set; }

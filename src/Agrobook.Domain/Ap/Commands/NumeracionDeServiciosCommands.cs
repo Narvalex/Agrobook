@@ -5,7 +5,8 @@ namespace Agrobook.Domain.Ap.Commands
 {
     public class RegistrarNuevoServicio : MensajeAuditable
     {
-        public RegistrarNuevoServicio(Firma firma, string idProd, string idOrg, string idContrato, bool esAdenda, string idContratoDeLaAdenda, DateTime fecha)
+        public RegistrarNuevoServicio(Firma firma, string idProd, string idOrg, string idContrato, bool esAdenda, string idContratoDeLaAdenda, DateTime fecha,
+            string observaciones)
             : base(firma)
         {
             this.IdProd = idProd;
@@ -14,6 +15,7 @@ namespace Agrobook.Domain.Ap.Commands
             this.EsAdenda = esAdenda;
             this.IdContratoDeLaAdenda = idContratoDeLaAdenda;
             this.Fecha = fecha;
+            this.Observaciones = observaciones;
         }
 
         public string IdProd { get; }
@@ -22,5 +24,6 @@ namespace Agrobook.Domain.Ap.Commands
         public bool EsAdenda { get; }
         public string IdContratoDeLaAdenda { get; }
         public DateTime Fecha { get; }
+        public string Observaciones { get; }
     }
 }

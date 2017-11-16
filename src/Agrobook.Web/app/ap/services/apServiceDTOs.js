@@ -29,7 +29,7 @@ var apArea;
     }());
     apArea.orgDto = orgDto;
     var servicioDto = (function () {
-        function servicioDto(id, idContrato, esAdenda, idContratoDeLaAdenda, contratoDisplay, idOrg, orgDisplay, idProd, prodDislplay, fecha, 
+        function servicioDto(id, idContrato, esAdenda, idContratoDeLaAdenda, contratoDisplay, idOrg, orgDisplay, idProd, prodDislplay, fecha, observaciones, 
             // With Defaults
             eliminado, 
             // Parcela
@@ -53,6 +53,7 @@ var apArea;
             this.idProd = idProd;
             this.prodDislplay = prodDislplay;
             this.fecha = fecha;
+            this.observaciones = observaciones;
             this.eliminado = eliminado;
             this.parcelaId = parcelaId;
             this.parcelaDisplay = parcelaDisplay;

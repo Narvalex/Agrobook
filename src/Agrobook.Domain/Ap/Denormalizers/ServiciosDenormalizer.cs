@@ -30,6 +30,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
                     IdOrg = e.IdOrg,
                     IdProd = e.IdProd,
                     Fecha = e.Fecha,
+                    Observaciones = e.Observaciones,
                     // Defautls
                     Eliminado = false,
                     IdParcela = null
@@ -45,6 +46,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
                 servicio.IdContrato = e.IdContrato;
                 servicio.IdOrg = e.IdOrg;
                 servicio.Fecha = e.Fecha;
+                servicio.Observaciones = e.Observaciones;
             });
         }
 

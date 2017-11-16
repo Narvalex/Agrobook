@@ -36,6 +36,7 @@ module apArea {
             public idProd: string,
             public prodDislplay: string,
             public fecha: Date,
+            public observaciones: string,
             // With Defaults
             public eliminado: boolean = false,
             // Parcela
