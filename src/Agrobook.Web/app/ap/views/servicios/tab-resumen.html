@@ -79,12 +79,12 @@
     <div ng-show="!vm.loading && vm.action === 'view'">
         <md-content class="md-padding" layout-xs="column" layout="row" ng-if="!vm.loading && vm.servicio.tienePrecio">
             <div flex-xs flex-gt-xs="50" layout="column">
-                <md-card md-theme="default" md-theme-watch>
+                <md-card md-theme="default">
                     <md-card-title>
                         <md-card-title-text>
                             <span class="md-headline">Total: <b class="dark-red-text">{{vm.servicio.precioTotal}} $</b></span>
                             <span class="md-subhead">Por hectárea: <b class="dark-red-text">{{vm.servicio.precioPorHectarea}} $</b></span>
-                            <span class="md-subhead"><a href="" ng-click="vm.fijarOAjustarPrecio($event, true)">Ajustar precio</a></span>
+                            <span class="md-subhead" ng-if="vm.tienePermiso"><a href="" ng-click="vm.fijarOAjustarPrecio($event, true)">Ajustar precio</a></span>
                         </md-card-title-text>
                     </md-card-title>
                 </md-card>
@@ -92,11 +92,11 @@
         </md-content>
         <md-content class="md-padding" layout-xs="column" layout="row" ng-if="!vm.loading && !vm.servicio.tienePrecio">
             <div flex-xs flex-gt-xs="50" layout="column">
-                <md-card md-theme="'default'" md-theme-watch>
+                <md-card md-theme="'default'">
                     <md-card-title>
                         <md-card-title-text>
                             <span class="md-headline">Precio no fijado</span>
-                            <span class="md-subhead"><a href="" ng-click="vm.fijarOAjustarPrecio($event, false)">Fijar precio ahora</a></span>
+                            <span class="md-subhead" ng-if="vm.tienePermiso"><a href="" ng-click="vm.fijarOAjustarPrecio($event, false)">Fijar precio ahora</a></span>
                         </md-card-title-text>
                     </md-card-title>
                 </md-card>

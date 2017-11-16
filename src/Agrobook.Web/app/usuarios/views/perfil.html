@@ -35,20 +35,23 @@
                             <div ng-message="required">Debe especificar un nombre para mostrar.</div>
                         </div>
                     </md-input-container>
+                </div>
+                <div layout="column">
+                    <h3>Contacto</h3>
                     <!--Telefono-->
                     <md-input-container class="md-block" flex-gt-md>
                         <label>Telefono</label>
                         <input ng-model="vm.usuarioEditado.telefono"
                                name="telefono" />
                     </md-input-container>
-                    <!--Telefono-->
+                    <!--Correo electrónico-->
                     <md-input-container class="md-block" flex-gt-md>
                         <label>Correo electrónico</label>
                         <input ng-model="vm.usuarioEditado.email"
                                name="email" />
                     </md-input-container>
-                </div>
-                <div layout="column">
+
+                    <h3>Contraseña</h3>
                     <!-- Password-->
                     <md-input-container class="md-block" flex-gt-md>
                         <label>Contraseña actual</label>
