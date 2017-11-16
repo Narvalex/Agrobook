@@ -13,11 +13,9 @@ var apArea;
 (function (apArea) {
     var apService = (function (_super) {
         __extends(apService, _super);
-        function apService($http, fakeDb, timer) {
+        function apService($http) {
             var _this = _super.call(this, $http, '../ap') || this;
             _this.$http = $http;
-            _this.fakeDb = fakeDb;
-            _this.timer = timer;
             return _this;
         }
         // Parcelas
@@ -155,7 +153,7 @@ var apArea;
         };
         return apService;
     }(common.httpLite));
-    apService.$inject = ['$http', 'fakeDb', '$timeout'];
+    apService.$inject = ['$http'];
     apArea.apService = apService;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=apService.js.map

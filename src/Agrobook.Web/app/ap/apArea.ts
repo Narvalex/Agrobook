@@ -10,7 +10,6 @@ module apArea {
         .service('loginQueryService', login.loginQueryService)
         .service('apQueryService', apQueryService)
         .service('apService', apService)
-        .service('fakeDb', fakeDb)
         .service('numberFormatter', common.numberFormatter)
         // Directives
         .directive('fileWidget', common.filesWidgetDirectiveFactory)

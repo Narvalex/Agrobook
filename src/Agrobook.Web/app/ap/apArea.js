@@ -9,7 +9,6 @@ var apArea;
         .service('loginQueryService', login.loginQueryService)
         .service('apQueryService', apArea.apQueryService)
         .service('apService', apArea.apService)
-        .service('fakeDb', apArea.fakeDb)
         .service('numberFormatter', common.numberFormatter)
         .directive('fileWidget', common.filesWidgetDirectiveFactory)
         .controller('sidenavController', apArea.sidenavController)

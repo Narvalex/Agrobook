@@ -19,6 +19,7 @@ var apArea;
             var roles = config.claims.roles;
             this.tienePermiso = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
             this.obtenerParcelasDelProd();
+            this.obtenerDepartamentos();
         }
         // Api
         prodTabParcelasController.prototype.toggleMostrarEliminados = function () {
@@ -157,7 +158,13 @@ var apArea;
                     x.hectareas = _this.numberFormatter.formatFromUSNumber(parseFloat(x.hectareas));
                 });
                 _this.parcelas = response.data;
-            }, function (reason) { }));
+            }, function (reason) { return _this.toasterLite.error('Hubo un error al obtener parcelas'); }));
+        };
+        prodTabParcelasController.prototype.obtenerDepartamentos = function () {
+            var _this = this;
+            this.apQueryService.getDepartamentos(new common.callbackLite(function (response) {
+                _this.departamentos = response.data;
+            }, function (reason) { return _this.toasterLite.error('Hubo un error al obtener los departamentos'); }));
         };
         return prodTabParcelasController;
     }());

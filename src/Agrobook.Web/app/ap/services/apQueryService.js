@@ -13,11 +13,9 @@ var apArea;
 (function (apArea) {
     var apQueryService = (function (_super) {
         __extends(apQueryService, _super);
-        function apQueryService($http, fakeDb, $timeout) {
+        function apQueryService($http) {
             var _this = _super.call(this, $http, '../ap/query') || this;
             _this.$http = $http;
-            _this.fakeDb = fakeDb;
-            _this.$timeout = $timeout;
             return _this;
         }
         apQueryService.prototype.getClientes = function (filtro, callback) {
@@ -53,9 +51,22 @@ var apArea;
         apQueryService.prototype.getOrgsConContratosDelProductor = function (idProd, callback) {
             _super.prototype.getWithCallback.call(this, 'orgs-con-contratos-del-productor/' + idProd, callback);
         };
+        apQueryService.prototype.getDepartamentos = function (callback) {
+            var data = [
+                new apArea.departamento('caaguazu', 'Caaguazu', [
+                    new apArea.distrito('carayao', 'Carayao'),
+                    new apArea.distrito('coroneloviedo', 'Coronel Oviedo')
+                ]),
+                new apArea.departamento('caazapa', 'Caazapa', [
+                    new apArea.distrito('3demayo', '3 de Mayo'),
+                    new apArea.distrito('abai', 'Abai')
+                ])
+            ];
+            callback.onSuccess({ data: data });
+        };
         return apQueryService;
     }(common.httpLite));
-    apQueryService.$inject = ['$http', 'fakeDb', '$timeout'];
+    apQueryService.$inject = ['$http'];
     apArea.apQueryService = apQueryService;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=apQueryService.js.map

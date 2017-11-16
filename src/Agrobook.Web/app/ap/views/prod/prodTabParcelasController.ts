@@ -23,6 +23,7 @@ module apArea {
             this.tienePermiso = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
 
             this.obtenerParcelasDelProd();
+            this.obtenerDepartamentos();
         }
 
         // Estados
@@ -38,6 +39,7 @@ module apArea {
 
         // Listas
         parcelas: parcelaDto[] = [];
+        departamentos: departamento[];
 
         // Api
         toggleMostrarEliminados() {
@@ -219,7 +221,17 @@ module apArea {
                         });
                         this.parcelas = response.data;
                     },
-                    reason => { })
+                    reason => this.toasterLite.error('Hubo un error al obtener parcelas'))
+            );
+        }
+
+        private obtenerDepartamentos() {
+            this.apQueryService.getDepartamentos(
+                new common.callbackLite<departamento[]>(
+                    response => {
+                        this.departamentos = response.data;
+                    },
+                    reason => this.toasterLite.error('Hubo un error al obtener los departamentos'))
             );
         }
     }

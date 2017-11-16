@@ -2,12 +2,10 @@
 
 module apArea {
     export class apService extends common.httpLite {
-        static $inject = ['$http', 'fakeDb', '$timeout'];
+        static $inject = ['$http'];
 
         constructor(
-            private $http: ng.IHttpService,
-            private fakeDb: fakeDb,
-            private timer: angular.ITimeoutService
+            private $http: ng.IHttpService
         ) {
             super($http, '../ap');
         }

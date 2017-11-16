@@ -133,72 +133,25 @@ var apArea;
         return contratoDto;
     }());
     apArea.contratoDto = contratoDto;
-    //-----------------------------------------
-    // FakeDb
-    //-----------------------------------------
-    var fakeDb = (function () {
-        function fakeDb() {
-            this.precargar = true;
-            // Se genera en otro Bounded Context
-            this.orgs = [
-                new orgDto('coopchorti', 'Cooperativa Chortizer', './assets/img/avatar/org-icon.png'),
-                new orgDto('ccuu', 'Cooperativa Colonias Unidas', './assets/img/avatar/org-icon.png')
-            ];
-            // Se genera en otro Bounded Context
-            this.prods = [
-                new prodDto('davidelias', 'David Elías', './assets/img/avatar/8.png', [
-                    new orgDto(this.orgs[0].id, this.orgs[0].display, this.orgs[0].avatarUrl)
-                ]),
-                new prodDto('kazuoyama', 'Kazuo Yamazuki', './assets/img/avatar/9.png', [
-                    new orgDto(this.orgs[1].id, this.orgs[1].display, this.orgs[1].avatarUrl)
-                ]),
-                new prodDto('adair', 'Adair Acosta', './assets/img/avatar/7.png', [
-                    new orgDto(this.orgs[0].id, this.orgs[0].display, this.orgs[0].avatarUrl),
-                    new orgDto(this.orgs[1].id, this.orgs[1].display, this.orgs[1].avatarUrl)
-                ])
-            ];
-            // El id de la parcela se puede hacer de la combinacion [prod]_[nombreParcela] debido a que el prod es 
-            // igual al usuario, que es unico
-            this.parcelas = [];
-            // Id contrato: [idOrg]_[nombre_contrato]
-            // Id adenda: [idContrato]_[nombre_adenda]
-            this.contratos = [];
-            // Id: Id productor o id org, no serian iguales
-            this.clientes = []; // se carga en el constructor
-            /**
-            * Id: [idProd]_servicio[number + 1]
-            */
-            this.servicios = [];
-            // Cliente preload
-            this.clientes = this.orgs.map(function (x) { return new cliente(x.id, x.display, 'Organización', 'org', x.avatarUrl); })
-                .concat(this.prods
-                .map(function (p) { return new cliente(p.id, p.display, p.orgs.reduce(function (des, org, index, array) {
-                if (des === '')
-                    des = org.display;
-                else
-                    des += (', ' + org.display);
-                return des;
-            }, ''), 'prod', p.avatarUrl); }));
-            if (this.precargar) {
-                this.parcelas = [
-                    new parcelaDto('davidelias_DeLaSeñora', 'davidelias', 'De la Señora', '31,66'),
-                    new parcelaDto('davidelias_Apepu', 'davidelias', 'Apepu', '72,18'),
-                    new parcelaDto('adair_Mariscal', 'adair', 'Mariscal', '73,18'),
-                    new parcelaDto('adair_Feliciano', 'adair', 'Feliciano', '75,18')
-                ];
-                this.contratos = [
-                    new contratoDto('coopchorti_Contrato Chorti', 'coopchorti', 'Contrato Chorti', false, false, null, new Date(2017, 1, 17)),
-                    new contratoDto('coopchorti_Contrato Chorti_Adenda I', 'coopchorti', 'Adenda I', true, false, 'Contrato_Chorti', new Date(2017, 2, 20))
-                ];
-                //this.servicios = [
-                //    new servicioDto('adair_servicio1', 'coopchorti_Contrato Chorti', 'Contrato Chorti', 'coopchorti', 'Cooperativa Chortizer', 'adair', new Date(2017, 12, 1)),
-                //    new servicioDto('adair_servicio2', 'coopchorti_Contrato Chorti_Adenda I', 'Adenda I', 'coopchorti', 'Cooperativa Chortizer', 'adair', new Date(2017, 12, 30))
-                //];
-            }
+    /************************
+    * Distritos
+    ************************/
+    var departamento = (function () {
+        function departamento(id, display, distritos) {
+            this.id = id;
+            this.display = display;
+            this.distritos = distritos;
         }
-        return fakeDb;
+        return departamento;
     }());
-    fakeDb.$inject = [];
-    apArea.fakeDb = fakeDb;
+    apArea.departamento = departamento;
+    var distrito = (function () {
+        function distrito(id, display) {
+            this.id = id;
+            this.display = display;
+        }
+        return distrito;
+    }());
+    apArea.distrito = distrito;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=apServiceDTOs.js.map
