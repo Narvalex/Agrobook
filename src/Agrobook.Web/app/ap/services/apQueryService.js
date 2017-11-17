@@ -52,17 +52,7 @@ var apArea;
             _super.prototype.getWithCallback.call(this, 'orgs-con-contratos-del-productor/' + idProd, callback);
         };
         apQueryService.prototype.getDepartamentos = function (callback) {
-            var data = [
-                new apArea.departamento('caaguazu', 'Caaguazu', [
-                    new apArea.distrito('carayao', 'Carayao'),
-                    new apArea.distrito('coroneloviedo', 'Coronel Oviedo')
-                ]),
-                new apArea.departamento('caazapa', 'Caazapa', [
-                    new apArea.distrito('3demayo', '3 de Mayo'),
-                    new apArea.distrito('abai', 'Abai')
-                ])
-            ];
-            callback.onSuccess({ data: data });
+            _super.prototype.getWithCallback.call(this, 'departamentos', callback);
         };
         return apQueryService;
     }(common.httpLite));

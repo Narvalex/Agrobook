@@ -28,6 +28,31 @@
                 <div ng-message="required">Debe especificar las hectáreas</div>
             </div>
         </md-input-container>
+
+        <!-- Departamento -->
+        <div layout="row" ng-show="vm.mostrarForm">
+            <md-input-container>
+                <label>Departamento</label>
+                <md-select ng-model="vm.departamentoSeleccionado" ng-change="vm.establecerDistritos()"
+                           required>
+                    <md-option ng-repeat="departamento in vm.departamentos" value="{{departamento.id}}">{{departamento.display}}</md-option>
+                </md-select>
+                <div ng-messages="">
+                    <div ng-message="required">Debe especificar el departamento</div>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <label>Distrito</label>
+                <md-select ng-model="vm.distritoSeleccionado"
+                           required>
+                    <md-option ng-repeat="distrito in vm.distritos" value="{{distrito.id}}">{{distrito.display}}</md-option>
+                </md-select>
+                <div ng-messages="">
+                    <div ng-message="required">Debe especificar el distrito o municipio</div>
+                </div>
+            </md-input-container>
+        </div>
+
         <div layout="row"  ng-show="vm.mostrarForm">
             <div>
                 <md-button class="md-button md-primary md-raised"

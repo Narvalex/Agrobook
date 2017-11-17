@@ -102,5 +102,12 @@ namespace Agrobook.Web.Controllers.Ap
             var list = await this.client.GetUltimosServicios(cantidad);
             return this.Ok(list);
         }
+
+        [HttpGet]
+        [Route("departamentos")]
+        public async Task<IHttpActionResult> GetDepartamentos()
+        {
+
+        }
     }
 }

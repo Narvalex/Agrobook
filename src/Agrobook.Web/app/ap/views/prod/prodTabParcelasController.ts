@@ -36,10 +36,13 @@ module apArea {
         // Objetos
         idProd: string;
         parcelaObject: edicionParcelaDto;
+        departamentoSeleccionado: string;
+        distritoSeleccionado: string;
 
         // Listas
         parcelas: parcelaDto[] = [];
         departamentos: departamento[];
+        distritos: distrito[];
 
         // Api
         toggleMostrarEliminados() {
@@ -233,6 +236,16 @@ module apArea {
                     },
                     reason => this.toasterLite.error('Hubo un error al obtener los departamentos'))
             );
+        }
+
+        establecerDistritos() {
+            for (var i = 0; i < this.departamentos.length; i++) {
+                let depto = this.departamentos[i];
+                if (depto.id === this.departamentoSeleccionado) {
+                    this.distritos = depto.distritos;
+                    break;
+                }
+            }
         }
     }
 

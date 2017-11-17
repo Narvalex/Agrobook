@@ -56,17 +56,7 @@ module apArea {
         }
 
         getDepartamentos(callback: common.callbackLite<departamento[]>) {
-            var data = [
-                new departamento('caaguazu', 'Caaguazu', [
-                    new distrito('carayao', 'Carayao'),
-                    new distrito('coroneloviedo', 'Coronel Oviedo')
-                ]),
-                new departamento('caazapa', 'Caazapa', [
-                    new distrito('3demayo', '3 de Mayo'),
-                    new distrito('abai', 'Abai')
-                ])
-            ];
-            callback.onSuccess({ data: data });
+            super.getWithCallback('departamentos', callback);
         }
     }
 }

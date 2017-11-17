@@ -84,6 +84,7 @@
     <Compile Include="Ap\ProductorEvents.cs" />
     <Compile Include="Ap\Commands\NumeracionDeServiciosCommands.cs" />
     <Compile Include="Ap\NumeracionDeServiciosEvents.cs" />
+    <Compile Include="Common\Services\DepartamentosDelParaguayProvider.cs" />
     <Compile Include="Ap\ServicioEvents.cs" />
     <Compile Include="Ap\Productor.cs" />
     <Compile Include="Ap\Services\ApDTOs.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Ap\Services\NumeracionDeServiciosCommandHandler.cs" />
     <Compile Include="Ap\Servicio.cs" />
     <Compile Include="Ap\NumeracionDeServicios.cs" />
+    <Compile Include="Common\ValueObjects\Departamento.cs" />
     <Compile Include="Ap\ValueObjects\Parcela.cs" />
     <Compile Include="Archivos\Services\ColeccionDeArchivosIdProvider.cs" />
     <Compile Include="Archivos\Messages\ArchivosCommands.cs" />

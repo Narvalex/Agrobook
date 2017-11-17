@@ -166,6 +166,15 @@ var apArea;
                 _this.departamentos = response.data;
             }, function (reason) { return _this.toasterLite.error('Hubo un error al obtener los departamentos'); }));
         };
+        prodTabParcelasController.prototype.establecerDistritos = function () {
+            for (var i = 0; i < this.departamentos.length; i++) {
+                var depto = this.departamentos[i];
+                if (depto.id === this.departamentoSeleccionado) {
+                    this.distritos = depto.distritos;
+                    break;
+                }
+            }
+        };
         return prodTabParcelasController;
     }());
     prodTabParcelasController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', 'loginService',
