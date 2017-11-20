@@ -1,4 +1,5 @@
 ﻿using Agrobook.Client.Ap;
+using Agrobook.Domain.Common.Services;
 using Eventing.Client.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -105,9 +106,10 @@ namespace Agrobook.Web.Controllers.Ap
 
         [HttpGet]
         [Route("departamentos")]
-        public async Task<IHttpActionResult> GetDepartamentos()
+        public IHttpActionResult GetDepartamentos()
         {
-
+            var list = DepartamentosDelParaguayProvider.GetDepartamentos();
+            return this.Ok(list);
         }
     }
 }

@@ -99,6 +99,10 @@ module apArea {
             public idProd: string,
             public display: string,
             public hectareas: string,
+            public idDepartamento: string,
+            public departamentoDisplay: string,
+            public idDistrito: string, 
+            public distritoDisplay: string,
             public eliminado: boolean = false
         ) {
         }

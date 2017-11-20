@@ -19,20 +19,28 @@ var apArea;
             return _this;
         }
         // Parcelas
-        apService.prototype.registrarNuevaParcela = function (idProductor, nombreDeLaParcela, hectareas, callback) {
+        apService.prototype.registrarNuevaParcela = function (idProductor, nombreDeLaParcela, hectareas, idDepartamento, idDistrito, callback) {
             var cmd = {
                 idProductor: idProductor,
                 nombreDeLaParcela: nombreDeLaParcela,
-                hectareas: hectareas
+                hectareas: hectareas,
+                ubicacion: {
+                    idDepartamento: idDepartamento,
+                    idDistrito: idDistrito
+                }
             };
             _super.prototype.postWithCallback.call(this, 'registrar-parcela', cmd, callback);
         };
-        apService.prototype.editarParcela = function (idProductor, idParcela, nombreDeLaParcela, hectareas, callback) {
+        apService.prototype.editarParcela = function (idProductor, idParcela, nombreDeLaParcela, hectareas, idDepartamento, idDistrito, callback) {
             var cmd = {
                 idProductor: idProductor,
                 idParcela: idParcela,
                 nombre: nombreDeLaParcela,
-                hectareas: hectareas
+                hectareas: hectareas,
+                ubicacion: {
+                    idDepartamento: idDepartamento,
+                    idDistrito: idDistrito
+                }
             };
             _super.prototype.postWithCallback.call(this, 'editar-parcela', cmd, callback);
         };

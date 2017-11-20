@@ -4,9 +4,20 @@ using System.Linq;
 
 namespace Agrobook.Domain.Common.Services
 {
+    // Basado en esta lista: https://es.wikipedia.org/wiki/Anexo:Municipios_de_Paraguay
     public static class DepartamentosDelParaguayProvider
     {
         private static DistritoComparer distritoComparer = new DistritoComparer();
+
+        public static ICollection<Departamento> GetDepartamentos() => departamentos;
+
+        public static bool UbicacionEsValida(UbicacionDepartamental ubicacion)
+        {
+            if (ubicacion == null) return false;
+            var dto = departamentos.SingleOrDefault(x => x.Id == ubicacion.IdDepartamento);
+            if (dto == null) return false;
+            return dto.Distritos.Any(x => x.Id == ubicacion.IdDistrito);
+        }
 
         private static readonly HashSet<Departamento> departamentos = new HashSet<Departamento>(new DepartamentoComparer())
         {
@@ -229,112 +240,110 @@ namespace Agrobook.Domain.Common.Services
                 new Distrito("jesus", "Jesús"),
                 new Distrito("laPaz", "La Paz"),
                 new Distrito("joseLeandroOviedo", "José Leandro Oviedo"),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
+                new Distrito("mayorOtanho", "Mayor Otaño"),
+                new Distrito("natalio", "Natalio"),
+                new Distrito("nuevaAlborada", "Nueva Alborada"),
+                new Distrito("obligado", "Obligado"),
+                new Distrito("pirapo", "Pirapo"),
+                new Distrito("sanCosmeYDamian", "San Cosme y Damián"),
+                new Distrito("sanJuanDelParana", "San Juan del Paraná"),
+                new Distrito("sanRafaelDelParana", "San Rafael del Paraná"),
+                new Distrito("tomasRomeroPereira", "Tomás Romero Pereira"),
+                new Distrito("trinidad", "Trinidad"),
+                new Distrito("yatytay", "Yatytay")
             }
             .ToArray()),
-            new Departamento("", "", new HashSet<Distrito>(distritoComparer)
+            new Departamento("misiones", "Misiones", new HashSet<Distrito>(distritoComparer)
             {
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
+                new Distrito("ayolas", "Ayolas"),
+                new Distrito("sanIgnacio", "San Ignacio"),
+                new Distrito("sanJuanBautista", "San Juan Bautista"),
+                new Distrito("sanMiguel", "San Miguel"),
+                new Distrito("sanPatricio", "San Patricio"),
+                new Distrito("santaMaria", "Santa María"),
+                new Distrito("santaRosa", "Santa Rosa"),
+                new Distrito("santiago", "Santiago"),
+                new Distrito("villaFlorida", "Villa Florida"),
+                new Distrito("yabebyry", "Yabebyry"),
             }
             .ToArray()),
-            new Departamento("", "", new HashSet<Distrito>(distritoComparer)
+            new Departamento("neembucu", "Ñeembucu", new HashSet<Distrito>(distritoComparer)
             {
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
+                new Distrito("alberdi", "Alberdi"),
+                new Distrito("cerrito", "Cerrito"),
+                new Distrito("desmochados", "Desmochados"),
+                new Distrito("generalJoseEduvigisDiaz", "General José Eduvigis Díaz"),
+                new Distrito("guazuCua", "Guazú Cuá"),
+                new Distrito("humaita", "Humaitá"),
+                new Distrito("islaUmbu", "Isla Umbú"),
+                new Distrito("laureles", "Laureles"),
+                new Distrito("mayorJoseJMartinez", "Mayor José J. Martínez"),
+                new Distrito("pasoDePatria", "Paso de Patria"),
+                new Distrito("pilar", "Pilar"),
+                new Distrito("sanJuanBautistaDeNeembucu", "San Juan Bautista de Ñeembucú"),
+                new Distrito("tacuaras", "Tacuaras"),
+                new Distrito("villaFranca", "Villa Franca"),
+                new Distrito("villabin", "Villabín"),
+                new Distrito("villaOliva", "Villa Oliva"),
             }
             .ToArray()),
-            new Departamento("", "", new HashSet<Distrito>(distritoComparer)
+            new Departamento("paraguari", "Paraguarí", new HashSet<Distrito>(distritoComparer)
             {
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", "")
+                new Distrito("acahay", "Acahay"),
+                new Distrito("cappcucu", "Caapucú"),
+                new Distrito("carapegua", "Carapeguá"),
+                new Distrito("escobar", "Escobar"),
+                new Distrito("gralBernardinoCaballero", "Gral. Bernardino Caballero"),
+                new Distrito("laColmena", "La Colmena"),
+                new Distrito("mariaAntonia", "María Antonia"),
+                new Distrito("mbuyapey", "Mbuyapey"),
+                new Distrito("paraguari", "Paraguarí"),
+                new Distrito("pirayu", "Pirayú"),
+                new Distrito("quiindy", "Quiindy"),
+                new Distrito("quyquyho", "Quyquyhó"),
+                new Distrito("sanRoqueGonzalezDeSantaCruz", "San Roque González de Santa Cruz"),
+                new Distrito("sapucai", "Sapucai"),
+                new Distrito("tebicuarymi", "Tebicuarymí"),
+                new Distrito("yaguaron", "Yaguarón"),
+                new Distrito("ybycui", "Ybycuí"),
+                new Distrito("ybytymi", "Yvytymí")
             }
             .ToArray()),
-            new Departamento("", "", new HashSet<Distrito>(distritoComparer)
+            new Departamento("presidenteHayes", "Presidente Hayes", new HashSet<Distrito>(distritoComparer)
             {
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
+                new Distrito("benjaminAceval", "Benjamín Aceval"),
+                new Distrito("drJoseFalcon", "Dr. José Falcón"),
+                new Distrito("generalJoseMariaBruguez", "General José María Bruguez"),
+                new Distrito("nanawa", "Nanawa"),
+                new Distrito("puertoPinasco", "Puerto Pinazco"),
+                new Distrito("tteIralaFernandez", "Tte. Irala Fernández"),
+                new Distrito("estebanMartinez", "Esteban Martínez"),
+                new Distrito("villaHayes", "Villa Hayes"),
             }
             .ToArray()),
-            new Departamento("", "", new HashSet<Distrito>(distritoComparer)
+            new Departamento("sanPedro", "San Pedro", new HashSet<Distrito>(distritoComparer)
             {
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
-                new Distrito("", ""),
+                new Distrito("antequera", "Antequera"),
+                new Distrito("capiibary", "Capiibary"),
+                new Distrito("chore", "Choré"),
+                new Distrito("generalElizardoAquino", "General Elizardo Aquino"),
+                new Distrito("generalIsidoro", "General Isidoro Resquín"),
+                new Distrito("guayaibi", "Guayaibí"),
+                new Distrito("itacurubiDelRosario", "Itacurubí del Rosario"),
+                new Distrito("liberacion", "Liberación"),
+                new Distrito("lima", "Lima"),
+                new Distrito("nuevaGermania", "Nueva Germania"),
+                new Distrito("sanEstanislao", "San Estanislao"),
+                new Distrito("sanPablo", "San Pablo"),
+                new Distrito("sanPedroDelYcuamandiyu", "San Pedro del Ycuamandiyú"),
+                new Distrito("sanVicentePancholo", "San Vicente Pancholo"),
+                new Distrito("santaRosaDelAguaray", "Santa Rosa del Aguaray"),
+                new Distrito("tacuati", "Tacuatí"),
+                new Distrito("union", "Unión"),
+                new Distrito("veinticincoDeDiciembre", "Venticinco de Diciembre"),
+                new Distrito("villaDelRosario", "Villa del Rosario"),
+                new Distrito("yataityDelNorte", "Yataity del Norte"),
+                new Distrito("yrybycua", "Yrybucuá del Norte")
             }
             .ToArray()),
         };

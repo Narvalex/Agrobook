@@ -13,7 +13,13 @@ namespace Agrobook.Domain.Ap
         public Productor()
         {
             this.On<NuevoProductorRegistrado>(e => this.SetStreamNameById(e.IdProductor));
-            this.On<NuevaParcelaRegistrada>(e => this.parcelas.Add(new Parcela(e.IdParcela, e.Hectareas, false)));
+            this.On<NuevaParcelaRegistrada>(e => this.parcelas.Add(new Parcela(e.IdParcela, e.Hectareas, e.Ubicacion, false)));
+            this.On<ParcelaEditada>(e =>
+            {
+                var parcela = this.parcelas.Single(x => x.Id == e.IdParcela);
+                this.parcelas.Remove(parcela);
+                this.parcelas.Add(new Parcela(e.IdParcela, e.Hectareas, e.Ubicacion, parcela.Eliminada));
+            });
             this.On<ParcelaEliminada>(e => this.parcelas.Single(x => x.Id == e.IdParcela).MarcarComoEliminada());
             this.On<ParcelaRestaurada>(e => this.parcelas.Single(x => x.Id == e.IdParcela).MarcarComoRestaurada());
         }
@@ -37,7 +43,7 @@ namespace Agrobook.Domain.Ap
         public Parcela MirarParcela(string idParcela)
             => this.parcelas
                 .Where(x => x.Id == idParcela)
-                .Select(x => new Parcela(x.Id, x.Hectareas, x.Eliminada))
+                .Select(x => new Parcela(x.Id, x.Hectareas, x.Ubicacion, x.Eliminada))
                 .Single();
 
         public bool ParcelaEstaEliminada(string idParcela) => this.parcelas.Single(x => x.Id == idParcela).Eliminada;

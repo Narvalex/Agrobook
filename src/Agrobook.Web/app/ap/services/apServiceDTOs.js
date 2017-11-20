@@ -106,12 +106,16 @@ var apArea;
     }());
     apArea.edicionParcelaDto = edicionParcelaDto;
     var parcelaDto = (function () {
-        function parcelaDto(id, idProd, display, hectareas, eliminado) {
+        function parcelaDto(id, idProd, display, hectareas, idDepartamento, departamentoDisplay, idDistrito, distritoDisplay, eliminado) {
             if (eliminado === void 0) { eliminado = false; }
             this.id = id;
             this.idProd = idProd;
             this.display = display;
             this.hectareas = hectareas;
+            this.idDepartamento = idDepartamento;
+            this.departamentoDisplay = departamentoDisplay;
+            this.idDistrito = idDistrito;
+            this.distritoDisplay = distritoDisplay;
             this.eliminado = eliminado;
         }
         return parcelaDto;

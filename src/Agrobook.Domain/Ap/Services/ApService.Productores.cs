@@ -1,4 +1,6 @@
 ﻿using Agrobook.Domain.Ap.Commands;
+using Agrobook.Domain.Ap.ValueObjects;
+using Agrobook.Domain.Common.Services;
 using Eventing;
 using Eventing.Core.Persistence;
 using System;
@@ -27,7 +29,11 @@ namespace Agrobook.Domain.Ap.Services
                 throw new InvalidOperationException("El productor ya tiene esa parcela");
 
             Ensure.Positive(cmd.Hectareas, nameof(cmd.Hectareas));
-            productor.Emit(new NuevaParcelaRegistrada(cmd.Firma, idProductor, idParcela, cmd.NombreDeLaParcela, cmd.Hectareas));
+
+            if (!DepartamentosDelParaguayProvider.UbicacionEsValida(cmd.Ubicacion))
+                throw new ArgumentException("No es valida la ubicacion departamental", "ubicacion departamental");
+
+            productor.Emit(new NuevaParcelaRegistrada(cmd.Firma, idProductor, idParcela, cmd.NombreDeLaParcela, cmd.Hectareas, cmd.Ubicacion));
 
             await this.repository.SaveAsync(productor);
             return idParcela;
@@ -40,8 +46,18 @@ namespace Agrobook.Domain.Ap.Services
             if (!productor.TieneParcela(cmd.IdParcela))
                 throw new InvalidOperationException("El productor no tiene la parcela que se quiere editar");
 
+            // Verificamos si siquiera hay diferencia
+            var parcelaActual = productor.MirarParcela(cmd.IdParcela);
+            if (!parcelaActual.EsDiferenteDe(new Parcela(cmd.IdParcela, cmd.Hectareas, cmd.Ubicacion, parcelaActual.Eliminada)))
+                throw new InvalidOperationException("No hay diferencias con la parcela actual");
+
+            // Ya que se encontro diferencias, entonces se puede publicar que se edito algo
             Ensure.Positive(cmd.Hectareas, nameof(cmd.Hectareas));
-            productor.Emit(new ParcelaEditada(cmd.Firma, cmd.IdProductor, cmd.IdParcela, cmd.Nombre, cmd.Hectareas));
+
+            if (!DepartamentosDelParaguayProvider.UbicacionEsValida(cmd.Ubicacion))
+                throw new ArgumentException("No es valida la ubicacion departamental", "ubicacion departamental");
+
+            productor.Emit(new ParcelaEditada(cmd.Firma, cmd.IdProductor, cmd.IdParcela, cmd.Nombre, cmd.Hectareas, cmd.Ubicacion));
 
             await this.repository.SaveAsync(productor);
         }

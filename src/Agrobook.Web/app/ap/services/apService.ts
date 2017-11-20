@@ -11,22 +11,32 @@ module apArea {
         }
 
         // Parcelas
-        registrarNuevaParcela(idProductor: string, nombreDeLaParcela: string, hectareas: number, callback: common.callbackLite<string>) {
+        registrarNuevaParcela(idProductor: string, nombreDeLaParcela: string, hectareas: number,
+            idDepartamento: string, idDistrito: string, callback: common.callbackLite<string>) {
             let cmd = {
                 idProductor: idProductor,
                 nombreDeLaParcela: nombreDeLaParcela,
-                hectareas: hectareas
+                hectareas: hectareas,
+                ubicacion: {
+                    idDepartamento: idDepartamento,
+                    idDistrito: idDistrito
+                }
             };
 
             super.postWithCallback('registrar-parcela', cmd, callback);
         }
 
-        editarParcela(idProductor: string, idParcela: string, nombreDeLaParcela: string, hectareas: number, callback: common.callbackLite<{}>) {
+        editarParcela(idProductor: string, idParcela: string, nombreDeLaParcela: string, hectareas: number,
+            idDepartamento: string, idDistrito: string, callback: common.callbackLite<{}>) {
             var cmd = {
                 idProductor: idProductor,
                 idParcela: idParcela,
                 nombre: nombreDeLaParcela,
-                hectareas: hectareas
+                hectareas: hectareas,
+                ubicacion: {
+                    idDepartamento: idDepartamento,
+                    idDistrito: idDistrito
+                }
             };
 
             super.postWithCallback('editar-parcela', cmd, callback);

@@ -1,5 +1,5 @@
-﻿using Agrobook.Domain.Ap.Commands;
-using Agrobook.Domain.Common;
+﻿using Agrobook.Domain.Common;
+using Agrobook.Domain.Common.Services;
 using Eventing.Core.Messaging;
 using System.Linq;
 
@@ -20,12 +20,18 @@ namespace Agrobook.Domain.Ap.Denormalizers
         {
             this.Denormalize(eventNumber, context =>
             {
+                var depto = DepartamentosDelParaguayProvider.GetDepartamentos().Single(x => x.Id == e.Ubicacion.IdDepartamento);
+                var distrito = depto.Distritos.Single(x => x.Id == e.Ubicacion.IdDistrito);
                 context.Parcelas.Add(new ParcelaEntity
                 {
                     Id = e.IdParcela,
                     Display = e.NombreDeLaParcela,
                     IdProd = e.IdProductor,
                     Hectareas = e.Hectareas,
+                    IdDepartamento = depto.Id,
+                    DepartamentoDisplay = depto.Display,
+                    IdDistrito = distrito.Id,
+                    DistritoDisplay = distrito.Display,
                     Eliminado = false
                 });
             });
@@ -35,9 +41,16 @@ namespace Agrobook.Domain.Ap.Denormalizers
         {
             this.Denormalize(eventNumber, context =>
             {
+                var depto = DepartamentosDelParaguayProvider.GetDepartamentos().Single(x => x.Id == e.Ubicacion.IdDepartamento);
+                var distrito = depto.Distritos.Single(x => x.Id == e.Ubicacion.IdDistrito);
+
                 var parcela = context.Parcelas.Single(x => x.Id == e.IdParcela);
                 parcela.Display = e.Nombre;
                 parcela.Hectareas = e.Hectareas;
+                parcela.IdDepartamento = depto.Id;
+                parcela.DepartamentoDisplay = depto.Display;
+                parcela.IdDistrito = distrito.Id;
+                parcela.DistritoDisplay = distrito.Display;
             });
         }
 

@@ -63,6 +63,10 @@ module apArea {
             this.parcelaObject.idProd = parcela.idProd;
             this.parcelaObject.idParcela = parcela.id;
 
+            this.departamentoSeleccionado = parcela.idDepartamento;
+            this.establecerDistritos();
+            this.distritoSeleccionado = parcela.idDistrito;
+
             this.mostrarFormYHacerFocus();
         }
 
@@ -164,14 +168,18 @@ module apArea {
                 this.parcelaObject.idProd,
                 this.parcelaObject.display, 
                 this.numberFormatter.parseCommaAsDecimalSeparatorToUSNumber(this.parcelaObject.hectareas),
+                this.departamentoSeleccionado,
+                this.distritoSeleccionado,
                 new common.callbackLite<string>(
                     value => {
-                        var parcela = new parcelaDto(value.data, this.parcelaObject.idProd, this.parcelaObject.display, this.parcelaObject.hectareas, false);
+                        var parcela = new parcelaDto(value.data, this.parcelaObject.idProd, this.parcelaObject.display, this.parcelaObject.hectareas,
+                            this.departamentoSeleccionado, null, this.distritoSeleccionado, null, false);
                         this.parcelas.push(parcela);
                         this.toasterLite.success('Parcela creada')
                         this.resetForm();
                     },
                     reason => {
+                        this.submitting = false;
                         this.toasterLite.error('Hubo un error al registrar la parcela. Verifique que el nombre ya no exista por favor');
                     })
             );
@@ -183,6 +191,8 @@ module apArea {
                 this.parcelaObject.idParcela,
                 this.parcelaObject.display,
                 this.numberFormatter.parseCommaAsDecimalSeparatorToUSNumber(this.parcelaObject.hectareas),
+                this.departamentoSeleccionado,
+                this.distritoSeleccionado,
                 new common.callbackLite<{}>(
                     value => {
                         // eventual consistency handling before reseting form
@@ -198,7 +208,8 @@ module apArea {
                         this.resetForm();
                     },
                     reason => {
-                        this.resetForm();
+                        this.submitting = false;
+                        this.toasterLite.error('Hubo un error al editar la parcela');
                     })
             );
         }

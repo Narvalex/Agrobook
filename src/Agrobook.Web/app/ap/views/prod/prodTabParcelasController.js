@@ -36,6 +36,9 @@ var apArea;
             this.parcelaObject.hectareas = parcela.hectareas;
             this.parcelaObject.idProd = parcela.idProd;
             this.parcelaObject.idParcela = parcela.id;
+            this.departamentoSeleccionado = parcela.idDepartamento;
+            this.establecerDistritos();
+            this.distritoSeleccionado = parcela.idDistrito;
             this.mostrarFormYHacerFocus();
         };
         prodTabParcelasController.prototype.mostrarOpciones = function ($event, parcela) {
@@ -114,18 +117,19 @@ var apArea;
         prodTabParcelasController.prototype.registrarNuevaParcela = function () {
             var _this = this;
             this.parcelaObject.idProd = this.idProd;
-            this.apService.registrarNuevaParcela(this.parcelaObject.idProd, this.parcelaObject.display, this.numberFormatter.parseCommaAsDecimalSeparatorToUSNumber(this.parcelaObject.hectareas), new common.callbackLite(function (value) {
-                var parcela = new apArea.parcelaDto(value.data, _this.parcelaObject.idProd, _this.parcelaObject.display, _this.parcelaObject.hectareas, false);
+            this.apService.registrarNuevaParcela(this.parcelaObject.idProd, this.parcelaObject.display, this.numberFormatter.parseCommaAsDecimalSeparatorToUSNumber(this.parcelaObject.hectareas), this.departamentoSeleccionado, this.distritoSeleccionado, new common.callbackLite(function (value) {
+                var parcela = new apArea.parcelaDto(value.data, _this.parcelaObject.idProd, _this.parcelaObject.display, _this.parcelaObject.hectareas, _this.departamentoSeleccionado, null, _this.distritoSeleccionado, null, false);
                 _this.parcelas.push(parcela);
                 _this.toasterLite.success('Parcela creada');
                 _this.resetForm();
             }, function (reason) {
+                _this.submitting = false;
                 _this.toasterLite.error('Hubo un error al registrar la parcela. Verifique que el nombre ya no exista por favor');
             }));
         };
         prodTabParcelasController.prototype.editarParcela = function () {
             var _this = this;
-            this.apService.editarParcela(this.parcelaObject.idProd, this.parcelaObject.idParcela, this.parcelaObject.display, this.numberFormatter.parseCommaAsDecimalSeparatorToUSNumber(this.parcelaObject.hectareas), new common.callbackLite(function (value) {
+            this.apService.editarParcela(this.parcelaObject.idProd, this.parcelaObject.idParcela, this.parcelaObject.display, this.numberFormatter.parseCommaAsDecimalSeparatorToUSNumber(this.parcelaObject.hectareas), this.departamentoSeleccionado, this.distritoSeleccionado, new common.callbackLite(function (value) {
                 // eventual consistency handling before reseting form
                 for (var i = 0; i < _this.parcelas.length; i++) {
                     if (_this.parcelas[i].id === _this.parcelaObject.idParcela) {
@@ -137,7 +141,8 @@ var apArea;
                 _this.toasterLite.success('Parcela editada');
                 _this.resetForm();
             }, function (reason) {
-                _this.resetForm();
+                _this.submitting = false;
+                _this.toasterLite.error('Hubo un error al editar la parcela');
             }));
         };
         prodTabParcelasController.prototype.mostrarFormYHacerFocus = function () {
