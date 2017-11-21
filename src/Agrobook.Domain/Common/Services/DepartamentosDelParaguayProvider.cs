@@ -38,7 +38,7 @@ namespace Agrobook.Domain.Common.Services
             {
                 new Distrito("ciudadDelEste", "Ciudad del Este"),
                 new Distrito("doctorJuanLeonMallorquin", "Doctor Juan León Mallorquín"),
-                new Distrito("doctorRaulPena", "Roctor Raúl Peña"),
+                new Distrito("doctorRaulPena", "Doctor Raúl Peña"),
                 new Distrito("domingoMartinezDeIrala", "Domingo Martínez de Irala"),
                 new Distrito("hernandarias", "Hernandarias"),
                 new Distrito("iruna", "Iruña"),
