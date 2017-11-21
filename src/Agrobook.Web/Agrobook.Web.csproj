@@ -88,6 +88,7 @@
     <Content Include="app\assets\area-archivos.css" />
     <Content Include="app\assets\dialogs.css" />
     <Content Include="app\assets\google-font-roboto.css" />
+    <Content Include="app\assets\img\home\agro2.jpg" />
     <Content Include="app\home\home.css" />
     <Content Include="app\assets\img\avatar\1.png" />
     <Content Include="app\assets\img\avatar\10.png" />
