@@ -64,7 +64,7 @@ namespace Agrobook.Domain.Ap
 
         protected override ISnapshot TakeSnapshot()
             => new ServicioSnapshot(this.StreamName, this.Version, this.IdProductor, this.idOrganizacion,
-                this.idContrato, this.fecha, this.observaciones, this.EstaEliminado, this.IdParcela);
+                this.idContrato, this.fecha, this.observaciones, this.EstaEliminado, this.IdParcela, this.TienePrecio, this.Precio);
 
         protected override void Rehydrate(ISnapshot snapshot)
         {
@@ -78,13 +78,15 @@ namespace Agrobook.Domain.Ap
             this.observaciones = state.Observaciones;
             this.EstaEliminado = state.EstaEliminado;
             this.IdParcela = state.IdParcela;
+            this.TienePrecio = state.TienePrecio;
+            this.Precio = state.Precio;
         }
     }
 
     public class ServicioSnapshot : Snapshot
     {
         public ServicioSnapshot(string streamName, int version, string idProductor, string idOrganizacion, string idContrato,
-            DateTime fecha, string observaciones, bool eliminado, string idParcela)
+            DateTime fecha, string observaciones, bool eliminado, string idParcela, bool tienePrecio, decimal precio)
             : base(streamName, version)
         {
             this.IdProductor = idProductor;
@@ -94,6 +96,8 @@ namespace Agrobook.Domain.Ap
             this.Observaciones = observaciones;
             this.EstaEliminado = eliminado;
             this.IdParcela = idParcela;
+            this.TienePrecio = tienePrecio;
+            this.Precio = precio;
         }
 
         public string IdProductor { get; }
@@ -103,5 +107,7 @@ namespace Agrobook.Domain.Ap
         public string Observaciones { get; }
         public bool EstaEliminado { get; }
         public string IdParcela { get; }
+        public bool TienePrecio { get; }
+        public decimal Precio { get; }
     }
 }
