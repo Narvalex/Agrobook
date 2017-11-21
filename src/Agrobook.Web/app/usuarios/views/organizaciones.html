@@ -44,7 +44,7 @@
             <md-tooltip>{{vm.showDeleted ? 'Ocultar orgs. eliminadas' : 'Mostrar orgs. eliminadas'}}</md-tooltip>
             </md-button>
         </div>
-        <md-list>
+        <md-list class="width-sm">
             <md-list-item class="secondary-button-padding" ng-repeat="org in vm.organizaciones | filter:vm.searchText | orderBy:'!usuarioEsMiembro'"
                           ng-hide="org.deleted && !vm.showDeleted">
                 <md-button title="Agregar a {{vm.idUsuario}} a la organización {{org.display}}"

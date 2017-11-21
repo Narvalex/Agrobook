@@ -1242,6 +1242,7 @@
     <Content Include="typings\modules\angular-route\typings.json" />
     <Content Include="typings\globals\moment-timezone\typings.json" />
     <Content Include="typings\globals\moment\typings.json" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
