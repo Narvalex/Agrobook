@@ -16,6 +16,12 @@
                 <span>&nbsp;&nbsp;Agregar a {{vm.parent.idUsuario}}</span>
             </button>
         </div>
+        <div class="menu-item" ng-hide="vm.org.usuarioEsMiembro">
+            <button class="md-button" ng-click="vm.cambiarNombre($event)">
+                <ng-md-icon icon="mode_edit"></ng-md-icon>
+                <span>&nbsp;&nbsp;Cambiar el nombre...</span>
+            </button>
+        </div>
         <div class="menu-item" ng-show="vm.org.deleted">
             <button class="md-button" ng-click="vm.restaurarOrg()">
                 <ng-md-icon icon="restore"></ng-md-icon>

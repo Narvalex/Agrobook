@@ -6,9 +6,9 @@ module usuariosArea {
             'config', '$mdPanel'];
 
         constructor(
-            private usuariosService: usuariosService,
+            public usuariosService: usuariosService,
             private usuariosQueryService: usuariosQueryService,
-            private toasterLite: common.toasterLite,
+            public toasterLite: common.toasterLite,
             private $routeParams: ng.route.IRouteParamsService,
             private loginQueryService: login.loginQueryService,
             private $rootScope: ng.IRootScopeService,
@@ -34,7 +34,7 @@ module usuariosArea {
         orgNombre: string;
 
         // lista de organizaciones
-        organizaciones: organizacionDto[] = [];
+        public organizaciones: organizacionDto[] = [];
 
         toggleShowDeleted() {
             this.showDeleted = !this.showDeleted;
@@ -195,10 +195,11 @@ module usuariosArea {
     }
 
     class panelMenuController {
-        static $inject = ['mdPanelRef'];
+        static $inject = ['mdPanelRef', '$mdDialog'];
 
         constructor(
-            private mdPanelRef: angular.material.IPanelRef
+            private mdPanelRef: angular.material.IPanelRef,
+            private $mdDialog: angular.material.IDialogService
         ) {
         }
 
@@ -219,6 +220,48 @@ module usuariosArea {
                     this.parent.agregarAOrganizacion(null, this.org);
                 })
                 .finally(() => this.mdPanelRef.destroy());
+        }
+
+        cambiarNombre($event: MouseEvent) {
+            this.mdPanelRef.close().then(
+                value => {
+                    var confirm = this.$mdDialog.prompt()
+                        .title('¿Cuál es el nombre correcto del la organización?')
+                        .textContent('Escriba el nombre que desea mostrar')
+                        .placeholder(this.org.display)
+                        .ariaLabel('Nombre de la org')
+                        .initialValue(this.org.display)
+                        .targetEvent($event)
+                        .ok('Cambiar nombre')
+                        .cancel("Cancelar");
+
+                    this.$mdDialog.show(confirm).then(result => {
+                        if (this.org.display === result) {
+                            this.parent.toasterLite.error('¡El nombre propuesto es igual al nombre actual!');
+                            return;
+                        }
+
+                        this.parent.usuariosService.cambiarNombreDeOrganizacion(this.org.id, result,
+                            new common.callbackLite<any>(
+                                value => {
+                                    // TODO: publicar el cambio.
+                                    for (var i = 0; i < this.parent.organizaciones.length; i++) {
+                                        let org = this.parent.organizaciones[i];
+                                        if (org.id === this.org.id) {
+                                            this.parent.organizaciones[i].display = result;
+                                        }
+                                    }
+                                    this.parent.toasterLite.success('Nombre cambiado exitosamente!');
+                                },
+                                reason => {
+                                    this.parent.toasterLite.error('Hubo un error al intentar cambiar el nombre.');
+                                }));
+                    },
+                        () => { }
+                    );
+                })
+                .finally(() => this.mdPanelRef.destroy());
+
         }
 
         eliminarOrg() {

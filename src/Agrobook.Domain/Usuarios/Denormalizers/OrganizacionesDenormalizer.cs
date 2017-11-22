@@ -6,6 +6,7 @@ namespace Agrobook.Domain.Usuarios.Services
 {
     public class OrganizacionesDenormalizer : SqlDenormalizer,
         IHandler<NuevaOrganizacionCreada>,
+        IHandler<NombreDeOrganizacionCambiado>,
         IHandler<OrganizacionEliminada>,
         IHandler<OrganizacionRestaurada>,
         IHandler<UsuarioAgregadoALaOrganizacion>,
@@ -15,9 +16,9 @@ namespace Agrobook.Domain.Usuarios.Services
             : base(config)
         { }
 
-        public void Handle(long eventNumber, NuevaOrganizacionCreada e)
+        public void Handle(long checkpoint, NuevaOrganizacionCreada e)
         {
-            this.Denormalize(eventNumber, context =>
+            this.Denormalize(checkpoint, context =>
             {
                 context.Organizaciones.Add(new OrganizacionEntity
                 {
@@ -28,27 +29,36 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long eventNumber, OrganizacionEliminada e)
+        public void Handle(long checkpoint, NombreDeOrganizacionCambiado e)
         {
-            this.Denormalize(eventNumber, context =>
+            this.Denormalize(checkpoint, context =>
+            {
+                var entity = context.Organizaciones.Single(x => x.OrganizacionId == e.IdOrg);
+                entity.NombreParaMostrar = e.NombreNuevo;
+            });
+        }
+
+        public void Handle(long checkpoint, OrganizacionEliminada e)
+        {
+            this.Denormalize(checkpoint, context =>
             {
                 var entity = context.Organizaciones.Single(x => x.OrganizacionId == e.Id);
                 entity.EstaEliminada = true;
             });
         }
 
-        public void Handle(long eventNumber, OrganizacionRestaurada e)
+        public void Handle(long checkpoint, OrganizacionRestaurada e)
         {
-            this.Denormalize(eventNumber, context =>
+            this.Denormalize(checkpoint, context =>
             {
                 var entity = context.Organizaciones.Single(x => x.OrganizacionId == e.Id);
                 entity.EstaEliminada = false;
             });
         }
 
-        public void Handle(long eventNumber, UsuarioAgregadoALaOrganizacion e)
+        public void Handle(long checkpoint, UsuarioAgregadoALaOrganizacion e)
         {
-            this.Denormalize(eventNumber, context =>
+            this.Denormalize(checkpoint, context =>
             {
                 var org = context.Organizaciones.Single(x => x.OrganizacionId == e.OrganizacionId);
                 context.OrganizacionesDeUsuarios.Add(new OrganizacionDeUsuarioEntity
@@ -60,9 +70,9 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long eventNumber, UsuarioRemovidoDeLaOrganizacion e)
+        public void Handle(long checkpoint, UsuarioRemovidoDeLaOrganizacion e)
         {
-            this.Denormalize(eventNumber, context =>
+            this.Denormalize(checkpoint, context =>
             {
                 var entity = context.OrganizacionesDeUsuarios.Single(x => x.UsuarioId == e.IdUsuario && x.OrganizacionId == e.IdOrganizacion);
                 context.OrganizacionesDeUsuarios.Remove(entity);

@@ -36,6 +36,11 @@ namespace Agrobook.Client.Usuarios
             return dto;
         }
 
+        public async Task Send(CambiarNombreDeOrganizacion cmd)
+        {
+            await base.Post("cambiar-nombre-de-organizacion", cmd);
+        }
+
         public async Task Send(EliminarOrganizacion cmd)
         {
             await base.Post("eliminar-organizacion", cmd);

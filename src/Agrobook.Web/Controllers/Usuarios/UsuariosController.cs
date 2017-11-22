@@ -51,6 +51,14 @@ namespace Agrobook.Web.Controllers.Usuarios
         }
 
         [HttpPost]
+        [Route("cambiar-nombre-de-organizacion")]
+        public async Task<IHttpActionResult> CambiarNombreDeOrganizacion([FromBody]CambiarNombreDeOrganizacion cmd)
+        {
+            await this.client.Send(cmd);
+            return this.Ok();
+        }
+
+        [HttpPost]
         [Route("eliminar-organizacion")]
         public async Task<IHttpActionResult> EliminarOrganizacion([FromBody]EliminarOrganizacion cmd)
         {

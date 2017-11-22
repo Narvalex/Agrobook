@@ -25,6 +25,10 @@ namespace Agrobook.Domain.Usuarios
             {
                 this.usuarios.Remove(e.IdUsuario);
             });
+            this.On<NombreDeOrganizacionCambiado>(e =>
+            {
+                this.NombreParaMostrar = e.NombreNuevo;
+            });
             this.On<OrganizacionEliminada>(e =>
             {
                 this.EstaEliminada = true;

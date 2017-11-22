@@ -30,6 +30,10 @@ var usuariosArea;
         usuariosService.prototype.crearNuevaOrganizacion = function (nombreOrg, onSuccess, onError) {
             this.post('crear-nueva-organizacion/' + nombreOrg, {}, onSuccess, onError);
         };
+        usuariosService.prototype.cambiarNombreDeOrganizacion = function (idOrg, nombre, callback) {
+            var cmd = { idOrg: idOrg, nombre: nombre };
+            this.postWithCallback('cambiar-nombre-de-organizacion', cmd, callback);
+        };
         usuariosService.prototype.eliminarOrganizacion = function (org, callback) {
             this.postWithCallback('eliminar-organizacion', { idOrg: org.id }, callback);
         };

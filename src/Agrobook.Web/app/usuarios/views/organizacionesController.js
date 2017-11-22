@@ -151,8 +151,9 @@ var usuariosArea;
         'config', '$mdPanel'];
     usuariosArea.organizacionesController = organizacionesController;
     var panelMenuController = (function () {
-        function panelMenuController(mdPanelRef) {
+        function panelMenuController(mdPanelRef, $mdDialog) {
             this.mdPanelRef = mdPanelRef;
+            this.$mdDialog = $mdDialog;
         }
         panelMenuController.prototype.removerUsuario = function () {
             var _this = this;
@@ -165,6 +166,39 @@ var usuariosArea;
             var _this = this;
             this.mdPanelRef.close().then(function (value) {
                 _this.parent.agregarAOrganizacion(null, _this.org);
+            })
+                .finally(function () { return _this.mdPanelRef.destroy(); });
+        };
+        panelMenuController.prototype.cambiarNombre = function ($event) {
+            var _this = this;
+            this.mdPanelRef.close().then(function (value) {
+                var confirm = _this.$mdDialog.prompt()
+                    .title('¿Cuál es el nombre correcto del la organización?')
+                    .textContent('Escriba el nombre que desea mostrar')
+                    .placeholder(_this.org.display)
+                    .ariaLabel('Nombre de la org')
+                    .initialValue(_this.org.display)
+                    .targetEvent($event)
+                    .ok('Cambiar nombre')
+                    .cancel("Cancelar");
+                _this.$mdDialog.show(confirm).then(function (result) {
+                    if (_this.org.display === result) {
+                        _this.parent.toasterLite.error('¡El nombre propuesto es igual al nombre actual!');
+                        return;
+                    }
+                    _this.parent.usuariosService.cambiarNombreDeOrganizacion(_this.org.id, result, new common.callbackLite(function (value) {
+                        // TODO: publicar el cambio.
+                        for (var i = 0; i < _this.parent.organizaciones.length; i++) {
+                            var org = _this.parent.organizaciones[i];
+                            if (org.id === _this.org.id) {
+                                _this.parent.organizaciones[i].display = result;
+                            }
+                        }
+                        _this.parent.toasterLite.success('Nombre cambiado exitosamente!');
+                    }, function (reason) {
+                        _this.parent.toasterLite.error('Hubo un error al intentar cambiar el nombre.');
+                    }));
+                }, function () { });
             })
                 .finally(function () { return _this.mdPanelRef.destroy(); });
         };
@@ -188,6 +222,6 @@ var usuariosArea;
         };
         return panelMenuController;
     }());
-    panelMenuController.$inject = ['mdPanelRef'];
+    panelMenuController.$inject = ['mdPanelRef', '$mdDialog'];
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=organizacionesController.js.map

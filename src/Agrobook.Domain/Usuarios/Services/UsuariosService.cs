@@ -238,6 +238,20 @@ namespace Agrobook.Domain.Usuarios
             return new OrganizacionDto { Id = nombreFormateadoParaId, Display = nombreFormateadoParaDisplay };
         }
 
+        public async Task HandleAsync(CambiarNombreDeOrganizacion cmd)
+        {
+            var organizacion = await this.repository.GetOrFailByIdAsync<Organizacion>(cmd.IdOrg);
+
+            Ensure.NotNullOrWhiteSpace(cmd.Nombre, nameof(cmd.Nombre));
+            var nombreNuevo = cmd.Nombre.Trim();
+            if (organizacion.NombreParaMostrar == nombreNuevo)
+                throw new InvalidOperationException("El nombre de la organizacion " + cmd.Nombre + " es el mismo que el que se propone como un cambio.");
+
+            organizacion.Emit(new NombreDeOrganizacionCambiado(cmd.Firma, cmd.IdOrg, organizacion.NombreParaMostrar, nombreNuevo));
+
+            await this.repository.SaveAsync(organizacion);
+        }
+
         public async Task HandleAsync(EliminarOrganizacion cmd)
         {
             var org = await this.repository.GetOrFailByIdAsync<Organizacion>(cmd.IdOrg);

@@ -42,6 +42,11 @@ module usuariosArea {
             this.post('crear-nueva-organizacion/' + nombreOrg, {}, onSuccess, onError);
         }
 
+        cambiarNombreDeOrganizacion(idOrg: string, nombre: string, callback: common.callbackLite<any>) {
+            let cmd = { idOrg: idOrg, nombre: nombre }
+            this.postWithCallback('cambiar-nombre-de-organizacion', cmd, callback);
+        }
+
         eliminarOrganizacion(org: organizacionDto, callback: common.callbackLite<{}>) {
             this.postWithCallback('eliminar-organizacion', { idOrg: org.id }, callback);
         }

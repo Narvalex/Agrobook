@@ -72,6 +72,15 @@ namespace Agrobook.Server.Usuarios
 
         [Autorizar(Roles.Gerente, Roles.Tecnico)]
         [HttpPost]
+        [Route("cambiar-nombre-de-organizacion")]
+        public async Task<IHttpActionResult> CambiarNombreDeOrganizacion([FromBody]CambiarNombreDeOrganizacion cmd)
+        {
+            await this.usuariosService.HandleAsync(cmd.ConFirma(this.ActionContext));
+            return this.Ok();
+        }
+
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
+        [HttpPost]
         [Route("eliminar-organizacion")]
         public async Task<IHttpActionResult> EliminarOrganizacion([FromBody]EliminarOrganizacion cmd)
         {
