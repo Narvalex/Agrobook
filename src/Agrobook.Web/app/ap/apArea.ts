@@ -34,6 +34,8 @@ module apArea {
         .controller('serviciosTabParcelaController', serviciosTabParcelaController)
         .controller('serviciosTabDiagnosticoController', serviciosTabDiagnosticoController)
         .controller('serviciosTabPrescripcionesController', serviciosTabPrescripcionesController)
+        // reportes controller
+        .controller('reportesMainContentController', reportesMainContentController) 
         // config
         .config(['$mdIconProvider', '$mdThemingProvider', '$httpProvider', '$routeProvider',
             '$mdDateLocaleProvider', (

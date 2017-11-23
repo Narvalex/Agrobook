@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Ap\ApClient.cs" />
     <Compile Include="Ap\ApQueryClient.cs" />
+    <Compile Include="Ap\ApReportClient.cs" />
     <Compile Include="Archivos\ArchivosClient.cs" />
     <Compile Include="Archivos\ArchivosQueryClient.cs" />
     <Compile Include="Login\LoginClient.cs" />

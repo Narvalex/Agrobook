@@ -11,7 +11,7 @@ module apArea {
             private loginQueryService: login.loginQueryService,
             private config: common.config
         ) {
-            var claims = config.claims;
+            let claims = this.config.claims;
             this.puedeVerElMainDeAp = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
             if (this.puedeVerElMainDeAp)
                 this.getServicios();

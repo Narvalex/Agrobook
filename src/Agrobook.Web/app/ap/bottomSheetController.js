@@ -2,12 +2,18 @@
 var apArea;
 (function (apArea) {
     var bottomSheetController = (function () {
-        function bottomSheetController($mdBottomSheet, $mdSidenav) {
+        function bottomSheetController($mdBottomSheet, $mdSidenav, loginService, config) {
             this.$mdBottomSheet = $mdBottomSheet;
             this.$mdSidenav = $mdSidenav;
+            this.loginService = loginService;
+            this.config = config;
             this.items = [
                 new bottomSheetItem("Ir al inicio de Agricultura de Precisión", "home", './index.html#!/')
             ];
+            var claims = this.config.claims;
+            this.puedeVerReportes = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
+            if (this.puedeVerReportes)
+                this.items.push(new bottomSheetItem('Ver Reportes', 'description', './index.html#!/reportes'));
         }
         bottomSheetController.prototype.goTo = function (item) {
             window.location.replace(item.url);
@@ -16,7 +22,7 @@ var apArea;
         };
         return bottomSheetController;
     }());
-    bottomSheetController.$inject = ['$mdBottomSheet', '$mdSidenav'];
+    bottomSheetController.$inject = ['$mdBottomSheet', '$mdSidenav', 'loginService', 'config'];
     apArea.bottomSheetController = bottomSheetController;
     var bottomSheetButtonController = (function () {
         function bottomSheetButtonController($mdBottomSheet) {

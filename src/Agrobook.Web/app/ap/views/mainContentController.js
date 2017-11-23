@@ -11,7 +11,7 @@ var apArea;
             this.puedeVerElMainDeAp = false;
             // Model
             this.momentJs = moment;
-            var claims = config.claims;
+            var claims = this.config.claims;
             this.puedeVerElMainDeAp = this.loginService.autorizar([claims.roles.Gerente, claims.roles.Tecnico]);
             if (this.puedeVerElMainDeAp)
                 this.getServicios();

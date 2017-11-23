@@ -119,6 +119,7 @@
     <Compile Include="Ap\ApController.Contratos.cs" />
     <Compile Include="Ap\ApController.Servicios.cs" />
     <Compile Include="Ap\ApQueryController.cs" />
+    <Compile Include="Ap\ApReportController.cs" />
     <Compile Include="Archivos\ArchivosController.cs" />
     <Compile Include="Archivos\ArchivosQueryController.cs" />
     <Compile Include="Common\BaseApiController.cs" />
@@ -157,7 +158,12 @@
       <Name>Eventing.GetEventStore</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Reportes\Ap\Report.rdlc">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

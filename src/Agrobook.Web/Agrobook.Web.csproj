@@ -82,12 +82,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\ap\index.html" />
+    <Content Include="app\ap\views\reportes\reportes-main-content.html" />
     <Content Include="app\ap\views\servicios\dialogs\precio-form-dialog.html" />
     <Content Include="app\assets\angular-locale_es-py.js" />
     <Content Include="app\assets\animate.css" />
-    <Content Include="app\assets\area-archivos.css" />
     <Content Include="app\assets\dialogs.css" />
     <Content Include="app\assets\google-font-roboto.css" />
+    <Content Include="app\assets\grid-list-styles.css" />
+    <Content Include="app\assets\img\ap\happy-senior-couple-farm-square.jpg" />
+    <Content Include="app\assets\img\ap\happy-senior-couple-farm.jpg" />
     <Content Include="app\assets\img\home\agro2.jpg" />
     <Content Include="app\home\home.css" />
     <Content Include="app\assets\img\avatar\1.png" />
@@ -1112,6 +1115,7 @@
     <Content Include="app\usuarios\views\organizaciones.html" />
     <Content Include="app\usuarios\views\perfil.html" />
     <Content Include="app\home\index.html" />
+    <TypeScriptCompile Include="app\ap\views\reportes\reportesMainContentController.ts" />
     <TypeScriptCompile Include="app\ap\views\servicios\dialogs\precioFormDialogController.ts" />
     <TypeScriptCompile Include="app\bower_components\moment\moment.d.ts" />
     <Content Include="app\usuarios\index.html" />
@@ -1304,12 +1308,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ApiFileControllerBase.cs" />
     <Compile Include="Controllers\Ap\ApController.Contratos.cs" />
     <Compile Include="Controllers\Ap\ApController.cs" />
     <Compile Include="Controllers\ApiControllerBase.cs" />
     <Compile Include="Controllers\Ap\ApController.Productores.cs" />
     <Compile Include="Controllers\Ap\ApController.Servicios.cs" />
     <Compile Include="Controllers\Ap\ApQueryController.cs" />
+    <Compile Include="Controllers\Ap\ApReportController.cs" />
     <Compile Include="Controllers\Archivos\ArchivosController.cs" />
     <Compile Include="Controllers\Archivos\ArchivosQueryController.cs" />
     <Compile Include="Controllers\Login\LoginController.cs" />

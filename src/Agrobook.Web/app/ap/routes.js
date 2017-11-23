@@ -30,6 +30,13 @@ var apArea;
                     templateUrl: './views/servicios/servicio-main-content.html',
                     reloadOnSearch: false
                 }
+            },
+            {
+                path: '/reportes',
+                route: {
+                    templateUrl: './views/reportes/reportes-main-content.html',
+                    reloadOnSearch: false
+                }
             }
         ];
     }

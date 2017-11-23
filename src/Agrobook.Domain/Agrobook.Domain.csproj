@@ -150,10 +150,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="Reportes\Report.rdlc">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <None Include="Properties\DataSources\ParcelaEntity.datasource" />
   </ItemGroup>
   <ItemGroup>
