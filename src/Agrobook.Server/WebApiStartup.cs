@@ -1,4 +1,5 @@
 ﻿using Agrobook.Server.Filters;
+using Eventing.Log;
 using Microsoft.Owin.BuilderProperties;
 using Newtonsoft.Json.Serialization;
 using Owin;
@@ -12,6 +13,8 @@ namespace Agrobook.Server
     /// </summary>
     public class WebApiStartup
     {
+        private ILogLite log = LogManager.GetLoggerFor<WebApiStartup>();
+
         internal static Action OnAppDisposing { get; set; } = () => { };
 
         /// <summary>
@@ -43,6 +46,10 @@ namespace Agrobook.Server
 
             // Thanks to: https://docs.microsoft.com/en-us/aspnet/web-api/overview/error-handling/exception-handling
             config.Filters.Add(new GlobalErrorAttribute());
+
+            this.log.Verbose("Loading SQL Sever Types Native Assemblies...");
+            SqlServerTypes.Utilities.LoadNativeAssemblies(AppDomain.CurrentDomain.BaseDirectory, this.log);
+            this.log.Verbose("All SQL Sever Types Native assemblies were successfully loaded!");
 
             return config;
         }

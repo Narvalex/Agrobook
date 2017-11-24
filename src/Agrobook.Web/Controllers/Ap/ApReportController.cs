@@ -21,7 +21,7 @@ namespace Agrobook.Web.Controllers.Ap
         public async Task<HttpResponseMessage> GetListaDeProductores()
         {
             var reporte = await this.client.GetReporteDeListaDeProductores();
-            var response = this.PrepareResponse("ListaDeProductores", reporte);
+            var response = this.PrepareResponse("ListaDeProductores.pdf", reporte);
             return response;
         }
     }

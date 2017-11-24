@@ -120,11 +120,14 @@ namespace Agrobook.Server
             var archivosQueryService = new ArchivosQueryService(readOnlyDbContextFactory, eventSourcedRepository);
             container.Register<ArchivosQueryService>(archivosQueryService);
 
+            var apService = new ApService(eventSourcedRepository, dateTimeProvider);
+            container.Register<ApService>(apService);
+
             var apQueryService = new ApQueryService(readOnlyDbContextFactory, eventSourcedRepository);
             container.Register<ApQueryService>(apQueryService);
 
-            var apService = new ApService(eventSourcedRepository, dateTimeProvider);
-            container.Register<ApService>(apService);
+            var apReportQueryService = new ApReportQueryService(readOnlyDbContextFactory, eventSourcedRepository);
+            container.Register<ApReportQueryService>(apReportQueryService);
 
             var numeradorDeServicios = new NumeracionDeServiciosCommandHandler(eventSourcedRepository);
             container.Register<NumeracionDeServiciosCommandHandler>(numeradorDeServicios);
