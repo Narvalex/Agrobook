@@ -69,7 +69,7 @@ namespace Agrobook.Server
 
             // SQL Server ------------------------------------------------------------
 
-            var sqlDbName = "AgrobookDb";
+            var sqlDbName = "./SQLData/AgrobookDb";
 
             Func<AgrobookDbContext> dbContextFactory = () => new AgrobookDbContext(false, sqlDbName);
             Func<AgrobookDbContext> readOnlyDbContextFactory = () => new AgrobookDbContext(true, sqlDbName);

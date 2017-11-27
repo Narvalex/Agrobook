@@ -18,7 +18,7 @@ namespace Eventing.GetEventStore
 
         private Process process;
         private readonly string path = @".\EventStore\EventStore.ClusterNode.exe";
-        private readonly string args = @"--db=.\ESData --start-standard-projections=true --run-projections=all --stats-period-sec=3600"; // one stat per hour
+        private readonly string args = @"--db=.\ESData --start-standard-projections=true --run-projections=all --stats-period-sec=1800"; // one stat per hour 3600, half an hour 1800
 
         private readonly UserCredentials userCredentials;
         private readonly IPEndPoint tcpIpEndpoint;
