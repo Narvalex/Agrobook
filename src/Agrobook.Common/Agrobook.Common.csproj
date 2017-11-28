@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthorizationProvider.cs" />
+    <Compile Include="ConfigurationRegistrarExtensions.cs" />
     <Compile Include="Cryptography\Cryptography.cs" />
     <Compile Include="Cryptography\MD5OneWayEncryptor.cs" />
     <Compile Include="Cryptography\FauxCrypto.cs" />
