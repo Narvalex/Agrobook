@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Agrobook.Domain.Usuarios.Services
 {
-    public class OrganizacionesDenormalizer : SqlDenormalizer,
+    public class OrganizacionesDenormalizer : SqlDenormalizerV1,
         IHandler<NuevaOrganizacionCreada>,
         IHandler<NombreDeOrganizacionCambiado>,
         IHandler<OrganizacionEliminada>,
@@ -12,7 +12,7 @@ namespace Agrobook.Domain.Usuarios.Services
         IHandler<UsuarioAgregadoALaOrganizacion>,
         IHandler<UsuarioRemovidoDeLaOrganizacion>
     {
-        public OrganizacionesDenormalizer(SqlDenormalizerConfig config)
+        public OrganizacionesDenormalizer(SqlDenormalizerConfigV1 config)
             : base(config)
         { }
 

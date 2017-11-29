@@ -5,14 +5,14 @@ using System.Linq;
 
 namespace Agrobook.Domain.Archivos.Services
 {
-    public class ArchivosIndexer : SqlDenormalizer,
+    public class ArchivosIndexer : SqlDenormalizerV1,
         IHandler<NuevoArchivoAgregadoALaColeccion>,
         IHandler<ArchivoEliminado>,
         IHandler<ArchivoRestaurado>
     {
         private readonly IFileWriter fileManager;
 
-        public ArchivosIndexer(SqlDenormalizerConfig config,
+        public ArchivosIndexer(SqlDenormalizerConfigV1 config,
             IFileWriter fileManager)
             : base(config)
         {

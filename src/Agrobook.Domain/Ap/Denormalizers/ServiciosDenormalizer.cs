@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Agrobook.Domain.Ap.Denormalizers
 {
-    public class ServiciosDenormalizer : SqlDenormalizer,
+    public class ServiciosDenormalizer : SqlDenormalizerV1,
         IHandler<NuevoServicioRegistrado>,
         IHandler<DatosBasicosDelSevicioEditados>,
         IHandler<ServicioEliminado>,
@@ -14,7 +14,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
         IHandler<PrecioDeServicioFijado>,
         IHandler<PrecioDeServicioAjustado>
     {
-        public ServiciosDenormalizer(SqlDenormalizerConfig config)
+        public ServiciosDenormalizer(SqlDenormalizerConfigV1 config)
             : base(config)
         {
         }

@@ -1,4 +1,6 @@
 ﻿using Agrobook.Domain.DataWarehousing.Dimensions;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Agrobook.Domain.DataWarehousing.Facts
@@ -10,12 +12,14 @@ namespace Agrobook.Domain.DataWarehousing.Facts
 
         public string IdServicio { get; set; }
 
-        public virtual TiempoDim DimTiempo { get; set; }
-        public virtual ContratoDim DimContrato { get; set; }
-        public virtual ProductorDim DimProductor { get; set; }
-        public virtual ParcelaDim DimParcela { get; set; }
-        public virtual PrecioPorHaServicioApDim DimPrecioPorHaServicioAp { get; set; }
-        public virtual DepartamentoDim DimDepartamento { get; set; }
+        public virtual TiempoDim Fecha { get; set; }
+        public virtual OrganizacionDim Organizacion { get; set; }
+        public virtual ApContratoDim Contrato { get; set; }
+        public virtual UsuarioDim Productor { get; set; }
+        public virtual ParcelaDim Parcela { get; set; }
+        public virtual ApPrecioPorHaServicioDim ApPrecioPorHaServicio { get; set; }
+        public virtual DepartamentoDim Departamento { get; set; }
+        public virtual UsuarioDim UsuarioQueRegistro { get; set; }
 
         public decimal PrecioTotal { get; set; }
     }
@@ -28,12 +32,17 @@ namespace Agrobook.Domain.DataWarehousing.Facts
 
             this.ToTable("ServicioDeApFacts");
 
-            this.HasOptional(e => e.DimTiempo);
-            this.HasOptional(e => e.DimContrato);
-            this.HasOptional(e => e.DimProductor);
-            this.HasOptional(e => e.DimParcela);
-            this.HasOptional(e => e.DimPrecioPorHaServicioAp);
-            this.HasOptional(e => e.DimDepartamento);
+            this.Property(x => x.IdServicio)
+               .HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute()));
+
+            this.HasOptional(e => e.Fecha);
+            this.HasOptional(e => e.Organizacion);
+            this.HasOptional(e => e.Contrato);
+            this.HasOptional(e => e.Productor);
+            this.HasOptional(e => e.Parcela);
+            this.HasOptional(e => e.ApPrecioPorHaServicio);
+            this.HasOptional(e => e.Departamento);
+            this.HasOptional(e => e.UsuarioQueRegistro);
         }
     }
 }

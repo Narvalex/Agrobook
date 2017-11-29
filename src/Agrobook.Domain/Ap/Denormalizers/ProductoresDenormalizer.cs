@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace Agrobook.Domain.Ap.Denormalizers
 {
-    public class ProductoresDenormalizer : SqlDenormalizer,
+    public class ProductoresDenormalizer : SqlDenormalizerV1,
         IHandler<NuevaParcelaRegistrada>,
         IHandler<ParcelaEditada>,
         IHandler<ParcelaEliminada>,
         IHandler<ParcelaRestaurada>
     {
-        public ProductoresDenormalizer(SqlDenormalizerConfig config)
+        public ProductoresDenormalizer(SqlDenormalizerConfigV1 config)
             : base(config)
         {
         }

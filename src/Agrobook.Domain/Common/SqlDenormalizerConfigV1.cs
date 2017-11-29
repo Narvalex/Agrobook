@@ -2,9 +2,9 @@
 
 namespace Agrobook.Domain.Common
 {
-    public class SqlDenormalizerConfig
+    public class SqlDenormalizerConfigV1
     {
-        public SqlDenormalizerConfig(Func<AgrobookDbContext> contextFactory, string subscriptionId)
+        public SqlDenormalizerConfigV1(Func<AgrobookDbContext> contextFactory, string subscriptionId)
         {
             this.ContextFactory = contextFactory;
             this.SubscriptionId = subscriptionId;

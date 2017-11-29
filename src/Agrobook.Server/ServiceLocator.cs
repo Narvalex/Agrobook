@@ -140,7 +140,7 @@ namespace Agrobook.Server
             // AppReadModel Denormalizing
             var subStream = "agrobookAppReadModelStream";
             var subId = "agrobookReadModelSubscription";
-            var sqlConfig = new SqlDenormalizerConfig(dbContextFactory, subId);
+            var sqlConfig = new SqlDenormalizerConfigV1(dbContextFactory, subId);
 
 
             var appReadModelProjectionDef = ProjectionDefinition.New(subStream, subStream, esm.ProjectionManager, esm.UserCredentials)

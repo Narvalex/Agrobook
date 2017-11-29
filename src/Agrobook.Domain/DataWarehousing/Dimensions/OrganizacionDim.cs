@@ -4,23 +4,23 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Agrobook.Domain.DataWarehousing.Dimensions
 {
-    public class DepartamentoDim
+    public class OrganizacionDim
     {
         public int Sid { get; set; }
-        public string IdDepartamento { get; set; }
+        public string IdOrganizacion { get; set; }
         public string Nombre { get; set; }
     }
 
-    public class DepartamentoDimMap : EntityTypeConfiguration<DepartamentoDim>
+    public class OrganizacionDimMap : EntityTypeConfiguration<OrganizacionDim>
     {
-        public DepartamentoDimMap()
+        public OrganizacionDimMap()
         {
             this.HasKey(e => e.Sid);
 
-            this.Property(x => x.IdDepartamento)
+            this.Property(x => x.IdOrganizacion)
            .HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute()));
 
-            this.ToTable("DepartamentoDims");
+            this.ToTable("OrganizacionDims");
         }
     }
 }

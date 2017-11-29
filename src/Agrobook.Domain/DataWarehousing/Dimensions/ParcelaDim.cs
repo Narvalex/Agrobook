@@ -1,4 +1,6 @@
-﻿using System.Data.Entity.ModelConfiguration;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Annotations;
+using System.Data.Entity.ModelConfiguration;
 
 namespace Agrobook.Domain.DataWarehousing.Dimensions
 {
@@ -6,7 +8,6 @@ namespace Agrobook.Domain.DataWarehousing.Dimensions
     {
         public int Sid { get; set; }
         public string IdParcela { get; set; }
-        public string IdProductor { get; set; }
         public decimal Hectareas { get; set; }
         public string Departamento { get; set; }
         public string Distrito { get; set; }
@@ -17,6 +18,9 @@ namespace Agrobook.Domain.DataWarehousing.Dimensions
         public ParcelaDimMap()
         {
             this.HasKey(e => e.Sid);
+
+            this.Property(x => x.IdParcela)
+            .HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute()));
 
             this.ToTable("ParcelaDims");
         }

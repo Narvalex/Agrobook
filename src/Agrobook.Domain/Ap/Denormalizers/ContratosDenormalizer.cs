@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Agrobook.Domain.Ap.Denormalizers
 {
-    public class ContratosDenormalizer : SqlDenormalizer,
+    public class ContratosDenormalizer : SqlDenormalizerV1,
         IHandler<NuevoContrato>,
         IHandler<ContratoEditado>,
         IHandler<ContratoEliminado>,
@@ -15,7 +15,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
         IHandler<AdendaEliminada>,
         IHandler<AdendaRestaurada>
     {
-        public ContratosDenormalizer(SqlDenormalizerConfig config)
+        public ContratosDenormalizer(SqlDenormalizerConfigV1 config)
             : base(config)
         {
         }

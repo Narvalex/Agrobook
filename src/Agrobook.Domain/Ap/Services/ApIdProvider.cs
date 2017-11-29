@@ -10,19 +10,19 @@ namespace Agrobook.Domain.Ap
     /// </summary>
     public static class ApIdProvider
     {
-        public async static Task ValidarIdProductor(string idUsuario, IEventSourcedReader reader)
+        public async static Task ValidarQueExistaElUsuario(string idUsuario, IEventSourcedReader reader)
         {
             await reader.EnsureExistenceOfThis<Usuario>(idUsuario);
         }
 
         public async static Task ValidarIdDeNumeracionDeServiciosPorProductor(string idProductor, IEventSourcedReader reader)
         {
-            await ValidarIdProductor(idProductor, reader);
+            await ValidarQueExistaElUsuario(idProductor, reader);
         }
 
         public async static Task<string> ObtenerNuevoIdDeServicio(int ultimoNumeroDeServicioDelProductor, string idProductor, IEventSourcedReader reader)
         {
-            await ValidarIdProductor(idProductor, reader);
+            await ValidarQueExistaElUsuario(idProductor, reader);
             // prod: por lo del productor
             // sn: servicio numero...
             var numero = ultimoNumeroDeServicioDelProductor + 1;

@@ -8,6 +8,14 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Ap.Services
 {
+    /// <summary>
+    /// Servicio del Productor. Quizás debiera tener su propio servicio por separado, en vez de ser una clase 
+    /// parcial de <see cref="Agrobook.Domain.Ap.Services.ApService"/>. Pero por ahora se puede trabajar bien 
+    /// así. He visto clases muuuucho más grandes.
+    /// </summary>
+    /// <remarks>
+    /// Un productor se registra en el sistema, cuando a un usuario se le registra una parcela.
+    /// </remarks>
     public partial class ApService
     {
         public async Task<string> HandleAsync(RegistrarParcela cmd)
@@ -18,7 +26,7 @@ namespace Agrobook.Domain.Ap.Services
             if (productor is null)
             {
                 productor = new Productor();
-                await ApIdProvider.ValidarIdProductor(idProductor, this.repository);
+                await ApIdProvider.ValidarQueExistaElUsuario(idProductor, this.repository);
                 productor.Emit(new NuevoProductorRegistrado(cmd.Firma, idProductor));
             }
 
