@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
+using System.Linq;
 
 namespace Agrobook.Domain.DataWarehousing.Dimensions
 {
@@ -16,6 +18,7 @@ namespace Agrobook.Domain.DataWarehousing.Dimensions
         public int Minuto { get; set; }
 
         public static string GetIdTiempoFromDateTime(DateTime dateTime) => dateTime.ToString("DDMMYYhhmm");
+
         public static TiempoDim New(DateTime dateTime)
             => new TiempoDim
             {
@@ -26,6 +29,19 @@ namespace Agrobook.Domain.DataWarehousing.Dimensions
                 Hora = dateTime.Hour,
                 Minuto = dateTime.Minute
             };
+
+        public static TiempoDim GetOrAddTiempo(DateTime fecha, IDbSet<TiempoDim> dbSet)
+        {
+            var idTiempo = GetIdTiempoFromDateTime(fecha);
+            var tiempo = dbSet.SingleOrDefault(x => x.IdTiempo == idTiempo);
+            if (tiempo == null)
+            {
+                tiempo = New(fecha);
+                dbSet.Add(tiempo);
+            }
+
+            return tiempo;
+        }
     }
 
     public class TiempoDimMap : EntityTypeConfiguration<TiempoDim>

@@ -6,6 +6,7 @@ using EventStore.ClientAPI.SystemData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Eventing.GetEventStore.Messaging
@@ -18,6 +19,8 @@ namespace Eventing.GetEventStore.Messaging
         private UserCredentials credentials;
         private string projectionName;
         private string projectionScript;
+
+        private bool isUpToDateAndRunning = false;
 
         internal ProjectionDefinition(ProjectionsManager manager, UserCredentials credentials, string projectionName, string emittedStream, List<string> streams)
         {
@@ -40,8 +43,10 @@ namespace Eventing.GetEventStore.Messaging
 
         public string EmittedStream { get; }
 
-        public async Task EnsureExistence()
+        public async Task EnsureThatIsUpToDateAndRunning()
         {
+            if (this.isUpToDateAndRunning) return;
+
             this.logger.Verbose($"Ensuring existence of projection {projectionName}...");
 
             string persistedScript;
@@ -78,13 +83,43 @@ namespace Eventing.GetEventStore.Messaging
 
             await this.manager.EnableAsync(this.projectionName, credentials);
 
+            this.isUpToDateAndRunning = true;
+
             this.logger.Verbose($"The projection {this.projectionName} is up and running!");
         }
 
+        //private static string buildScriptObsolete(string emittedStream, List<string> streams)
+        //{
+        //    var streamsInString = streams.Aggregate(string.Empty, (acumulado, stringActual) => $"{acumulado}'{stringActual}',");
+        //    return $"fromStreams([{streamsInString}]).when({{'$any':function(s, e) {{linkTo('{emittedStream}', e);}}}});";
+        //}
+
         private static string buildScript(string emittedStream, List<string> streams)
         {
-            var streamsInString = streams.Aggregate(string.Empty, (acumulado, stringActual) => $"{acumulado}'{stringActual}',");
-            return $"fromStreams([{streamsInString}]).when({{'$any':function(s, e) {{linkTo('{emittedStream}', e);}}}});";
+            var sb = new StringBuilder();
+            streams.ForEach(s => sb.AppendLine($"case '{s}':"));
+            var streamsToProject = sb.ToString();
+
+            var script = $@"
+fromAll()
+.when({{
+    '$any': (s, e) => {{
+        let streamId = e.streamId;
+        if (streamId === undefined || streamId === null) return;
+        let category = streamId.split('-')[0];
+        
+        switch(category) {{
+            {streamsToProject}
+                linkTo('{emittedStream}', e);
+                break;
+            default:
+                return;
+        }}
+    }}
+}});
+";
+
+            return script;
         }
     }
 

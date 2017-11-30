@@ -92,9 +92,8 @@ namespace Agrobook.Server
 
             var snapshotCache = new SnapshotCache();
 
-            var eventSourcedRepository = new EventStoreEventSourcedRepository(esm.GetFailFastConnection, jsonSerializer, snapshotCache);
-
-            var efCheckpointProvider = new EfCheckpointProvider(readOnlyDbContextFactory);
+            var eventSourcedRepository = new EsEventSourcedRepository(esm.GetFailFastConnection, jsonSerializer, snapshotCache);
+            container.Register<IEventSourcedRepository>(eventSourcedRepository);
 
 
             // Services --------------------------------------------------------
@@ -134,16 +133,42 @@ namespace Agrobook.Server
 
 
             // Event Procesors -----------------------------------------------
-
             var procesors = new List<EventProcessor>();
+            container.Register<List<EventProcessor>>(procesors);
 
-            // AppReadModel Denormalizing
-            var subStream = "agrobookAppReadModelStream";
+            BuildNumeracionProcesor(container);
+            BuildReadModel(container, dbContextFactory, readOnlyDbContextFactory);
+        }
+
+        private static void BuildNumeracionProcesor(ISimpleContainer container)
+        {
+            var esm = container.ResolveSingleton<EventStoreManager>();
+            var jsonSerializer = container.ResolveSingleton<IJsonSerializer>();
+            var eventSourcedRepository = container.ResolveSingleton<IEventSourcedRepository>();
+            var apService = container.ResolveSingleton<ApService>();
+            var processorList = container.ResolveNewOf<List<EventProcessor>>();
+
+            // Numeracion de Servicios
+            var numeracionDeServiciosSubscription =
+                new EsSubscription(
+                    StreamCategoryAttribute.GetCategoryProjectionStream<NumeracionDeServicios>(),
+                    "numeracionDeServiciosEventHandler", esm.ResilientConnection, jsonSerializer);
+            var numeracionDeServiciosEventHandler = new EventProcessor(numeracionDeServiciosSubscription);
+            numeracionDeServiciosEventHandler.Register(new NumeracionDeServiciosEventHandler(eventSourcedRepository, apService));
+            processorList.Add(numeracionDeServiciosEventHandler);
+        }
+
+        private static void BuildReadModel(ISimpleContainer container, Func<AgrobookDbContext> dbContextFactory, Func<AgrobookDbContext> readOnlyDbContextFactory)
+        {
+            var esm = container.ResolveSingleton<EventStoreManager>();
+            var jsonSerializer = container.ResolveSingleton<IJsonSerializer>();
+            var efCheckpointProvider = new EfCheckpointProvider(readOnlyDbContextFactory);
+
+            //var subStream = "agrobookAppReadModelStream"; V1 projection. Not event order was guaranteed here
+            var subStream = "agrobookOrderedEvents";
             var subId = "agrobookReadModelSubscription";
-            var sqlConfig = new SqlDenormalizerConfigV1(dbContextFactory, subId);
 
-
-            var appReadModelProjectionDef = ProjectionDefinition.New(subStream, subStream, esm.ProjectionManager, esm.UserCredentials)
+            var agrobookOrderedEventsProjectionDef = ProjectionDefinition.New(subStream, subStream, esm.ProjectionManager, esm.UserCredentials)
                 .From<Usuario>()
                 .And<Organizacion>()
                 .And<Contrato>()
@@ -152,7 +177,10 @@ namespace Agrobook.Server
                 .And<ColeccionDeArchivos>()
                 .AndNothingMore();
 
-            var appReadModelSubscription = new EventStoreSubscription(appReadModelProjectionDef, subId, esm.ResilientConnection, jsonSerializer, () => efCheckpointProvider.GetCheckpoint(subId));
+            // AppReadModel Denormalizing
+            var appReadModelSubscription = new EsSubscription(agrobookOrderedEventsProjectionDef, subId, esm.ResilientConnection, jsonSerializer, () => efCheckpointProvider.GetCheckpoint(subId));
+
+            var sqlConfig = new SqlDenormalizerConfigV1(dbContextFactory, subId);
 
             var appReadModelProcessor = new EventProcessor(appReadModelSubscription);
             appReadModelProcessor.Register(
@@ -165,17 +193,6 @@ namespace Agrobook.Server
                 new ArchivosIndexer(sqlConfig, archivosDelProductorFileManager)
             );
             procesors.Add(appReadModelProcessor);
-
-            // Numeracion de Servicios
-            var numeracionDeServiciosSubscription =
-                new EventStoreSubscription(
-                    StreamCategoryAttribute.GetCategoryProjectionStream<NumeracionDeServicios>(),
-                    "numeracionDeServiciosEventHandler", esm.ResilientConnection, jsonSerializer);
-            var numeracionDeServiciosEventHandler = new EventProcessor(numeracionDeServiciosSubscription);
-            numeracionDeServiciosEventHandler.Register(new NumeracionDeServiciosEventHandler(eventSourcedRepository, apService));
-            procesors.Add(numeracionDeServiciosEventHandler);
-
-            container.Register<List<EventProcessor>>(procesors);
         }
     }
 }

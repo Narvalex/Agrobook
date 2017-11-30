@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Eventing.GetEventStore.Persistence
 {
-    public class EventStoreEventSourcedRepository : IEventSourcedRepository
+    public class EsEventSourcedRepository : IEventSourcedRepository
     {
         private readonly Func<Task<IEventStoreConnection>> connectionFactory;
         private readonly IJsonSerializer serializer;
@@ -18,7 +18,7 @@ namespace Eventing.GetEventStore.Persistence
         private readonly int readPageSize;
         private readonly int writePageSize;
 
-        public EventStoreEventSourcedRepository(
+        public EsEventSourcedRepository(
          Func<Task<IEventStoreConnection>> connectionFactory,
             IJsonSerializer serializer,
             ISnapshotCache snapshotCache,

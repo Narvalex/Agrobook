@@ -55,9 +55,9 @@
     <Compile Include="Messaging\ProjectionDefinition.cs" />
     <Compile Include="Messaging\SubscriptionCheckpoint.cs" />
     <Compile Include="EventStoreLogAdapter.cs" />
-    <Compile Include="Persistence\EventStoreEventSourcedRepository.cs" />
+    <Compile Include="Persistence\EsEventSourcedRepository.cs" />
     <Compile Include="EventStoreManager.cs" />
-    <Compile Include="Messaging\EventStoreSubscription.cs" />
+    <Compile Include="Messaging\EsSubscription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

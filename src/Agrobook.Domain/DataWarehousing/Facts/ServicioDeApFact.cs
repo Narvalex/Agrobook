@@ -21,6 +21,8 @@ namespace Agrobook.Domain.DataWarehousing.Facts
         public virtual DepartamentoDim Departamento { get; set; }
         public virtual UsuarioDim UsuarioQueRegistro { get; set; }
 
+        public bool Eliminado { get; set; }
+
         public decimal PrecioTotal { get; set; }
     }
 

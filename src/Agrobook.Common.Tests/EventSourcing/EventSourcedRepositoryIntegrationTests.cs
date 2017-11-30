@@ -29,7 +29,7 @@ namespace Agrobook.Common.Tests.EventSourcing
             Thread.Sleep(TimeSpan.FromSeconds(4)); // Warmingup the Db
 
             this.snapshotter = new TestableRealTimeSnapshotter();
-            this.sut = new EventStoreEventSourcedRepository(this.esManager.GetFailFastConnection, new NewtonsoftJsonSerializer(), this.snapshotter);
+            this.sut = new EsEventSourcedRepository(this.esManager.GetFailFastConnection, new NewtonsoftJsonSerializer(), this.snapshotter);
         }
 
         [TestMethod]
@@ -123,7 +123,7 @@ namespace Agrobook.Common.Tests.EventSourcing
 
         private void t6_GivenTwoPageReadWriteThenCanReadWrite()
         {
-            this.sut = new EventStoreEventSourcedRepository(
+            this.sut = new EsEventSourcedRepository(
                 this.esManager.GetFailFastConnection,
                 new NewtonsoftJsonSerializer(),
                 this.snapshotter,

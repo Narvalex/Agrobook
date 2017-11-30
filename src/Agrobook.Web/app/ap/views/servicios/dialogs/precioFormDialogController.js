@@ -59,7 +59,7 @@ var apArea;
                     e.focus();
                 });
             }, 750);
-            this.ajustarDesdeElTotal = true;
+            this.ajustarDesdeElTotal = false;
             this.hectareas = this.nf.parseCommaAsDecimalSeparatorToUSNumber(this.servicio.hectareas);
             var self = this;
             this.$scope.$watch(angular.bind(this.$scope, function () { return _this.precioInput; }), function (newValue, oldValue) {

@@ -88,7 +88,7 @@ module apArea {
                 });
             }, 750);
 
-            this.ajustarDesdeElTotal = true;
+            this.ajustarDesdeElTotal = false;
 
             this.hectareas = this.nf.parseCommaAsDecimalSeparatorToUSNumber(this.servicio.hectareas);
 

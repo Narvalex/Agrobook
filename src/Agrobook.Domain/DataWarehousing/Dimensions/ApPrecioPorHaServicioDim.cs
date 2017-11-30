@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
+using System.Linq;
 
 namespace Agrobook.Domain.DataWarehousing.Dimensions
 {
@@ -9,6 +11,23 @@ namespace Agrobook.Domain.DataWarehousing.Dimensions
         public int Sid { get; set; }
         public decimal Precio { get; set; }
         public string Moneda { get; set; }
+
+        public static ApPrecioPorHaServicioDim GetOrAdd(decimal precioTotal, decimal hectareas, IDbSet<ApPrecioPorHaServicioDim> dbSet)
+        {
+            var precioPorHa = precioTotal / hectareas;
+            var dim = dbSet.SingleOrDefault(x => x.Precio == precioPorHa);
+            if (dim == null)
+            {
+                dim = new ApPrecioPorHaServicioDim
+                {
+                    Precio = precioPorHa,
+                    Moneda = Ap.ValueObjects.Moneda.DolaresAmericanos
+                };
+
+                dbSet.Add(dim);
+            }
+            return dim;
+        }
     }
 
     public class PrecioPorHaServicioApDimMap : EntityTypeConfiguration<ApPrecioPorHaServicioDim>

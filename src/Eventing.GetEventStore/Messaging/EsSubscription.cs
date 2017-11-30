@@ -15,9 +15,9 @@ namespace Eventing.GetEventStore.Messaging
     /// <remarks>
     /// We cannot subscribe to all because it will be forever receiving events from checkpoints being written.
     /// </remarks>
-    public class EventStoreSubscription : IEventSubscription, IDisposable
+    public class EsSubscription : IEventSubscription, IDisposable
     {
-        private ILogLite log = LogManager.GetLoggerFor<EventStoreSubscription>();
+        private ILogLite log = LogManager.GetLoggerFor<EsSubscription>();
 
         private readonly IEventStoreConnection resilientConnection;
         private readonly IJsonSerializer serializer;
@@ -42,14 +42,14 @@ namespace Eventing.GetEventStore.Messaging
         private ProjectionDefinition projectionDefinition = null;
 
         /// <summary>
-        /// Inializes a new instance of the <see cref="EventStoreSubscription"/> class.
+        /// Inializes a new instance of the <see cref="EsSubscription"/> class.
         /// </summary>
         /// <param name="streamName">The specific event stream from which events will be received.</param>
         /// <param name="subscriptionId">The identifier of the subscription, useful for logging and to store checkpoints if applicable.</para
         /// <param name="resilientConnection">The resilient connection to the EventStore database.</param>
         /// <param name="serializer">The serializer to use for the event body.</param>
         /// <param name="externalCheckpointSource">The source of the checkpoints. If the value is null, then the EventStore will be the source of the checkpoint.</param>
-        public EventStoreSubscription(string streamName, string subscriptionId, IEventStoreConnection resilientConnection, IJsonSerializer serializer, Func<long?> externalCheckpointSource = null)
+        public EsSubscription(string streamName, string subscriptionId, IEventStoreConnection resilientConnection, IJsonSerializer serializer, Func<long?> externalCheckpointSource = null)
         {
             Ensure.NotNull(resilientConnection, nameof(resilientConnection));
             Ensure.NotNullOrWhiteSpace(subscriptionId, nameof(subscriptionId));
@@ -73,7 +73,7 @@ namespace Eventing.GetEventStore.Messaging
         }
 
         /// <summary>
-        /// Inializes a new instance of the <see cref="EventStoreSubscription"/> class.
+        /// Inializes a new instance of the <see cref="EsSubscription"/> class.
         /// </summary>
         /// <remarks>
         /// There is a problem to subscribe to all events. When the subscription persists checkpoints in the EventStore, the subscription will receive those events that 
@@ -84,7 +84,7 @@ namespace Eventing.GetEventStore.Messaging
         /// <param name="resilientConnection">The resilient connection to the EventStore database.</param>
         /// <param name="serializer">The serializer to use for the event body.</param>
         /// <param name="externalCheckpointSource">The source of the checkpoints. If the value is null, then the EventStore will be the source of the checkpoint.</param>
-        public EventStoreSubscription(ProjectionDefinition projectionDefinition, string subscriptionId, IEventStoreConnection resilientConnection, IJsonSerializer serializer, Func<long?> externalCheckpointSource = null)
+        public EsSubscription(ProjectionDefinition projectionDefinition, string subscriptionId, IEventStoreConnection resilientConnection, IJsonSerializer serializer, Func<long?> externalCheckpointSource = null)
             : this(projectionDefinition.EmittedStream, subscriptionId, resilientConnection, serializer, externalCheckpointSource)
         {
             Ensure.NotNull(projectionDefinition, nameof(projectionDefinition));
@@ -99,7 +99,7 @@ namespace Eventing.GetEventStore.Messaging
                 if (this.cancellationSource == null)
                 {
                     this.cancellationSource = new CancellationTokenSource();
-                    if (this.projectionDefinition != null) this.projectionDefinition.EnsureExistence().Wait();
+                    if (this.projectionDefinition != null) this.projectionDefinition.EnsureThatIsUpToDateAndRunning().Wait();
                     this.log.Info($"Starting subscription {this.subscriptionId} from {this.streamName} at" + (!this.currentCheckpoint.HasValue ? " the beginning" : $" checkpoint {this.currentCheckpoint}"));
                     this.DoStart();
                 }
@@ -237,6 +237,6 @@ namespace Eventing.GetEventStore.Messaging
 
         protected virtual void Dispose(bool disposing) => this.Stop();
 
-        ~EventStoreSubscription() => Dispose(false);
+        ~EsSubscription() => Dispose(false);
     }
 }
