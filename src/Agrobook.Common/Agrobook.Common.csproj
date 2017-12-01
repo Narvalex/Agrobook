@@ -84,6 +84,7 @@
     <Compile Include="IDateTimeProvider.cs" />
     <Compile Include="ISimpleContainer.cs" />
     <Compile Include="ObjectExtensions.cs" />
+    <Compile Include="Persistence\ISqlDbInitializer.cs" />
     <Compile Include="Persistence\SqlDbInitializer.cs" />
     <Compile Include="IoC\SimpleContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

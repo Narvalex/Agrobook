@@ -14,7 +14,7 @@ namespace Agrobook.Domain.DataWarehousing.Dimensions
 
         public static ApPrecioPorHaServicioDim GetOrAdd(decimal precioTotal, decimal hectareas, IDbSet<ApPrecioPorHaServicioDim> dbSet)
         {
-            var precioPorHa = precioTotal / hectareas;
+            var precioPorHa = decimal.Round(precioTotal / hectareas, 2);
             var dim = dbSet.SingleOrDefault(x => x.Precio == precioPorHa);
             if (dim == null)
             {

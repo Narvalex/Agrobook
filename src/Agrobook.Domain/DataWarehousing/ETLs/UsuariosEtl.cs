@@ -91,13 +91,10 @@ namespace Agrobook.Domain.DataWarehousing
                     usuario.EsProductor = otorgar;
                     break;
 
-                //case Roles.Invitado:
-                //    usuario.EsInvitado = otorgar;
-                //    break;
-
-                //case Permisos.AdministrarOrganizaciones:
-                //    usuario.PuedeAdministrarOrganizaciones = true;
-                //    break;
+                // Estos los ignoramos por que no nos afectan nada
+                case Roles.Invitado:
+                case Permisos.AdministrarOrganizaciones:
+                    break;
 
                 default:
                     throw new InvalidOperationException();

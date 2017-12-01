@@ -1,5 +1,4 @@
 ﻿using Agrobook.Common.Persistence;
-using Agrobook.Domain;
 using Agrobook.Domain.Archivos.Services;
 using Eventing;
 using Eventing.Core.Messaging;
@@ -81,18 +80,18 @@ namespace Agrobook.Server
             this.log.Verbose("Event Store is ready");
 
             // SQL
-            var sqlInit = ServiceLocator.ResolveSingleton<SqlDbInitializer<AgrobookDbContext>>();
+            var sqlInits = ServiceLocator.ResolveSingleton<List<ISqlDbInitializer>>();
 #if DROP_DB
-            sqlInit.DropAndCreateDb();
+            sqlInits.ForEach(x => x.DropAndCreateDb());
 #endif
 #if DEBUG
             if (this.dropDb)
-                sqlInit.DropAndCreateDb();
+                sqlInits.ForEach(x => x.DropAndCreateDb());
             else
-                sqlInit.CreateDatabaseIfNoExists();
+                sqlInits.ForEach(x => x.CreateDatabaseIfNoExists());
 #endif
 #if !DEBUG
-            sqlInit.CreateDatabaseIfNoExists();
+            sqlInits.ForEach(x => x.CreateDatabaseIfNoExists());
 #endif
             this.log.Verbose("SQL Compact is ready");
 

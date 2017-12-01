@@ -46,9 +46,9 @@ namespace Agrobook.Domain.Common
         }
     }
 
-    public class NoOpSqlDenormalizer : SqlDenormalizerV1, IHandler<object>
+    public class NoOpSqlDenormalizerV1 : SqlDenormalizerV1, IHandler<object>
     {
-        public NoOpSqlDenormalizer(SqlDenormalizerConfigV1 config) : base(config)
+        public NoOpSqlDenormalizerV1(SqlDenormalizerConfigV1 config) : base(config)
         {
         }
 

@@ -10,6 +10,8 @@ using Agrobook.Domain.Ap.Services;
 using Agrobook.Domain.Archivos;
 using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Common;
+using Agrobook.Domain.DataWarehousing;
+using Agrobook.Domain.DataWarehousing.ETLs;
 using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Services;
 using Agrobook.Server.Filters;
@@ -25,6 +27,7 @@ using Eventing.Log;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 
 namespace Agrobook.Server
 {
@@ -69,13 +72,22 @@ namespace Agrobook.Server
 
             // SQL Server ------------------------------------------------------------
 
-            var sqlDbName = "./SQLData/AgrobookDb";
+            var sqlDbInitializerList = new List<ISqlDbInitializer>();
 
-            Func<AgrobookDbContext> dbContextFactory = () => new AgrobookDbContext(false, sqlDbName);
-            Func<AgrobookDbContext> readOnlyDbContextFactory = () => new AgrobookDbContext(true, sqlDbName);
+            // Relational
+            var relationalDbName = "./SQLData/AgrobookRelationalDb";
+            Func<AgrobookDbContext> relationalDbContextFactory = () => new AgrobookDbContext(false, relationalDbName);
+            Func<AgrobookDbContext> readOnlyRelationalDbContextFactory = () => new AgrobookDbContext(true, relationalDbName);
+            sqlDbInitializerList.Add(new SqlDbInitializer<AgrobookDbContext>(relationalDbContextFactory));
 
-            var sqlInitializer = new SqlDbInitializer<AgrobookDbContext>(dbContextFactory);
-            container.Register<SqlDbInitializer<AgrobookDbContext>>(sqlInitializer);
+            // DataWarehouse Db
+            var dwDbName = "./SQLData/AgrobookDwDb";
+            Func<AgrobookDataWarehouseContext> dwDbContextFactory = () => new AgrobookDataWarehouseContext(false, dwDbName);
+            Func<AgrobookDataWarehouseContext> readOnlyDwDbContextFactory = () => new AgrobookDataWarehouseContext(true, dwDbName);
+            sqlDbInitializerList.Add(new SqlDbInitializer<AgrobookDataWarehouseContext>(dwDbContextFactory));
+
+            // List of sqlDbInitializers
+            container.Register<List<ISqlDbInitializer>>(sqlDbInitializerList);
 
 
             // Misc --------------------------------------------------------------------
@@ -104,10 +116,10 @@ namespace Agrobook.Server
             container.Register<ITokenAuthorizationProvider>(usuariosService);
             container.Register<IProveedorDeFirmaDelUsuario>(usuariosService);
 
-            var usuariosQueryService = new UsuariosQueryService(readOnlyDbContextFactory, eventSourcedRepository, cryptoSerializer);
+            var usuariosQueryService = new UsuariosQueryService(readOnlyRelationalDbContextFactory, eventSourcedRepository, cryptoSerializer);
             container.Register<UsuariosQueryService>(usuariosQueryService);
 
-            var organizacionesQueryService = new OrganizacionesQueryService(readOnlyDbContextFactory, eventSourcedRepository);
+            var organizacionesQueryService = new OrganizacionesQueryService(readOnlyRelationalDbContextFactory, eventSourcedRepository);
             container.Register<OrganizacionesQueryService>(organizacionesQueryService);
 
             var archivosDelProductorFileManager = new FileWriter(LogManager.GetLoggerFor<FileWriter>(), jsonSerializer);
@@ -116,16 +128,16 @@ namespace Agrobook.Server
             var archivosService = new ArchivosService(archivosDelProductorFileManager, eventSourcedRepository);
             container.Register<ArchivosService>(archivosService);
 
-            var archivosQueryService = new ArchivosQueryService(readOnlyDbContextFactory, eventSourcedRepository);
+            var archivosQueryService = new ArchivosQueryService(readOnlyRelationalDbContextFactory, eventSourcedRepository);
             container.Register<ArchivosQueryService>(archivosQueryService);
 
             var apService = new ApService(eventSourcedRepository, dateTimeProvider);
             container.Register<ApService>(apService);
 
-            var apQueryService = new ApQueryService(readOnlyDbContextFactory, eventSourcedRepository);
+            var apQueryService = new ApQueryService(readOnlyRelationalDbContextFactory, eventSourcedRepository);
             container.Register<ApQueryService>(apQueryService);
 
-            var apReportQueryService = new ApReportQueryService(readOnlyDbContextFactory, eventSourcedRepository);
+            var apReportQueryService = new ApReportQueryService(readOnlyRelationalDbContextFactory, eventSourcedRepository);
             container.Register<ApReportQueryService>(apReportQueryService);
 
             var numeradorDeServicios = new NumeracionDeServiciosCommandHandler(eventSourcedRepository);
@@ -133,20 +145,30 @@ namespace Agrobook.Server
 
 
             // Event Procesors -----------------------------------------------
+            var orderedEventsProjDef = ProjectionDefinition.New("agrobookOrderedEvents", "agrobookOrderedEvents", esm.ProjectionManager, esm.UserCredentials)
+                .From<Usuario>()
+                .And<Organizacion>()
+                .And<Contrato>()
+                .And<Productor>()
+                .And<Servicio>()
+                .And<ColeccionDeArchivos>()
+                .AndNothingMore();
+
             var procesors = new List<EventProcessor>();
             container.Register<List<EventProcessor>>(procesors);
 
-            BuildNumeracionProcesor(container);
-            BuildReadModel(container, dbContextFactory, readOnlyDbContextFactory);
+            RegisterNumeracionProcesor(container);
+            RegisterRelationalModelProcesor(container, orderedEventsProjDef, relationalDbContextFactory, readOnlyRelationalDbContextFactory);
+            RegisterDataWarehouseEtlProcessor(container, orderedEventsProjDef, dwDbContextFactory, readOnlyDwDbContextFactory);
         }
 
-        private static void BuildNumeracionProcesor(ISimpleContainer container)
+        private static void RegisterNumeracionProcesor(ISimpleContainer container)
         {
             var esm = container.ResolveSingleton<EventStoreManager>();
             var jsonSerializer = container.ResolveSingleton<IJsonSerializer>();
             var eventSourcedRepository = container.ResolveSingleton<IEventSourcedRepository>();
             var apService = container.ResolveSingleton<ApService>();
-            var processorList = container.ResolveNewOf<List<EventProcessor>>();
+            var processorList = container.ResolveSingleton<List<EventProcessor>>();
 
             // Numeracion de Servicios
             var numeracionDeServiciosSubscription =
@@ -158,33 +180,30 @@ namespace Agrobook.Server
             processorList.Add(numeracionDeServiciosEventHandler);
         }
 
-        private static void BuildReadModel(ISimpleContainer container, Func<AgrobookDbContext> dbContextFactory, Func<AgrobookDbContext> readOnlyDbContextFactory)
+        private static void RegisterRelationalModelProcesor(ISimpleContainer container, ProjectionDefinition projDef, Func<AgrobookDbContext> dbContextFactory, Func<AgrobookDbContext> readOnlyDbContextFactory)
         {
             var esm = container.ResolveSingleton<EventStoreManager>();
             var jsonSerializer = container.ResolveSingleton<IJsonSerializer>();
-            var efCheckpointProvider = new EfCheckpointProvider(readOnlyDbContextFactory);
+            var usuariosQueryService = container.ResolveSingleton<UsuariosQueryService>();
+            var archivosDelProductorFileManager = container.ResolveSingleton<IFileWriter>();
 
-            //var subStream = "agrobookAppReadModelStream"; V1 projection. Not event order was guaranteed here
-            var subStream = "agrobookOrderedEvents";
             var subId = "agrobookReadModelSubscription";
 
-            var agrobookOrderedEventsProjectionDef = ProjectionDefinition.New(subStream, subStream, esm.ProjectionManager, esm.UserCredentials)
-                .From<Usuario>()
-                .And<Organizacion>()
-                .And<Contrato>()
-                .And<Productor>()
-                .And<Servicio>()
-                .And<ColeccionDeArchivos>()
-                .AndNothingMore();
-
             // AppReadModel Denormalizing
-            var appReadModelSubscription = new EsSubscription(agrobookOrderedEventsProjectionDef, subId, esm.ResilientConnection, jsonSerializer, () => efCheckpointProvider.GetCheckpoint(subId));
+            var subscription = new EsSubscription(projDef, subId, esm.ResilientConnection, jsonSerializer,
+                () =>
+                {
+                    using (var context = readOnlyDbContextFactory.Invoke())
+                    {
+                        return context.Checkpoints.FirstOrDefault()?.LastCheckpoint;
+                    }
+                });
 
             var sqlConfig = new SqlDenormalizerConfigV1(dbContextFactory, subId);
 
-            var appReadModelProcessor = new EventProcessor(appReadModelSubscription);
-            appReadModelProcessor.Register(
-                new NoOpSqlDenormalizer(sqlConfig),
+            var processor = new EventProcessor(subscription);
+            processor.Register(
+                new NoOpSqlDenormalizerV1(sqlConfig),
                 new UsuariosDenormalizer(sqlConfig, usuariosQueryService),
                 new OrganizacionesDenormalizer(sqlConfig),
                 new ContratosDenormalizer(sqlConfig),
@@ -192,7 +211,29 @@ namespace Agrobook.Server
                 new ServiciosDenormalizer(sqlConfig),
                 new ArchivosIndexer(sqlConfig, archivosDelProductorFileManager)
             );
-            procesors.Add(appReadModelProcessor);
+
+            container.ResolveSingleton<List<EventProcessor>>().Add(processor);
+        }
+
+        private static void RegisterDataWarehouseEtlProcessor(ISimpleContainer container, ProjectionDefinition projDef, Func<AgrobookDataWarehouseContext> dbContextFactory, Func<AgrobookDataWarehouseContext> readOnlyDbContextFactory)
+        {
+            var esm = container.ResolveSingleton<EventStoreManager>();
+            var jsonSerializer = container.ResolveSingleton<IJsonSerializer>();
+            var efCheckpointProvider = new EfCheckpointProvider<AgrobookDataWarehouseContext>(readOnlyDbContextFactory);
+
+            var subscription = new EsSubscription(projDef, "agrobookDataWarehouseSubscription", esm.ResilientConnection, jsonSerializer,
+                () => efCheckpointProvider.GetCheckpoint());
+
+            var processor = new EventProcessor(subscription);
+            processor.Register(
+                new NoOpDenormalizer<AgrobookDataWarehouseContext>(dbContextFactory),
+                new ApContratosEtl(dbContextFactory),
+                new ApProductoresEtl(dbContextFactory),
+                new ApServiciosEtl(dbContextFactory),
+                new OrganizacionesEtl(dbContextFactory),
+                new UsuariosEtl(dbContextFactory, container.ResolveSingleton<UsuariosQueryService>()));
+
+            container.ResolveSingleton<List<EventProcessor>>().Add(processor);
         }
     }
 }

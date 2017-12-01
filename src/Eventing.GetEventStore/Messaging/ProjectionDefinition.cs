@@ -88,17 +88,11 @@ namespace Eventing.GetEventStore.Messaging
             this.logger.Verbose($"The projection {this.projectionName} is up and running!");
         }
 
-        //private static string buildScriptObsolete(string emittedStream, List<string> streams)
-        //{
-        //    var streamsInString = streams.Aggregate(string.Empty, (acumulado, stringActual) => $"{acumulado}'{stringActual}',");
-        //    return $"fromStreams([{streamsInString}]).when({{'$any':function(s, e) {{linkTo('{emittedStream}', e);}}}});";
-        //}
-
         private static string buildScript(string emittedStream, List<string> streams)
         {
             var sb = new StringBuilder();
-            streams.ForEach(s => sb.AppendLine($"case '{s}':"));
-            var streamsToProject = sb.ToString();
+            streams.ForEach(s => sb.AppendLine($"            case '{s}':"));
+            var streamsToProject = sb.ToString().TrimEnd();
 
             var script = $@"
 fromAll()
@@ -109,7 +103,7 @@ fromAll()
         let category = streamId.split('-')[0];
         
         switch(category) {{
-            {streamsToProject}
+{streamsToProject}
                 linkTo('{emittedStream}', e);
                 break;
             default:
@@ -119,7 +113,7 @@ fromAll()
 }});
 ";
 
-            return script;
+            return script.TrimStart();
         }
     }
 
@@ -140,7 +134,7 @@ fromAll()
 
         public ProjectionDefinitionBuilder From<T>() where T : class, IEventSourced, new()
         {
-            return new ProjectionDefinitionBuilder(this, StreamCategoryAttribute.GetCategoryProjectionStream<T>());
+            return new ProjectionDefinitionBuilder(this, StreamCategoryAttribute.GetCategory<T>());
         }
     }
 
@@ -158,7 +152,7 @@ fromAll()
 
         public ProjectionDefinitionBuilder And<T>() where T : class, IEventSourced, new()
         {
-            var stream = StreamCategoryAttribute.GetCategoryProjectionStream<T>();
+            var stream = StreamCategoryAttribute.GetCategory<T>();
             if (this.streams.Any(x => x == stream)) throw new ArgumentException("The stream was already registered!");
             this.streams.Add(stream);
             return this;

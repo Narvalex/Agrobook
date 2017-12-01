@@ -5,7 +5,7 @@ using System.Data.Entity;
 
 namespace Agrobook.Common.Persistence
 {
-    public class SqlDbInitializer<T> where T : DbContext
+    public class SqlDbInitializer<T> : ISqlDbInitializer where T : DbContext
     {
         private readonly Func<T> dbContextFactory;
         private readonly ILogLite log = LogManager.GetLoggerFor<SqlDbInitializer<T>>();
