@@ -182,6 +182,23 @@
     </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Agrobook.Domain.Ap.Services.ProductorRp.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.DAOs.DTOs.ServicioDeAp.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Dimensions.ApContratoDim.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Dimensions.ApPrecioPorHaServicioDim.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Dimensions.ContratoDimMap.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Dimensions.DepartamentoDim.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Dimensions.DepartamentoDimMap.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Dimensions.OrganizacionDim.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Dimensions.OrganizacionDimMap.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Dimensions.ParcelaDim.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Dimensions.ParcelaDimMap.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Dimensions.PrecioPorHaServicioApDimMap.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Dimensions.TiempoDim.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Dimensions.TiempoDimMap.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Dimensions.UsuarioDim.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Dimensions.UsuarioDimMap.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Facts.ServicioDeApFact.datasource" />
+    <None Include="Properties\DataSources\Agrobook.Domain.DataWarehousing.Facts.ServicioDeApFactMap.datasource" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Agrobook.Common\Agrobook.Common.csproj">
@@ -204,6 +221,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Reportes\Ap\ListaDeProductores.rdlc">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\Ap\PlanillaGeneralDeServiciosDeAp.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

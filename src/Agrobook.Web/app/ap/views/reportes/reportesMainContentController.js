@@ -7,8 +7,8 @@ var apArea;
             this.loginService = loginService;
             this.toasterLite = toasterLite;
         }
-        reportesMainContentController.prototype.getReporteListaDeProductores = function () {
-            window.open('./report/lista-de-productores', '_blank', '');
+        reportesMainContentController.prototype.getReporte = function (url) {
+            window.open(url, '_blank', '');
         };
         return reportesMainContentController;
     }());

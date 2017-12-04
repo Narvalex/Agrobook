@@ -11,16 +11,19 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Usuarios.Services
 {
-    public class UsuariosQueryService : AgrobookQueryService
+    public class UsuariosQueryService : DbContextQueryService<AgrobookDbContext>
     {
         private readonly IJsonSerializer cryptoSerializer;
+        private readonly IEventSourcedReader esReader;
 
         public UsuariosQueryService(Func<AgrobookDbContext> contextFactory, IEventSourcedReader reader, IJsonSerializer crytoSerializer)
-            : base(contextFactory, reader)
+            : base(contextFactory)
         {
             Ensure.NotNull(crytoSerializer, nameof(crytoSerializer));
+            Ensure.NotNull(reader, nameof(reader));
 
             this.cryptoSerializer = crytoSerializer;
+            this.esReader = reader;
         }
 
         public bool ExisteUsuarioAdmin

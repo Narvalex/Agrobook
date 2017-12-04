@@ -11,6 +11,7 @@ using Agrobook.Domain.Archivos;
 using Agrobook.Domain.Archivos.Services;
 using Agrobook.Domain.Common;
 using Agrobook.Domain.DataWarehousing;
+using Agrobook.Domain.DataWarehousing.DAOs;
 using Agrobook.Domain.DataWarehousing.ETLs;
 using Agrobook.Domain.Usuarios;
 using Agrobook.Domain.Usuarios.Services;
@@ -119,7 +120,7 @@ namespace Agrobook.Server
             var usuariosQueryService = new UsuariosQueryService(readOnlyRelationalDbContextFactory, eventSourcedRepository, cryptoSerializer);
             container.Register<UsuariosQueryService>(usuariosQueryService);
 
-            var organizacionesQueryService = new OrganizacionesQueryService(readOnlyRelationalDbContextFactory, eventSourcedRepository);
+            var organizacionesQueryService = new OrganizacionesQueryService(readOnlyRelationalDbContextFactory);
             container.Register<OrganizacionesQueryService>(organizacionesQueryService);
 
             var archivosDelProductorFileManager = new FileWriter(LogManager.GetLoggerFor<FileWriter>(), jsonSerializer);
@@ -128,17 +129,20 @@ namespace Agrobook.Server
             var archivosService = new ArchivosService(archivosDelProductorFileManager, eventSourcedRepository);
             container.Register<ArchivosService>(archivosService);
 
-            var archivosQueryService = new ArchivosQueryService(readOnlyRelationalDbContextFactory, eventSourcedRepository);
+            var archivosQueryService = new ArchivosQueryService(readOnlyRelationalDbContextFactory);
             container.Register<ArchivosQueryService>(archivosQueryService);
 
             var apService = new ApService(eventSourcedRepository, dateTimeProvider);
             container.Register<ApService>(apService);
 
-            var apQueryService = new ApQueryService(readOnlyRelationalDbContextFactory, eventSourcedRepository);
+            var apQueryService = new ApQueryService(readOnlyRelationalDbContextFactory);
             container.Register<ApQueryService>(apQueryService);
 
-            var apReportQueryService = new ApReportQueryService(readOnlyRelationalDbContextFactory, eventSourcedRepository);
+            var apReportQueryService = new ApReportQueryService(readOnlyRelationalDbContextFactory);
             container.Register<ApReportQueryService>(apReportQueryService);
+
+            var apDao = new ApDao(readOnlyDwDbContextFactory);
+            container.Register<ApDao>(apDao);
 
             var numeradorDeServicios = new NumeracionDeServiciosCommandHandler(eventSourcedRepository);
             container.Register<NumeracionDeServiciosCommandHandler>(numeradorDeServicios);

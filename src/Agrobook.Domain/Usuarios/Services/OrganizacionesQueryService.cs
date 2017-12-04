@@ -1,5 +1,4 @@
 ﻿using Agrobook.Domain.Common;
-using Eventing.Core.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Usuarios.Services
 {
-    public class OrganizacionesQueryService : AgrobookQueryService
+    public class OrganizacionesQueryService : DbContextQueryService<AgrobookDbContext>
     {
-        public OrganizacionesQueryService(Func<AgrobookDbContext> contextFactory, IEventSourcedReader esReader) : base(contextFactory, esReader)
+        public OrganizacionesQueryService(Func<AgrobookDbContext> contextFactory) : base(contextFactory)
         { }
 
         public async Task<IList<OrganizacionDto>> ObtenerOrganizaciones()

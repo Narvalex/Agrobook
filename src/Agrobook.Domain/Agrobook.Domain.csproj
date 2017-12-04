@@ -113,13 +113,15 @@
     <Compile Include="Common\IEvent.cs" />
     <Compile Include="Ap\ValueObjects\Moneda.cs" />
     <Compile Include="Common\SqlDenormalizerV1.cs" />
-    <Compile Include="Common\AgrobookQueryService.cs" />
+    <Compile Include="Common\DbContextQueryService.cs" />
     <Compile Include="Common\DbContext\ContratosDbContext.cs" />
     <Compile Include="Common\DbContext\ProductoresDeApDbContext.cs" />
     <Compile Include="Common\DbContext\ServiciosDbContext.cs" />
     <Compile Include="Common\MensajeAuditable.cs" />
     <Compile Include="Common\SqlDenormalizerConfigV1.cs" />
     <Compile Include="Common\ValueObjects\UbicacionDepartamental.cs" />
+    <Compile Include="DataWarehousing\DAOs\ApDao.cs" />
+    <Compile Include="DataWarehousing\DAOs\DTOs\ServicioDeAp.cs" />
     <Compile Include="DataWarehousing\Dimensions\OrganizacionDim.cs" />
     <Compile Include="DataWarehousing\ETLs\ApContratosEtl.cs" />
     <Compile Include="DataWarehousing\Dimensions\DepartamentoDims.cs" />

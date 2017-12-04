@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Archivos.Services
 {
-    public class ArchivosQueryService : AgrobookQueryService
+    public class ArchivosQueryService : DbContextQueryService<AgrobookDbContext>
     {
-        public ArchivosQueryService(Func<AgrobookDbContext> contextFactory, IEventSourcedReader reader)
-            : base(contextFactory, reader)
+        public ArchivosQueryService(Func<AgrobookDbContext> contextFactory)
+            : base(contextFactory)
         { }
 
         public async Task<IList<MetadatosDeArchivo>> ObtenerArchivos(string idColeccion)

@@ -24,5 +24,14 @@ namespace Agrobook.Web.Controllers.Ap
             var response = this.PrepareResponse("ListaDeProductores.pdf", reporte);
             return response;
         }
+
+        [HttpGet]
+        [Route("planilla-general-de-servicios-de-ap")]
+        public async Task<HttpResponseMessage> GetPlanillaGeneral()
+        {
+            var reporte = await this.client.GetPlanillaGeneral();
+            var response = this.PrepareResponse("PlanillaGeneralDeServiciosDeAp.pdf", reporte);
+            return response;
+        }
     }
 }

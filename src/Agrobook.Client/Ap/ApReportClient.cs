@@ -16,5 +16,11 @@ namespace Agrobook.Client.Ap
             var stream = await base.Get("lista-de-productores");
             return stream;
         }
+
+        public async Task<Stream> GetPlanillaGeneral()
+        {
+            var stream = await base.Get("planilla-general-de-servicios-de-ap");
+            return stream;
+        }
     }
 }

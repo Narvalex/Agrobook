@@ -11,8 +11,8 @@ module apArea {
         ) {
         }
 
-        getReporteListaDeProductores() {
-            window.open('./report/lista-de-productores', '_blank', '');
+        getReporte(url: string) {
+            window.open(url, '_blank', '');
         }
     }
 }

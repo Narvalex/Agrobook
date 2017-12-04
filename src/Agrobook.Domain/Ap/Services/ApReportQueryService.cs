@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Ap.Services
 {
-    public class ApReportQueryService : AgrobookQueryService
+    public class ApReportQueryService : DbContextQueryService<AgrobookDbContext>
     {
-        public ApReportQueryService(Func<AgrobookDbContext> contextFactory, IEventSourcedReader esReader) : base(contextFactory, esReader)
+        public ApReportQueryService(Func<AgrobookDbContext> contextFactory) : base(contextFactory)
         { }
 
         public async Task<IList<ProductorRp>> ObtenerTodosProductores()

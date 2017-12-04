@@ -170,7 +170,7 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>ProductorDataSet</DataSetName>
+        <DataSetName>DataSet</DataSetName>
         <Top>0.14111cm</Top>
         <Left>0.31432cm</Left>
         <Height>1.2cm</Height>
@@ -251,7 +251,7 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="ProductorDataSet">
+    <DataSet Name="DataSet">
       <Query>
         <DataSourceName>AgrobookDomainApServices</DataSourceName>
         <CommandText>/* Local Query */</CommandText>

@@ -8,6 +8,7 @@ namespace Agrobook.Domain.DataWarehousing.Dimensions
     {
         public int Sid { get; set; }
         public string IdParcela { get; set; }
+        public string Nombre { get; set; }
         public decimal Hectareas { get; set; }
         public string Departamento { get; set; }
         public string Distrito { get; set; }

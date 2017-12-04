@@ -25,6 +25,7 @@ namespace Agrobook.Domain.DataWarehousing
                 context.ParcelaDims.Add(new ParcelaDim
                 {
                     IdParcela = e.IdParcela,
+                    Nombre = e.NombreDeLaParcela,
                     Hectareas = e.Hectareas,
                     Departamento = depto.Display,
                     Distrito = distrito.Display
@@ -41,6 +42,7 @@ namespace Agrobook.Domain.DataWarehousing
                 var distrito = depto.Distritos.Single(x => x.Id == e.Ubicacion.IdDistrito);
 
                 var parcela = context.ParcelaDims.Single(x => x.IdParcela == e.IdParcela);
+                parcela.Nombre = e.Nombre;
                 parcela.Hectareas = e.Hectareas;
                 parcela.Departamento = depto.Display;
                 parcela.Distrito = distrito.Display;
