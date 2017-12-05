@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.Infrastructure.Annotations;
-using System.Data.Entity.ModelConfiguration;
+﻿using System.Data.Entity.ModelConfiguration;
 
 namespace Agrobook.Domain.DataWarehousing.Dimensions
 {
@@ -16,9 +14,6 @@ namespace Agrobook.Domain.DataWarehousing.Dimensions
         public OrganizacionDimMap()
         {
             this.HasKey(e => e.Sid);
-
-            this.Property(x => x.IdOrganizacion)
-           .HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute()));
 
             this.ToTable("OrganizacionDims");
         }

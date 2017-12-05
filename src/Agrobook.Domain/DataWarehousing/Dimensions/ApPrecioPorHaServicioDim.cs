@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure.Annotations;
+﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 
@@ -35,9 +33,6 @@ namespace Agrobook.Domain.DataWarehousing.Dimensions
         public PrecioPorHaServicioApDimMap()
         {
             this.HasKey(e => e.Sid);
-
-            this.Property(x => x.Precio)
-           .HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute()));
 
             this.ToTable("PrecioPorHaServicioApDims");
         }

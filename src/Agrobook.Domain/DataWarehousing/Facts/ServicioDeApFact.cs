@@ -1,6 +1,4 @@
 ﻿using Agrobook.Domain.DataWarehousing.Dimensions;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Agrobook.Domain.DataWarehousing.Facts
@@ -33,9 +31,6 @@ namespace Agrobook.Domain.DataWarehousing.Facts
             this.HasKey(e => e.Sid);
 
             this.ToTable("ServicioDeApFacts");
-
-            this.Property(x => x.IdServicio)
-               .HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute()));
 
             this.HasOptional(e => e.Fecha);
             this.HasOptional(e => e.Organizacion);
