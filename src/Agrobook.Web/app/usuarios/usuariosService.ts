@@ -28,7 +28,7 @@ module usuariosArea {
 
         resetearPassword(
             usuario: string,
-            onSuccess: (value: ng.IHttpPromiseCallback<{}>) => void,
+            onSuccess: (value: ng.IHttpPromiseCallbackArg<{}>) => void,
             onError: (reason: any) => void
         ) {
             this.post('resetear-password/' + usuario, {}, onSuccess, onError);
@@ -58,7 +58,7 @@ module usuariosArea {
         agregarUsuarioALaOrganizacion(
             idUsuario: string,
             idOrganizacion: string,
-            onSuccess: (value: ng.IHttpPromiseCallback<{}>) => void,
+            onSuccess: (value: ng.IHttpPromiseCallbackArg<{}>) => void,
             onError: (reason: any) => void
         ) {
             this.post(`agregar-usuario-a-la-organizacion/${idUsuario}/${idOrganizacion}`, {}, onSuccess, onError);

@@ -76,15 +76,19 @@ namespace Agrobook.Server
             var sqlDbInitializerList = new List<ISqlDbInitializer>();
 
             // Relational
-            var relationalDbName = "./SQLData/AgrobookRelationalDb";
-            Func<AgrobookDbContext> relationalDbContextFactory = () => new AgrobookDbContext(false, relationalDbName);
-            Func<AgrobookDbContext> readOnlyRelationalDbContextFactory = () => new AgrobookDbContext(true, relationalDbName);
+            var readModelConnectionString = ConfigurationManager.AppSettings["agrobookDbContext"];
+            Ensure.NotNullOrWhiteSpace(readModelConnectionString, nameof(readModelConnectionString));
+
+            Func<AgrobookDbContext> relationalDbContextFactory = () => new AgrobookDbContext(false, readModelConnectionString);
+            Func<AgrobookDbContext> readOnlyRelationalDbContextFactory = () => new AgrobookDbContext(true, readModelConnectionString);
             sqlDbInitializerList.Add(new SqlDbInitializer<AgrobookDbContext>(relationalDbContextFactory));
 
             // DataWarehouse Db
-            var dwDbName = "./SQLData/AgrobookDwDb";
-            Func<AgrobookDataWarehouseContext> dwDbContextFactory = () => new AgrobookDataWarehouseContext(false, dwDbName);
-            Func<AgrobookDataWarehouseContext> readOnlyDwDbContextFactory = () => new AgrobookDataWarehouseContext(true, dwDbName);
+            var dataWarehouseConnectionString = ConfigurationManager.AppSettings["agrobookDataWarehouseDbContext"];
+            Ensure.NotNullOrWhiteSpace(dataWarehouseConnectionString, nameof(dataWarehouseConnectionString));
+
+            Func<AgrobookDataWarehouseContext> dwDbContextFactory = () => new AgrobookDataWarehouseContext(false, dataWarehouseConnectionString);
+            Func<AgrobookDataWarehouseContext> readOnlyDwDbContextFactory = () => new AgrobookDataWarehouseContext(true, dataWarehouseConnectionString);
             sqlDbInitializerList.Add(new SqlDbInitializer<AgrobookDataWarehouseContext>(dwDbContextFactory));
 
             // List of sqlDbInitializers
