@@ -4,6 +4,7 @@ using Agrobook.Domain.DataWarehousing.Dimensions;
 using Eventing.Core.Messaging;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Agrobook.Domain.DataWarehousing
 {
@@ -17,7 +18,7 @@ namespace Agrobook.Domain.DataWarehousing
         {
         }
 
-        public void Handle(long checkpoint, NuevoContrato e)
+        public async Task Handle(long checkpoint, NuevoContrato e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -30,7 +31,7 @@ namespace Agrobook.Domain.DataWarehousing
             });
         }
 
-        public void Handle(long checkpoint, ContratoEditado e)
+        public async Task Handle(long checkpoint, ContratoEditado e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -39,7 +40,7 @@ namespace Agrobook.Domain.DataWarehousing
             });
         }
 
-        public void Handle(long checkpoint, NuevaAdenda e)
+        public async Task Handle(long checkpoint, NuevaAdenda e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -53,7 +54,7 @@ namespace Agrobook.Domain.DataWarehousing
             });
         }
 
-        public void Handle(long checkpoint, AdendaEditada e)
+        public async Task Handle(long checkpoint, AdendaEditada e)
         {
             this.Denormalize(checkpoint, context =>
             {

@@ -1,6 +1,7 @@
 ﻿using Agrobook.Domain.Common;
 using Eventing.Core.Messaging;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Usuarios.Services
 {
@@ -16,7 +17,7 @@ namespace Agrobook.Domain.Usuarios.Services
             : base(config)
         { }
 
-        public void Handle(long checkpoint, NuevaOrganizacionCreada e)
+        public async Task Handle(long checkpoint, NuevaOrganizacionCreada e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -29,7 +30,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long checkpoint, NombreDeOrganizacionCambiado e)
+        public async Task Handle(long checkpoint, NombreDeOrganizacionCambiado e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -38,7 +39,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long checkpoint, OrganizacionEliminada e)
+        public async Task Handle(long checkpoint, OrganizacionEliminada e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -47,7 +48,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long checkpoint, OrganizacionRestaurada e)
+        public async Task Handle(long checkpoint, OrganizacionRestaurada e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -56,7 +57,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long checkpoint, UsuarioAgregadoALaOrganizacion e)
+        public async Task Handle(long checkpoint, UsuarioAgregadoALaOrganizacion e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -70,7 +71,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long checkpoint, UsuarioRemovidoDeLaOrganizacion e)
+        public async Task Handle(long checkpoint, UsuarioRemovidoDeLaOrganizacion e)
         {
             this.Denormalize(checkpoint, context =>
             {

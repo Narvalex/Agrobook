@@ -1,7 +1,7 @@
 /// <reference path="../_all.ts" />
 var homeArea;
 (function (homeArea) {
-    var ToolbarHeaderController = (function () {
+    var ToolbarHeaderController = /** @class */ (function () {
         function ToolbarHeaderController(loginService, loginQueryService, config, $rootScope, toasterLite) {
             var _this = this;
             this.loginService = loginService;
@@ -101,9 +101,9 @@ var homeArea;
             var roles = this.config.claims.roles;
             this.showUsuarios = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
         };
+        ToolbarHeaderController.$inject = ['loginService', 'loginQueryService', 'config', '$rootScope', 'toasterLite'];
         return ToolbarHeaderController;
     }());
-    ToolbarHeaderController.$inject = ['loginService', 'loginQueryService', 'config', '$rootScope', 'toasterLite'];
     homeArea.ToolbarHeaderController = ToolbarHeaderController;
 })(homeArea || (homeArea = {}));
 //# sourceMappingURL=toolbar-headerController.js.map

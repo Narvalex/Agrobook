@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Eventing.Core.Messaging
 {
@@ -13,7 +14,7 @@ namespace Eventing.Core.Messaging
         /// Registers the action to be invoked whenever a new event apears.
         /// </summary>
         /// <param name="listener">An action invoked when an event is received over the subscription</param>
-        void SetListener(Action<long, object> listener);
+        void SetListener(Func<long, object, Task> listener);
 
         /// <summary>
         /// Starts the listener.

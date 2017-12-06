@@ -1,7 +1,7 @@
 /// <reference path="../../_all.ts" />
 var usuariosArea;
 (function (usuariosArea) {
-    var mainContentController = (function () {
+    var mainContentController = /** @class */ (function () {
         function mainContentController($routeParams, loginService, loginQueryService, usuariosQueryService, toasterLite, $scope, config) {
             var _this = this;
             this.$routeParams = $routeParams;
@@ -72,10 +72,10 @@ var usuariosArea;
                     break;
             }
         };
+        mainContentController.$inject = ['$routeParams', 'loginService', 'loginQueryService', 'usuariosQueryService', 'toasterLite', '$scope',
+            'config'];
         return mainContentController;
     }());
-    mainContentController.$inject = ['$routeParams', 'loginService', 'loginQueryService', 'usuariosQueryService', 'toasterLite', '$scope',
-        'config'];
     usuariosArea.mainContentController = mainContentController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=mainContentController.js.map

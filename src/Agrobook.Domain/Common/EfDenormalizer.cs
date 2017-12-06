@@ -1,6 +1,7 @@
 ﻿using Eventing;
 using Eventing.Core.Messaging;
 using System;
+using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Common
 {
@@ -31,6 +32,6 @@ namespace Agrobook.Domain.Common
         {
         }
 
-        public void Handle(long checkpoint, object e) => this.Denormalize(checkpoint, c => { });
+        public async Task Handle(long checkpoint, object e) => this.Denormalize(checkpoint, c => { });
     }
 }

@@ -49,7 +49,7 @@ namespace Agrobook.Web.Controllers.Ap
         }
 
         [HttpGet]
-        [Route("parcela/{idParcela}")]
+        [Route("parcela")]
         public async Task<IHttpActionResult> GetParcela([FromUri]string idParcela)
         {
             var parcela = await this.client.ObtenerParcela(idParcela);

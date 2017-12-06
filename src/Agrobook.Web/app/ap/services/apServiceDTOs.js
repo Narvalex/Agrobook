@@ -4,7 +4,7 @@ var apArea;
     //---------------------
     // DTOS
     //---------------------
-    var cliente = (function () {
+    var cliente = /** @class */ (function () {
         function cliente(id, // coopchorti / davidelias
             nombre, // Cooperativa Chortizer / David Elias
             desc, // Loma Plata / Productor de Chooperativa Chortizer y Colonias Unidas
@@ -19,7 +19,7 @@ var apArea;
         return cliente;
     }());
     apArea.cliente = cliente;
-    var orgDto = (function () {
+    var orgDto = /** @class */ (function () {
         function orgDto(id, display, avatarUrl) {
             this.id = id;
             this.display = display;
@@ -28,7 +28,7 @@ var apArea;
         return orgDto;
     }());
     apArea.orgDto = orgDto;
-    var servicioDto = (function () {
+    var servicioDto = /** @class */ (function () {
         function servicioDto(id, idContrato, esAdenda, idContratoDeLaAdenda, contratoDisplay, idOrg, orgDisplay, idProd, prodDislplay, fecha, observaciones, 
             // With Defaults
             eliminado, 
@@ -65,7 +65,7 @@ var apArea;
         return servicioDto;
     }());
     apArea.servicioDto = servicioDto;
-    var prodDto = (function () {
+    var prodDto = /** @class */ (function () {
         function prodDto(id, display, avatarUrl, orgs) {
             this.id = id;
             this.display = display;
@@ -75,7 +75,7 @@ var apArea;
         return prodDto;
     }());
     apArea.prodDto = prodDto;
-    var orgConContratos = (function () {
+    var orgConContratos = /** @class */ (function () {
         function orgConContratos(org, contratos) {
             this.org = org;
             this.contratos = contratos;
@@ -83,7 +83,7 @@ var apArea;
         return orgConContratos;
     }());
     apArea.orgConContratos = orgConContratos;
-    var servicioParaDashboardDto = (function () {
+    var servicioParaDashboardDto = /** @class */ (function () {
         function servicioParaDashboardDto(id, idProd, prodDisplay, prodAvatarUrl, orgDisplay, parcelaDisplay, fecha) {
             this.id = id;
             this.idProd = idProd;
@@ -99,13 +99,13 @@ var apArea;
     /************************
      * Parcela
      ************************/
-    var edicionParcelaDto = (function () {
+    var edicionParcelaDto = /** @class */ (function () {
         function edicionParcelaDto() {
         }
         return edicionParcelaDto;
     }());
     apArea.edicionParcelaDto = edicionParcelaDto;
-    var parcelaDto = (function () {
+    var parcelaDto = /** @class */ (function () {
         function parcelaDto(id, idProd, display, hectareas, idDepartamento, departamentoDisplay, idDistrito, distritoDisplay, eliminado) {
             if (eliminado === void 0) { eliminado = false; }
             this.id = id;
@@ -124,7 +124,7 @@ var apArea;
     /************************
     * Contrato
     ************************/
-    var contratoDto = (function () {
+    var contratoDto = /** @class */ (function () {
         function contratoDto(id, idOrg, display, esAdenda, eliminado, idContratoDeLaAdenda, fecha) {
             this.id = id;
             this.idOrg = idOrg;
@@ -140,7 +140,7 @@ var apArea;
     /************************
     * Distritos
     ************************/
-    var departamento = (function () {
+    var departamento = /** @class */ (function () {
         function departamento(id, display, distritos) {
             this.id = id;
             this.display = display;
@@ -149,7 +149,7 @@ var apArea;
         return departamento;
     }());
     apArea.departamento = departamento;
-    var distrito = (function () {
+    var distrito = /** @class */ (function () {
         function distrito(id, display) {
             this.id = id;
             this.display = display;

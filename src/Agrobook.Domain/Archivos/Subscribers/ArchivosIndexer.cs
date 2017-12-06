@@ -2,6 +2,7 @@
 using Eventing;
 using Eventing.Core.Messaging;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Archivos.Services
 {
@@ -21,7 +22,7 @@ namespace Agrobook.Domain.Archivos.Services
             this.fileManager = fileManager;
         }
 
-        public void Handle(long eventNumber, NuevoArchivoAgregadoALaColeccion e)
+        public async Task Handle(long eventNumber, NuevoArchivoAgregadoALaColeccion e)
         {
             var renombrado = this.fileManager.SetFileAsIndexedIfNeeded(e.IdColeccion, e.Descriptor);
 
@@ -40,7 +41,7 @@ namespace Agrobook.Domain.Archivos.Services
             });
         }
 
-        public void Handle(long eventNumber, ArchivoEliminado e)
+        public async Task Handle(long eventNumber, ArchivoEliminado e)
         {
             this.Denormalize(eventNumber, context =>
             {
@@ -49,7 +50,7 @@ namespace Agrobook.Domain.Archivos.Services
             });
         }
 
-        public void Handle(long eventNumber, ArchivoRestaurado e)
+        public async Task Handle(long eventNumber, ArchivoRestaurado e)
         {
             this.Denormalize(eventNumber, context =>
             {

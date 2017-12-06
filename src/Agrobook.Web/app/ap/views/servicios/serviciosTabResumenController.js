@@ -1,7 +1,7 @@
 /// <reference path="../../../_all.ts" />
 var apArea;
 (function (apArea) {
-    var serviciosTabResumenController = (function () {
+    var serviciosTabResumenController = /** @class */ (function () {
         function serviciosTabResumenController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope, loginService, $mdDialog, $mdMedia, nf) {
             var _this = this;
             this.config = config;
@@ -234,10 +234,10 @@ var apArea;
             var pph = precioTotal / ha;
             this.servicio.precioPorHectarea = this.nf.formatFromUSNumber(pph);
         };
+        serviciosTabResumenController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope',
+            '$scope', 'loginService', '$mdDialog', '$mdMedia', 'numberFormatter'];
         return serviciosTabResumenController;
     }());
-    serviciosTabResumenController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope',
-        '$scope', 'loginService', '$mdDialog', '$mdMedia', 'numberFormatter'];
     apArea.serviciosTabResumenController = serviciosTabResumenController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=serviciosTabResumenController.js.map

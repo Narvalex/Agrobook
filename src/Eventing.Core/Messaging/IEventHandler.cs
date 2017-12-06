@@ -1,4 +1,6 @@
-﻿namespace Eventing.Core.Messaging
+﻿using System.Threading.Tasks;
+
+namespace Eventing.Core.Messaging
 {
     /// <summary>
     /// Marker interface that makes it easier to discover event handlers via reflection
@@ -7,6 +9,6 @@
 
     public interface IHandler<T> : IEventHandler
     {
-        void Handle(long checkpoint, T e);
+        Task Handle(long checkpoint, T e);
     }
 }

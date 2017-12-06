@@ -1,7 +1,7 @@
 /// <reference path="../_all.ts" />
 var login;
 (function (login) {
-    var credencialesDto = (function () {
+    var credencialesDto = /** @class */ (function () {
         function credencialesDto(usuario, password) {
             this.usuario = usuario;
             this.password = password;
@@ -9,7 +9,7 @@ var login;
         return credencialesDto;
     }());
     login.credencialesDto = credencialesDto;
-    var loginResult = (function () {
+    var loginResult = /** @class */ (function () {
         function loginResult(loginExitoso, usuario, nombreParaMostrar, token, avatarUrl, claims) {
             this.loginExitoso = loginExitoso;
             this.usuario = usuario;

@@ -1,7 +1,7 @@
 /// <reference path="../_all.ts" />
 var apArea;
 (function (apArea) {
-    var sidenavController = (function () {
+    var sidenavController = /** @class */ (function () {
         function sidenavController($mdSidenav, config, loginService, apQueryService) {
             this.$mdSidenav = $mdSidenav;
             this.config = config;
@@ -66,11 +66,11 @@ var apArea;
                 _this.loaded = true;
             }, function (reason) { }));
         };
+        sidenavController.$inject = ['$mdSidenav', 'config', 'loginService', 'apQueryService'];
         return sidenavController;
     }());
-    sidenavController.$inject = ['$mdSidenav', 'config', 'loginService', 'apQueryService'];
     apArea.sidenavController = sidenavController;
-    var filtro = (function () {
+    var filtro = /** @class */ (function () {
         function filtro(id, placeholder, icon) {
             this.id = id;
             this.placeholder = placeholder;

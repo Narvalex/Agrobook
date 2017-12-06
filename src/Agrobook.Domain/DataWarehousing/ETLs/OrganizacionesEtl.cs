@@ -4,6 +4,7 @@ using Agrobook.Domain.Usuarios;
 using Eventing.Core.Messaging;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Agrobook.Domain.DataWarehousing
 {
@@ -15,7 +16,7 @@ namespace Agrobook.Domain.DataWarehousing
         {
         }
 
-        public void Handle(long checkpoint, NuevaOrganizacionCreada e)
+        public async Task Handle(long checkpoint, NuevaOrganizacionCreada e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -27,7 +28,7 @@ namespace Agrobook.Domain.DataWarehousing
             });
         }
 
-        public void Handle(long checkpoint, NombreDeOrganizacionCambiado e)
+        public async Task Handle(long checkpoint, NombreDeOrganizacionCambiado e)
         {
             this.Denormalize(checkpoint, context =>
             {

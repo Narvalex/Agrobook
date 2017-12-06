@@ -1,7 +1,7 @@
 /// <reference path="../../_all.ts" />
 var apArea;
 (function (apArea) {
-    var mainContentController = (function () {
+    var mainContentController = /** @class */ (function () {
         function mainContentController(apQueryService, toasterLite, loginService, loginQueryService, config) {
             this.apQueryService = apQueryService;
             this.toasterLite = toasterLite;
@@ -38,9 +38,9 @@ var apArea;
                 _this.toasterLite.error('Hubo un error al obtener los últimos servicios', _this.toasterLite.delayForever);
             }));
         };
+        mainContentController.$inject = ['apQueryService', 'toasterLite', 'loginService', 'loginQueryService', 'config'];
         return mainContentController;
     }());
-    mainContentController.$inject = ['apQueryService', 'toasterLite', 'loginService', 'loginQueryService', 'config'];
     apArea.mainContentController = mainContentController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=mainContentController.js.map

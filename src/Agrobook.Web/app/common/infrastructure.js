@@ -1,7 +1,7 @@
 /// <reference path="../_all.ts" />
 var common;
 (function (common) {
-    var localStorageLite = (function () {
+    var localStorageLite = /** @class */ (function () {
         function localStorageLite() {
         }
         localStorageLite.prototype.save = function (key, payload) {
@@ -18,11 +18,11 @@ var common;
         localStorageLite.prototype.delete = function (key) {
             localStorage.removeItem(key);
         };
+        localStorageLite.$inject = [];
         return localStorageLite;
     }());
-    localStorageLite.$inject = [];
     common.localStorageLite = localStorageLite;
-    var toasterLite = (function () {
+    var toasterLite = /** @class */ (function () {
         function toasterLite($mdToast) {
             this.$mdToast = $mdToast;
             this.defaultDelay = 5000; // 5 seconds
@@ -39,7 +39,7 @@ var common;
                 controllerAs: 'vm',
                 templateUrl: this.tplUrl,
                 toastClass: 'info',
-                controller: (function () {
+                controller: /** @class */ (function () {
                     function class_1() {
                         this.message = message;
                         this.close = function () { self.$mdToast.hide(); };
@@ -59,7 +59,7 @@ var common;
                 controllerAs: 'vm',
                 templateUrl: this.tplUrl,
                 toastClass: 'success',
-                controller: (function () {
+                controller: /** @class */ (function () {
                     function class_2() {
                         this.message = message;
                         this.close = function () { self.$mdToast.hide(); };
@@ -79,7 +79,7 @@ var common;
                 controllerAs: 'vm',
                 templateUrl: this.tplUrl,
                 toastClass: 'error',
-                controller: (function () {
+                controller: /** @class */ (function () {
                     function class_3() {
                         this.message = message;
                         this.close = function () { self.$mdToast.hide(); };
@@ -99,7 +99,7 @@ var common;
                 position: position,
                 controllerAs: 'vm',
                 templateUrl: this.tplUrl,
-                controller: (function () {
+                controller: /** @class */ (function () {
                     function class_4() {
                         this.message = message;
                         this.close = function () { self.$mdToast.hide(); };
@@ -115,11 +115,11 @@ var common;
             configurable: true
         });
         ; // an hour! :O
+        toasterLite.$inject = ['$mdToast'];
         return toasterLite;
     }());
-    toasterLite.$inject = ['$mdToast'];
     common.toasterLite = toasterLite;
-    var httpLite = (function () {
+    var httpLite = /** @class */ (function () {
         function httpLite($httpService, prefix) {
             if (prefix === void 0) { prefix = ''; }
             this.$httpService = $httpService;
@@ -159,7 +159,7 @@ var common;
         return httpLite;
     }());
     common.httpLite = httpLite;
-    var callbackLite = (function () {
+    var callbackLite = /** @class */ (function () {
         function callbackLite(onSuccess, onError) {
             this.onSuccess = onSuccess;
             this.onError = onError;
@@ -167,7 +167,7 @@ var common;
         return callbackLite;
     }());
     common.callbackLite = callbackLite;
-    var numberFormatter = (function () {
+    var numberFormatter = /** @class */ (function () {
         function numberFormatter() {
         }
         numberFormatter.prototype.parseCommaAsDecimalSeparatorToUSNumber = function (value) {

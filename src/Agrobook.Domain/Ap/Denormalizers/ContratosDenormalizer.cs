@@ -1,7 +1,7 @@
-﻿using Agrobook.Domain.Ap.Commands;
-using Agrobook.Domain.Common;
+﻿using Agrobook.Domain.Common;
 using Eventing.Core.Messaging;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Ap.Denormalizers
 {
@@ -20,7 +20,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
         {
         }
 
-        public void Handle(long eventNumber, NuevoContrato e)
+        public async Task Handle(long eventNumber, NuevoContrato e)
         {
             this.Denormalize(eventNumber, context =>
             {
@@ -37,7 +37,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public void Handle(long eventNumber, ContratoEditado e)
+        public async Task Handle(long eventNumber, ContratoEditado e)
         {
             this.Denormalize(eventNumber, context =>
             {
@@ -47,7 +47,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public void Handle(long eventNumber, ContratoEliminado e)
+        public async Task Handle(long eventNumber, ContratoEliminado e)
         {
             this.Denormalize(eventNumber, context =>
             {
@@ -56,7 +56,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public void Handle(long eventNumber, ContratoRestaurado e)
+        public async Task Handle(long eventNumber, ContratoRestaurado e)
         {
             this.Denormalize(eventNumber, context =>
             {
@@ -65,7 +65,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public void Handle(long eventNumber, NuevaAdenda e)
+        public async Task Handle(long eventNumber, NuevaAdenda e)
         {
             this.Denormalize(eventNumber, context =>
             {
@@ -82,7 +82,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public void Handle(long eventNumber, AdendaEditada e)
+        public async Task Handle(long eventNumber, AdendaEditada e)
         {
             this.Denormalize(eventNumber, context =>
             {
@@ -92,7 +92,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public void Handle(long eventNumber, AdendaEliminada e)
+        public async Task Handle(long eventNumber, AdendaEliminada e)
         {
             this.Denormalize(eventNumber, context =>
             {
@@ -101,7 +101,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
             });
         }
 
-        public void Handle(long eventNumber, AdendaRestaurada e)
+        public async Task Handle(long eventNumber, AdendaRestaurada e)
         {
             this.Denormalize(eventNumber, context =>
             {

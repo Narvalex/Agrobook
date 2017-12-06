@@ -1,5 +1,4 @@
 ﻿using Agrobook.Domain.Common;
-using Eventing.Core.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -225,40 +224,42 @@ namespace Agrobook.Domain.Ap.Services
                     .ToListAsync());
 
         public async Task<ServicioDto> GetServicio(string idServicio)
-           => await (await this.QueryAsync(async context =>
-                 (await context.Servicios
-                    .Where(x => x.Id == idServicio)
-                    .Join(context.Organizaciones,
-                    s => s.IdOrg, o => o.OrganizacionId, (s, o) => new { serv = s, org = o })
-                    .Join(context.Contratos, servOrg => servOrg.serv.IdContrato, c => c.Id,
-                     (so, c) => new ServicioDto
-                     {
-                         ContratoDisplay = c.Display,
-                         Eliminado = so.serv.Eliminado,
-                         Fecha = so.serv.Fecha,
-                         Observaciones = so.serv.Observaciones,
-                         Id = so.serv.Id,
-                         IdContrato = so.serv.IdContrato,
-                         EsAdenda = c.EsAdenda,
-                         IdContratoDeLaAdenda = c.IdContratoDeLaAdenda,
-                         IdOrg = so.serv.IdOrg,
-                         IdProd = so.serv.IdProd,
-                         OrgDisplay = so.org.NombreParaMostrar,
-                         ParcelaId = so.serv.IdParcela,
-                         TienePrecio = so.serv.TienePrecio,
-                         PrecioTotal = so.serv.TienePrecio ? so.serv.PrecioTotal.ToString() : "0"
-                     })
-                    .SingleAsync())
-                    .Transform(async x =>
-                    {
-                        if (x.ParcelaId is null)
-                            return x;
-                        var parcelaEntity = await context.Parcelas.SingleAsync(p => p.Id == x.ParcelaId);
-                        x.ParcelaDisplay = parcelaEntity.Display;
-                        x.Hectareas = parcelaEntity.Hectareas.ToString();
-                        x.PrecioPorHectarea = x.TienePrecio ? (decimal.Parse(x.PrecioTotal) / parcelaEntity.Hectareas).ToString() : "0";
-                        return x;
-                    })));
+           => await this.QueryAsync(async context =>
+           {
+               var servicio = await context.Servicios
+                   .Where(x => x.Id == idServicio)
+                   .Join(context.Organizaciones,
+                   s => s.IdOrg, o => o.OrganizacionId, (s, o) => new { serv = s, org = o })
+                   .Join(context.Contratos, servOrg => servOrg.serv.IdContrato, c => c.Id,
+                   (so, c) => new ServicioDto
+                   {
+                       ContratoDisplay = c.Display,
+                       Eliminado = so.serv.Eliminado,
+                       Fecha = so.serv.Fecha,
+                       Observaciones = so.serv.Observaciones,
+                       Id = so.serv.Id,
+                       IdContrato = so.serv.IdContrato,
+                       EsAdenda = c.EsAdenda,
+                       IdContratoDeLaAdenda = c.IdContratoDeLaAdenda,
+                       IdOrg = so.serv.IdOrg,
+                       IdProd = so.serv.IdProd,
+                       OrgDisplay = so.org.NombreParaMostrar,
+                       ParcelaId = so.serv.IdParcela,
+                       TienePrecio = so.serv.TienePrecio,
+                       PrecioTotal = so.serv.TienePrecio ? so.serv.PrecioTotal.ToString() : "0"
+                   })
+                   .SingleAsync();
+
+
+               if (servicio.ParcelaId is null)
+                   return servicio;
+
+               var parcelaEntity = await context.Parcelas.SingleAsync(p => p.Id == servicio.ParcelaId);
+               servicio.ParcelaDisplay = parcelaEntity.Display;
+               servicio.Hectareas = parcelaEntity.Hectareas.ToString();
+               servicio.PrecioPorHectarea = servicio.TienePrecio ? (decimal.Parse(servicio.PrecioTotal) / parcelaEntity.Hectareas).ToString() : "0";
+               return servicio;
+           });
 
         public async Task<IList<ServicioParaDashboardDto>> GetUltimosServicios(int cantidad)
             => await this.QueryAsync(async context =>

@@ -1,7 +1,7 @@
 /// <reference path="../_all.ts" />
 var common;
 (function (common) {
-    var perfilActualizado = (function () {
+    var perfilActualizado = /** @class */ (function () {
         function perfilActualizado(usuario, avatarUrl, nombreParaMostrar, telefono, email) {
             this.usuario = usuario;
             this.avatarUrl = avatarUrl;

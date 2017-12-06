@@ -1,7 +1,7 @@
 /// <reference path="../../_all.ts" />
 var usuariosArea;
 (function (usuariosArea) {
-    var organizacionesController = (function () {
+    var organizacionesController = /** @class */ (function () {
         function organizacionesController(usuariosService, usuariosQueryService, toasterLite, $routeParams, loginQueryService, $rootScope, config, $mdPanel) {
             this.usuariosService = usuariosService;
             this.usuariosQueryService = usuariosQueryService;
@@ -145,12 +145,12 @@ var usuariosArea;
                 _this.loaded = true;
             }, function (reason) { return _this.toasterLite.error('Ocurrió un error al recuperar lista de organizaciones', _this.toasterLite.delayForever); });
         };
+        organizacionesController.$inject = ['usuariosService', 'usuariosQueryService', 'toasterLite', '$routeParams', 'loginQueryService', '$rootScope',
+            'config', '$mdPanel'];
         return organizacionesController;
     }());
-    organizacionesController.$inject = ['usuariosService', 'usuariosQueryService', 'toasterLite', '$routeParams', 'loginQueryService', '$rootScope',
-        'config', '$mdPanel'];
     usuariosArea.organizacionesController = organizacionesController;
-    var panelMenuController = (function () {
+    var panelMenuController = /** @class */ (function () {
         function panelMenuController(mdPanelRef, $mdDialog) {
             this.mdPanelRef = mdPanelRef;
             this.$mdDialog = $mdDialog;
@@ -220,8 +220,8 @@ var usuariosArea;
             var _this = this;
             this.mdPanelRef.close().finally(function () { return _this.mdPanelRef.destroy(); });
         };
+        panelMenuController.$inject = ['mdPanelRef', '$mdDialog'];
         return panelMenuController;
     }());
-    panelMenuController.$inject = ['mdPanelRef', '$mdDialog'];
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=organizacionesController.js.map

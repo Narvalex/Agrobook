@@ -6,6 +6,7 @@ using EventStore.ClientAPI.Exceptions;
 using System;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Eventing.GetEventStore.Messaging
 {
@@ -37,7 +38,7 @@ namespace Eventing.GetEventStore.Messaging
         private bool hasExternalCheckpointSource;
         private Func<long?> externalCheckpointSource;
 
-        private Action<long, object> listener;
+        private Func<long, object, Task> listener;
 
         private ProjectionDefinition projectionDefinition = null;
 
@@ -100,7 +101,6 @@ namespace Eventing.GetEventStore.Messaging
                 {
                     this.cancellationSource = new CancellationTokenSource();
                     if (this.projectionDefinition != null) this.projectionDefinition.EnsureThatIsUpToDateAndRunning().Wait();
-                    this.log.Info($"Starting subscription {this.subscriptionId} from {this.streamName} at" + (!this.currentCheckpoint.HasValue ? " the beginning" : $" checkpoint {this.currentCheckpoint}"));
                     this.DoStart();
                 }
             }
@@ -122,7 +122,7 @@ namespace Eventing.GetEventStore.Messaging
             }
         }
 
-        public void SetListener(Action<long, object> listener)
+        public void SetListener(Func<long, object, Task> listener)
         {
             this.listener = listener;
         }
@@ -130,17 +130,20 @@ namespace Eventing.GetEventStore.Messaging
         private void DoStart()
         {
             this.ResolveCurrentCheckpoint();
+
+            this.log.Info($"Starting subscription {this.subscriptionId} from {this.streamName} at" + (!this.currentCheckpoint.HasValue ? " the beginning" : $" checkpoint {this.currentCheckpoint}"));
+
             this.subscription = this.resilientConnection.SubscribeToStreamFrom(this.streamName, this.currentCheckpoint, CatchUpSubscriptionSettings.Default,
                 onEventApeared, onLive, onError);
 
-            void onEventApeared(EventStoreCatchUpSubscription sub, ResolvedEvent eventAppeared)
+            async Task onEventApeared(EventStoreCatchUpSubscription sub, ResolvedEvent eventAppeared)
             {
                 var newCheckpoint = eventAppeared.OriginalEventNumber;
                 var deserialized = this.Deserialize(eventAppeared);
-                this.listener.Invoke(newCheckpoint, deserialized);
+                await this.listener.Invoke(newCheckpoint, deserialized);
                 this.currentCheckpoint = newCheckpoint;
                 if (!this.hasExternalCheckpointSource)
-                    this.PersistCurrentCheckpoint();
+                    await this.PersistCurrentCheckpoint();
             }
 
             void onLive(EventStoreCatchUpSubscription sub)
@@ -203,22 +206,21 @@ namespace Eventing.GetEventStore.Messaging
             this.currentCheckpoint = ((SubscriptionCheckpoint)deserialized).EventNumber;
         }
 
-        private void PersistCurrentCheckpoint()
+        private async Task PersistCurrentCheckpoint()
         {
             var e = new SubscriptionCheckpoint(this.currentCheckpoint.Value);
             var serialized = this.serializer.Serialize(e);
             var bytes = Encoding.UTF8.GetBytes(serialized);
             var eventData = new EventData(Guid.NewGuid(), SubscriptionCheckpoint.eventTypeName, true, bytes, null);
-            this.resilientConnection.AppendToStreamAsync(this.subscriptionCheckpointStream, ExpectedVersion.Any, eventData).Wait();
+            await this.resilientConnection.AppendToStreamAsync(this.subscriptionCheckpointStream, ExpectedVersion.Any, eventData);
 
             if (this.subscriptionCheckpointMetadataIsSet) return;
 
             // Setting the metadata
-            var result = this.resilientConnection.GetStreamMetadataAsync(this.subscriptionCheckpointStream).Result;
+            var result = await this.resilientConnection.GetStreamMetadataAsync(this.subscriptionCheckpointStream);
             if (!result.StreamMetadata.MaxCount.HasValue || result.StreamMetadata.MaxCount != 1)
-                this.resilientConnection.SetStreamMetadataAsync(this.subscriptionCheckpointStream, ExpectedVersion.Any,
-                    StreamMetadata.Build().SetMaxCount(1).Build())
-                    .Wait();
+                await this.resilientConnection.SetStreamMetadataAsync(this.subscriptionCheckpointStream, ExpectedVersion.Any,
+                    StreamMetadata.Build().SetMaxCount(1).Build());
             this.subscriptionCheckpointMetadataIsSet = true;
         }
 
@@ -238,5 +240,7 @@ namespace Eventing.GetEventStore.Messaging
         protected virtual void Dispose(bool disposing) => this.Stop();
 
         ~EsSubscription() => Dispose(false);
+
+        public override string ToString() => this.subscriptionId + base.ToString();
     }
 }

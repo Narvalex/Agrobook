@@ -1,7 +1,7 @@
 /// <reference path="../_all.ts" />
 var apArea;
 (function (apArea) {
-    var bottomSheetController = (function () {
+    var bottomSheetController = /** @class */ (function () {
         function bottomSheetController($mdBottomSheet, $mdSidenav, loginService, config) {
             this.$mdBottomSheet = $mdBottomSheet;
             this.$mdSidenav = $mdSidenav;
@@ -20,11 +20,11 @@ var apArea;
             this.$mdSidenav('left').close();
             this.$mdBottomSheet.hide();
         };
+        bottomSheetController.$inject = ['$mdBottomSheet', '$mdSidenav', 'loginService', 'config'];
         return bottomSheetController;
     }());
-    bottomSheetController.$inject = ['$mdBottomSheet', '$mdSidenav', 'loginService', 'config'];
     apArea.bottomSheetController = bottomSheetController;
-    var bottomSheetButtonController = (function () {
+    var bottomSheetButtonController = /** @class */ (function () {
         function bottomSheetButtonController($mdBottomSheet) {
             this.$mdBottomSheet = $mdBottomSheet;
         }
@@ -38,11 +38,11 @@ var apArea;
                 // User clicked aoutside or hit escape
             });
         };
+        bottomSheetButtonController.$inject = ['$mdBottomSheet'];
         return bottomSheetButtonController;
     }());
-    bottomSheetButtonController.$inject = ['$mdBottomSheet'];
     apArea.bottomSheetButtonController = bottomSheetButtonController;
-    var bottomSheetItem = (function () {
+    var bottomSheetItem = /** @class */ (function () {
         function bottomSheetItem(display, icon, url) {
             this.display = display;
             this.icon = icon;

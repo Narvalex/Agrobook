@@ -1,7 +1,7 @@
 /// <reference path="../../_all.ts" />
 var common;
 (function (common) {
-    var userMenuWidgetController = (function () {
+    var userMenuWidgetController = /** @class */ (function () {
         function userMenuWidgetController(config, $mdPanel, loginQueryService, $rootScope, $scope) {
             var _this = this;
             this.config = config;
@@ -62,11 +62,11 @@ var common;
                 this.estaLogueado = false;
             }
         };
+        userMenuWidgetController.$inject = ['config', '$mdPanel', 'loginQueryService', '$rootScope', '$scope'];
         return userMenuWidgetController;
     }());
-    userMenuWidgetController.$inject = ['config', '$mdPanel', 'loginQueryService', '$rootScope', '$scope'];
     common.userMenuWidgetController = userMenuWidgetController;
-    var panelMenuController = (function () {
+    var panelMenuController = /** @class */ (function () {
         function panelMenuController(mdPanelRef, loginService, config) {
             this.mdPanelRef = mdPanelRef;
             this.loginService = loginService;
@@ -93,10 +93,10 @@ var common;
         panelMenuController.prototype.seleccionarItem = function (item) {
             window.location.href = item.link;
         };
+        panelMenuController.$inject = ['mdPanelRef', 'loginService', 'config'];
         return panelMenuController;
     }());
-    panelMenuController.$inject = ['mdPanelRef', 'loginService', 'config'];
-    var menuItem = (function () {
+    var menuItem = /** @class */ (function () {
         function menuItem(name, link, icon) {
             this.name = name;
             this.link = link;

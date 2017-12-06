@@ -44,7 +44,7 @@ module apArea {
 
         getParcela(idParcela: string, callback: common.callbackLite<parcelaDto>
         ) {
-            super.getWithCallback('parcela/' + idParcela, callback);
+            super.getWithCallback('parcela?idParcela=' + idParcela, callback);
         }
 
         getContratos(idOrg: string, callback: common.callbackLite<contratoDto[]>) {

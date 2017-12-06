@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Eventing.Core.Messaging
 {
@@ -79,14 +80,14 @@ namespace Eventing.Core.Messaging
             }
         }
 
-        private void OnEventApeared(long checkpoint, object @event)
+        private async Task OnEventApeared(long checkpoint, object @event)
         {
             var eventType = @event.GetType();
             IEventHandler handler = null;
 
             // HERE IS THE PLACE WHERE WE CAN PUT THE Try Catch to catch everything
             if (this.handlersByType.TryGetValue(eventType, out handler))
-                ((dynamic)handler).Handle(checkpoint, (dynamic)@event);
+                await ((dynamic)handler).Handle(checkpoint, (dynamic)@event);
         }
 
 

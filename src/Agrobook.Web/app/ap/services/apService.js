@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var apArea;
 (function (apArea) {
-    var apService = (function (_super) {
+    var apService = /** @class */ (function (_super) {
         __extends(apService, _super);
         function apService($http) {
             var _this = _super.call(this, $http, '../ap') || this;
@@ -159,9 +159,9 @@ var apArea;
             };
             _super.prototype.postWithCallback.call(this, 'ajustar-precio-del-servicio', cmd, callback);
         };
+        apService.$inject = ['$http'];
         return apService;
     }(common.httpLite));
-    apService.$inject = ['$http'];
     apArea.apService = apService;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=apService.js.map

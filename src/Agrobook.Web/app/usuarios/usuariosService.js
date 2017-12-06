@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var usuariosArea;
 (function (usuariosArea) {
-    var usuariosService = (function (_super) {
+    var usuariosService = /** @class */ (function (_super) {
         __extends(usuariosService, _super);
         function usuariosService($http) {
             var _this = _super.call(this, $http, '../usuarios') || this;
@@ -56,9 +56,9 @@ var usuariosArea;
         usuariosService.prototype.retirarPermiso = function (idUsuario, permiso, callback) {
             _super.prototype.postWithCallback.call(this, "retirar-permiso?usuario=" + idUsuario + "&permiso=" + permiso, {}, callback);
         };
+        usuariosService.$inject = ['$http'];
         return usuariosService;
     }(common.httpLite));
-    usuariosService.$inject = ['$http'];
     usuariosArea.usuariosService = usuariosService;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=usuariosService.js.map

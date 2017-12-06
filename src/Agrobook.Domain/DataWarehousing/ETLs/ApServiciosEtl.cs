@@ -5,6 +5,7 @@ using Agrobook.Domain.DataWarehousing.Facts;
 using Eventing.Core.Messaging;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Agrobook.Domain.DataWarehousing.ETLs
 {
@@ -22,7 +23,7 @@ namespace Agrobook.Domain.DataWarehousing.ETLs
         {
         }
 
-        public void Handle(long checkpoint, NuevoServicioRegistrado e)
+        public async Task Handle(long checkpoint, NuevoServicioRegistrado e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -41,7 +42,7 @@ namespace Agrobook.Domain.DataWarehousing.ETLs
             });
         }
 
-        public void Handle(long checkpoint, DatosBasicosDelSevicioEditados e)
+        public async Task Handle(long checkpoint, DatosBasicosDelSevicioEditados e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -55,7 +56,7 @@ namespace Agrobook.Domain.DataWarehousing.ETLs
             });
         }
 
-        public void Handle(long checkpoint, ServicioEliminado e)
+        public async Task Handle(long checkpoint, ServicioEliminado e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -64,7 +65,7 @@ namespace Agrobook.Domain.DataWarehousing.ETLs
             });
         }
 
-        public void Handle(long checkpoint, ServicioRestaurado e)
+        public async Task Handle(long checkpoint, ServicioRestaurado e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -73,7 +74,7 @@ namespace Agrobook.Domain.DataWarehousing.ETLs
             });
         }
 
-        public void Handle(long checkpoint, ParcelaDeServicioEspecificada e)
+        public async Task Handle(long checkpoint, ParcelaDeServicioEspecificada e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -83,7 +84,7 @@ namespace Agrobook.Domain.DataWarehousing.ETLs
             });
         }
 
-        public void Handle(long checkpoint, ParcelaDeServicioCambiada e)
+        public async Task Handle(long checkpoint, ParcelaDeServicioCambiada e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -93,7 +94,7 @@ namespace Agrobook.Domain.DataWarehousing.ETLs
             });
         }
 
-        public void Handle(long checkpoint, PrecioDeServicioFijado e)
+        public async Task Handle(long checkpoint, PrecioDeServicioFijado e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -104,7 +105,7 @@ namespace Agrobook.Domain.DataWarehousing.ETLs
             });
         }
 
-        public void Handle(long checkpoint, PrecioDeServicioAjustado e)
+        public async Task Handle(long checkpoint, PrecioDeServicioAjustado e)
         {
             this.Denormalize(checkpoint, context =>
             {

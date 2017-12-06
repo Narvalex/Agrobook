@@ -1,7 +1,7 @@
 /// <reference path="../../../../_all.ts" />
 var apArea;
 (function (apArea) {
-    var precioFormDialogController = (function () {
+    var precioFormDialogController = /** @class */ (function () {
         function precioFormDialogController($mdDialog, $rootScope, $scope, nf, apService, $timeout, config, toasterLite) {
             this.$mdDialog = $mdDialog;
             this.$rootScope = $rootScope;
@@ -100,9 +100,9 @@ var apArea;
             }
             this.precioLabel = this.nf.formatFromUSNumber(precioLabel);
         };
+        precioFormDialogController.$inject = ['$mdDialog', '$rootScope', '$scope', 'numberFormatter', 'apService', '$timeout', 'config', 'toasterLite'];
         return precioFormDialogController;
     }());
-    precioFormDialogController.$inject = ['$mdDialog', '$rootScope', '$scope', 'numberFormatter', 'apService', '$timeout', 'config', 'toasterLite'];
     apArea.precioFormDialogController = precioFormDialogController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=precioFormDialogController.js.map

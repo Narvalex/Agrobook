@@ -6,6 +6,7 @@ using Eventing;
 using Eventing.Core.Messaging;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using static Agrobook.Domain.Usuarios.Login.ClaimDef;
 
 namespace Agrobook.Domain.DataWarehousing
@@ -26,7 +27,7 @@ namespace Agrobook.Domain.DataWarehousing
             this.queryService = queryService;
         }
 
-        public void Handle(long checkpoint, NuevoUsuarioCreado e)
+        public async Task Handle(long checkpoint, NuevoUsuarioCreado e)
         {
             var claims = this.queryService.ObtenerClaims(e.LoginInfoEncriptado);
 
@@ -44,7 +45,7 @@ namespace Agrobook.Domain.DataWarehousing
             });
         }
 
-        public void Handle(long checkpoint, NombreParaMostrarActualizado e)
+        public async Task Handle(long checkpoint, NombreParaMostrarActualizado e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -53,7 +54,7 @@ namespace Agrobook.Domain.DataWarehousing
             });
         }
 
-        public void Handle(long checkpoint, PermisoOtorgadoAlUsuario e)
+        public async Task Handle(long checkpoint, PermisoOtorgadoAlUsuario e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -62,7 +63,7 @@ namespace Agrobook.Domain.DataWarehousing
             });
         }
 
-        public void Handle(long checkpoint, PermisoRetiradoDelUsuario e)
+        public async Task Handle(long checkpoint, PermisoRetiradoDelUsuario e)
         {
             this.Denormalize(checkpoint, context =>
             {

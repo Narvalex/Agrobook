@@ -52,7 +52,7 @@ namespace Agrobook.Domain.Common
         {
         }
 
-        public void Handle(long checkpoint, object e)
+        public async Task Handle(long checkpoint, object e)
         {
             this.Denormalize(checkpoint, c => { });
         }

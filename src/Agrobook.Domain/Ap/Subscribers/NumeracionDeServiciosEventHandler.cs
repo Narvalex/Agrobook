@@ -3,6 +3,7 @@ using Eventing;
 using Eventing.Core.Messaging;
 using Eventing.Core.Persistence;
 using Eventing.Log;
+using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Ap.Services
 {
@@ -19,7 +20,7 @@ namespace Agrobook.Domain.Ap.Services
             this.apService = apService;
         }
 
-        public void Handle(long checkpoint, NuevoRegistroDeServicioPendiente e)
+        public async Task Handle(long checkpoint, NuevoRegistroDeServicioPendiente e)
         {
             if (this.repository.Exists<Servicio>(e.IdServicio).Result)
             {

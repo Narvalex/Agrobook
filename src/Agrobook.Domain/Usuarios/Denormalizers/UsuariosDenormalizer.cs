@@ -3,6 +3,7 @@ using Eventing;
 using Eventing.Core.Messaging;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using static Agrobook.Domain.Usuarios.Login.ClaimDef;
 
 namespace Agrobook.Domain.Usuarios.Services
@@ -32,7 +33,7 @@ namespace Agrobook.Domain.Usuarios.Services
             this.queryService = queryService;
         }
 
-        public void Handle(long eventNumber, NuevoUsuarioCreado e)
+        public async Task Handle(long eventNumber, NuevoUsuarioCreado e)
         {
             var claims = this.queryService.ObtenerClaims(e.LoginInfoEncriptado);
 
@@ -53,7 +54,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long eventNumber, AvatarUrlActualizado e)
+        public async Task Handle(long eventNumber, AvatarUrlActualizado e)
         {
             this.Denormalize(eventNumber, context =>
             {
@@ -62,7 +63,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long eventNumber, NombreParaMostrarActualizado e)
+        public async Task Handle(long eventNumber, NombreParaMostrarActualizado e)
         {
             this.Denormalize(eventNumber, context =>
             {
@@ -71,7 +72,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long eventNumber, PermisoOtorgadoAlUsuario e)
+        public async Task Handle(long eventNumber, PermisoOtorgadoAlUsuario e)
         {
             this.Denormalize(eventNumber, context =>
             {
@@ -80,7 +81,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long eventNumber, PermisoRetiradoDelUsuario e)
+        public async Task Handle(long eventNumber, PermisoRetiradoDelUsuario e)
         {
             this.Denormalize(eventNumber, context =>
             {
@@ -89,7 +90,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long checkpoint, TelefonoDeUsuarioRegistrado e)
+        public async Task Handle(long checkpoint, TelefonoDeUsuarioRegistrado e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -98,7 +99,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long checkpoint, TelefonoDeUsuarioActualizado e)
+        public async Task Handle(long checkpoint, TelefonoDeUsuarioActualizado e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -107,7 +108,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long checkpoint, TelefonoDeUsuarioEliminado e)
+        public async Task Handle(long checkpoint, TelefonoDeUsuarioEliminado e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -116,7 +117,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long checkpoint, EmailDeUsuarioRegistrado e)
+        public async Task Handle(long checkpoint, EmailDeUsuarioRegistrado e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -125,7 +126,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long checkpoint, EmailDeUsuarioActualizado e)
+        public async Task Handle(long checkpoint, EmailDeUsuarioActualizado e)
         {
             this.Denormalize(checkpoint, context =>
             {
@@ -134,7 +135,7 @@ namespace Agrobook.Domain.Usuarios.Services
             });
         }
 
-        public void Handle(long checkpoint, EmailDeUsuarioEliminado e)
+        public async Task Handle(long checkpoint, EmailDeUsuarioEliminado e)
         {
             this.Denormalize(checkpoint, context =>
             {

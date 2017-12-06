@@ -1,7 +1,7 @@
 /// <reference path="../../../_all.ts" />
 var apArea;
 (function (apArea) {
-    var serviciosMainContentController = (function () {
+    var serviciosMainContentController = /** @class */ (function () {
         function serviciosMainContentController($routeParams, $scope, apQueryService, config) {
             var _this = this;
             this.$routeParams = $routeParams;
@@ -94,9 +94,9 @@ var apArea;
                 _this.loading = false;
             }));
         };
+        serviciosMainContentController.$inject = ['$routeParams', '$scope', 'apQueryService', 'config'];
         return serviciosMainContentController;
     }());
-    serviciosMainContentController.$inject = ['$routeParams', '$scope', 'apQueryService', 'config'];
     apArea.serviciosMainContentController = serviciosMainContentController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=serviciosMainContentController.js.map

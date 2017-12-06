@@ -1,7 +1,7 @@
 /// <reference path="../../_all.ts" />
 var usuariosArea;
 (function (usuariosArea) {
-    var nuevoUsuarioDialogController = (function () {
+    var nuevoUsuarioDialogController = /** @class */ (function () {
         function nuevoUsuarioDialogController($mdDialog, usuariosService, usuariosQueryService, toasterLite, config) {
             this.$mdDialog = $mdDialog;
             this.usuariosService = usuariosService;
@@ -73,9 +73,9 @@ var usuariosArea;
         nuevoUsuarioDialogController.prototype.setWorkingText = function () {
             this.submitLabel = 'Creando nuevo usuario...';
         };
+        nuevoUsuarioDialogController.$inject = ['$mdDialog', 'usuariosService', 'usuariosQueryService', 'toasterLite', 'config'];
         return nuevoUsuarioDialogController;
     }());
-    nuevoUsuarioDialogController.$inject = ['$mdDialog', 'usuariosService', 'usuariosQueryService', 'toasterLite', 'config'];
     usuariosArea.nuevoUsuarioDialogController = nuevoUsuarioDialogController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=nuevoUsuarioDialogController.js.map

@@ -1,7 +1,7 @@
 /// <reference path="../_all.ts" />
 var usuariosArea;
 (function (usuariosArea) {
-    var usuarioDto = (function () {
+    var usuarioDto = /** @class */ (function () {
         function usuarioDto(avatarUrl, nombreDeUsuario, nombreParaMostrar, password, telefono, email, claims) {
             this.avatarUrl = avatarUrl;
             this.nombreDeUsuario = nombreDeUsuario;
@@ -14,7 +14,7 @@ var usuariosArea;
         return usuarioDto;
     }());
     usuariosArea.usuarioDto = usuarioDto;
-    var usuarioInfoBasica = (function () {
+    var usuarioInfoBasica = /** @class */ (function () {
         function usuarioInfoBasica(nombre, nombreParaMostrar, avatarUrl, telefono, email) {
             this.nombre = nombre;
             this.nombreParaMostrar = nombreParaMostrar;
@@ -25,7 +25,7 @@ var usuariosArea;
         return usuarioInfoBasica;
     }());
     usuariosArea.usuarioInfoBasica = usuarioInfoBasica;
-    var claimDto = (function () {
+    var claimDto = /** @class */ (function () {
         function claimDto(id, display, info) {
             this.id = id;
             this.display = display;
@@ -34,7 +34,7 @@ var usuariosArea;
         return claimDto;
     }());
     usuariosArea.claimDto = claimDto;
-    var actualizarPerfilDto = (function () {
+    var actualizarPerfilDto = /** @class */ (function () {
         function actualizarPerfilDto(usuario, avatarUrl, nombreParaMostrar, passwordActual, nuevoPassword, telefono, email) {
             this.usuario = usuario;
             this.avatarUrl = avatarUrl;
@@ -47,7 +47,7 @@ var usuariosArea;
         return actualizarPerfilDto;
     }());
     usuariosArea.actualizarPerfilDto = actualizarPerfilDto;
-    var organizacionDto = (function () {
+    var organizacionDto = /** @class */ (function () {
         function organizacionDto(id, display, usuarioEsMiembro, deleted) {
             if (deleted === void 0) { deleted = false; }
             this.id = id;
@@ -58,7 +58,7 @@ var usuariosArea;
         return organizacionDto;
     }());
     usuariosArea.organizacionDto = organizacionDto;
-    var grupoDto = (function () {
+    var grupoDto = /** @class */ (function () {
         function grupoDto(id, display, usuarioEsMiembro) {
             this.id = id;
             this.display = display;
