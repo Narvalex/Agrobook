@@ -93,6 +93,8 @@ namespace Eventing.GetEventStore.Messaging
             this.projectionDefinition = projectionDefinition;
         }
 
+        public string SubscriptionStreamName => this.streamName;
+
         public void Start()
         {
             lock (this.lockObject)

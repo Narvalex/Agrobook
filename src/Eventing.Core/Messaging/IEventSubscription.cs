@@ -25,5 +25,10 @@ namespace Eventing.Core.Messaging
         /// Stops the listener.
         /// </summary>
         void Stop();
+
+        /// <summary>
+        /// The name of the subscription.
+        /// </summary>
+        string SubscriptionStreamName { get; }
     }
 }

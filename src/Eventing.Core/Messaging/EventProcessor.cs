@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Eventing.Log;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,22 +12,27 @@ namespace Eventing.Core.Messaging
     /// </summary>
     public class EventProcessor : IDisposable
     {
+        private readonly ILogLite logger;
+
         private readonly IEventSubscription subscription;
         private readonly Dictionary<Type, IEventHandler> handlersByType = new Dictionary<Type, IEventHandler>();
 
         private bool disposed = false; // To detect redundant calls
         private bool started = false;
 
+        private Action<Exception> exceptionHandler;
+
         private readonly object lockObject = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EventProcessor"/> class.
         /// </summary>
-        public EventProcessor(IEventSubscription subscription)
+        public EventProcessor(IEventSubscription subscription, string processorName = null)
         {
             Ensure.NotNull(subscription, nameof(subscription));
 
             this.subscription = subscription;
+            this.logger = LogManager.GetLoggerFor(processorName ?? "EventProcessor-" + Guid.NewGuid().ToString());
         }
 
         /// <summary>
@@ -50,13 +56,15 @@ namespace Eventing.Core.Messaging
         /// <summary>
         /// Starts the listener.
         /// </summary>
-        public void Start()
+        public void Start(Action<Exception> onException = null)
         {
             if (this.disposed) throw new ObjectDisposedException("EventProcessor");
             lock (this.lockObject)
             {
                 if (!this.started)
                 {
+                    if (onException != null)
+                        this.exceptionHandler = onException;
                     this.subscription.SetListener(this.OnEventApeared);
                     this.subscription.Start();
                     this.started = true;
@@ -85,11 +93,21 @@ namespace Eventing.Core.Messaging
             var eventType = @event.GetType();
             IEventHandler handler = null;
 
-            // HERE IS THE PLACE WHERE WE CAN PUT THE Try Catch to catch everything
             if (this.handlersByType.TryGetValue(eventType, out handler))
-                await ((dynamic)handler).Handle(checkpoint, (dynamic)@event);
-        }
+            {
+                try
+                {
+                    await ((dynamic)handler).Handle(checkpoint, (dynamic)@event);
+                }
+                catch (Exception ex)
+                {
+                    this.logger.Error(ex, $"Unhanled exception in handler {handler.ToString()} when processing event of type {@event.GetType().Name} from stream {this.subscription.SubscriptionStreamName} with checkpoint {checkpoint}");
+                    this.exceptionHandler.Invoke(ex);
 
+                    throw;
+                }
+            }
+        }
 
         protected virtual void Dispose(bool disposing)
         {

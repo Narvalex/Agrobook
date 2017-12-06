@@ -44,7 +44,12 @@ namespace Agrobook.Server
             this.InitializePersistenceEngines();
             this.InitializeWebServer();
             this.WaitForEventStoreToBeReady();
-            this.eventProcessors.ForEach(p => p.Start());
+            this.eventProcessors.ForEach(p => p.Start(ex =>
+            {
+                this.log.Fatal("Agrobook Processor will shutdown due to an unrecoverable error in an event processor.");
+                this.Stop();
+                Environment.Exit(1);
+            }));
         }
 
         public void Stop()

@@ -4,7 +4,7 @@ namespace Agrobook.Server
 {
     partial class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             using (var processor = new AgrobookProcessor(args))
             {
@@ -21,6 +21,7 @@ namespace Agrobook.Server
                 while (!line.Equals("exit", StringComparison.InvariantCultureIgnoreCase));
 
                 processor.Stop();
+                return 0;
             }
         }
     }
