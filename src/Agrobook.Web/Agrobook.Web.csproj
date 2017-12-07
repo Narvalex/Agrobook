@@ -89,6 +89,7 @@
     <Content Include="app\assets\dialogs.css" />
     <Content Include="app\assets\google-font-roboto.css" />
     <Content Include="app\assets\grid-list-styles.css" />
+    <Content Include="app\assets\img\ap\concierge.jpg" />
     <Content Include="app\assets\img\ap\happy-senior-couple-farm-square.jpg" />
     <Content Include="app\assets\img\ap\happy-senior-couple-farm.jpg" />
     <Content Include="app\assets\img\home\agro2.jpg" />

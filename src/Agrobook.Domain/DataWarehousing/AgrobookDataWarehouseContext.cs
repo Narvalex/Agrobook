@@ -18,7 +18,6 @@ namespace Agrobook.Domain.DataWarehousing
             // Dimensions
             modelBuilder.Configurations
                 .Add(new ContratoDimMap())
-                .Add(new DepartamentoDimMap())
                 .Add(new OrganizacionDimMap())
                 .Add(new ParcelaDimMap())
                 .Add(new PrecioPorHaServicioApDimMap())
@@ -31,7 +30,6 @@ namespace Agrobook.Domain.DataWarehousing
 
         // Dimensions
         public IDbSet<ApContratoDim> ContratoDims { get; set; }
-        public IDbSet<DepartamentoDim> DepartamentoDims { get; set; }
         public IDbSet<OrganizacionDim> OrganizacionDims { get; set; }
         public IDbSet<ParcelaDim> ParcelaDims { get; set; }
         public IDbSet<ApPrecioPorHaServicioDim> PrecioPorHaServicioApDims { get; set; }

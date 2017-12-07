@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Common", "Agrobook
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Common.Tests", "Agrobook.Common.Tests\Agrobook.Common.Tests.csproj", "{661206F9-1F82-418E-912D-1595DDEB7B78}"
 EndProject
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "Agrobook.ReportServer", "Agrobook.ReportServer\Agrobook.ReportServer.rptproj", "{08E54343-46D2-4B25-960C-5D6FF610B7FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,16 @@ Global
 		{661206F9-1F82-418E-912D-1595DDEB7B78}.DropDb|Any CPU.Build.0 = DropDb|Any CPU
 		{661206F9-1F82-418E-912D-1595DDEB7B78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{661206F9-1F82-418E-912D-1595DDEB7B78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08E54343-46D2-4B25-960C-5D6FF610B7FC}.Debug|Any CPU.ActiveCfg = Debug
+		{08E54343-46D2-4B25-960C-5D6FF610B7FC}.Debug|Any CPU.Build.0 = Debug
+		{08E54343-46D2-4B25-960C-5D6FF610B7FC}.Debug|Any CPU.Deploy.0 = Debug
+		{08E54343-46D2-4B25-960C-5D6FF610B7FC}.DebugLocal|Any CPU.ActiveCfg = DebugLocal
+		{08E54343-46D2-4B25-960C-5D6FF610B7FC}.DebugLocal|Any CPU.Build.0 = DebugLocal
+		{08E54343-46D2-4B25-960C-5D6FF610B7FC}.DropDb|Any CPU.ActiveCfg = DebugLocal
+		{08E54343-46D2-4B25-960C-5D6FF610B7FC}.DropDb|Any CPU.Build.0 = DebugLocal
+		{08E54343-46D2-4B25-960C-5D6FF610B7FC}.Release|Any CPU.ActiveCfg = Release
+		{08E54343-46D2-4B25-960C-5D6FF610B7FC}.Release|Any CPU.Build.0 = Release
+		{08E54343-46D2-4B25-960C-5D6FF610B7FC}.Release|Any CPU.Deploy.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

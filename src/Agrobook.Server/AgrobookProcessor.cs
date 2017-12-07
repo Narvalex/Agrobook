@@ -16,8 +16,12 @@ namespace Agrobook.Server
     {
 #if DEBUG
         private readonly string dropDbParam = "dropdb";
-        private readonly bool dropDb = false;
 #endif
+        private readonly string dropReadModelsParam = "dropreadmodels";
+
+        private readonly bool dropDb = false;
+        private readonly bool dropReadModels = false;
+
         private readonly ILogLite log = LogManager.GetLoggerFor<AgrobookProcessor>();
 
         private readonly List<EventProcessor> eventProcessors;
@@ -35,6 +39,8 @@ namespace Agrobook.Server
 #if DEBUG
             this.dropDb = args.Any(x => x == this.dropDbParam);
 #endif
+            this.dropReadModels = args.Any(x => string.Equals(x, this.dropReadModelsParam, StringComparison.InvariantCultureIgnoreCase));
+
             ServiceLocator.Initialize();
             this.eventProcessors = ServiceLocator.ResolveSingleton<List<EventProcessor>>();
         }
@@ -95,6 +101,9 @@ namespace Agrobook.Server
             else
                 sqlInits.ForEach(x => x.CreateDatabaseIfNoExists());
 #endif
+            if (!this.dropDb && this.dropReadModels)
+                sqlInits.ForEach(x => x.DropAndCreateDb());
+
 #if !DEBUG
             sqlInits.ForEach(x => x.CreateDatabaseIfNoExists());
 #endif

@@ -16,7 +16,6 @@ namespace Agrobook.Domain.DataWarehousing.Facts
         public virtual UsuarioDim Productor { get; set; }
         public virtual ParcelaDim Parcela { get; set; }
         public virtual ApPrecioPorHaServicioDim ApPrecioPorHaServicio { get; set; }
-        public virtual DepartamentoDim Departamento { get; set; }
         public virtual UsuarioDim UsuarioQueRegistro { get; set; }
 
         public bool Eliminado { get; set; }
@@ -38,7 +37,6 @@ namespace Agrobook.Domain.DataWarehousing.Facts
             this.HasOptional(e => e.Productor);
             this.HasOptional(e => e.Parcela);
             this.HasOptional(e => e.ApPrecioPorHaServicio);
-            this.HasOptional(e => e.Departamento);
             this.HasOptional(e => e.UsuarioQueRegistro);
         }
     }

@@ -51,10 +51,10 @@ namespace Agrobook.Server.Ap
             var viewer = new ReportViewer();
             viewer.LocalReport.ReportPath = @"Reportes\Ap\PlanillaGeneralDeServiciosDeAp.rdlc";
 
-            var dataSet = await this.dao.ObtenerServicios();
+            var serviciosDeApList = await this.dao.ObtenerServicios();
 
-            var reportDataSouce = new ReportDataSource("DataSet", dataSet);
-            viewer.LocalReport.DataSources.Add(reportDataSouce);
+            var reportDataSource = new ReportDataSource("ServiciosDeAp", serviciosDeApList);
+            viewer.LocalReport.DataSources.Add(reportDataSource);
             viewer.LocalReport.Refresh();
 
             var bytes = viewer.LocalReport.Render("PDF", null, out string mimeType, out string encoding, out string fileNameExtension, out string[] streams, out Warning[] warnings);

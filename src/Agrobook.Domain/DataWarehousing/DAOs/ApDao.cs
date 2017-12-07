@@ -27,7 +27,6 @@ namespace Agrobook.Domain.DataWarehousing.DAOs
                         .Include(x => x.Productor)
                         .Include(x => x.Parcela)
                         .Include(x => x.ApPrecioPorHaServicio)
-                        .Include(x => x.Departamento)
                         .Include(x => x.UsuarioQueRegistro)
                         .ToListAsync();
 
