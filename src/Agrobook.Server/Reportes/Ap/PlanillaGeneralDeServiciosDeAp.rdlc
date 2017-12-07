@@ -309,7 +309,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Fecha.Value</Value>
+                              <Value>=FormatDateTime(Fields!Fecha.Value)</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
