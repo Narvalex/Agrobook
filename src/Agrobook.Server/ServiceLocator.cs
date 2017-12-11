@@ -55,6 +55,7 @@ namespace Agrobook.Server
             var esHttpPort = int.Parse(ConfigurationManager.AppSettings["esHttpPort"]);
             var esUser = ConfigurationManager.AppSettings["esUser"];
             var esPass = ConfigurationManager.AppSettings["esPass"];
+            var statsPeriodSec = int.Parse(ConfigurationManager.AppSettings["statsPeriodSec"]);
 
             Ensure.NotNullOrWhiteSpace(esIp, nameof(esIp));
             Ensure.Positive(esTcpPort, nameof(esTcpPort));
@@ -67,7 +68,8 @@ namespace Agrobook.Server
                 defaultUserName: esUser,
                 defaultPassword: esPass,
                 resilientConnectionNamePrefix: "AgrobookSubscriptions",
-                failFastConnectionNamePrefix: "AgrobookEventSourcedRepository");
+                failFastConnectionNamePrefix: "AgrobookEventSourcedRepository",
+                statsPeriodSec: statsPeriodSec);
             container.Register<EventStoreManager>(esm);
 
 

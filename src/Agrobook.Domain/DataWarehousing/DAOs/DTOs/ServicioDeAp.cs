@@ -10,8 +10,8 @@ namespace Agrobook.Domain.DataWarehousing.DAOs.DTOs
         public string Productor { get; set; }
         public string Parcela { get; set; }
         public decimal Ha { get; set; }
-        public decimal PrecioPorHa { get; set; }
-        public decimal PrecioTotal { get; set; }
+        public decimal? PrecioPorHa { get; set; }
+        public decimal? PrecioTotal { get; set; }
         public DateTime Fecha { get; set; }
     }
 }

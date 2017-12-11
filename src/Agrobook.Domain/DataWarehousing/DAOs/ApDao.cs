@@ -37,7 +37,7 @@ namespace Agrobook.Domain.DataWarehousing.DAOs
                     Fecha = new DateTime(s.Fecha.Año, s.Fecha.Mes, s.Fecha.Dia),
                     Organizacion = s.Organizacion.Nombre,
                     Parcela = s.Parcela.Nombre,
-                    PrecioPorHa = s.ApPrecioPorHaServicio.Precio,
+                    PrecioPorHa = s.ApPrecioPorHaServicio?.Precio,
                     PrecioTotal = s.PrecioTotal,
                     Productor = s.Productor.Nombre,
                     Ha = s.Parcela.Hectareas

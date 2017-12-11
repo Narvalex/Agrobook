@@ -47,7 +47,7 @@ namespace Agrobook.Server.Ap
         [HttpGet]
         [Route("planilla-general-de-servicios-de-ap")]
         public async Task<HttpResponseMessage> GetPlanillaGeneralDeServiciosDeAp()
-        {
+        {   
             var viewer = new ReportViewer();
             viewer.LocalReport.ReportPath = @"Reportes\Ap\PlanillaGeneralDeServiciosDeAp.rdlc";
 

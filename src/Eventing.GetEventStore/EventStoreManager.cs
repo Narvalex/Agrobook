@@ -18,7 +18,7 @@ namespace Eventing.GetEventStore
 
         private Process process;
         private readonly string path = @".\EventStore\EventStore.ClusterNode.exe";
-        private readonly string args = @"--db=.\ESData --start-standard-projections=true --run-projections=all --stats-period-sec=1800"; // one stat per hour 3600, half an hour 1800
+        private readonly string args = @"--db=.\ESData --start-standard-projections=true --run-projections=all";
 
         private readonly UserCredentials userCredentials;
         private readonly IPEndPoint tcpIpEndpoint;
@@ -44,15 +44,17 @@ namespace Eventing.GetEventStore
             int tcpPort = 1113,
             int httpPort = 2113,
             string resilientConnectionNamePrefix = "anonymous-resilient",
-            string failFastConnectionNamePrefix = "anonymous-fail-fast")
+            string failFastConnectionNamePrefix = "anonymous-fail-fast",
+            int statsPeriodSec = 30)
         {
             Ensure.NotNullOrWhiteSpace(defaultUserName, nameof(defaultUserName));
             Ensure.NotNullOrWhiteSpace(defaultPassword, nameof(defaultPassword));
             Ensure.NotNullOrWhiteSpace(extIp, nameof(extIp));
             Ensure.NotNullOrWhiteSpace(failFastConnectionNamePrefix, nameof(failFastConnectionNamePrefix));
             Ensure.NotNull(resilientConnectionNamePrefix, nameof(resilientConnectionNamePrefix));
+            Ensure.Positive(statsPeriodSec, nameof(statsPeriodSec));
 
-            this.args += $" --ext-ip={extIp} --ext-tcp-port={tcpPort} --ext-http-port={httpPort}";
+            this.args += $" --ext-ip={extIp} --ext-tcp-port={tcpPort} --ext-http-port={httpPort} --stats-period-sec={statsPeriodSec}";
 
             this.userCredentials = new UserCredentials(defaultUserName, defaultPassword);
             this.tcpIpEndpoint = new IPEndPoint(IPAddress.Parse(extIp), tcpPort);
