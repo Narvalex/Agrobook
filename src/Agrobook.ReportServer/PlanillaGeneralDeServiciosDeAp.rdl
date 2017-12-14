@@ -933,9 +933,6 @@ ON ud2.Sid = sdaf.UsuarioQueRegistro_Sid	</CommandText>
                     <GroupExpressions>
                       <GroupExpression>=Fields!Organizacion.Value</GroupExpression>
                     </GroupExpressions>
-                    <PageBreak>
-                      <BreakLocation>Between</BreakLocation>
-                    </PageBreak>
                   </Group>
                   <SortExpressions>
                     <SortExpression>
