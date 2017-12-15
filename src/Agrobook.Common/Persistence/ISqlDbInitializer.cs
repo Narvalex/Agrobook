@@ -2,7 +2,7 @@
 {
     public interface ISqlDbInitializer
     {
-        void CreateDatabaseIfNoExists();
+        void CreateDatabaseIfNotExists();
         void DropAndCreateDb();
     }
 }

@@ -5,7 +5,7 @@ using System.Data.Entity;
 
 namespace Agrobook.Domain.DataWarehousing
 {
-    public partial class AgrobookDataWarehouseContext : SubscribedDbContext
+    public class AgrobookDataWarehouseContext : SubscribedDbContext
     {
         public AgrobookDataWarehouseContext(bool readOnly, string nameOrConnectionString)
             : base(readOnly, nameOrConnectionString)

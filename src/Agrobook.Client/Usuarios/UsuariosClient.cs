@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Client.Usuarios
 {
-    public class UsuariosClient : ClientBase
+    public class UsuariosClient : ClientBase, IUsuariosClient
     {
         public UsuariosClient(HttpLite http, Func<string> tokenProvider = null)
             : base(http, tokenProvider, "usuarios") { }

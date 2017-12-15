@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Client.Login
 {
-    public class LoginClient : ClientBase
+    public class LoginClient : ClientBase, ILoginClient
     {
         public LoginClient(HttpLite http, Func<string> tokenProvider = null)
             : base(http, tokenProvider, "login")

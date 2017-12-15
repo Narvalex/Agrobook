@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Client.Ap
 {
-    public class ApQueryClient : ClientBase
+    public class ApQueryClient : ClientBase, IApQueryClient
     {
         public ApQueryClient(HttpLite http, Func<string> tokenProvider = null)
             : base(http, tokenProvider, "ap/query")

@@ -1,6 +1,7 @@
 ﻿using Agrobook.Web.Filters;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Web.Configuration;
 using System.Web.Http;
 
 namespace Agrobook.Web
@@ -10,7 +11,11 @@ namespace Agrobook.Web
 
         protected void Application_Start(object _, EventArgs __)
         {
-            ServiceLocator.Initialize();
+            var targetRemoteServer = !string.IsNullOrWhiteSpace(WebConfigurationManager.AppSettings["targetRemoteServer"]);
+            if (targetRemoteServer)
+                ServiceLocator.Initialize();
+            else
+                ServiceLocator.InitializeLocal();
 
             GlobalConfiguration.Configure(config =>
             {

@@ -5,7 +5,7 @@ namespace Eventing.Client.Http
     public static class ClientBaseExtensions
     {
         public static T WithTokenProvider<T>(this T clientBase, Func<string> tokenProvider)
-            where T : ClientBase
+            where T : ISecuredClient
         {
             clientBase.SetupTokenProvider(tokenProvider);
             return clientBase;

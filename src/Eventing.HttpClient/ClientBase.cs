@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Eventing.Client.Http
 {
-    public abstract class ClientBase
+    public abstract class ClientBase : ISecuredClient
     {
         private readonly string prefix;
         private readonly HttpLite http;

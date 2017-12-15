@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Client.Archivos
 {
-    public class ArchivosClient : ClientBase
+    public class ArchivosClient : ClientBase, IArchivosClient
     {
         public ArchivosClient(HttpLite http, Func<string> tokenProvider = null)
             : base(http, tokenProvider, "archivos")

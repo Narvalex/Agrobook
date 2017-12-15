@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Client.Ap
 {
-    public class ApReportClient : ClientBase
+    public class ApReportClient : ClientBase, IApReportClient
     {
         public ApReportClient(HttpLite http, Func<string> tokenProvider = null)
             : base(http, tokenProvider, "ap/report")

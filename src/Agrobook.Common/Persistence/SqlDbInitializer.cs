@@ -17,7 +17,7 @@ namespace Agrobook.Common.Persistence
             this.dbContextFactory = dbContextFactory;
         }
 
-        public void CreateDatabaseIfNoExists()
+        public void CreateDatabaseIfNotExists()
         {
             this.log.Info("Checking the sql databse. If not exists a new one will be created.");
             using (var context = this.dbContextFactory.Invoke())

@@ -124,10 +124,7 @@ namespace Eventing.GetEventStore.Messaging
             }
         }
 
-        public void SetListener(Func<long, object, Task> listener)
-        {
-            this.listener = listener;
-        }
+        public void SetListener(Func<long, object, Task> listener) => this.listener = listener;
 
         private void DoStart()
         {

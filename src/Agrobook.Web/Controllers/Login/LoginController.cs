@@ -1,5 +1,4 @@
-﻿using Agrobook.Client;
-using Agrobook.Client.Login;
+﻿using Agrobook.Client.Login;
 using Eventing.Client.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -9,12 +8,12 @@ namespace Agrobook.Web.Controllers.Login
     [RoutePrefix("app/login")]
     public class LoginController : ApiControllerBase
     {
-        private readonly LoginClient client;
+        private readonly ILoginClient client;
 
         public LoginController()
         {
             this.client = ServiceLocator
-                            .ResolveNewOf<LoginClient>()
+                            .ResolveNewOf<ILoginClient>()
                             .WithTokenProvider(this.TokenProvider);
         }
 

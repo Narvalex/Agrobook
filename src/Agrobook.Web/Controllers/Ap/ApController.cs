@@ -7,11 +7,11 @@ namespace Agrobook.Web.Controllers.Ap
     [RoutePrefix("app/ap")]
     public partial class ApController : ApiControllerBase
     {
-        private readonly ApClient client;
+        private readonly IApClient client;
 
         public ApController()
         {
-            this.client = ServiceLocator.ResolveNewOf<ApClient>().WithTokenProvider(this.TokenProvider);
+            this.client = ServiceLocator.ResolveNewOf<IApClient>().WithTokenProvider(this.TokenProvider);
         }
     }
 }

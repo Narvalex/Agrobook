@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.0
+VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Server", "Agrobook.Server\Agrobook.Server.csproj", "{6B68ACFE-67B3-4AE4-9C2E-B723FCDC4DE5}"
 EndProject
@@ -30,6 +30,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agrobook.Common.Tests", "Agrobook.Common.Tests\Agrobook.Common.Tests.csproj", "{661206F9-1F82-418E-912D-1595DDEB7B78}"
 EndProject
 Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "Agrobook.ReportServer", "Agrobook.ReportServer\Agrobook.ReportServer.rptproj", "{08E54343-46D2-4B25-960C-5D6FF610B7FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eventing.EntityFramework", "Eventing.EntityFramework\Eventing.EntityFramework.csproj", "{5FB35D01-451B-4E8B-9F9A-A9093FFC12AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,6 +147,14 @@ Global
 		{08E54343-46D2-4B25-960C-5D6FF610B7FC}.Release|Any CPU.ActiveCfg = Release
 		{08E54343-46D2-4B25-960C-5D6FF610B7FC}.Release|Any CPU.Build.0 = Release
 		{08E54343-46D2-4B25-960C-5D6FF610B7FC}.Release|Any CPU.Deploy.0 = Release
+		{5FB35D01-451B-4E8B-9F9A-A9093FFC12AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FB35D01-451B-4E8B-9F9A-A9093FFC12AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FB35D01-451B-4E8B-9F9A-A9093FFC12AD}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FB35D01-451B-4E8B-9F9A-A9093FFC12AD}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{5FB35D01-451B-4E8B-9F9A-A9093FFC12AD}.DropDb|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FB35D01-451B-4E8B-9F9A-A9093FFC12AD}.DropDb|Any CPU.Build.0 = Debug|Any CPU
+		{5FB35D01-451B-4E8B-9F9A-A9093FFC12AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FB35D01-451B-4E8B-9F9A-A9093FFC12AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,6 +164,7 @@ Global
 		{7C1FC9BB-A213-4E09-8FD2-F13ADFA758B4} = {DEA078D5-15B3-426E-9FCB-482145F788DA}
 		{FD80989B-08E7-446A-B967-670BAEB4BD5F} = {DEA078D5-15B3-426E-9FCB-482145F788DA}
 		{31913791-9E19-4F54-BC07-EF281988C0CD} = {DEA078D5-15B3-426E-9FCB-482145F788DA}
+		{5FB35D01-451B-4E8B-9F9A-A9093FFC12AD} = {DEA078D5-15B3-426E-9FCB-482145F788DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {72930BDE-DB43-4017-929E-E333597E1718}

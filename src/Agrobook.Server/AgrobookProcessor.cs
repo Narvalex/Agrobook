@@ -99,13 +99,13 @@ namespace Agrobook.Server
             if (this.dropDb)
                 sqlInits.ForEach(x => x.DropAndCreateDb());
             else
-                sqlInits.ForEach(x => x.CreateDatabaseIfNoExists());
+                sqlInits.ForEach(x => x.CreateDatabaseIfNotExists());
 #endif
             if (!this.dropDb && this.dropReadModels)
                 sqlInits.ForEach(x => x.DropAndCreateDb());
 
 #if !DEBUG
-            sqlInits.ForEach(x => x.CreateDatabaseIfNoExists());
+            sqlInits.ForEach(x => x.CreateDatabaseIfNotExists());
 #endif
             this.log.Verbose("SQL Compact is ready");
 

@@ -59,10 +59,20 @@
     <Compile Include="Ap\ApClient.cs" />
     <Compile Include="Ap\ApQueryClient.cs" />
     <Compile Include="Ap\ApReportClient.cs" />
+    <Compile Include="Ap\IApClient.cs" />
+    <Compile Include="Ap\IApQueryClient.cs" />
+    <Compile Include="Ap\IApReportClient.cs" />
     <Compile Include="Archivos\ArchivosClient.cs" />
     <Compile Include="Archivos\ArchivosQueryClient.cs" />
+    <Compile Include="Archivos\IArchivosClient.cs" />
+    <Compile Include="Archivos\IArchivosQueryClient.cs" />
+    <Compile Include="LocalClientBase.cs" />
+    <Compile Include="Login\ILoginClient.cs" />
     <Compile Include="Login\LoginClient.cs" />
+    <Compile Include="Login\LoginLocalClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Usuarios\IUsuariosClient.cs" />
+    <Compile Include="Usuarios\IUsuariosQueryClient.cs" />
     <Compile Include="Usuarios\UsuariosDTOs.cs" />
     <Compile Include="Usuarios\UsuariosClient.cs" />
     <Compile Include="Usuarios\UsuariosQueryClient.cs" />
@@ -72,6 +82,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Agrobook.Common\Agrobook.Common.csproj">
+      <Project>{8194B76B-7583-48A8-A610-01EFADED7417}</Project>
+      <Name>Agrobook.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Agrobook.Domain\Agrobook.Domain.csproj">
       <Project>{6b9ad205-891c-491a-9166-9b7996821c5d}</Project>
       <Name>Agrobook.Domain</Name>
