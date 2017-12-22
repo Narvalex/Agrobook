@@ -78,9 +78,8 @@ namespace Agrobook.Web
             // List of sqlDbInitializers
             container.Register<List<ISqlDbInitializer>>(sqlDbInitializerList);
 
-            // Services ---------------------------------------------------------------------------
+            // Services and clients ---------------------------------------------------------------------------
             var usuariosService = new UsuariosService(eventStore, dateTimeProvider, cryptoSerializer);
-
             container.Register<ILoginClient>(() => new LoginLocalClient(new SimpleDateTimeProvider(), usuariosService));
         }
 

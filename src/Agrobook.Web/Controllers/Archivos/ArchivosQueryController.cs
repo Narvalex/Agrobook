@@ -9,11 +9,11 @@ namespace Agrobook.Web.Controllers.Archivos
     [RoutePrefix("app/archivos/query")]
     public class ArchivosQueryController : ApiFileControllerBase
     {
-        private readonly ArchivosQueryClient client;
+        private readonly IArchivosQueryClient client;
 
         public ArchivosQueryController()
         {
-            this.client = ServiceLocator.ResolveNewOf<ArchivosQueryClient>().WithTokenProvider(this.TokenProvider);
+            this.client = ServiceLocator.ResolveNewOf<IArchivosQueryClient>().WithTokenProvider(this.TokenProvider);
         }
 
         [HttpGet]

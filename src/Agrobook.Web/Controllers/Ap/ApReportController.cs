@@ -9,11 +9,11 @@ namespace Agrobook.Web.Controllers.Ap
     [RoutePrefix("app/ap/report")]
     public class ApReportController : ApiFileControllerBase
     {
-        private readonly ApReportClient client;
+        private readonly IApReportClient client;
 
         public ApReportController()
         {
-            this.client = ServiceLocator.ResolveNewOf<ApReportClient>().WithTokenProvider(this.TokenProvider);
+            this.client = ServiceLocator.ResolveNewOf<IApReportClient>().WithTokenProvider(this.TokenProvider);
         }
 
         [HttpGet]

@@ -9,12 +9,12 @@ namespace Agrobook.Web.Controllers.Usuarios
     [RoutePrefix("app/usuarios")]
     public class UsuariosController : ApiControllerBase
     {
-        private readonly UsuariosClient client;
+        private readonly IUsuariosClient client;
 
         public UsuariosController()
         {
             this.client = ServiceLocator
-                            .ResolveNewOf<UsuariosClient>()
+                            .ResolveNewOf<IUsuariosClient>()
                             .WithTokenProvider(this.TokenProvider);
         }
 

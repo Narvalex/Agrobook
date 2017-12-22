@@ -9,11 +9,11 @@ namespace Agrobook.Web.Controllers.Ap
     [RoutePrefix("app/ap/query")]
     public partial class ApQueryController : ApiControllerBase
     {
-        private readonly ApQueryClient client;
+        private readonly IApQueryClient client;
 
         public ApQueryController()
         {
-            this.client = ServiceLocator.ResolveNewOf<ApQueryClient>().WithTokenProvider(this.TokenProvider);
+            this.client = ServiceLocator.ResolveNewOf<IApQueryClient>().WithTokenProvider(this.TokenProvider);
         }
 
         [HttpGet]
