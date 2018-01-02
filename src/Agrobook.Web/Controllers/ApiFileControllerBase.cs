@@ -11,6 +11,7 @@ namespace Agrobook.Web.Controllers
             var response = this.Request.CreateResponse(HttpStatusCode.OK);
             response.Content = new StreamContent(stream);
             response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
             response.Content.Headers.ContentDisposition.FileName = nombreArchivo;
 
             return response;

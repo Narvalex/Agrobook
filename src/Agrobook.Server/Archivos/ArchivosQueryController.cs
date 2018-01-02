@@ -69,6 +69,7 @@ namespace Agrobook.Server.Archivos
             result.Content = new StreamContent(fileStream);
             result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
             result.Content.Headers.ContentDisposition.FileName = $"{nombreArchivo}";
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
             return result;
         }
 
