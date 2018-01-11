@@ -30,7 +30,8 @@ namespace Agrobook.Domain.Archivos
                 "servicioDatosBasicos",     // seria el de la página resumen y el del Informe final
                 "servicioParcelas",         // parcelas del servicio
                 "servicioDiagnostico",      // diagnostico del servicio
-                "servicioPrescripciones"    // prescripciones del servicio
+                "servicioPrescripciones",   // prescripciones del servicio
+                "orgContratos"              // contratos con la organizacion: Contrato, Adenda I, Adenda II etc.
             };
     }
 }
