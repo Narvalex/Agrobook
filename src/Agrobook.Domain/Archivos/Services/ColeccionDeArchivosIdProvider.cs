@@ -8,6 +8,8 @@ namespace Agrobook.Domain.Archivos
     {
         private static readonly HashSet<string> prefijos;
 
+        public const string orgContratos = "orgContratos";
+
         static ColeccionDeArchivosIdProvider()
         {
             prefijos = ResolverPrefijos();
@@ -31,7 +33,7 @@ namespace Agrobook.Domain.Archivos
                 "servicioParcelas",         // parcelas del servicio
                 "servicioDiagnostico",      // diagnostico del servicio
                 "servicioPrescripciones",   // prescripciones del servicio
-                "orgContratos"              // contratos con la organizacion: Contrato, Adenda I, Adenda II etc.
+                orgContratos              // contratos con la organizacion: Contrato, Adenda I, Adenda II etc.
             };
     }
 }

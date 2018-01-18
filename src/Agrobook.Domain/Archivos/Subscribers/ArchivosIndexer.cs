@@ -1,25 +1,29 @@
-﻿using Agrobook.Domain.Common;
+﻿using Agrobook.Domain.Archivos.Subscribers;
+using Agrobook.Domain.Common;
 using Eventing;
 using Eventing.Core.Messaging;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Archivos.Services
 {
-    public class ArchivosIndexer : SqlDenormalizerV1,
+    public class ArchivosIndexer : AgrobookSqlDenormalizer,
         IHandler<NuevoArchivoAgregadoALaColeccion>,
         IHandler<ArchivoEliminado>,
         IHandler<ArchivoRestaurado>
     {
         private readonly IFileWriter fileManager;
+        private readonly List<IIndizadorDeAreaEspecifica> indizadores = new List<IIndizadorDeAreaEspecifica>();
 
-        public ArchivosIndexer(SqlDenormalizerConfigV1 config,
-            IFileWriter fileManager)
+        public ArchivosIndexer(AgrobookSqlDenormalizerConfig config,
+            IFileWriter fileManager, params IIndizadorDeAreaEspecifica[] indizadores)
             : base(config)
         {
             Ensure.NotNull(fileManager, nameof(fileManager));
 
             this.fileManager = fileManager;
+            this.indizadores.AddRange(indizadores);
         }
 
         public async Task Handle(long eventNumber, NuevoArchivoAgregadoALaColeccion e)
@@ -38,6 +42,8 @@ namespace Agrobook.Domain.Archivos.Services
                     Size = e.Descriptor.Size,
                     Eliminado = false
                 });
+
+                this.indizadores.ForEach(i => i.AgregarAlIndice(context, e.IdColeccion));
             });
         }
 
@@ -47,6 +53,8 @@ namespace Agrobook.Domain.Archivos.Services
             {
                 var archivo = context.Archivos.Single(x => x.IdColeccion == e.IdColeccion && x.Nombre == e.NombreArchivo);
                 archivo.Eliminado = true;
+
+                this.indizadores.ForEach(i => i.EliminarDelIndice(context, e.IdColeccion));
             });
         }
 
@@ -56,6 +64,8 @@ namespace Agrobook.Domain.Archivos.Services
             {
                 var archivo = context.Archivos.Single(x => x.IdColeccion == e.IdColeccion && x.Nombre == e.NombreArchivo);
                 archivo.Eliminado = false;
+
+                this.indizadores.ForEach(i => i.EliminarDelIndice(context, e.IdColeccion));
             });
         }
     }

@@ -209,7 +209,7 @@ namespace Agrobook.Server
                     }
                 });
 
-            var sqlConfig = new SqlDenormalizerConfigV1(dbContextFactory, subId);
+            var sqlConfig = new AgrobookSqlDenormalizerConfig(dbContextFactory, subId);
 
             var processor = new EventProcessor(subscription);
             processor.Register(

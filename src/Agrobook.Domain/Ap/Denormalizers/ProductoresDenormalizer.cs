@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Ap.Denormalizers
 {
-    public class ProductoresDenormalizer : SqlDenormalizerV1,
+    public class ProductoresDenormalizer : AgrobookSqlDenormalizer,
         IHandler<NuevaParcelaRegistrada>,
         IHandler<ParcelaEditada>,
         IHandler<ParcelaEliminada>,
         IHandler<ParcelaRestaurada>
     {
-        public ProductoresDenormalizer(SqlDenormalizerConfigV1 config)
+        public ProductoresDenormalizer(AgrobookSqlDenormalizerConfig config)
             : base(config)
         {
         }

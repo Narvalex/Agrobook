@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Usuarios.Services
 {
-    public class OrganizacionesDenormalizer : SqlDenormalizerV1,
+    public class OrganizacionesDenormalizer : AgrobookSqlDenormalizer,
         IHandler<NuevaOrganizacionCreada>,
         IHandler<NombreDeOrganizacionCambiado>,
         IHandler<OrganizacionEliminada>,
@@ -13,7 +13,7 @@ namespace Agrobook.Domain.Usuarios.Services
         IHandler<UsuarioAgregadoALaOrganizacion>,
         IHandler<UsuarioRemovidoDeLaOrganizacion>
     {
-        public OrganizacionesDenormalizer(SqlDenormalizerConfigV1 config)
+        public OrganizacionesDenormalizer(AgrobookSqlDenormalizerConfig config)
             : base(config)
         { }
 

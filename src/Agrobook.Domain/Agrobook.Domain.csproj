@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ap\Services\IndizadorDeArchivosDeContratos.cs" />
     <Compile Include="Ap\Services\ApIdProvider.cs" />
     <Compile Include="Ap\Commands\ServicioCommands.cs" />
     <Compile Include="Ap\Commands\ServicioInternalCommands.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Ap\NumeracionDeServiciosEvents.cs" />
     <Compile Include="Ap\Services\ApReportDTOs.cs" />
     <Compile Include="Ap\Services\ApReportQueryService.cs" />
+    <Compile Include="Archivos\Subscribers\IIndizadorDeAreaEspecifica.cs" />
     <Compile Include="Common\EfDenormalizer.cs" />
     <Compile Include="Common\SubscribedDbContext.cs" />
     <Compile Include="DataWarehousing\AgrobookDataWarehouseContext.cs" />
@@ -105,13 +107,13 @@
     <Compile Include="Common\EventSourcedHandler.cs" />
     <Compile Include="Common\IEvent.cs" />
     <Compile Include="Ap\ValueObjects\Moneda.cs" />
-    <Compile Include="Common\SqlDenormalizerV1.cs" />
+    <Compile Include="Common\AgrobookSqlDenormalizer.cs" />
     <Compile Include="Common\DbContextQueryService.cs" />
     <Compile Include="Common\DbContext\ContratosDbContext.cs" />
     <Compile Include="Common\DbContext\ProductoresDeApDbContext.cs" />
     <Compile Include="Common\DbContext\ServiciosDbContext.cs" />
     <Compile Include="Common\MensajeAuditable.cs" />
-    <Compile Include="Common\SqlDenormalizerConfigV1.cs" />
+    <Compile Include="Common\AgrobookSqlDenormalizerConfig.cs" />
     <Compile Include="Common\ValueObjects\UbicacionDepartamental.cs" />
     <Compile Include="DataWarehousing\DAOs\ApDao.cs" />
     <Compile Include="DataWarehousing\DAOs\DTOs\ServicioDeAp.cs" />

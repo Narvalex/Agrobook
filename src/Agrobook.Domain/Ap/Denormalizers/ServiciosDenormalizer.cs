@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Ap.Denormalizers
 {
-    public class ServiciosDenormalizer : SqlDenormalizerV1,
+    public class ServiciosDenormalizer : AgrobookSqlDenormalizer,
         IHandler<NuevoServicioRegistrado>,
         IHandler<DatosBasicosDelSevicioEditados>,
         IHandler<ServicioEliminado>,
@@ -15,7 +15,7 @@ namespace Agrobook.Domain.Ap.Denormalizers
         IHandler<PrecioDeServicioFijado>,
         IHandler<PrecioDeServicioAjustado>
     {
-        public ServiciosDenormalizer(SqlDenormalizerConfigV1 config)
+        public ServiciosDenormalizer(AgrobookSqlDenormalizerConfig config)
             : base(config)
         {
         }

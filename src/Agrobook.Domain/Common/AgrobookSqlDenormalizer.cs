@@ -5,12 +5,15 @@ using System.Threading.Tasks;
 
 namespace Agrobook.Domain.Common
 {
-    public abstract class SqlDenormalizerV1 /* IEventHandler IHandler<object>*/
+    /// <summary>
+    /// This is not being used in new denormalizers
+    /// </summary>
+    public abstract class AgrobookSqlDenormalizer /* IEventHandler IHandler<object>*/
     {
         private readonly Func<AgrobookDbContext> contextFactory;
         private readonly string subscriptionId;
 
-        public SqlDenormalizerV1(SqlDenormalizerConfigV1 config)
+        public AgrobookSqlDenormalizer(AgrobookSqlDenormalizerConfig config)
         {
             Ensure.NotNull(config, nameof(config));
 
@@ -46,9 +49,9 @@ namespace Agrobook.Domain.Common
         }
     }
 
-    public class NoOpSqlDenormalizerV1 : SqlDenormalizerV1, IHandler<object>
+    public class NoOpSqlDenormalizerV1 : AgrobookSqlDenormalizer, IHandler<object>
     {
-        public NoOpSqlDenormalizerV1(SqlDenormalizerConfigV1 config) : base(config)
+        public NoOpSqlDenormalizerV1(AgrobookSqlDenormalizerConfig config) : base(config)
         {
         }
 

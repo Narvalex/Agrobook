@@ -21,6 +21,7 @@ namespace Agrobook.Domain
         public string Display { get; set; }
         public bool EsAdenda { get; set; }
         public bool Eliminado { get; set; }
+        public bool TieneArchivo { get; set; }
         public string IdContratoDeLaAdenda { get; set; }
         public DateTime Fecha { get; set; }
     }

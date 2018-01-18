@@ -8,7 +8,7 @@ using static Agrobook.Domain.Usuarios.Login.ClaimDef;
 
 namespace Agrobook.Domain.Usuarios.Services
 {
-    public class UsuariosDenormalizer : SqlDenormalizerV1,
+    public class UsuariosDenormalizer : AgrobookSqlDenormalizer,
         IHandler<NuevoUsuarioCreado>,
         IHandler<AvatarUrlActualizado>,
         IHandler<NombreParaMostrarActualizado>,
@@ -25,7 +25,7 @@ namespace Agrobook.Domain.Usuarios.Services
     {
         private readonly UsuariosQueryService queryService;
 
-        public UsuariosDenormalizer(SqlDenormalizerConfigV1 config, UsuariosQueryService queryService)
+        public UsuariosDenormalizer(AgrobookSqlDenormalizerConfig config, UsuariosQueryService queryService)
            : base(config)
         {
             Ensure.NotNull(queryService, nameof(queryService));
