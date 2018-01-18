@@ -20,7 +20,8 @@ namespace Agrobook.Domain.Ap
             var descriptor = this.Parsear(idColeccion);
             if (!descriptor.EsArchivoDeContrato) return context;
 
-            var entity = context.Contratos.Single(x => x.Id == idColeccion);
+            var entity = context.Contratos.Single(x => x.Id == descriptor.IdContrato);
+
             entity.TieneArchivo = tieneArchivo;
 
             return context;

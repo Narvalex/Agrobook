@@ -65,7 +65,7 @@ namespace Agrobook.Domain.Archivos.Services
                 var archivo = context.Archivos.Single(x => x.IdColeccion == e.IdColeccion && x.Nombre == e.NombreArchivo);
                 archivo.Eliminado = false;
 
-                this.indizadores.ForEach(i => i.EliminarDelIndice(context, e.IdColeccion));
+                this.indizadores.ForEach(i => i.AgregarAlIndice(context, e.IdColeccion));
             });
         }
     }
