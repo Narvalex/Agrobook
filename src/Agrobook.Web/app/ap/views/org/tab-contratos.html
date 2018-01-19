@@ -10,7 +10,7 @@
     </div>
 
     <!-- Formulario de Nuevo/Editar Contrato -->
-    <md-card ng-show="vm.formVisible">
+    <md-card ng-show="vm.formVisible" class="width-md">
         <md-card-title>
             <md-card-title-text ng-if="!vm.editMode">
                 <span class="md-headline">{{vm.tipoContrato === 'adenda' ? 'Nueva adenda' : 'Nuevo contrato'}}</span>
@@ -83,11 +83,18 @@
     </md-card>
     <!-- Fin del Formulario de Nuevo/Editar Contrato -->
 
-    <md-list class="width-xs">
+    <md-list class="width-md">
         <md-list-item ng-repeat="contrato in vm.contratos"
                       ng-hide="contrato.eliminado && vm.ocultarEliminados">
-            <p ng-class="{ 'red-text': contrato.eliminado }">{{contrato.display}}</p>
-            <span class="md-secondary">{{vm.formatearFecha(contrato.fecha)}}</span>
+            <p ng-class="{ 'red-text': contrato.eliminado }">{{contrato.display}}&nbsp;&nbsp;{{vm.formatearFecha(contrato.fecha)}}</p>
+
+            <span class="md-secondary"
+                  ng-if="contrato.tieneArchivo">
+                    &nbsp;<ng-md-icon icon="insert_drive_file"
+                                      ng-click="vm.habilitarEdicion(contrato)"
+                                      style="cursor:pointer"
+                                      title="Tiene documento de respaldo"></ng-md-icon>
+            </span>
 
             <md-button class="md-icon-button md-secondary" aria-label="edit"
                        ng-click="vm.mostrarOpciones($event, contrato)">

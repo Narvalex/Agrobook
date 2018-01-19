@@ -18,7 +18,7 @@ module common {
 
     class filesWidgetController {
         static $inject = ['$scope', 'toasterLite', 'localStorageLite', 'config', '$http', '$mdPanel',
-        'loginService'];
+        'loginService', '$rootScope'];
         private states: { pending: string, uploading: string, uploaded: string, uploadFailed: string }
 
         constructor(
@@ -28,12 +28,15 @@ module common {
             private config: common.config,
             private $http: ng.IHttpService,
             private $mdPanel: ng.material.IPanelService,
-            private loginService: login.loginService
+            private loginService: login.loginService,
+            private $rootScope: ng.IRootScopeService
         ) {
             var roles = this.config.claims.roles;
             this.canUpload = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
 
             var vm = this.$scope;
+            vm.config = this.config;
+            vm.$rootScope = this.$rootScope;
             vm.toasterLite = this.toasterLite;
             vm.$mdPanel = this.$mdPanel;
             vm.$http = this.$http;
@@ -357,6 +360,7 @@ module common {
                 unit.state = vm.states.uploaded;
                 unit.justUploaded = true,
                     unit.waitingServer = false;
+                vm.$rootScope.$broadcast(vm.config.eventIndex.filesWidget.fileUploaded, { });
             }
 
             function setFailure(message: string) {
@@ -379,6 +383,8 @@ module common {
                             break;
                         }
                     }
+
+                    this.$rootScope.$broadcast(this.config.eventIndex.filesWidget.fileDeleted, { });
                 },
                 response => {
                     this.toasterLite.error('No se pudo eliminar el archivo ' + unit.name);
@@ -396,6 +402,8 @@ module common {
                             break;
                         }
                     }
+
+                    this.$rootScope.$broadcast(this.config.eventIndex.filesWidget.fileRestored, {});
                 },
                 response => {
                     this.toasterLite.error('No se pudo restaurar el archivo ' + unit.name);

@@ -2,7 +2,8 @@
 
 module apArea {
     export class orgTabContratosController {
-        static $inject = ['$routeParams', '$scope', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'config', '$rootScope']
+        static $inject = ['$routeParams', '$scope', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'config', '$rootScope',
+        '$timeout']
 
         constructor(
             private $routeParams: angular.route.IRouteParamsService,
@@ -12,11 +13,23 @@ module apArea {
             private apService: apService,
             private toasterLite: common.toasterLite,
             private config: common.config,
-            private $roogScope: angular.IRootScopeService
+            private $rootScope: angular.IRootScopeService,
+            private $timeout: angular.ITimeoutService
         ) {
             this.idOrg = this.$routeParams['idOrg'];
 
             this.recuperarContratos();
+
+            // Suscrito a cambios en el archivo, para actualizar los contratos
+            this.$scope.$on(this.config.eventIndex.filesWidget.fileUploaded, (s, e) => {
+                this.$timeout(() => this.recuperarContratos(), 4000);
+            });
+            this.$scope.$on(this.config.eventIndex.filesWidget.fileDeleted, (s, e) => {
+                this.$timeout(() => this.recuperarContratos(), 4000);
+            });
+            this.$scope.$on(this.config.eventIndex.filesWidget.fileRestored, (s, e) => {
+                this.$timeout(() => this.recuperarContratos(), 4000);
+            });
         }
 
         // estados
@@ -99,7 +112,7 @@ module apArea {
 
             this.idColeccion = `${this.config.categoriaDeArchivos.orgContratos}-${contrato.id}`;
 
-            this.$roogScope.$broadcast(this.config.eventIndex.filesWidget.reloadFiles, { idColeccion: this.idColeccion });
+            this.$rootScope.$broadcast(this.config.eventIndex.filesWidget.reloadFiles, { idColeccion: this.idColeccion });
 
             this.mostrarForm(true);
         }
@@ -281,6 +294,7 @@ module apArea {
             this.formVisible = false;
             this.dirty = undefined;
             this.submitting = false;
+            this.editMode = undefined;
         }
 
         private formatearFecha(fecha: Date): string {

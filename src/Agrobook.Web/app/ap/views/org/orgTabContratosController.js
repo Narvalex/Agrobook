@@ -2,7 +2,8 @@
 var apArea;
 (function (apArea) {
     var orgTabContratosController = /** @class */ (function () {
-        function orgTabContratosController($routeParams, $scope, $mdPanel, apQueryService, apService, toasterLite, config, $roogScope) {
+        function orgTabContratosController($routeParams, $scope, $mdPanel, apQueryService, apService, toasterLite, config, $rootScope, $timeout) {
+            var _this = this;
             this.$routeParams = $routeParams;
             this.$scope = $scope;
             this.$mdPanel = $mdPanel;
@@ -10,12 +11,23 @@ var apArea;
             this.apService = apService;
             this.toasterLite = toasterLite;
             this.config = config;
-            this.$roogScope = $roogScope;
+            this.$rootScope = $rootScope;
+            this.$timeout = $timeout;
             this.submitting = false;
             this.tieneContrato = false;
             this.ocultarEliminados = true;
             this.idOrg = this.$routeParams['idOrg'];
             this.recuperarContratos();
+            // Suscrito a cambios en el archivo, para actualizar los contratos
+            this.$scope.$on(this.config.eventIndex.filesWidget.fileUploaded, function (s, e) {
+                _this.$timeout(function () { return _this.recuperarContratos(); }, 4000);
+            });
+            this.$scope.$on(this.config.eventIndex.filesWidget.fileDeleted, function (s, e) {
+                _this.$timeout(function () { return _this.recuperarContratos(); }, 4000);
+            });
+            this.$scope.$on(this.config.eventIndex.filesWidget.fileRestored, function (s, e) {
+                _this.$timeout(function () { return _this.recuperarContratos(); }, 4000);
+            });
         }
         //--------------------------
         // Api
@@ -62,7 +74,7 @@ var apArea;
         orgTabContratosController.prototype.habilitarEdicion = function (contrato) {
             this.dirty = new apArea.contratoDto(contrato.id, contrato.idOrg, contrato.display, contrato.esAdenda, contrato.eliminado, contrato.idContratoDeLaAdenda, contrato.fecha);
             this.idColeccion = this.config.categoriaDeArchivos.orgContratos + "-" + contrato.id;
-            this.$roogScope.$broadcast(this.config.eventIndex.filesWidget.reloadFiles, { idColeccion: this.idColeccion });
+            this.$rootScope.$broadcast(this.config.eventIndex.filesWidget.reloadFiles, { idColeccion: this.idColeccion });
             this.mostrarForm(true);
         };
         orgTabContratosController.prototype.eliminar = function (contrato) {
@@ -209,11 +221,13 @@ var apArea;
             this.formVisible = false;
             this.dirty = undefined;
             this.submitting = false;
+            this.editMode = undefined;
         };
         orgTabContratosController.prototype.formatearFecha = function (fecha) {
             return moment(fecha).format('DD/MM/YYYY');
         };
-        orgTabContratosController.$inject = ['$routeParams', '$scope', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'config', '$rootScope'];
+        orgTabContratosController.$inject = ['$routeParams', '$scope', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'config', '$rootScope',
+            '$timeout'];
         return orgTabContratosController;
     }());
     apArea.orgTabContratosController = orgTabContratosController;

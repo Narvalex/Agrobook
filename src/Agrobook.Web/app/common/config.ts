@@ -66,7 +66,10 @@ module common {
                 usuarioAgregadoAOrganizacion: 'usuarioAgregadoAOrganizacion'
             },
             filesWidget: {
-                reloadFiles: 'filesWidget-reloadFiles'
+                reloadFiles: 'filesWidget-reloadFiles',
+                fileUploaded: 'filesWidget-fileUploaded',
+                fileRestored: 'filesWidget-fileRestored',
+                fileDeleted: 'filesWidget-fileDeleted'
             },
             archivos: {
                 productorSeleccionado: 'productorSeleccionado',

@@ -16,7 +16,7 @@ var common;
     }
     common.filesWidgetDirectiveFactory = filesWidgetDirectiveFactory;
     var filesWidgetController = /** @class */ (function () {
-        function filesWidgetController($scope, toasterLite, localStorageLite, config, $http, $mdPanel, loginService) {
+        function filesWidgetController($scope, toasterLite, localStorageLite, config, $http, $mdPanel, loginService, $rootScope) {
             var _this = this;
             this.$scope = $scope;
             this.toasterLite = toasterLite;
@@ -25,10 +25,13 @@ var common;
             this.$http = $http;
             this.$mdPanel = $mdPanel;
             this.loginService = loginService;
+            this.$rootScope = $rootScope;
             this.showDeleted = false;
             var roles = this.config.claims.roles;
             this.canUpload = this.loginService.autorizar([roles.Gerente, roles.Tecnico]);
             var vm = this.$scope;
+            vm.config = this.config;
+            vm.$rootScope = this.$rootScope;
             vm.toasterLite = this.toasterLite;
             vm.$mdPanel = this.$mdPanel;
             vm.$http = this.$http;
@@ -294,6 +297,7 @@ var common;
                 unit.state = vm.states.uploaded;
                 unit.justUploaded = true,
                     unit.waitingServer = false;
+                vm.$rootScope.$broadcast(vm.config.eventIndex.filesWidget.fileUploaded, {});
             }
             function setFailure(message) {
                 unit.progress = 0;
@@ -314,6 +318,7 @@ var common;
                         break;
                     }
                 }
+                _this.$rootScope.$broadcast(_this.config.eventIndex.filesWidget.fileDeleted, {});
             }, function (response) {
                 _this.toasterLite.error('No se pudo eliminar el archivo ' + unit.name);
             });
@@ -330,6 +335,7 @@ var common;
                         break;
                     }
                 }
+                _this.$rootScope.$broadcast(_this.config.eventIndex.filesWidget.fileRestored, {});
             }, function (response) {
                 _this.toasterLite.error('No se pudo restaurar el archivo ' + unit.name);
             });
@@ -378,7 +384,7 @@ var common;
             });
         };
         filesWidgetController.$inject = ['$scope', 'toasterLite', 'localStorageLite', 'config', '$http', '$mdPanel',
-            'loginService'];
+            'loginService', '$rootScope'];
         return filesWidgetController;
     }());
     var fileUnit = /** @class */ (function () {
