@@ -23,13 +23,13 @@
         </md-subheader>
         <md-card ng-repeat="c in vm.contratos | orderBy : c.fecha : vm.orderByDesc"
                  ng-hide="c.eliminado && vm.ocultarEliminados">
-            <md-card-title>
+            <md-card-title ng-click="vm.toogleColapsado(c)" class="clickable">
                 <md-card-title-text>
                     <span class="md-headline" ng-class="{ 'red-text': c.eliminado }">{{c.display}}</span>
                     <span class="md-subhead">{{c.totalHa}} hectáreas, año {{vm.momentInstance(c.fecha).format('YYYY')}}</span>
                 </md-card-title-text>
             </md-card-title>
-            <md-card-content>
+            <md-card-content ng-hide="c.colapsado">
                 <md-list class="width-md">
                     <md-list-item ng-repeat="s in c.servicios"
                                   ng-hide="s.eliminado && vm.ocultarEliminados"

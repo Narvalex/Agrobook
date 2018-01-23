@@ -20,6 +20,14 @@ var apArea;
         orgTabServiciosController.prototype.toogleOrder = function () {
             this.orderByDesc = !this.orderByDesc;
         };
+        orgTabServiciosController.prototype.toogleColapsado = function (contrato) {
+            for (var i = 0; i < this.contratos.length; i++) {
+                var c = this.contratos[i];
+                if (c.id === contrato.id) {
+                    c.colapsado = !c.colapsado;
+                }
+            }
+        };
         orgTabServiciosController.prototype.nuevoServicio = function () {
             this.$mdSidenav('left').open();
             this.toasterLite.default('Seleccione un productor para poder registrar un servicio', 7000, true, 'top left');

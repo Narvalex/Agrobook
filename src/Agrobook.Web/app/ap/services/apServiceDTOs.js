@@ -161,13 +161,16 @@ var apArea;
     * GROUP BY
     ****************************/
     var contratoConServicios = /** @class */ (function () {
-        function contratoConServicios(id, display, totalHa, fecha, eliminado, servicios) {
+        function contratoConServicios(id, display, totalHa, fecha, eliminado, servicios, 
+            // Exclusivo del front end
+            colapsado) {
             this.id = id;
             this.display = display;
             this.totalHa = totalHa;
             this.fecha = fecha;
             this.eliminado = eliminado;
             this.servicios = servicios;
+            this.colapsado = colapsado;
         }
         return contratoConServicios;
     }());

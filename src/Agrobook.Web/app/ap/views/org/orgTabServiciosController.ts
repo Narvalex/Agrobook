@@ -34,6 +34,15 @@ module apArea {
             this.orderByDesc = !this.orderByDesc;
         }
 
+        toogleColapsado(contrato: contratoConServicios) {
+            for (var i = 0; i < this.contratos.length; i++) {
+                var c = this.contratos[i];
+                if (c.id === contrato.id) {
+                    c.colapsado = !c.colapsado;
+                }
+            }
+        }
+
         nuevoServicio() {
             this.$mdSidenav('left').open();
             this.toasterLite.default('Seleccione un productor para poder registrar un servicio', 7000, true, 'top left');

@@ -156,7 +156,10 @@ module apArea {
             public totalHa: number,
             public fecha: Date,
             public eliminado : boolean,
-            public servicios: servicioSlim[]
+            public servicios: servicioSlim[],
+            // Exclusivo del front end
+            public colapsado: boolean
+
         ) {
         }
     }
