@@ -21,7 +21,7 @@
         <md-subheader class="md-no-sticky clickable" ng-click="vm.toogleOrder()">
             Mostrando {{ vm.orderByDesc ? 'primero' : 'último' }} los más recientes
         </md-subheader>
-        <md-card ng-repeat="c in vm.contratos | orderBy : c.fecha : vm.orderByDesc"
+        <md-card ng-repeat="c in vm.contratos | orderBy : c.fecha : !vm.orderByDesc"
                  ng-hide="c.eliminado && vm.ocultarEliminados">
             <md-card-title ng-click="vm.toogleColapsado(c)" class="clickable">
                 <md-card-title-text>
