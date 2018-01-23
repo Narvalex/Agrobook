@@ -157,5 +157,32 @@ var apArea;
         return distrito;
     }());
     apArea.distrito = distrito;
+    /***************************
+    * GROUP BY
+    ****************************/
+    var contratoConServicios = /** @class */ (function () {
+        function contratoConServicios(id, display, totalHa, fecha, eliminado, servicios) {
+            this.id = id;
+            this.display = display;
+            this.totalHa = totalHa;
+            this.fecha = fecha;
+            this.eliminado = eliminado;
+            this.servicios = servicios;
+        }
+        return contratoConServicios;
+    }());
+    apArea.contratoConServicios = contratoConServicios;
+    var servicioSlim = /** @class */ (function () {
+        function servicioSlim(id, display, eliminado, hectareas, fecha, idProd) {
+            this.id = id;
+            this.display = display;
+            this.eliminado = eliminado;
+            this.hectareas = hectareas;
+            this.fecha = fecha;
+            this.idProd = idProd;
+        }
+        return servicioSlim;
+    }());
+    apArea.servicioSlim = servicioSlim;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=apServiceDTOs.js.map

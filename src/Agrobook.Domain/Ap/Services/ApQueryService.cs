@@ -129,9 +129,9 @@ namespace Agrobook.Domain.Ap.Services
                     .Join(context.Organizaciones, s => s.IdOrg, o => o.OrganizacionId,
                      (s, o) => new { serv = s, org = o })
                     .Join(context.Contratos, servOrg => servOrg.serv.IdContrato, c => c.Id,
-                     (so, c) => new { so = so, c = c })
+                     (so, c) => new { so, c })
                     .Join(context.Parcelas, soc => soc.so.serv.IdParcela, p => p.Id,
-                     (soc, p) => new { soc = soc, p = p })
+                     (soc, p) => new { soc, p })
                     .Join(context.Usuarios, socp => socp.soc.so.serv.IdProd, u => u.Id,
                      (socp, u) =>
                      new ServicioDto
@@ -173,6 +173,53 @@ namespace Agrobook.Domain.Ap.Services
                          ParcelaDisplay = null
                      }))
                     .ToListAsync());
+
+        public async Task<IList<ContratoConServicios>> GetServiciosPorOrgAgrupadosPorContrato(string idOrg)
+        {
+            return await this.QueryAsync(async context =>
+            {
+                var contratos = await context.Contratos
+                                        .Where(c => c.IdOrg == idOrg)
+                                        .OrderByDescending(c => c.Fecha)
+                                        .Select(c => new ContratoConServicios
+                                        {
+                                            Id = c.Id,
+                                            Display = c.Display,
+                                            Fecha = c.Fecha,
+                                            Eliminado = c.Eliminado
+                                        })
+                                        .ToListAsync();
+
+                var servicios = await context
+                                    .Servicios
+                                    .Where(s => s.IdOrg == idOrg)
+                                    .Join(context.Usuarios, s => s.IdProd, u => u.Id,
+                                    (s, u) => new { s, u })
+                                    .Join(context.Parcelas, su => su.s.IdParcela, p => p.Id,
+                                    (su, p) => new { su, p })
+                                    .OrderBy(sup => sup.su.u.Display)
+                                    .ToListAsync();
+
+                servicios.ForEach(s =>
+                {
+                    var contrato = contratos.Single(c => c.Id == s.su.s.IdContrato);
+                    contrato.Servicios.Add(
+                        new ServicioSlim
+                        {
+                            Id = s.su.s.Id,
+                            Display = $"{s.su.u.Display}, parcela {s.p.Display}",
+                            Eliminado = s.su.s.Eliminado,
+                            Hectareas = s.p.Hectareas,
+                            IdProd = s.su.u.Id,
+                            Fecha = s.su.s.Fecha
+                        });
+                    contrato.TotalHa += s.p.Hectareas;
+                });
+
+                // Todo: agregar Total de Ha
+                return contratos;
+            });
+        }
 
         public async Task<IList<ServicioDto>> GetServiciosPorProd(string idProd)
             => await this.QueryAsync(async context =>

@@ -4,25 +4,53 @@
         <md-progress-circular md-mode="indeterminate"
                               ng-disabled="!vm.loadingServicios"></md-progress-circular>
     </div>
-    <md-list class="width-sm">
+    <!-- ORIGINAL -->
+    <!--<md-list class="width-sm">
         <md-list-item ng-repeat="s in vm.servicios"
                       ng-hide="s.eliminado && vm.ocultarEliminados"
                       ng-click="vm.irAServicio(s)">
             <p ng-class="{ 'red-text': s.eliminado }"> {{s.parcelaId === null ? s.prodDisplay + ', parcela no especificada' : s.prodDisplay + ', parcela ' + s.parcelaDisplay}} </p>
             <span class="md-secondary">{{vm.momentInstance(s.fecha).format('DD/MM/YYYY')}}</span>
         </md-list-item>
-    </md-list>
+    </md-list>-->
+    <!-- Agrupado, segun pedido -->
+
+
+
+    <div ng-show="!vm.loadingServicios" >
+        <md-subheader class="md-no-sticky clickable" ng-click="vm.toogleOrder()">
+            Mostrando {{ vm.orderByDesc ? 'primero' : 'último' }} los más recientes
+        </md-subheader>
+        <md-card ng-repeat="c in vm.contratos | orderBy : c.fecha : vm.orderByDesc"
+                 ng-hide="c.eliminado && vm.ocultarEliminados">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline" ng-class="{ 'red-text': c.eliminado }">{{c.display}}</span>
+                    <span class="md-subhead">{{c.totalHa}} hectáreas, año {{vm.momentInstance(c.fecha).format('YYYY')}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <md-list class="width-sm">
+                    <md-list-item ng-repeat="s in c.servicios"
+                                  ng-hide="s.eliminado && vm.ocultarEliminados"
+                                  ng-click="vm.irAServicio(s)">
+                        <p ng-class="{ 'red-text': s.eliminado }">{{s.display}}</p>
+                        <span class="md-secondary">{{s.hectareas}} hectáreas, {{vm.momentInstance(s.fecha).format('DD/MM/YYYY')}}</span>
+                    </md-list-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
+    </div>
 
     <div ng-hide="vm.loadingServicios">
-        <md-subheader class="md-no-sticky" ng-show="vm.servicios.length > 0">
-            <span>Tiene {{vm.servicios.length}} servicios. Puede </span>
-            <a href="" ng-click="vm.toggleMostrarEliminados()">{{vm.ocultarEliminados ? 'mostrar' : 'ocultar'}}</a> servicios eliminados,
+        <md-subheader class="md-no-sticky" ng-show="vm.contratos.length > 0">
+            <span>Tiene {{vm.contratos.length}} contratos. Puede </span>
+            <a href="" ng-click="vm.toggleMostrarEliminados()">{{vm.ocultarEliminados ? 'mostrar' : 'ocultar'}}</a> contratos/servicios eliminados,
             o también
             <a href="" ng-click="vm.nuevoServicio()">registrar un nuevo servicio realizado</a>.
         </md-subheader>
-        <md-subheader class="md-no-sticky" ng-hide="vm.servicios.length > 0">
+        <md-subheader class="md-no-sticky" ng-hide="vm.contratos.length > 0">
             <span>No tiene ningún servicio. </span><a href="" ng-click="vm.nuevoServicio()">Registre el primero</a>
         </md-subheader>
     </div>
-
 </md-content>

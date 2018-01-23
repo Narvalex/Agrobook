@@ -26,6 +26,10 @@ module apArea {
             super.getWithCallback('servicios-por-org/' + idOrg, callback);
         }
 
+        getServiciosPorOrgAgrupadosPorContrato(idOrg: string, callback: common.callbackLite<contratoConServicios[]>) {
+            super.getWithCallback('servicios-por-org-agrupados-por-contrato/' + idOrg, callback);
+        }
+
         getServiciosPorProd(idProd: string, callback: common.callbackLite<servicioDto[]>) {
             super.getWithCallback('servicios-por-prod/' + idProd, callback);
         }

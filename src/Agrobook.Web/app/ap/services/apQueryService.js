@@ -30,6 +30,9 @@ var apArea;
         apQueryService.prototype.getServiciosPorOrg = function (idOrg, callback) {
             _super.prototype.getWithCallback.call(this, 'servicios-por-org/' + idOrg, callback);
         };
+        apQueryService.prototype.getServiciosPorOrgAgrupadosPorContrato = function (idOrg, callback) {
+            _super.prototype.getWithCallback.call(this, 'servicios-por-org-agrupados-por-contrato/' + idOrg, callback);
+        };
         apQueryService.prototype.getServiciosPorProd = function (idProd, callback) {
             _super.prototype.getWithCallback.call(this, 'servicios-por-prod/' + idProd, callback);
         };

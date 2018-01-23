@@ -8,6 +8,7 @@ var apArea;
             this.$mdSidenav = $mdSidenav;
             this.toasterLite = toasterLite;
             this.ocultarEliminados = true;
+            this.orderByDesc = true;
             // objetos
             this.momentInstance = moment;
             var idOrg = this.$routeParams['idOrg'];
@@ -16,6 +17,9 @@ var apArea;
         //--------------------------
         // Api
         //--------------------------
+        orgTabServiciosController.prototype.toogleOrder = function () {
+            this.orderByDesc = !this.orderByDesc;
+        };
         orgTabServiciosController.prototype.nuevoServicio = function () {
             this.$mdSidenav('left').open();
             this.toasterLite.default('Seleccione un productor para poder registrar un servicio', 7000, true, 'top left');
@@ -24,7 +28,7 @@ var apArea;
             this.ocultarEliminados = !this.ocultarEliminados;
         };
         orgTabServiciosController.prototype.irAServicio = function (servicio) {
-            window.location.replace("#!/servicios/" + servicio.idProd + "/" + servicio.id);
+            window.location.href = "#!/servicios/" + servicio.idProd + "/" + servicio.id;
         };
         //--------------------------
         // Private
@@ -32,8 +36,8 @@ var apArea;
         orgTabServiciosController.prototype.recuperarServiciosPorOrg = function (idOrg) {
             var _this = this;
             this.loadingServicios = true;
-            this.apQueryService.getServiciosPorOrg(idOrg, new common.callbackLite(function (value) {
-                _this.servicios = value.data;
+            this.apQueryService.getServiciosPorOrgAgrupadosPorContrato(idOrg, new common.callbackLite(function (value) {
+                _this.contratos = value.data;
                 _this.loadingServicios = false;
             }, function (reason) { }));
         };

@@ -38,6 +38,9 @@ namespace Agrobook.Client.Ap
         public async Task<IList<ServicioDto>> GetServiciosPorOrg(string idOrg)
             => await base.Get<IList<ServicioDto>>("servicios-por-org/" + idOrg);
 
+        public async Task<IList<ContratoConServicios>> GetServiciosPorOrgAgrupadosPorContrato(string idOrg)
+            => await base.Get<IList<ContratoConServicios>>("servicios-por-org-agrupados-por-contrato/" + idOrg);
+
         public async Task<IList<ServicioDto>> GetServiciosPorProd(string idProd)
            => await base.Get<IList<ServicioDto>>("servicios-por-prod/" + idProd);
 

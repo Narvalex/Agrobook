@@ -65,6 +65,15 @@ namespace Agrobook.Server.Ap
             return this.Ok(servicios);
         }
 
+        [Autorizar(Roles.Gerente, Roles.Tecnico)]
+        [HttpGet]
+        [Route("servicios-por-org-agrupados-por-contrato/{idOrg}")]
+        public async Task<IHttpActionResult> GetServiciosPorOrgAgrupadosPorContrato([FromUri]string idOrg)
+        {
+            var servicios = await this.service.GetServiciosPorOrgAgrupadosPorContrato(idOrg);
+            return this.Ok(servicios);
+        }
+
         [Autorizar(Roles.Gerente, Roles.Tecnico, Roles.Productor)]
         [HttpGet]
         [Route("servicios-por-prod/{idProd}")]

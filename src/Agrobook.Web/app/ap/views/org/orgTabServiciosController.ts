@@ -18,9 +18,10 @@ module apArea {
         // Objetos seleccionados
         loadingServicios: boolean;
         ocultarEliminados: boolean = true;
+        orderByDesc: boolean = true;
 
         // Listas
-        servicios: servicioDto[];
+        contratos: contratoConServicios[];
 
         // objetos
         momentInstance: moment.MomentStatic = moment;
@@ -29,6 +30,10 @@ module apArea {
         //--------------------------
         // Api
         //--------------------------
+        toogleOrder() {
+            this.orderByDesc = !this.orderByDesc;
+        }
+
         nuevoServicio() {
             this.$mdSidenav('left').open();
             this.toasterLite.default('Seleccione un productor para poder registrar un servicio', 7000, true, 'top left');
@@ -38,8 +43,8 @@ module apArea {
             this.ocultarEliminados = !this.ocultarEliminados;
         }
 
-        irAServicio(servicio: servicioDto) {
-            window.location.replace(`#!/servicios/${servicio.idProd}/${servicio.id}`);
+        irAServicio(servicio: servicioSlim) {
+            window.location.href = `#!/servicios/${servicio.idProd}/${servicio.id}`;
         }
 
         //--------------------------
@@ -48,10 +53,10 @@ module apArea {
 
         private recuperarServiciosPorOrg(idOrg: string) {
             this.loadingServicios = true;
-            this.apQueryService.getServiciosPorOrg(idOrg,
-                new common.callbackLite<servicioDto[]>(
+            this.apQueryService.getServiciosPorOrgAgrupadosPorContrato(idOrg,
+                new common.callbackLite<contratoConServicios[]>(
                     value => {
-                        this.servicios = value.data;
+                        this.contratos = value.data;
                         this.loadingServicios = false;
                     },
                     reason => { })

@@ -145,4 +145,31 @@ module apArea {
         ) {
         }
     }
+
+    /***************************
+    * GROUP BY
+    ****************************/
+    export class contratoConServicios {
+        constructor(
+            public id: string,
+            public display: string,
+            public totalHa: number,
+            public fecha: Date,
+            public eliminado : boolean,
+            public servicios: servicioSlim[]
+        ) {
+        }
+    }
+
+    export class servicioSlim {
+        constructor(
+            public id: string,
+            public display: string,
+            public eliminado: boolean,
+            public hectareas: number,
+            public fecha: Date,
+            public idProd: string
+        ) {
+        }
+    }
 }

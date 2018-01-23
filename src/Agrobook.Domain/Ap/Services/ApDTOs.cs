@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Agrobook.Domain.Ap.Services
 {
@@ -67,5 +68,32 @@ namespace Agrobook.Domain.Ap.Services
         public string OrgDisplay { get; set; }
         public string ParcelaDisplay { get; set; }
         public DateTime Fecha { get; set; }
+    }
+
+    // GROUP BY
+    public class ContratoConServicios
+    {
+        public ContratoConServicios()
+        {
+            this.Servicios = new List<ServicioSlim>();
+        }
+
+        public string Id { get; set; }
+        public string Display { get; set; }
+        public decimal TotalHa { get; set; }
+        public DateTime Fecha { get; set; }
+        public bool Eliminado { get; set; }
+        public ICollection<ServicioSlim> Servicios { get; set; }
+    }
+
+    public class ServicioSlim
+    {
+        public string Id { get; set; }
+        public string Display { get; set; }
+        public bool Eliminado { get; set; }
+        public decimal Hectareas { get; set; }
+        public DateTime Fecha { get; set; }
+        // Esto es solo para que desde la interfaz se pueda ir a la pagina del servicio
+        public string IdProd { get; set; }
     }
 }

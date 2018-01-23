@@ -11,6 +11,7 @@ namespace Agrobook.Client.Ap
         Task<ProdDto> GetProd(string idProd);
         Task<ServicioDto> GetServicio(string idServicio);
         Task<IList<ServicioDto>> GetServiciosPorOrg(string idOrg);
+        Task<IList<ContratoConServicios>> GetServiciosPorOrgAgrupadosPorContrato(string idOrg);
         Task<IList<ServicioDto>> GetServiciosPorProd(string idProd);
         Task<IList<ServicioParaDashboardDto>> GetUltimosServicios(int cantidad);
         Task<IList<ClienteDeApDto>> ObtenerClientes(string filtro);
