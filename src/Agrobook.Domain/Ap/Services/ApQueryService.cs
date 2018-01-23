@@ -213,7 +213,9 @@ namespace Agrobook.Domain.Ap.Services
                             IdProd = s.su.u.Id,
                             Fecha = s.su.s.Fecha
                         });
-                    contrato.TotalHa += s.p.Hectareas;
+
+                    if (!s.su.s.Eliminado)
+                        contrato.TotalHa += s.p.Hectareas;
                 });
 
                 // Todo: agregar Total de Ha
