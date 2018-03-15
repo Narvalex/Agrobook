@@ -219,8 +219,7 @@ namespace Agrobook.Server
                 new ContratosDenormalizer(sqlConfig),
                 new ProductoresDenormalizer(sqlConfig),
                 new ServiciosDenormalizer(sqlConfig),
-                new ArchivosIndexer(sqlConfig, archivosDelProductorFileManager,
-                    new IndizadorDeArchivosDeContratos())
+                new ArchivosIndexer(sqlConfig, archivosDelProductorFileManager, new IndizadorDeArchivosDeContratos())
             );
 
             container.ResolveSingleton<List<EventProcessor>>().Add(processor);

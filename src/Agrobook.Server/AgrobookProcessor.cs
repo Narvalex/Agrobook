@@ -28,6 +28,7 @@ namespace Agrobook.Server
 
         public AgrobookProcessor(string[] args)
         {
+            // ESTE CODIGO NO DEBERIA ESTAR POR QUE ESTA LUEGO EN EL LogManager...
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
                 if (e.ExceptionObject is Exception)
