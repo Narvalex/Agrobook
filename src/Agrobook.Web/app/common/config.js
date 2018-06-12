@@ -1,7 +1,7 @@
 /// <reference path="../_all.ts" />
 var common;
 (function (common) {
-    var config = /** @class */ (function () {
+    var config = (function () {
         function config() {
             this._keyCodes = {
                 backspace: 8,
@@ -141,7 +141,7 @@ var common;
         return config;
     }());
     common.config = config;
-    var TipoDeArchivo = /** @class */ (function () {
+    var TipoDeArchivo = (function () {
         function TipoDeArchivo(display, icon) {
             this.display = display;
             this.icon = icon;

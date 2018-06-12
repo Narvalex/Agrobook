@@ -1,7 +1,7 @@
 /// <reference path="../_all.ts" />
 var usuariosArea;
 (function (usuariosArea) {
-    var toolbarHeaderController = /** @class */ (function () {
+    var toolbarHeaderController = (function () {
         function toolbarHeaderController($mdSidenav, loginService, config) {
             this.$mdSidenav = $mdSidenav;
             this.loginService = loginService;
@@ -18,9 +18,9 @@ var usuariosArea;
         toolbarHeaderController.prototype.toggleSideNav = function () {
             this.$mdSidenav('left').toggle();
         };
-        toolbarHeaderController.$inject = ['$mdSidenav', 'loginService', 'config'];
         return toolbarHeaderController;
     }());
+    toolbarHeaderController.$inject = ['$mdSidenav', 'loginService', 'config'];
     usuariosArea.toolbarHeaderController = toolbarHeaderController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=toolbarHeaderController.js.map

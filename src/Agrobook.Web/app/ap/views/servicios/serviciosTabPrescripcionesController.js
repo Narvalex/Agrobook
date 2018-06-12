@@ -1,16 +1,16 @@
 /// <reference path="../../../_all.ts" />
 var apArea;
 (function (apArea) {
-    var serviciosTabPrescripcionesController = /** @class */ (function () {
+    var serviciosTabPrescripcionesController = (function () {
         function serviciosTabPrescripcionesController(config, $routeParams) {
             this.config = config;
             this.$routeParams = $routeParams;
             var idServicio = this.$routeParams['idServicio'];
             this.idColeccion = this.config.categoriaDeArchivos.servicioPrescripciones + "-" + idServicio;
         }
-        serviciosTabPrescripcionesController.$inject = ['config', '$routeParams'];
         return serviciosTabPrescripcionesController;
     }());
+    serviciosTabPrescripcionesController.$inject = ['config', '$routeParams'];
     apArea.serviciosTabPrescripcionesController = serviciosTabPrescripcionesController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=serviciosTabPrescripcionesController.js.map

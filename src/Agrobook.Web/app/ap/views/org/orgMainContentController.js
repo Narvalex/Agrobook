@@ -1,7 +1,7 @@
 /// <reference path="../../../_all.ts" />
 var apArea;
 (function (apArea) {
-    var orgMainContentController = /** @class */ (function () {
+    var orgMainContentController = (function () {
         function orgMainContentController($routeParams, $scope, apQueryService) {
             var _this = this;
             this.$routeParams = $routeParams;
@@ -52,9 +52,9 @@ var apArea;
                 _this.org = value.data;
             }, function (reason) { }));
         };
-        orgMainContentController.$inject = ['$routeParams', '$scope', 'apQueryService'];
         return orgMainContentController;
     }());
+    orgMainContentController.$inject = ['$routeParams', '$scope', 'apQueryService'];
     apArea.orgMainContentController = orgMainContentController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=orgMainContentController.js.map

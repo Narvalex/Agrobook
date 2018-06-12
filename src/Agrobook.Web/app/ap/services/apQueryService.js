@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var apArea;
 (function (apArea) {
-    var apQueryService = /** @class */ (function (_super) {
+    var apQueryService = (function (_super) {
         __extends(apQueryService, _super);
         function apQueryService($http) {
             var _this = _super.call(this, $http, '../ap/query') || this;
@@ -57,9 +57,9 @@ var apArea;
         apQueryService.prototype.getDepartamentos = function (callback) {
             _super.prototype.getWithCallback.call(this, 'departamentos', callback);
         };
-        apQueryService.$inject = ['$http'];
         return apQueryService;
     }(common.httpLite));
+    apQueryService.$inject = ['$http'];
     apArea.apQueryService = apQueryService;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=apQueryService.js.map

@@ -1,7 +1,7 @@
 /// <reference path="../../../_all.ts" />
 var apArea;
 (function (apArea) {
-    var prodMainContentController = /** @class */ (function () {
+    var prodMainContentController = (function () {
         function prodMainContentController($routeParams, $scope, apQueryService, config, loginService, toasterLite) {
             var _this = this;
             this.$routeParams = $routeParams;
@@ -63,9 +63,9 @@ var apArea;
                 _this.prod = value.data;
             }, function (reason) { }));
         };
-        prodMainContentController.$inject = ['$routeParams', '$scope', 'apQueryService', 'config', 'loginService', 'toasterLite'];
         return prodMainContentController;
     }());
+    prodMainContentController.$inject = ['$routeParams', '$scope', 'apQueryService', 'config', 'loginService', 'toasterLite'];
     apArea.prodMainContentController = prodMainContentController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=prodMainContentController.js.map

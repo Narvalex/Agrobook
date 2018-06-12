@@ -1,7 +1,7 @@
 /// <reference path="../../../_all.ts" />
 var apArea;
 (function (apArea) {
-    var orgTabServiciosController = /** @class */ (function () {
+    var orgTabServiciosController = (function () {
         function orgTabServiciosController($routeParams, apQueryService, $mdSidenav, toasterLite) {
             this.$routeParams = $routeParams;
             this.apQueryService = apQueryService;
@@ -49,9 +49,9 @@ var apArea;
                 _this.loadingServicios = false;
             }, function (reason) { }));
         };
-        orgTabServiciosController.$inject = ['$routeParams', 'apQueryService', '$mdSidenav', 'toasterLite'];
         return orgTabServiciosController;
     }());
+    orgTabServiciosController.$inject = ['$routeParams', 'apQueryService', '$mdSidenav', 'toasterLite'];
     apArea.orgTabServiciosController = orgTabServiciosController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=orgTabServiciosController.js.map

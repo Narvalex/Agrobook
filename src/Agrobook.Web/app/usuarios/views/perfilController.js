@@ -1,7 +1,7 @@
 /// <reference path="../../_all.ts" />
 var usuariosArea;
 (function (usuariosArea) {
-    var perfilController = /** @class */ (function () {
+    var perfilController = (function () {
         function perfilController($routeParams, loginService, loginQueryService, usuariosService, usuariosQueryService, toasterLite, config, $rootScope, $scope) {
             var _this = this;
             this.$routeParams = $routeParams;
@@ -155,10 +155,10 @@ var usuariosArea;
             }
             return true;
         };
-        perfilController.$inject = ['$routeParams', 'loginService', 'loginQueryService', 'usuariosService',
-            'usuariosQueryService', 'toasterLite', 'config', '$rootScope', '$scope'];
         return perfilController;
     }());
+    perfilController.$inject = ['$routeParams', 'loginService', 'loginQueryService', 'usuariosService',
+        'usuariosQueryService', 'toasterLite', 'config', '$rootScope', '$scope'];
     usuariosArea.perfilController = perfilController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=perfilController.js.map

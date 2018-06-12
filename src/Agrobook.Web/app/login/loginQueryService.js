@@ -1,7 +1,7 @@
 /// <reference path="../_all.ts" />
 var login;
 (function (login) {
-    var loginQueryService = /** @class */ (function () {
+    var loginQueryService = (function () {
         function loginQueryService($http, config, ls) {
             this.$http = $http;
             this.config = config;
@@ -11,9 +11,9 @@ var login;
         loginQueryService.prototype.tryGetLocalLoginInfo = function () {
             return this.ls.get(this.config.repoIndex.login.usuarioActual);
         };
-        loginQueryService.$inject = ['$http', 'config', 'localStorageLite'];
         return loginQueryService;
     }());
+    loginQueryService.$inject = ['$http', 'config', 'localStorageLite'];
     login.loginQueryService = loginQueryService;
 })(login || (login = {}));
 //# sourceMappingURL=loginQueryService.js.map

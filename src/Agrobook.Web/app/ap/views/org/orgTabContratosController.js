@@ -1,7 +1,7 @@
 /// <reference path="../../../_all.ts" />
 var apArea;
 (function (apArea) {
-    var orgTabContratosController = /** @class */ (function () {
+    var orgTabContratosController = (function () {
         function orgTabContratosController($routeParams, $scope, $mdPanel, apQueryService, apService, toasterLite, config, $rootScope, $timeout) {
             var _this = this;
             this.$routeParams = $routeParams;
@@ -226,12 +226,12 @@ var apArea;
         orgTabContratosController.prototype.formatearFecha = function (fecha) {
             return moment(fecha).format('DD/MM/YYYY');
         };
-        orgTabContratosController.$inject = ['$routeParams', '$scope', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'config', '$rootScope',
-            '$timeout'];
         return orgTabContratosController;
     }());
+    orgTabContratosController.$inject = ['$routeParams', '$scope', '$mdPanel', 'apQueryService', 'apService', 'toasterLite', 'config', '$rootScope',
+        '$timeout'];
     apArea.orgTabContratosController = orgTabContratosController;
-    var panelMenuController = /** @class */ (function () {
+    var panelMenuController = (function () {
         function panelMenuController(mdPanelRef) {
             this.mdPanelRef = mdPanelRef;
         }
@@ -260,8 +260,8 @@ var apArea;
             var _this = this;
             this.mdPanelRef.close().finally(function () { return _this.mdPanelRef.destroy(); });
         };
-        panelMenuController.$inject = ['mdPanelRef'];
         return panelMenuController;
     }());
+    panelMenuController.$inject = ['mdPanelRef'];
 })(apArea || (apArea = {}));
 //# sourceMappingURL=orgTabContratosController.js.map

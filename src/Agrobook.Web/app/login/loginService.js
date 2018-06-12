@@ -1,7 +1,7 @@
 /// <reference path="../_all.ts" />
 var login;
 (function (login) {
-    var loginService = /** @class */ (function () {
+    var loginService = (function () {
         function loginService($http, config, ls, $rootScope) {
             this.$http = $http;
             this.config = config;
@@ -46,9 +46,9 @@ var login;
             }
             return false;
         };
-        loginService.$inject = ['$http', 'config', 'localStorageLite', '$rootScope'];
         return loginService;
     }());
+    loginService.$inject = ['$http', 'config', 'localStorageLite', '$rootScope'];
     login.loginService = loginService;
 })(login || (login = {}));
 //# sourceMappingURL=loginService.js.map

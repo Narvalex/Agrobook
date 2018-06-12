@@ -1,7 +1,7 @@
 /// <reference path="../_all.ts" />
 var usuariosArea;
 (function (usuariosArea) {
-    var sidenavController = /** @class */ (function () {
+    var sidenavController = (function () {
         function sidenavController($mdSidenav, $mdDialog, $mdMedia, toasterLite, usuariosQueryService, $rootScope, config, $scope, loginService) {
             var _this = this;
             this.$mdSidenav = $mdSidenav;
@@ -65,10 +65,10 @@ var usuariosArea;
                 _this.toasterLite.error('Ocurrió un error al recuperar lista de usuarios', _this.toasterLite.delayForever);
             });
         };
-        sidenavController.$inject = ['$mdSidenav', '$mdDialog', '$mdMedia', 'toasterLite', 'usuariosQueryService', '$rootScope',
-            'config', '$scope', 'loginService'];
         return sidenavController;
     }());
+    sidenavController.$inject = ['$mdSidenav', '$mdDialog', '$mdMedia', 'toasterLite', 'usuariosQueryService', '$rootScope',
+        'config', '$scope', 'loginService'];
     usuariosArea.sidenavController = sidenavController;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=sidenavController.js.map

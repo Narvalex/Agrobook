@@ -1,7 +1,7 @@
 /// <reference path="../../../_all.ts" />
 var apArea;
 (function (apArea) {
-    var prodTabParcelasController = /** @class */ (function () {
+    var prodTabParcelasController = (function () {
         function prodTabParcelasController(config, apService, apQueryService, toasterLite, $routeParams, $mdPanel, loginService, numberFormatter) {
             this.config = config;
             this.apService = apService;
@@ -180,12 +180,12 @@ var apArea;
                 }
             }
         };
-        prodTabParcelasController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', 'loginService',
-            'numberFormatter'];
         return prodTabParcelasController;
     }());
+    prodTabParcelasController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', 'loginService',
+        'numberFormatter'];
     apArea.prodTabParcelasController = prodTabParcelasController;
-    var panelMenuController = /** @class */ (function () {
+    var panelMenuController = (function () {
         function panelMenuController(mdPanelRef) {
             this.mdPanelRef = mdPanelRef;
         }
@@ -214,8 +214,8 @@ var apArea;
             var _this = this;
             this.mdPanelRef.close().finally(function () { return _this.mdPanelRef.destroy(); });
         };
-        panelMenuController.$inject = ['mdPanelRef'];
         return panelMenuController;
     }());
+    panelMenuController.$inject = ['mdPanelRef'];
 })(apArea || (apArea = {}));
 //# sourceMappingURL=prodTabParcelasController.js.map

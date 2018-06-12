@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var usuariosArea;
 (function (usuariosArea) {
-    var usuariosQueryService = /** @class */ (function (_super) {
+    var usuariosQueryService = (function (_super) {
         __extends(usuariosQueryService, _super);
         function usuariosQueryService($http) {
             var _this = _super.call(this, $http, '../usuarios/query') || this;
@@ -43,9 +43,9 @@ var usuariosArea;
         usuariosQueryService.prototype.obtenerGrupos = function (organizacionId, idUsuario, onSuccess, onError) {
             _super.prototype.get.call(this, "grupos/" + organizacionId + "/" + idUsuario, onSuccess, onError);
         };
-        usuariosQueryService.$inject = ['$http'];
         return usuariosQueryService;
     }(common.httpLite));
+    usuariosQueryService.$inject = ['$http'];
     usuariosArea.usuariosQueryService = usuariosQueryService;
 })(usuariosArea || (usuariosArea = {}));
 //# sourceMappingURL=usuariosQueryService.js.map

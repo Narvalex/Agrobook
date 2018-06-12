@@ -1,7 +1,7 @@
 /// <reference path="../../../_all.ts" />
 var apArea;
 (function (apArea) {
-    var serviciosTabParcelaController = /** @class */ (function () {
+    var serviciosTabParcelaController = (function () {
         function serviciosTabParcelaController(config, apService, apQueryService, toasterLite, $routeParams, $rootScope, $scope, loginService, nf) {
             var _this = this;
             this.config = config;
@@ -144,10 +144,10 @@ var apArea;
                 _this.submitting = false;
             }));
         };
-        serviciosTabParcelaController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope',
-            'loginService', 'numberFormatter'];
         return serviciosTabParcelaController;
     }());
+    serviciosTabParcelaController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$rootScope', '$scope',
+        'loginService', 'numberFormatter'];
     apArea.serviciosTabParcelaController = serviciosTabParcelaController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=serviciosTabParcelaController.js.map

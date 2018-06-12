@@ -1,7 +1,7 @@
 /// <reference path="../_all.ts" />
 var homeArea;
 (function (homeArea) {
-    var mainContentController = /** @class */ (function () {
+    var mainContentController = (function () {
         function mainContentController() {
             var date = new Date();
             this.currentYear = date.getFullYear();
@@ -10,9 +10,9 @@ var homeArea;
             //  this is the right way, in other to be able to go back 
             window.location.href = url;
         };
-        mainContentController.$inject = [];
         return mainContentController;
     }());
+    mainContentController.$inject = [];
     homeArea.mainContentController = mainContentController;
 })(homeArea || (homeArea = {}));
 //# sourceMappingURL=mainContentController.js.map

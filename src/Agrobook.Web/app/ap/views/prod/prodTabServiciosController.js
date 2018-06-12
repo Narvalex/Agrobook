@@ -1,7 +1,7 @@
 /// <reference path="../../../_all.ts" />
 var apArea;
 (function (apArea) {
-    var prodTabServiciosController = /** @class */ (function () {
+    var prodTabServiciosController = (function () {
         function prodTabServiciosController(config, apService, apQueryService, toasterLite, $routeParams, $mdPanel, loginService) {
             this.config = config;
             this.apService = apService;
@@ -41,9 +41,9 @@ var apArea;
                 _this.loadingServicios = false;
             }));
         };
-        prodTabServiciosController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', 'loginService'];
         return prodTabServiciosController;
     }());
+    prodTabServiciosController.$inject = ['config', 'apService', 'apQueryService', 'toasterLite', '$routeParams', '$mdPanel', 'loginService'];
     apArea.prodTabServiciosController = prodTabServiciosController;
 })(apArea || (apArea = {}));
 //# sourceMappingURL=prodTabServiciosController.js.map

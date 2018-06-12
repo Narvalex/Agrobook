@@ -15,7 +15,7 @@ var common;
         };
     }
     common.filesWidgetDirectiveFactory = filesWidgetDirectiveFactory;
-    var filesWidgetController = /** @class */ (function () {
+    var filesWidgetController = (function () {
         function filesWidgetController($scope, toasterLite, localStorageLite, config, $http, $mdPanel, loginService, $rootScope) {
             var _this = this;
             this.$scope = $scope;
@@ -383,11 +383,11 @@ var common;
                 vm.loadingFiles = false;
             });
         };
-        filesWidgetController.$inject = ['$scope', 'toasterLite', 'localStorageLite', 'config', '$http', '$mdPanel',
-            'loginService', '$rootScope'];
         return filesWidgetController;
     }());
-    var fileUnit = /** @class */ (function () {
+    filesWidgetController.$inject = ['$scope', 'toasterLite', 'localStorageLite', 'config', '$http', '$mdPanel',
+        'loginService', '$rootScope'];
+    var fileUnit = (function () {
         function fileUnit(name, extension, state, file, size, // in bytes
             formattedSize, 
             // Presets
@@ -422,7 +422,7 @@ var common;
         return fileUnit;
     }());
     common.fileUnit = fileUnit;
-    var metadatosDeArchivo = /** @class */ (function () {
+    var metadatosDeArchivo = (function () {
         function metadatosDeArchivo(nombre, extension, tipo, fecha, size, idColeccion, deleted) {
             this.nombre = nombre;
             this.extension = extension;
@@ -435,7 +435,7 @@ var common;
         return metadatosDeArchivo;
     }());
     common.metadatosDeArchivo = metadatosDeArchivo;
-    var filesWidgetPanelMenuController = /** @class */ (function () {
+    var filesWidgetPanelMenuController = (function () {
         function filesWidgetPanelMenuController(mdPanelRef) {
             this.mdPanelRef = mdPanelRef;
         }
@@ -457,8 +457,8 @@ var common;
             var _this = this;
             this.mdPanelRef.close().finally(function () { return _this.mdPanelRef.destroy(); });
         };
-        filesWidgetPanelMenuController.$inject = ['mdPanelRef'];
         return filesWidgetPanelMenuController;
     }());
+    filesWidgetPanelMenuController.$inject = ['mdPanelRef'];
 })(common || (common = {}));
 //# sourceMappingURL=filesWidgetDirective.js.map
